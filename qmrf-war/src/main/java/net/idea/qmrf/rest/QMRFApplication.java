@@ -16,6 +16,7 @@ import net.idea.qmrf.task.QMRFTaskRouter;
 import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
+import net.idea.rest.structure.resource.StructureResource;
 import net.idea.rest.user.UserRouter;
 import net.idea.rest.user.resource.MyAccountResource;
 import net.idea.restnet.aa.opensso.OpenSSOAuthenticator;
@@ -174,6 +175,9 @@ public class QMRFApplication extends TaskApplication<String> {
 		router.attach("/myaccount", createOpenSSOVerifiedResource(MyAccountResource.class));	
 		router.attach("/", protocolRouter);
 		router.attach("", protocolRouter);
+		
+		router.attach(Resources.structure, StructureResource.class);
+		
 		/**
 		 * Queries
 		 *  /query
