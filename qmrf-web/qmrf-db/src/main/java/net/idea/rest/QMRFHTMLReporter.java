@@ -58,6 +58,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		try {
 			//
 			if (editable) {
+					w.write("<div class='protocol'><table>\n");
 					w.write(String.format("<h3>Add new %s %s</h3>",getTitle(),uri.toString().contains("versions")?"version":""));
 					printForm(output,uri.toString(),null,true);
 					output.write(
@@ -65,14 +66,14 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 							);
 					w.write("</table>\n");
 					output.write("</form>");
-					output.write("<hr>");	
+					output.write("</div>");	
 				
 			}
 	    } catch (Exception x) {}
 		
 	    
 		try {
-			if (collapsed) {
+			if (printAsTable()) {
 				w.write(String.format("<h3>%ss</h3>",getTitle()));
 				w.write(QMRF_HTMLBeauty.getPaging(query.getPage(),0,2,query.getPageSize()));
 				
@@ -84,19 +85,21 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		} finally {
 			try {
 				w.write("<div class='protocol'>\n");
-				if (collapsed) {
+				if (printAsTable()) {
 					printTableHeader(w);
 				}
 			} catch (Exception x) {}
 		}
 		
 	}	
-	
+	protected boolean printAsTable() {
+		return collapsed;
+	}
 	@Override
 	public Object processItem(T protocol) throws AmbitException  {
 		try {
 			String uri = uriReporter.getURI(protocol);
-			if (collapsed) 
+			if (printAsTable()) 
 				printTable(output, uri,protocol);
 			else printForm(output,uri,protocol,false);
 
@@ -108,7 +111,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	@Override
 	public void footer(Writer output, Q query) {
 		try {
-			if (collapsed) output.write("</table>\n");				
+			if (printAsTable()) output.write("</table>\n");				
 			output.write("</div>\n");
 		} catch (Exception x) {}
 		super.footer(output, query);
