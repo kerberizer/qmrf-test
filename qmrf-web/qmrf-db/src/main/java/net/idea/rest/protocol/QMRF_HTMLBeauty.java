@@ -7,7 +7,6 @@ import net.idea.qmrf.client.Resources;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.db.QueryResource;
 
 import org.restlet.Request;
 import org.restlet.data.Form;
@@ -15,6 +14,10 @@ import org.restlet.data.Method;
 import org.restlet.data.Reference;
 
 public class QMRF_HTMLBeauty extends HTMLBeauty {
+	protected String searchURI = Resources.protocol;
+	protected String searchTitle = "QMRF free text search";
+
+
 	public QMRF_HTMLBeauty() {
 		super();
 
@@ -107,11 +110,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "		<ul id='navmenu'>\n"+
 			   "			<li><a href='~home'>Home</a></li>\n"+
 			   "			<li><a href='%s/protocol?pagesize=10'>Documents</a></li>\n"+
+			   "			<li><a href='%s/structure?pagesize=10'>Structures</a></li>\n"+			   
 			   "			<li><a href='%s/organisation?pagesize=10'>Organisations</a></li>\n"+
-			   "			<li><a href='%s/project'>Projects</a></li>\n"+
-			   "			<li><a href='%s/user?pagesize=10'>User</a></li>\n"+			   
-			   "			<li><a id='js_sub' class='sub thispage' href='#'>Documents</a></li>\n"+
-			   "			<li><a id='php_sub' class='sub thispage' href='#'>Structure</a></li>\n"+
+			   "			<li><a href='%s/user?pagesize=10'>Users</a></li>\n"+			   
 			   "			<li id='/help'><a href='/help'>Help</a></li></ul>\n"+
 			   "		</div>\n"
 			   ,				   
@@ -174,16 +175,16 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(
 					   String.format(		
 					   "<div class='search'>\n"+
-					   "QMRF free text search\n"+
-					   "<form method='GET' action='%s/protocol?pagesize=10'>\n"+
+					   "%s\n"+
+					   "<form method='GET' action='%s%s?pagesize=10'>\n"+
 					   "<input type='text' name='search' size='20' value='%s' tabindex='0'>\n"+
-					   "<a href='%s/protocol?mode=advanced' title='Advanced QMRF search'>Advanced</a>\n"+
+					   "<a href='%s%s?mode=advanced' title='Advanced QMRF search'>Advanced</a>\n"+
 					   "<input type='hidden' name='pagesize' value='%s'>\n"+
 					   "<input type='submit' value='Search'>\n"+
 					   "</form> \n"+
 					   "&nbsp;\n"+
 					   "</div>\n"+
-						
+						/*
 					   "<div class='search'>\n"+
 					   "Structure search\n"+
 					   "<form method='GET' action='%s/structure?pagesize=10'>\n"+
@@ -193,14 +194,15 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					   "<input type='submit' value='Search'>\n"+
 					   "</form> \n"+
 					   "&nbsp;\n"+
-					   "</div>\n"+			   
-					   "</div>\n",				   
+					   "</div>\n"+	
+					   */		   
+					   "</div>\n",	
+					   getSearchTitle(),
 					   baseReference,
+					   getSearchURI(),
 					   searchQuery,
 					   baseReference,
-					   pageSize,
-					   baseReference,
-					   baseReference,
+					   getSearchURI(),
 					   pageSize
 					   )
 					   );
@@ -229,4 +231,20 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		    return b.toString();
 		}
 		
+		public String getSearchURI() {
+			return searchURI;
+		}
+
+		public void setSearchURI(String searchURI) {
+			this.searchURI = searchURI;
+		}
+
+		
+		public String getSearchTitle() {
+			return searchTitle;
+		}
+
+		public void setSearchTitle(String searchTitle) {
+			this.searchTitle = searchTitle;
+		}
 }
