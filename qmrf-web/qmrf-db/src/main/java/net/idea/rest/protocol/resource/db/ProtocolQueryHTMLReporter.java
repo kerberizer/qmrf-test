@@ -47,53 +47,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected QueryURIReporter createURIReporter(Request request, ResourceDoc doc) {
 		return new ProtocolQueryURIReporter<IQueryRetrieval<DBProtocol>>(request);
 	}
-	/*
-	@Override
-	public void header(Writer w, IQueryRetrieval<DBProtocol> query) {
-		super.header(w, query);
-		
-		record = query.getPage()*query.getPageSize();
-		
-		Reference uri = uriReporter.getRequest().getResourceRef().clone();
-		uri.setQuery(null);
-		
-		try {
-			//
-			if (editable) {
-					w.write(String.format("<h3>Add new QMRF Document %s</h3>",uri.toString().contains("versions")?"version":""));
-					printForm(output,uri.toString(),null,true);
-					output.write(
-							"<tr><td></td><td><input type='submit' enabled='false' value='Submit'></td></tr>"
-							);
-					w.write("</table>\n");
-					output.write("</form>");
-					output.write("<hr>");	
-				
-			}
-	    } catch (Exception x) {}
-		
-	    
-		try {
-			if (collapsed) {
-				w.write("<h3>QMRF Documents</h3>");
-				w.write(QMRF_HTMLBeauty.getPaging(query.getPage(),0,2,query.getPageSize()));
-			} else {
-				w.write("<h3>QMRF Document</h3>\n");
-			}
-		} catch (Exception x) {
-			x.printStackTrace();
-		} finally {
-			try {
-				w.write("<div class='protocol'>\n");
-				if (collapsed) {
-					w.write("<table width='100%'>\n");
-					output.write("<th width='5%'>#</th><th width='10%'>QMRF number</th><th>Title</th><th width='10%'>Published</th><th width='10%'>Download</th>");			
-				}
-			} catch (Exception x) {}
-		}
-		
-	}
-	*/
+	
 	@Override
 	public Object processItem(DBProtocol item) throws AmbitException  {
 		try {

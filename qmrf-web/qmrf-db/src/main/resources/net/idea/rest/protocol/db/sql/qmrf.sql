@@ -121,6 +121,26 @@ CREATE TABLE  `protocol_authors` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -----------------------------------------------------
+-- Attachments 
+-- -----------------------------------------------------
+CREATE TABLE  `attachments` (
+  `idattachment` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `idprotocol` int(10) unsigned NOT NULL,
+  `version` int(10) unsigned NOT NULL DEFAULT '1',
+  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `description` text NOT NULL,
+  `type` enum('data_training','data_validation','document') NOT NULL DEFAULT 'document',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `format` varchar(32) NOT NULL DEFAULT 'txt',
+  `original_name` text,
+  `imported` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`idattachment`) USING BTREE,
+  UNIQUE KEY `Index_4` (`idprotocol`,`version`,`name`) USING BTREE,
+  KEY `name` (`name`),
+  KEY `type` (`type`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- -----------------------------------------------------
 -- Trigger 
 -- -----------------------------------------------------
 -- DELIMITER $
@@ -155,7 +175,7 @@ CREATE TABLE  `version` (
   `comment` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`idmajor`,`idminor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-insert into version (idmajor,idminor,comment) values (1,6,"TB Protocol schema");
+insert into version (idmajor,idminor,comment) values (2,0,"QMRF schema");
 
 -- -----------------------------------------------------
 -- Create new protocol version

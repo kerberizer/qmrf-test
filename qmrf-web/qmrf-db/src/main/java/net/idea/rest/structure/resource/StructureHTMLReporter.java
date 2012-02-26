@@ -77,7 +77,16 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 	}		
 	@Override
 	public void processItem(Structure item, Writer output) {
+		StringBuilder protocols = new StringBuilder();
+		try {/*
+			for (Protocol protocol:item.getProtocols()) {
+				protocols.append(String.format("<tr><td><a href='%s'>%s</a></td><td>%s</td></tr>",
+						protocol.getResourceURL(),protocol.getIdentifier(),protocol.getTitle()));
 
+			}
+			*/
+			protocols.append(String.format("<tr><td><a href='%s%s?structure=%s' target='_QMRF'>QMRFs</a></td></tr>",getRequest().getRootRef(),Resources.protocol,Reference.encode(item.getResourceURL().toString())));
+		} catch (Exception x) {}
 		try {
 			output.write(String.format(
 			"<div class='protocol'>\n"+					
@@ -92,10 +101,9 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			"<label>InChI</label>&nbsp;%s<br>"+
 			"<label>InChI Key</label>&nbsp;%s<br>"+
 			"<label></label>&nbsp;%s<br>"+
-			"<a href='http://localhost:8081/qmrf/protocol/SEURAT-Protocol-53-1'>QMRF-1-2-3</a><br>"+
-			"<a href='http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1'>QMRF-4-5-6</a><br>"+
+			"<table width='80%%'>%s</table>\n"+
 			"</p></div>",
-			item.uri,
+			item.getResourceURL(),
 			Reference.encode("image/png"),
 			item.cas==null?"":item.cas,
 			item.cas==null?"":item.cas,
@@ -103,7 +111,8 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			item.SMILES==null?"":item.SMILES,
 			item.InChI==null?"":item.InChI,
 			item.InChIKey==null?"":item.InChIKey,
-			item.getSimilarity()==null?"":item.getSimilarity()
+			item.getSimilarity()==null?"":item.getSimilarity(),
+			protocols
 			)
 			);
 		} catch (Exception x) {
@@ -187,11 +196,11 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "<tr><td colspan='2'><input type='button' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor(\"%s\");'></td></tr>\n"+
 		   "<tr><td colspan='2'><input %s type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>\n"+
 		   "<tr><td><input %s type='radio' name='option' value='similarity' title='Enter SMILES or draw structure'>Similarity</td>\n"+
-		   "<td align='right'>\n"+
+		   "<td align='left'>\n"+
 		   "<select title ='Tanimoto similarity threshold' name='threshold'><option value='0.9' checked>0.9</option><option value='0.8'>0.8</option><option value='0.7'>0.7</option><option value='0.6'>0.6</option><option value='0.5'>0.5</option></select>\n"+
 		   "</td></tr>\n"+
 		   "<tr><td colspan='2'><input %s type='radio' name='option' value='smarts' title='Enter or draw a SMARTS query' size='20'>Substructure</td></tr>\n"+
-		   "<tr><td>Number of hits</td><td align='right'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
+		   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
 		   "<tr><td colspan='2' align='right'><input type='submit' value='Search'/></td></tr>\n"+
 		   "</table>\n"+
 		   "</form> \n"+

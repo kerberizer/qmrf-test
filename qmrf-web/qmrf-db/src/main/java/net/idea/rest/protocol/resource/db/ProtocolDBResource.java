@@ -1,6 +1,7 @@
 package net.idea.rest.protocol.resource.db;
 
 import java.io.File;
+import java.net.URL;
 import java.sql.Connection;
 import java.util.List;
 
@@ -10,6 +11,9 @@ import net.idea.rest.FileResource;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.rest.protocol.db.ReadProtocolByStructure;
+import net.idea.rest.structure.resource.Structure;
+import net.idea.rest.structure.resource.StructureResource;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.resource.UserDBResource;
@@ -45,7 +49,7 @@ import org.restlet.resource.ResourceException;
  *
  * @param <Q>
  */
-public class ProtocolDBResource<Q extends ReadProtocol> extends QueryResource<Q,DBProtocol> {
+public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends QueryResource<Q,DBProtocol> {
 
 	
 	protected boolean singleItem = false;
@@ -145,6 +149,12 @@ public class ProtocolDBResource<Q extends ReadProtocol> extends QueryResource<Q,
 		} catch (Exception x) {
 			showCreateLink = false;
 		}
+		Object structure = null;
+		try {
+			structure = form.getFirstValue("structure").toString();
+		} catch (Exception x) {
+			structure = null;
+		}			
 		Object key = request.getAttributes().get(FileResource.resourceKey);
 		int userID = -1;
 		try {
@@ -152,9 +162,20 @@ public class ProtocolDBResource<Q extends ReadProtocol> extends QueryResource<Q,
 			if (userKey!=null)
 				userID = ReadUser.parseIdentifier(userKey.toString());
 		} catch (Exception x) {}
-		
+
 		try {
-			return getProtocolQuery(key,userID,search,modified,showCreateLink);
+			if ((structure!=null) && structure.toString().startsWith("http")) {
+				IQueryRetrieval<DBProtocol> query = new ReadProtocolByStructure();
+				Structure record = new Structure();
+				record.setResourceURL(new URL(structure.toString()));
+				Object[] ids = record.parseURI(new Reference(StructureResource.queryService));
+				record.setIdchemical((Integer)ids[0]);
+				record.setIdstructure((Integer)ids[1]);
+				((ReadProtocolByStructure)query).setFieldname(record);
+				editable = showCreateLink;
+				singleItem = false;				
+				return (Q)query;
+			} else return getProtocolQuery(key,userID,search,modified,showCreateLink);
 		}catch (ResourceException x) {
 			throw x;
 		} catch (Exception x) {
