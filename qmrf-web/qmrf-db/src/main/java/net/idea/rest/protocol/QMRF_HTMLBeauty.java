@@ -71,7 +71,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			Reference ref = request.getResourceRef().clone();
 			ref.addQueryParameter("media", Reference.encode("application/rdf+xml"));
-			w.write(String.format("<link rel=\"meta\" type=\"application/rdf+xml\" title=\"%s\" href=\"%s\"/>",
+			w.write(String.format("<link rel=\"meta\" type=\"application/rdf+xml\" title=\"%s\" href=\"%s\"/>\n",
 					title,
 					ref
 					)); 
@@ -80,19 +80,21 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					ref
 					)); 		
 			
-			w.write(String.format("<title>%s</title>",title));
+			w.write(String.format("<title>%s</title>\n",title));
 			
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery-1.4.2.min.js\"></script>\n",baseReference));
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.tablesorter.min.js\"></script>\n",baseReference));
 			w.write(meta);
 					
-			w.write(String.format("<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">",baseReference));
-			w.write("<meta name=\"robots\" content=\"index,follow\"><META NAME=\"GOOGLEBOT\" CONTENT=\"index,FOLLOW\">");
-			w.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">");
-			w.write("<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />");
+			w.write(String.format("<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">\n",baseReference));
+			
+			w.write("<meta name=\"robots\" content=\"index,follow\"><META NAME=\"GOOGLEBOT\" CONTENT=\"index,FOLLOW\">\n");
+			w.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n");
+			w.write("<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n");
+			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jme/jme.js\"></script>\n",baseReference));
 			w.write("</head>\n");
 			w.write("<body>");
-			w.write(String.format("<link rel=\"stylesheet\" href=\"%s/style/tablesorter.css\" type=\"text/css\" media=\"screen\" title=\"Flora (Default)\">",baseReference));
+			w.write(String.format("<link rel=\"stylesheet\" href=\"%s/style/tablesorter.css\" type=\"text/css\" media=\"screen\" title=\"Flora (Default)\">\n",baseReference));
 			w.write("\n");
 			
 			StringBuilder header = new StringBuilder();
@@ -172,42 +174,38 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				pageSize = "10";
 			}
 			Reference baseReference = request.getRootRef();
-			w.write(
-					   String.format(		
-					   "<div class='search'>\n"+
-					   "%s\n"+
-					   "<form method='GET' action='%s%s?pagesize=10'>\n"+
-					   "<input type='text' name='search' size='20' value='%s' tabindex='0'>\n"+
-					   "<a href='%s%s?mode=advanced' title='Advanced QMRF search'>Advanced</a>\n"+
-					   "<input type='hidden' name='pagesize' value='%s'>\n"+
-					   "<input type='submit' value='Search'>\n"+
-					   "</form> \n"+
-					   "&nbsp;\n"+
-					   "</div>\n"+
-						/*
-					   "<div class='search'>\n"+
-					   "Structure search\n"+
-					   "<form method='GET' action='%s/structure?pagesize=10'>\n"+
-					   "<input type='text' name='search' size='20' value='' value='' tabindex='1' title='Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically. Use the Advanced link to launch structure diagram editor.'>\n"+
-					   "<a href='%s/structure?mode=advanced' title='Advanced structure search'>Advanced</a>\n"+
-					   "<input type='hidden' name='pagesize' value='%s'>\n"+
-					   "<input type='submit' value='Search'>\n"+
-					   "</form> \n"+
-					   "&nbsp;\n"+
-					   "</div>\n"+	
-					   */		   
-					   "</div>\n",	
-					   getSearchTitle(),
-					   baseReference,
-					   getSearchURI(),
-					   searchQuery,
-					   baseReference,
-					   getSearchURI(),
-					   pageSize
-					   )
-					   );
+			try {
+				w.write(searchMenu(baseReference, searchQuery, pageSize));
+			} catch (Exception x) {
+				x.printStackTrace();
+			} finally {
+				w.write("</div>\n");
+			}
 		}	
 	
+		protected String searchMenu(Reference baseReference,String searchQuery,String pageSize)  {
+				return
+			   String.format(		
+			   "<div class='search'>\n"+
+			   "%s\n"+
+			   "<form method='GET' action='%s%s?pagesize=10'>\n"+
+			   "<input type='text' name='search' size='20' value='%s' tabindex='0'>\n"+
+			   "<a href='%s%s?mode=advanced' title='Advanced QMRF search'>Advanced</a>\n"+
+			   "<input type='hidden' name='pagesize' value='%s'>\n"+
+			   "<input type='submit' value='Search'>\n"+
+			   "</form> \n"+
+			   "&nbsp;\n"+
+			   "</div>\n",
+	   
+			   getSearchTitle(),
+			   baseReference,
+			   getSearchURI(),
+			   searchQuery,
+			   baseReference,
+			   getSearchURI(),
+			   pageSize
+			   );
+		}
 		@Override
 		public void writeHTMLHeader(Writer w,String title,Request request,String meta,ResourceDoc doc) throws IOException {
 
