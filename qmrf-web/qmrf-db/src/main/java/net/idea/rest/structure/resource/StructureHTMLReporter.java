@@ -5,11 +5,14 @@ import java.util.Iterator;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.structure.resource.StructureResource.SearchMode;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.reporters.CatalogHTMLReporter;
+import net.idea.restnet.db.QueryResource;
 
 import org.restlet.Request;
+import org.restlet.data.Form;
 import org.restlet.data.Reference;
 
 public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
@@ -55,7 +58,7 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 		try {
 			if (printAsTable()) {
 				w.write(String.format("<h3>%ss</h3>",getTitle()));
-				//w.write(QMRF_HTMLBeauty.getPaging(query.getPage(),0,2,query.getPageSize()));
+				w.write(((QMRF_HTMLBeauty)getHtmlBeauty()).getPaging(0,2));
 				
 			} else {
 				w.write(String.format("<h3>%s</h3>",getTitle()));
@@ -88,16 +91,18 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			"<label>SMILES</label>&nbsp;%s<br>"+
 			"<label>InChI</label>&nbsp;%s<br>"+
 			"<label>InChI Key</label>&nbsp;%s<br>"+
+			"<label></label>&nbsp;%s<br>"+
 			"<a href='http://localhost:8081/qmrf/protocol/SEURAT-Protocol-53-1'>QMRF-1-2-3</a><br>"+
 			"<a href='http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1'>QMRF-4-5-6</a><br>"+
 			"</p></div>",
 			item.uri,
-			item.cas,
-			item.cas,
-			item.name,
-			item.SMILES,
-			item.InChI,
-			item.InChIKey
+			item.cas==null?"":item.cas,
+			item.cas==null?"":item.cas,
+			item.name==null?"":item.name,
+			item.SMILES==null?"":item.SMILES,
+			item.InChI==null?"":item.InChI,
+			item.InChIKey==null?"":item.InChIKey,
+			item.getSimilarity()==null?"":item.getSimilarity()
 			)
 			);
 		} catch (Exception x) {
@@ -151,37 +156,55 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	}
 	
 	@Override
-	protected String searchMenu(Reference baseReference, String searchQuery,
-			String pageSize) {
-
+	protected String searchMenu(Reference baseReference, Form form) {
+		String searchQuery = form.getFirstValue(QueryResource.search_param);
+		pageSize = 10;
+		try { pageSize = Long.parseLong(form.getFirstValue("pagesize")); if (pageSize>100) pageSize=10;} catch (Exception x) { pageSize=10;}
+		page = 0;
+		try { page = Integer.parseInt(form.getFirstValue("page")); if ((page<0) || (page>100)) page=0;} catch (Exception x) { page=0;}
+		String threshold = form.getFirstValue("threshold");
+		SearchMode option = SearchMode.auto;
+		try {
+			option = SearchMode.valueOf(form.getFirstValue("option").toLowerCase());
+		} catch (Exception x) {
+			option = SearchMode.auto;
+		}
 			return
 		   String.format(		
 		   "<div class='search'>\n"+
 		   "%s\n"+
 		   "<form method='GET' name='form' action='%s%s'>\n"+
 		   "\n"+
-		   "<input type='hidden' name='pagesize' value='%s'>\n"+
-		   "<input type='hidden' name='type' value=''>\n"+
+		   "<input type='hidden' name='page' value='%s'>\n"+
+		   "<input type='hidden' name='type' value='smiles'>\n"+
 		   "<table width='100%%'>\n"+
 		   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.'></td></tr>\n"+
-		   "<tr><td colspan='2'><input type='button' value='Draw substructure' title='Launches structure diagram editor' onClick='startEditor(\"%s\");'></td></tr>\n"+
-		   "<tr><td colspan='2'><input type='radio' name='option' checked size='20'>Auto</td></tr>\n"+
-		   "<tr><td colspan='2'><input type='radio' name='option' size='20'>Structure</td></tr>\n"+
-		   "<tr><td><input  type='radio' name='option' value='on'>Similarity</td>\n"+
+		   "<tr><td colspan='2'><input type='button' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor(\"%s\");'></td></tr>\n"+
+		   "<tr><td colspan='2'><input %s type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>\n"+
+		   "<tr><td><input %s type='radio' name='option' value='similarity' title='Enter SMILES or draw structure'>Similarity</td>\n"+
 		   "<td align='right'>\n"+
-		   "<select title ='Tanimoto similarity threshold'><option value='0.9'>0.9</option><option value='0.8'>0.8</option><option value='0.7'>0.7</option><option value='0.6'>0.6</option></select>\n"+
+		   "<select title ='Tanimoto similarity threshold' name='threshold'><option value='0.9' checked>0.9</option><option value='0.8'>0.8</option><option value='0.7'>0.7</option><option value='0.6'>0.6</option><option value='0.5'>0.5</option></select>\n"+
 		   "</td></tr>\n"+
+		   "<tr><td colspan='2'><input %s type='radio' name='option' value='smarts' title='Enter or draw a SMARTS query' size='20'>Substructure</td></tr>\n"+
+		   "<tr><td>Number of hits</td><td align='right'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
 		   "<tr><td colspan='2' align='right'><input type='submit' value='Search'/></td></tr>\n"+
 		   "</table>\n"+
 		   "</form> \n"+
 		   "&nbsp;\n"+
+		   "<img title='Search query' border='1' src='%s/depict/cdk?search=%s&media=image/png&w=120&h=120'>"+
 		   "</div>\n",	
 		   getSearchTitle(),
 		   baseReference,
 		   getSearchURI(),
-		   pageSize,
+		   page,
 		   searchQuery,
-		   baseReference
+		   baseReference,
+		   SearchMode.auto.equals(option)?"checked":"",
+		   SearchMode.similarity.equals(option)?"checked":"",
+		   SearchMode.smarts.equals(option)?"checked":"",
+		   pageSize,
+		   searchQuery==null?"":StructureResource.queryService,
+		   searchQuery==null?"":Reference.encode(searchQuery)
 		   );
 	}
 }

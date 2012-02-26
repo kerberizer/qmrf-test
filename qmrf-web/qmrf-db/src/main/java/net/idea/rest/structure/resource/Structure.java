@@ -8,6 +8,13 @@ public class Structure implements Serializable {
 	 */
 	private static final long serialVersionUID = 6291149605331598909L;
 	String uri;
+	protected String similarity = null;
+	public String getSimilarity() {
+		return similarity;
+	}
+	public void setSimilarity(String similarity) {
+		this.similarity = similarity;
+	}
 	public String getUri() {
 		return uri;
 	}

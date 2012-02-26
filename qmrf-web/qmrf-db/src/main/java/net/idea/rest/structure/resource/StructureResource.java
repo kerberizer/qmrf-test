@@ -25,14 +25,43 @@ import org.restlet.resource.ResourceException;
 
 public class StructureResource extends CatalogResource<Structure>{
 	protected static String queryService="http://localhost:8080/ambit2";
+	public enum SearchMode {
+		auto,
+		similarity,
+		smarts
+	}
 	@Override
 	protected Iterator<Structure> createQuery(Context context,
 			Request request, Response response) throws ResourceException {
 		Form form = request.getResourceRef().getQueryAsForm();
-		String search = form.getFirstValue(QueryResource.search_param);
+		String search = form.getFirstValue(QueryResource.search_param)==null?"": form.getFirstValue(QueryResource.search_param);
+		String pagesize = form.getFirstValue("pagesize");
+		String page = form.getFirstValue("page");
+		try { int psize = Integer.parseInt(pagesize); if (psize>100) pagesize="10";} catch (Exception x) { pagesize="10";}
+		try { int p = Integer.parseInt(page); if ((p<0) || (p>100)) page="0";} catch (Exception x) { page="0";}
+		String threshold = form.getFirstValue("threshold");
+		SearchMode option = SearchMode.auto;
+		try {
+			option = SearchMode.valueOf(form.getFirstValue("option").toLowerCase());
+		} catch (Exception x) {
+			option = SearchMode.auto;
+		}
 		try {
 			Reference ref = new Reference(String.format("%s/query/compound/search/all",queryService));
+			switch (option) {
+			case similarity: {
+				ref = new Reference(String.format("%s/query/similarity?threshold=%s",queryService,threshold));
+				break;
+			}
+			case smarts: {
+				ref = new Reference(String.format("%s/query/smarts",queryService));
+				break;
+			}
+			}
+			ref.addQueryParameter("pagesize",pagesize);
+			ref.addQueryParameter("page",page);
 			ref.addQueryParameter(QueryResource.search_param,search);
+			
 			//ref.addQueryParameter("pagesize", "1");
 			//ref.addQueryParameter("page", "0");
 			
@@ -43,28 +72,35 @@ public class StructureResource extends CatalogResource<Structure>{
 					Structure r = new Structure();
 				
 					for (int i=0; i < header.size();i++)  try {
+						String value = values.get(i)==null?"":values.get(i).toString().trim();
+						if ("null".equals(value)) value="";
+						if ("metric".equals(header.get(i))) {
+							r.setSimilarity(value);
+							continue;
+						} 
 						OTCompound._titles title = 	OTCompound._titles.valueOf(header.get(i).toString().replace("http://www.opentox.org/api/1.1#",""));
+						//String[] v = value.split("|");
 						switch (title) {
 						case Compound: {
-							r.setUri(values.get(i).toString()); break;
+							r.setUri(value); break;
 						}
 						case CASRN: {
-							r.setCas(values.get(i).toString()); break;
+							r.setCas(value); break;
 						}
 						case ChemicalName: {
-							r.setName(values.get(i).toString()); break;
+							r.setName(value.replace("|","<br>")); break;
 						}
 						case EINECS: {
-							r.setEinecs(values.get(i).toString()); break;
+							r.setEinecs(value); break;
 						}
 						case SMILES: {
-							r.setSMILES(values.get(i).toString()); break;
+							r.setSMILES(value); break;
 						}
 						case InChI_std: {
-							r.setInChI(values.get(i).toString()); break;
+							r.setInChI(value); break;
 						}
 						case InChIKey_std: {
-							r.setInChIKey(values.get(i).toString()); break;
+							r.setInChIKey(value); break;
 						}
 						}
 					} catch (Exception x) {

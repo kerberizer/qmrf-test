@@ -16,7 +16,8 @@ import org.restlet.data.Reference;
 public class QMRF_HTMLBeauty extends HTMLBeauty {
 	protected String searchURI = Resources.protocol;
 	protected String searchTitle = "QMRF free text search";
-
+	protected int page;
+	protected long pageSize;
 
 	public QMRF_HTMLBeauty() {
 		super();
@@ -160,10 +161,20 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		@Override
 		public void writeSearchForm(Writer w,String title,Request request ,String meta,Method method,Form params) throws IOException {
 
+			Reference baseReference = request.getRootRef();
+			try {
+				w.write(searchMenu(baseReference,getParams(params,request)));
+			} catch (Exception x) {
+				x.printStackTrace();
+			} finally {
+				w.write("</div>\n");
+			}
+		}	
+	
+		protected String searchMenu(Reference baseReference,Form form)  {
 			String searchQuery = "";
 			String pageSize = "10";
 			try {
-				Form form = getParams(params,request);
 				if ((form != null) && (form.size()>0)) {
 					searchQuery = form.getFirstValue(AbstractResource.search_param)==null?"":form.getFirstValue(AbstractResource.search_param);
 					pageSize = form.getFirstValue("pagesize")==null?"10":form.getFirstValue("pagesize");
@@ -173,17 +184,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				searchQuery = "";
 				pageSize = "10";
 			}
-			Reference baseReference = request.getRootRef();
-			try {
-				w.write(searchMenu(baseReference, searchQuery, pageSize));
-			} catch (Exception x) {
-				x.printStackTrace();
-			} finally {
-				w.write("</div>\n");
-			}
-		}	
-	
-		protected String searchMenu(Reference baseReference,String searchQuery,String pageSize)  {
 				return
 			   String.format(		
 			   "<div class='search'>\n"+
@@ -244,5 +244,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 		public void setSearchTitle(String searchTitle) {
 			this.searchTitle = searchTitle;
+		}
+		
+		public String getPaging(int start, int last) {
+			return getPaging(page, start, last, pageSize);
 		}
 }
