@@ -24,14 +24,14 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 public class StructureResource extends CatalogResource<Structure>{
-
+	protected static String queryService="http://localhost:8080/ambit2";
 	@Override
 	protected Iterator<Structure> createQuery(Context context,
 			Request request, Response response) throws ResourceException {
 		Form form = request.getResourceRef().getQueryAsForm();
 		String search = form.getFirstValue(QueryResource.search_param);
 		try {
-			Reference ref = new Reference(String.format("http://localhost:8080/ambit2/query/compound/search/all"));
+			Reference ref = new Reference(String.format("%s/query/compound/search/all",queryService));
 			ref.addQueryParameter(QueryResource.search_param,search);
 			//ref.addQueryParameter("pagesize", "1");
 			//ref.addQueryParameter("page", "0");
@@ -88,7 +88,7 @@ public class StructureResource extends CatalogResource<Structure>{
 	
 	@Override
 	protected Reporter createHTMLReporter() {
-		return new StructureHTMLReporter(getRequest(), null, getHTMLBeauty());
+		return new StructureHTMLReporter(getRequest(), null);
 	}
 
 	@Override
