@@ -82,7 +82,7 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			output.write(String.format(
 			"<div class='protocol'>\n"+					
 			"<div class='structureright'>\n"+
-			"<img src='%s?media=image/png&w=150&h=150' alt='' width='150' height='150'><br>\n"+
+			"<img src='%s?media=%s&w=150&h=150' alt='' width='150' height='150'><br>\n"+
 			"%s\n"+
 			"</div>\n"+
 			"<p>\n"+
@@ -96,6 +96,7 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			"<a href='http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1'>QMRF-4-5-6</a><br>"+
 			"</p></div>",
 			item.uri,
+			Reference.encode("image/png"),
 			item.cas==null?"":item.cas,
 			item.cas==null?"":item.cas,
 			item.name==null?"":item.name,
@@ -158,6 +159,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	@Override
 	protected String searchMenu(Reference baseReference, Form form) {
 		String searchQuery = form.getFirstValue(QueryResource.search_param);
+		
 		pageSize = 10;
 		try { pageSize = Long.parseLong(form.getFirstValue("pagesize")); if (pageSize>100) pageSize=10;} catch (Exception x) { pageSize=10;}
 		page = 0;
@@ -169,6 +171,9 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		} catch (Exception x) {
 			option = SearchMode.auto;
 		}
+		String imgURI = searchQuery==null?"":
+				String.format("<img title='Search query' border='1' width='150' height='150' src='%s/depict/cdk?search=%s&media=%s&w=150&h=150'>",
+						 StructureResource.queryService,Reference.encode(searchQuery),Reference.encode("image/png"));
 			return
 		   String.format(		
 		   "<div class='search'>\n"+
@@ -177,7 +182,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "\n"+
 		   "<input type='hidden' name='page' value='%s'>\n"+
 		   "<input type='hidden' name='type' value='smiles'>\n"+
-		   "<table width='100%%'>\n"+
+		   "<table width='200px'>\n"+
 		   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.'></td></tr>\n"+
 		   "<tr><td colspan='2'><input type='button' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor(\"%s\");'></td></tr>\n"+
 		   "<tr><td colspan='2'><input %s type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>\n"+
@@ -191,20 +196,19 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "</table>\n"+
 		   "</form> \n"+
 		   "&nbsp;\n"+
-		   "<img title='Search query' border='1' src='%s/depict/cdk?search=%s&media=image/png&w=120&h=120'>"+
+		   "<div class='structureright'>%s</div>"+
 		   "</div>\n",	
 		   getSearchTitle(),
 		   baseReference,
 		   getSearchURI(),
 		   page,
-		   searchQuery,
+		   searchQuery==null?"":searchQuery,
 		   baseReference,
 		   SearchMode.auto.equals(option)?"checked":"",
 		   SearchMode.similarity.equals(option)?"checked":"",
 		   SearchMode.smarts.equals(option)?"checked":"",
 		   pageSize,
-		   searchQuery==null?"":StructureResource.queryService,
-		   searchQuery==null?"":Reference.encode(searchQuery)
+		   imgURI
 		   );
 	}
 }

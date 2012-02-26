@@ -46,6 +46,7 @@ public class StructureResource extends CatalogResource<Structure>{
 		} catch (Exception x) {
 			option = SearchMode.auto;
 		}
+		if (search!=null) search = search.replace("<","").replace(">","");
 		try {
 			Reference ref = new Reference(String.format("%s/query/compound/search/all",queryService));
 			switch (option) {
@@ -66,57 +67,65 @@ public class StructureResource extends CatalogResource<Structure>{
 			//ref.addQueryParameter("page", "0");
 			
 			List<Structure> records = new ArrayList<Structure>();
-			CSVFeatureValuesIterator<Structure> i = new CSVFeatureValuesIterator<Structure>(ref.toString()) {
-				@Override
-				public Structure transformRawValues(List header, List values) {
-					Structure r = new Structure();
-				
-					for (int i=0; i < header.size();i++)  try {
-						String value = values.get(i)==null?"":values.get(i).toString().trim();
-						if ("null".equals(value)) value="";
-						if ("metric".equals(header.get(i))) {
-							r.setSimilarity(value);
-							continue;
-						} 
-						OTCompound._titles title = 	OTCompound._titles.valueOf(header.get(i).toString().replace("http://www.opentox.org/api/1.1#",""));
-						//String[] v = value.split("|");
-						switch (title) {
-						case Compound: {
-							r.setUri(value); break;
-						}
-						case CASRN: {
-							r.setCas(value); break;
-						}
-						case ChemicalName: {
-							r.setName(value.replace("|","<br>")); break;
-						}
-						case EINECS: {
-							r.setEinecs(value); break;
-						}
-						case SMILES: {
-							r.setSMILES(value); break;
-						}
-						case InChI_std: {
-							r.setInChI(value); break;
-						}
-						case InChIKey_std: {
-							r.setInChIKey(value); break;
-						}
-						}
-					} catch (Exception x) {
-						x.printStackTrace();
-					}
-
-					return r;
-				}
-			};
 			try {
-				while (i.hasNext())
-					records.add(i.next());
-			} finally {
-				i.close();
+				CSVFeatureValuesIterator<Structure> i = new CSVFeatureValuesIterator<Structure>(ref.toString()) {
+					@Override
+					public Structure transformRawValues(List header, List values) {
+						Structure r = new Structure();
+					
+						for (int i=0; i < header.size();i++)  try {
+							String value = values.get(i)==null?"":values.get(i).toString().trim();
+							if ("null".equals(value)) value="";
+							if ("metric".equals(header.get(i))) {
+								r.setSimilarity(value);
+								continue;
+							} 
+							OTCompound._titles title = 	OTCompound._titles.valueOf(header.get(i).toString().replace("http://www.opentox.org/api/1.1#",""));
+							//String[] v = value.split("|");
+							switch (title) {
+							case Compound: {
+								r.setUri(value); break;
+							}
+							case CASRN: {
+								r.setCas(value); break;
+							}
+							case ChemicalName: {
+								r.setName(value.replace("|","<br>")); break;
+							}
+							case EINECS: {
+								r.setEinecs(value); break;
+							}
+							case SMILES: {
+								r.setSMILES(value); break;
+							}
+							case InChI_std: {
+								r.setInChI(value); break;
+							}
+							case InChIKey_std: {
+								r.setInChIKey(value); break;
+							}
+							}
+						} catch (Exception x) {
+							x.printStackTrace();
+						}
+	
+						return r;
+					}
+				};
+				try {
+					while (i.hasNext())
+						records.add(i.next());
+				} catch (Exception x) {
+					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+				} finally {
+					i.close();
+				}
+				return records.iterator();
+			} catch (ResourceException x) {
+				throw x;
+			} catch (Exception x) {
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			}
-			return records.iterator();
 		} catch (Exception x) {
 			throw new ResourceException(x);
 		}
