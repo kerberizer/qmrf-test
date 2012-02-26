@@ -10,8 +10,6 @@ import java.util.List;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
-import net.idea.modbcum.q.conditions.EQCondition;
-import net.idea.modbcum.q.query.AbstractQuery;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
@@ -32,19 +30,12 @@ import org.restlet.resource.ResourceException;
  * @author nina
  *
  */
-public class ReadProtocol  extends AbstractQuery<DBUser, DBProtocol, EQCondition, DBProtocol>  implements IQueryRetrieval<DBProtocol> {
+public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQueryRetrieval<DBProtocol> {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6228939989116141217L;
-	protected Boolean showUnpublished = true;
 	
-	public Boolean getShowUnpublished() {
-		return showUnpublished;
-	}
-	public void setShowUnpublished(Boolean showUnpublished) {
-		this.showUnpublished = showUnpublished;
-	}
 
 	public static final ReadProtocol.fields[] entryFields = new ReadProtocol.fields[] {
 			fields.filename,
@@ -741,13 +732,6 @@ public class ReadProtocol  extends AbstractQuery<DBUser, DBProtocol, EQCondition
 		this(null,null);
 	}
 		
-	public double calculateMetric(DBProtocol object) {
-		return 1;
-	}
-
-	public boolean isPrescreen() {
-		return false;
-	}
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();

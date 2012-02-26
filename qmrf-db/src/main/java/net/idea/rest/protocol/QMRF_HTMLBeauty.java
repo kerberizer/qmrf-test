@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.structure.resource.StructureResource;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -174,16 +175,22 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		protected String searchMenu(Reference baseReference,Form form)  {
 			String searchQuery = "";
 			String pageSize = "10";
+			String structure = null;
 			try {
 				if ((form != null) && (form.size()>0)) {
 					searchQuery = form.getFirstValue(AbstractResource.search_param)==null?"":form.getFirstValue(AbstractResource.search_param);
 					pageSize = form.getFirstValue("pagesize")==null?"10":form.getFirstValue("pagesize");
-
+					structure = form.getFirstValue("structure");
 				}
 			} catch (Exception x) {
 				searchQuery = "";
 				pageSize = "10";
 			}
+			
+			String imgURI = (structure==null) || !structure.startsWith("http")?"":
+				String.format("<img border='0' title='Showing QMRF documents for this chemical' width='150' height='150' src='%s?media=%s&w=150&h=150'><br>Showing QMRF documents\n",
+						structure,Reference.encode("image/png"));
+			
 				return
 			   String.format(		
 			   "<div class='search'>\n"+
@@ -192,9 +199,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "<input type='text' name='search' size='20' value='%s' tabindex='0'>\n"+
 			   "<a href='%s%s?mode=advanced' title='Advanced QMRF search'>Advanced</a>\n"+
 			   "<input type='hidden' name='pagesize' value='%s'>\n"+
+			   "<input type='hidden' name='structure' value='%s'>\n"+
 			   "<input type='submit' value='Search'>\n"+
 			   "</form> \n"+
 			   "&nbsp;\n"+
+			   "<div class='structureright'>%s</div>"+
 			   "</div>\n",
 	   
 			   getSearchTitle(),
@@ -203,7 +212,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   searchQuery,
 			   baseReference,
 			   getSearchURI(),
-			   pageSize
+			   pageSize,
+			   structure,
+			   imgURI
 			   );
 		}
 		@Override

@@ -44,12 +44,22 @@ FROM qmrf_documents.attachments a
 join qmrf_documents.documents using(idqmrf)
 where status='published'
 
+-- attachments table : note files with same name but different ext are lost!
+-- smth wrong with 'imported' field
+insert ignore into qmrf.attachments
+SELECT idattachment,ifnull(idqmrf_origin,idqmrf),version,
+if(instr(name,'.')=0,name,substr(name,1,instr(name,'.')-1)),
+description,type,olda.updated,format,original_name,imported
+from qmrf_documents.documents docs
+join qmrf_documents.attachments olda using(idqmrf)
+
 
 -- Files with # are not properly uploaded
 error
 #221
 qmrf299_Daphnia_2_194_training
 qmrf300_logP_#2_196_training
+
 
 
 -- no space

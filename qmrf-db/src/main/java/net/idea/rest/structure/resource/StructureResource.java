@@ -1,5 +1,6 @@
 package net.idea.rest.structure.resource;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,6 +11,7 @@ import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.db.QueryResource;
+import net.toxbank.client.resource.Protocol;
 
 import org.opentox.csv.CSVFeatureValuesIterator;
 import org.opentox.dsl.OTCompound;
@@ -24,7 +26,7 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 public class StructureResource extends CatalogResource<Structure>{
-	protected static String queryService="http://localhost:8080/ambit2";
+	public static String queryService="http://localhost:8080/ambit2";
 	public enum SearchMode {
 		auto,
 		similarity,
@@ -84,7 +86,7 @@ public class StructureResource extends CatalogResource<Structure>{
 							//String[] v = value.split("|");
 							switch (title) {
 							case Compound: {
-								r.setUri(value); break;
+								r.setResourceURL(new URL(value)); break;
 							}
 							case CASRN: {
 								r.setCas(value); break;
@@ -113,8 +115,30 @@ public class StructureResource extends CatalogResource<Structure>{
 					}
 				};
 				try {
-					while (i.hasNext())
-						records.add(i.next());
+					while (i.hasNext()) {
+						Structure struc = i.next();
+						Protocol protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-53-1"));
+						protocol.setIdentifier("QMRF-53-1");
+						protocol.setTitle("QSAR for eye irritation (Draize test)");
+						struc.getProtocols().add(protocol);
+						protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1"));
+						protocol.setIdentifier("QMRF-121-1");
+						protocol.setTitle("Catalogic basesurface narcotic model for aquatic toxicity to Daphnia Magna ");
+						struc.getProtocols().add(protocol);		
+						protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1"));
+						protocol.setIdentifier("QMRF-121-1");
+						protocol.setTitle("Catalogic basesurface narcotic model for aquatic toxicity to Daphnia Magna ");
+						struc.getProtocols().add(protocol);		
+						protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1"));
+						protocol.setIdentifier("QMRF-121-1");
+						protocol.setTitle("Catalogic basesurface narcotic model for aquatic toxicity to Daphnia Magna ");
+						struc.getProtocols().add(protocol);		
+						protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1"));
+						protocol.setIdentifier("QMRF-121-1");
+						protocol.setTitle("Catalogic basesurface narcotic model for aquatic toxicity to Daphnia Magna ");
+						struc.getProtocols().add(protocol);								
+						records.add(struc);
+					}
 				} catch (Exception x) {
 					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 				} finally {
