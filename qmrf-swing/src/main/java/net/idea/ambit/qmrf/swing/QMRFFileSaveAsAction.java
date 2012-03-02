@@ -35,10 +35,10 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import net.idea.ambit.qmrf.QMRFData;
-import net.idea.ambit.qmrf.converters.Qmrf_Xml_Excel;
-import net.idea.ambit.qmrf.converters.Qmrf_Xml_Pdf;
 import net.idea.ambit.swing.common.UITools;
 import net.idea.ambit.swing.interfaces.ISharedData;
+import net.idea.qmrf.converters.QMRF_xml2excel;
+import net.idea.qmrf.converters.QMRF_xml2pdf;
 
 import org.xml.sax.InputSource;
 
@@ -101,7 +101,7 @@ public class QMRFFileSaveAsAction extends QMRFAction {
         	} else if (filename.endsWith("html")) {
                 
             } else if (filename.endsWith("pdf")) {
-            	  Qmrf_Xml_Pdf x = new Qmrf_Xml_Pdf(((QMRFData)userData).getQmrf().getTtfFontUrl());
+            	  QMRF_xml2pdf x = new QMRF_xml2pdf(((QMRFData)userData).getQmrf().getTtfFontUrl());
             	
             	  StringWriter w = new StringWriter();	
             	  getQMRFData().getQmrf().write(w);
@@ -109,7 +109,7 @@ public class QMRFFileSaveAsAction extends QMRFAction {
             	  x.xml2pdf(w.toString(),out);
             	  
             } else if (filename.endsWith("xls")) {
-            	Qmrf_Xml_Excel x = new Qmrf_Xml_Excel();
+            	QMRF_xml2excel x = new QMRF_xml2excel();
             	/*
             	PipedInputStream in = new PipedInputStream();
 	          	  final PipedOutputStream pipeout = new PipedOutputStream(in);

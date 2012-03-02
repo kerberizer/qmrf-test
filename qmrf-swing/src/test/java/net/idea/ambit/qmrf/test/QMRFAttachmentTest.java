@@ -42,7 +42,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import junit.framework.Assert;
-
 import net.idea.ambit.qmrf.attachments.QMRFAttachment;
 
 import org.junit.Test;

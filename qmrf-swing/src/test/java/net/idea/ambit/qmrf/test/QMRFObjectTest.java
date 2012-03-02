@@ -29,33 +29,25 @@
 
 package net.idea.ambit.qmrf.test;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.Assert;
-
 import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.attachments.QMRFAttachment;
 import net.idea.ambit.qmrf.attachments.QMRFAttachments;
 import net.idea.ambit.qmrf.chapters.QMRFChapter;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
-import net.idea.ambit.qmrf.converters.Qmrf_Xml_Excel;
-import net.idea.ambit.qmrf.converters.Qmrf_Xml_Pdf;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 
 import ambit2.base.log.AmbitLogger;
 
@@ -149,7 +141,7 @@ public class QMRFObjectTest {
         
     }
     
-
+    @Test
     public void xtestXSLT() throws Exception{
     	QMRFObject o = new QMRFObject();
     	InputStream in = getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf.xml"); 
@@ -194,58 +186,9 @@ public class QMRFObjectTest {
             assertTrue((new File("qmrf.pdf")).exists());
     }
     */
+ 
     
-    @Test
-    public void testPDF() throws Exception {
-    	//URL ttf = getClass().getClassLoader().getResource("ambit2/qmrfeditor/fonts/times.ttf");
-    	
-    	Qmrf_Xml_Pdf qpdf = new Qmrf_Xml_Pdf("C:/Windows/Fonts/times.ttf");
-    	
-         File pdf = new File("qmrf_1_2.pdf");
-         pdf.deleteOnExit();
-         if (pdf.exists()) pdf.delete();
-         
-         StringBuffer b = new StringBuffer();
-         InputStream in = getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf.xml"); //"data/qmrf/test_1_2.xml");
-         BufferedReader r = new BufferedReader(new InputStreamReader(in));
-         String line;
-         while ( (line = r.readLine()) != null)
-        	 b.append(line);
-         r.close();
-         
-         qpdf.xml2pdf(b.toString().trim(),new FileOutputStream(pdf));
-        
-         Assert.assertTrue(pdf.exists());
-         Assert.assertTrue(pdf.length()>0);
-    }   
-    
-    @Test
-    public void testPDFReader() throws Exception {
-    	//URL ttf = getClass().getClassLoader().getResource("ambit2/qmrfeditor/fonts/times.ttf");
-    	Qmrf_Xml_Pdf qpdf = new Qmrf_Xml_Pdf("C:/Windows/Fonts/times.ttf");
-         File pdf = new File("qmrf_1_2.pdf");
-         pdf.deleteOnExit();
-         if (pdf.exists()) pdf.delete();
-         
-         URL url = getClass().getClassLoader().getResource("ambit2/qmrfeditor/qmrf.xml");
-         File xml = new File(url.getFile());
-         qpdf.xml2pdf(new InputSource(new FileReader(xml)),new FileOutputStream(pdf));
-         //qpdf.xml2pdf(new FileReader("data/qmrf/test_1_2.xml"),new FileOutputStream(pdf));
-         Assert.assertTrue(pdf.exists());
-         Assert.assertTrue(pdf.length()>0);
-    }   
-    
-    @Test
-    public void xtestXLS() throws  Exception {
-	         Qmrf_Xml_Excel qpdf = new Qmrf_Xml_Excel();
-	     	InputStream in = getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf.xml"); 
-
-	         File xls = new File("qmrf_1_2.xls");
-	         xls.deleteOnExit();
-	         if (xls.exists()) xls.delete();
-	         qpdf.xml2excel(new InputSource(in),new FileOutputStream(xls));	      
-             Assert.assertTrue(new File("qmrf_1_2.xls").exists());
-    }      
+     
     /*
     public void testReadDTD()  throws Exception  {
             QMRFObject o = new QMRFObject();

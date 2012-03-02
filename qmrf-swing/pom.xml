@@ -10,22 +10,7 @@
   <version>2.0.0-SNAPSHOT</version>
  <name>QMRF Editor </name>
   <dependencies>
-  
-    <dependency>
-    	<groupId>org.apache.poi</groupId>
-    	<artifactId>poi-scratchpad</artifactId>
-    	<version>3.5-beta4</version>
-    </dependency>
-    <dependency>
-    	<groupId>org.apache.poi</groupId>
-    	<artifactId>poi</artifactId>
-    	<version>3.5-beta4</version>
-    </dependency>
-    <dependency>
-    	<groupId>com.lowagie</groupId>
-    	<artifactId>itext</artifactId>
-    	<version>1.4.8</version>
-    </dependency>
+
    <dependency> 	<!--  for the command line only  --> 
   		<groupId>commons-cli</groupId>
   		<artifactId>commons-cli</artifactId>
@@ -36,11 +21,7 @@
 	<artifactId>commons-codec</artifactId>
 	<version>1.6</version>
  </dependency>
- <dependency>
-	<groupId>commons-lang</groupId>
-	<artifactId>commons-lang</artifactId>
-	<version>2.6</version>
-</dependency>
+
 <!--  UI -->
 <dependency>
 	<groupId>com.l2fprod.common</groupId>
@@ -55,6 +36,13 @@
 <dependency>
 	<groupId>ambit</groupId>
 	<artifactId>swing-lib</artifactId>
+	<version>${project.version}</version>
+	<type>jar</type>
+	<scope>compile</scope>
+</dependency>
+<dependency>
+	<groupId>ambit</groupId>
+	<artifactId>qmrf-core</artifactId>
 	<version>${project.version}</version>
 	<type>jar</type>
 	<scope>compile</scope>

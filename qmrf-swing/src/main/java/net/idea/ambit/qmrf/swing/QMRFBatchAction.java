@@ -11,8 +11,8 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import net.idea.ambit.qmrf.QMRFData;
-import net.idea.ambit.qmrf.converters.Qmrf_Xml_Pdf;
 import net.idea.ambit.swing.common.UITools;
+import net.idea.qmrf.converters.QMRF_xml2pdf;
 
 import org.xml.sax.InputSource;
 
@@ -42,7 +42,7 @@ public class QMRFBatchAction extends QMRFFileOpenAction {
         if (files != null) {
         	int error = 0;
         	mainFrame.setCursor(hourglassCursor);
-	        Qmrf_Xml_Pdf converter = new Qmrf_Xml_Pdf(((QMRFData)userData).getQmrf().getTtfFontUrl());
+	        QMRF_xml2pdf converter = new QMRF_xml2pdf(((QMRFData)userData).getQmrf().getTtfFontUrl());
 	        for (int i=0; i < files.length;i++) 
 	        try {
 	        	InputStreamReader reader = 	new InputStreamReader(new FileInputStream(files[i]),"UTF-8");
