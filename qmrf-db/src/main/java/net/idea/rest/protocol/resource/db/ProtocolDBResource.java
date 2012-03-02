@@ -55,6 +55,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected boolean singleItem = false;
 	protected boolean version = false;
 	protected boolean editable = true;
+	protected Object structure;
 
 	@Override
 	public RepresentationConvertor createConvertor(Variant variant)
@@ -84,7 +85,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				};
 		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML))
 				return new OutputWriterConvertor(
-						new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable()),
+						new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null),
 						MediaType.TEXT_HTML);
 		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
 	}
@@ -149,7 +150,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} catch (Exception x) {
 			showCreateLink = false;
 		}
-		Object structure = null;
+		structure = null;
 		try {
 			structure = form.getFirstValue("structure").toString();
 		} catch (Exception x) {

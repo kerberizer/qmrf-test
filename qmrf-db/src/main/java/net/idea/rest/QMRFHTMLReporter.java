@@ -75,7 +75,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		try {
 			if (printAsTable()) {
 				w.write(String.format("<h3>%ss</h3>",getTitle()));
-				w.write(QMRF_HTMLBeauty.getPaging(query.getPage(),0,2,query.getPageSize()));
+				printPageNavigator(query);
 				
 			} else {
 				w.write(String.format("<h3>%s</h3>",getTitle()));
@@ -92,6 +92,9 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		}
 		
 	}	
+	protected void printPageNavigator(Q query) throws Exception {
+		getOutput().write(QMRF_HTMLBeauty.getPaging(query.getPage(),0,2,query.getPageSize()));
+	}
 	protected boolean printAsTable() {
 		return collapsed;
 	}

@@ -29,23 +29,30 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	 * 
 	 */
 	private static final long serialVersionUID = -7959033048710547839L;
-	
+	protected boolean paging = true;
 	protected GroupQueryURIReporter<IQueryRetrieval<IDBGroup>> groupReporter;
 	protected UserURIReporter<IQueryRetrieval<DBUser>> userReporter;
 
 	public ProtocolQueryHTMLReporter() {
-		this(null,true,false);
+		this(null,true,false,true);
 	}
-	public ProtocolQueryHTMLReporter(Request request, boolean collapsed,boolean editable) {
+	public ProtocolQueryHTMLReporter(Request request, boolean collapsed,boolean editable,boolean paging) {
 		super(request,collapsed,editable);
 		setTitle("QMRF document");
 		groupReporter = new GroupQueryURIReporter<IQueryRetrieval<IDBGroup>>(request);
 		userReporter = new UserURIReporter<IQueryRetrieval<DBUser>>(request);
+		this.paging = paging;
 		
 	}
 	@Override
 	protected QueryURIReporter createURIReporter(Request request, ResourceDoc doc) {
 		return new ProtocolQueryURIReporter<IQueryRetrieval<DBProtocol>>(request);
+	}
+	@Override
+	protected void printPageNavigator(IQueryRetrieval<DBProtocol> query)
+			throws Exception {
+		if (paging)
+			super.printPageNavigator(query);
 	}
 	
 	@Override
