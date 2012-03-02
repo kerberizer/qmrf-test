@@ -1,0 +1,42 @@
+package net.idea.qmrf.converters;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+public class QMRF_xml2html {
+
+	public QMRF_xml2html() {
+	
+	}
+	
+	public void xml2html(Source sourceDocument, OutputStream html) throws IOException, TransformerException {
+		InputStream xslt = getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf2html.xsl");
+		try {
+			transform(sourceDocument, new StreamSource(xslt), new StreamResult(html));
+		} finally {
+			try {xslt.close();} catch (Exception x) {}
+		}
+	}
+	
+	public void xsltTransform(InputStream xml, InputStream xslt,OutputStream out) throws IOException, TransformerException {
+        transform(new StreamSource(xml), new StreamSource(xslt), new StreamResult(out));
+	}
+	
+	protected void transform(Source sourceDocument, Source xslt, Result result)   throws IOException, TransformerException {
+			TransformerFactory xfactory = TransformerFactory.newInstance();
+			Transformer transformer = xfactory.newTransformer(xslt);
+			transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "qmrf.dtd");
+			transformer.transform(sourceDocument, result);
+	}	
+
+}
