@@ -32,7 +32,6 @@ package net.idea.ambit.qmrf.swing;
 import javax.swing.JComponent;
 
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterReference;
-
 import ambit2.base.interfaces.IAmbitEditor;
 
 public class QMRFSubChapterReferenceEditor extends QMRFSubChapterTextEditor {

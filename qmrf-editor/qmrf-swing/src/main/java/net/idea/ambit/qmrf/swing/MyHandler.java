@@ -30,8 +30,7 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.Stack;
 
-import net.idea.ambit.qmrf.converters.Qmrf_Xml_Pdf;
-
+import net.idea.qmrf.converters.QMRF_xml2pdf;
 
 import com.lowagie.text.Anchor;
 import com.lowagie.text.Annotation;
@@ -58,7 +57,7 @@ public class MyHandler extends SAXmyHandler {
             try {
 //                Image img = Image.getInstance(attributes);
 
-                Image img = Image.getInstance(Qmrf_Xml_Pdf.class.getClassLoader().getResource("ambit2/qmrfeditor/logo.png"));
+                Image img = Image.getInstance(QMRF_xml2pdf.class.getClassLoader().getResource("ambit2/qmrfeditor/logo.png"));
                 Object current;
                 try {
                     // if there is an element on the stack...

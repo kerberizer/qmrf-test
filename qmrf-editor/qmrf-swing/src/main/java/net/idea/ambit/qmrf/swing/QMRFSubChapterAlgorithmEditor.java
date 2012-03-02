@@ -29,7 +29,6 @@ import javax.swing.JTabbedPane;
 
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterReference;
 import net.idea.ambit.qmrf.chapters.QMRFSubchapterAlgorithm;
-
 import ambit2.base.interfaces.IAmbitEditor;
 
 public class QMRFSubChapterAlgorithmEditor extends

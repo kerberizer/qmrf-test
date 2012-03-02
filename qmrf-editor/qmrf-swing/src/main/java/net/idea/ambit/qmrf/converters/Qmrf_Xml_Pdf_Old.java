@@ -14,6 +14,8 @@ import javax.xml.parsers.SAXParserFactory;
 
 import net.idea.ambit.qmrf.swing.MyHandler;
 import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
+import net.idea.qmrf.converters.QMRFConverter;
+import net.idea.qmrf.converters.QMRF_xml2pdf;
 
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -64,7 +66,7 @@ public class Qmrf_Xml_Pdf_Old extends QMRFConverter {
 	 */
 	public MyHandler getXmlHandler(Document document, InputSource originalXML) {
 		try {
-			InputStream in = Qmrf_Xml_Pdf.class.getClassLoader().getResourceAsStream("ambit2/qmrfeditor/tagmapqmrf.xml");
+			InputStream in = QMRF_xml2pdf.class.getClassLoader().getResourceAsStream("ambit2/qmrfeditor/tagmapqmrf.xml");
 			return new MyHandler(document, new QmrfMap(in,originalXML ));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -125,7 +127,7 @@ XmlParser.parse(documentB, "Chap0703.xml", "tagmap0703.xml");
 			//this will not work , because of the second stream ....
 
 			// step 4: we parse the document
-			parser.parse(Qmrf_Xml_Pdf.class.getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf_pdf_template.xml"),
+			parser.parse(QMRF_xml2pdf.class.getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf_pdf_template.xml"),
 					getXmlHandler(document, new InputSource(xml)));
 
 			document.close();
@@ -160,7 +162,7 @@ XmlParser.parse(documentB, "Chap0703.xml", "tagmap0703.xml");
 
 
 			// step 4: we parse the document
-			parser.parse(Qmrf_Xml_Pdf.class.getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf_pdf_template.xml"),
+			parser.parse(QMRF_xml2pdf.class.getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf_pdf_template.xml"),
 					getXmlHandler(document, new InputSource(new StringReader(xml))));
 
 			document.close();
@@ -203,7 +205,7 @@ XmlParser.parse(documentB, "Chap0703.xml", "tagmap0703.xml");
 				cb = writer.getDirectContent();
 				template = cb.createTemplate(50, 50);
 
-					Image png = Image.getInstance(Qmrf_Xml_Pdf.class.getClassLoader().getResource("ambit2/qmrfeditor/logo.png"));
+					Image png = Image.getInstance(QMRF_xml2pdf.class.getClassLoader().getResource("ambit2/qmrfeditor/logo.png"));
 					//png.scaleAbsolute(76, 67);
 					//png.setAlignment(Image.MIDDLE);
 

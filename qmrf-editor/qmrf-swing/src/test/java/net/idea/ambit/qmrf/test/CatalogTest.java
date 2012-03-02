@@ -33,7 +33,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.Assert;
-
 import net.idea.ambit.qmrf.catalogs.Catalog;
 import net.idea.ambit.qmrf.catalogs.CatalogEntry;
 

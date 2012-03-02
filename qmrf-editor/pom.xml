@@ -98,5 +98,6 @@
   <properties>
 	<ambit.version>2.4.4-SNAPSHOT</ambit.version>
 	<junit.version>4.8.1</junit.version>
+	 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>  
 </project>

@@ -1,4 +1,4 @@
-package net.idea.ambit.qmrf.converters;
+package net.idea.qmrf.converters;
 
 
 import java.io.OutputStream;
@@ -27,7 +27,7 @@ import org.xml.sax.InputSource;
 
 
 
-public class Qmrf_Xml_Excel extends QMRFConverter {
+public class QMRF_xml2excel extends QMRFConverter {
 	protected static byte[] color_even_sections = {(byte)204,(byte)255,(byte)204};
 	protected static byte[] color_odd_sections = {(byte)255,(byte)255,(byte)153};
 	protected String font_name="Arial";

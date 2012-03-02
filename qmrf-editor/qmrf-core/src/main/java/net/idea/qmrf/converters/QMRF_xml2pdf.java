@@ -22,7 +22,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 */
 
-package net.idea.ambit.qmrf.converters;
+package net.idea.qmrf.converters;
 
 
 import java.awt.Color;
@@ -61,7 +61,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
-public class Qmrf_Xml_Pdf extends QMRFConverter {
+public class QMRF_xml2pdf extends QMRFConverter {
 
 	protected static Color chapterColor = new Color(230,230,230);
 
@@ -73,7 +73,7 @@ public class Qmrf_Xml_Pdf extends QMRFConverter {
     protected BaseFont baseFont;
     protected String ttffont;
     
-    public Qmrf_Xml_Pdf(String ttffont) {
+    public QMRF_xml2pdf(String ttffont) {
         super();
         try {
         	this.ttffont = ttffont;
@@ -387,8 +387,8 @@ public class Qmrf_Xml_Pdf extends QMRFConverter {
 	public void headerTable(Document pdfdoc, org.w3c.dom.Document xmldoc) {
 		try {
 			int header_font_size = 10;
-			Image png_left = Image.getInstance(Qmrf_Xml_Pdf.class.getClassLoader().getResource("ambit2/qmrfeditor/logo.png"));
-			Image png_right = Image.getInstance(Qmrf_Xml_Pdf.class.getClassLoader().getResource("ambit2/qmrfeditor/logo.png"));
+			Image png_left = Image.getInstance(QMRF_xml2pdf.class.getClassLoader().getResource("ambit2/qmrfeditor/logo.png"));
+			Image png_right = Image.getInstance(QMRF_xml2pdf.class.getClassLoader().getResource("ambit2/qmrfeditor/logo.png"));
 			png_left.setAlignment(Image.LEFT);
 			png_right.setAlignment(Image.RIGHT);
 			png_left.scalePercent(60);

@@ -22,7 +22,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 */
 
-package net.idea.ambit.qmrf.converters;
+package net.idea.qmrf.converters;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public abstract class QMRFConverter {
 	
 
 	
-	Object[][] subchapters = {
+	public Object[][] subchapters = {
 			{"QSAR_identifier","QSAR_identifier",Mode.chapter},
 			{"QSAR_title","QSAR_title",Mode.title},
 			{"QSAR_title","QSAR_title_text",Mode.text},
