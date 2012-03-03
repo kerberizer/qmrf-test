@@ -93,7 +93,7 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			Enumeration<String> keys = item.getProperties().keys();
 			while (keys.hasMoreElements()) {
 				String key = keys.nextElement();
-				properties.append(String.format("<tr><th>%s</th><td>%s</td></tr>",key,item.getProperties().get(key)));
+				properties.append(String.format("<tr><th align='left' width='60%%'>%s</th><td align='center' width='40%%'>%s</td></tr>",key,item.getProperties().get(key)));
 
 			}
 		} catch (Exception x) {}		
@@ -116,19 +116,21 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			"<li><a href='#tabs-qmrf'>QMRF</a></li>"+
 			"</ul>"+
 			"<div id='tabs-id'>"+
-			"%s\n"+ //structure			
-			"<label>CAS</label>&nbsp;%s<br>"+
-			"<label>Name</label>&nbsp;%s<br>"+
-			"<label>SMILES</label>&nbsp;%s<br>"+
-			"<label>InChI</label>&nbsp;%s<br>"+
-			"<label>InChI Key</label>&nbsp;%s<br>"+
-			"<label></label>&nbsp;%s<br>"+
+			"%s\n"+ //structure
+			"<table>\n"+ 
+			"<tr><th width='10%%'>CAS</th><td>%s</td></tr>"+
+			"<tr><th>Name</th><td>%s</td></tr>"+
+			"<tr><th>SMILES</th><td>%s</td></tr>"+
+			"<tr><th>InChI</th><td>%s</td></tr>"+
+			"<tr><th>InChI Key</th><td>%s</td></tr>"+
+			"<tr><th></th><td>%s</td></tr>"+
+			"</table>"+
 			"</div>"+
 			"<div id='tabs-prop'>"+
-			"%s<table width='80%%'>%s</table>\n"+
+			"%s<table>%s</table>\n"+
 			"</div>"+
 			"<div id='tabs-qmrf'>"+
-			"%s<table width='80%%'>%s</table>\n"+
+			"%s<table>%s</table>\n"+
 			"</div>\n" + //tabs-qmrf
 			"</div>\n" + //tabs
 			"</div>\n", //protocol

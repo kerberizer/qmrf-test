@@ -1,9 +1,11 @@
 package net.idea.rest.structure.resource;
 
 import java.net.URL;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
@@ -24,6 +26,8 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
+
+import com.ibm.icu.text.DecimalFormat;
 
 public class StructureResource extends CatalogResource<Structure>{
 	public static String queryService="http://localhost:8080/ambit2";
@@ -115,7 +119,12 @@ public class StructureResource extends CatalogResource<Structure>{
 						} catch (Exception x) {
 							if (header.get(i).toString().toUpperCase().startsWith("CAS")) r.setCas(value);
 							else if ("NAME".equals(header.get(i).toString().toUpperCase())) r.setName(value);
-							else r.getProperties().put(header.get(i).toString(),value);
+							else try {
+								NumberFormat nf = java.text.DecimalFormat.getNumberInstance(Locale.ENGLISH);
+								r.getProperties().put(header.get(i).toString(),nf.format(Double.parseDouble(value)));
+							} catch (Exception e) {
+								r.getProperties().put(header.get(i).toString(),value);
+							}
 						}
 	
 						return r;

@@ -73,7 +73,11 @@ public class Structure extends AbstractToxBankResource implements Serializable {
 		return cas;
 	}
 	public void setCas(String cas) {
-		this.cas = cas;
+		if (cas==null) this.cas = null;
+		else {
+			int index = cas.indexOf("|");
+			this.cas = index>0?cas.substring(0,index):cas;
+		}
 	}
 	public String getEinecs() {
 		return einecs;
