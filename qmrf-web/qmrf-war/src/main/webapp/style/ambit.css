@@ -51,6 +51,7 @@ h1 {
 	float: left;
 	width: 200px;
 	text-align: center;
+	background-color: #ffffff;
 }
 
 #content {
@@ -284,4 +285,61 @@ div.structureright img {
 	border-right: 1px solid #fff;
 	border-bottom: 1px solid #fff;
 	border-left: 2px solid #fff;
+}
+
+.documentheader {
+	color: #109DFF;
+	background-color: #FFFFFF;
+	padding: 1px;
+	margin: 0 0 0 0;
+	FONT-FAMILY: Verdana, Arial;
+	FONT-SIZE: 10pt;
+}
+
+
+.documentheader h3 {
+	COLOR: #109DFF;
+	background-color: #FFFFFF;
+	FONT-SIZE: 11pt;
+}
+
+
+.documentheader h4 {
+	COLOR: #516373;
+	background-color: #FFFFFF;
+	display: block;
+	FONT-SIZE: 10pt;
+}
+.documentheader label {
+	color: #109DFF;
+	background-color: #FFFFFF;
+	display: inline;
+	FONT-FAMILY: Verdana, Arial;
+}
+
+
+.documentheader p {
+	color: #109DFF;
+	background-color: #FFFFFF;
+	FONT-FAMILY: Verdana, Arial;
+	FONT-SIZE: 10pt;
+}
+
+.documentheader br {
+	color: #109DFF;
+	background-color: #FFFFFF;
+	FONT-FAMILY: Verdana, Arial;
+	FONT-SIZE: 10pt;
+}
+
+.document {
+	color: #109DFF;
+	float: left;
+	margin: 1 1 1 1;
+	background-color: #fff;
+	padding: 1px;
+	border-top: 1px solid #ddd;
+	border-right: 2px solid #ddd;
+	border-bottom: 2px solid #ddd;
+	border-left: 1px solid #ddd;
 }

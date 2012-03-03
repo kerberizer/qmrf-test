@@ -52,6 +52,13 @@
   	    	<type>jar</type>
   	    	<scope>compile</scope>
   	    </dependency>
+  	    <dependency>
+  	    	<groupId>ambit</groupId>
+  	    	<artifactId>qmrf-core</artifactId>
+  	    	<version>2.0.0-SNAPSHOT</version>
+  	    	<type>jar</type>
+  	    	<scope>compile</scope>
+  	    </dependency>
   </dependencies>
   <build>
   <pluginManagement>
