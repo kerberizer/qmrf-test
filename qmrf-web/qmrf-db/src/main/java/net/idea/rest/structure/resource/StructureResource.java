@@ -30,7 +30,8 @@ public class StructureResource extends CatalogResource<Structure>{
 	public enum SearchMode {
 		auto,
 		similarity,
-		smarts
+		smarts,
+		dataset
 	}
 	@Override
 	protected Iterator<Structure> createQuery(Context context,
@@ -60,13 +61,17 @@ public class StructureResource extends CatalogResource<Structure>{
 				ref = new Reference(String.format("%s/query/smarts",queryService));
 				break;
 			}
+			case dataset: {
+				ref = new Reference(String.format("%s/dataset/%s",queryService,Reference.encode(search)));
+				search=null;
+				break;
+			}			
 			}
 			ref.addQueryParameter("pagesize",pagesize);
 			ref.addQueryParameter("page",page);
-			ref.addQueryParameter(QueryResource.search_param,search);
+			if (search!=null)
+				ref.addQueryParameter(QueryResource.search_param,search);
 			
-			//ref.addQueryParameter("pagesize", "1");
-			//ref.addQueryParameter("page", "0");
 			
 			List<Structure> records = new ArrayList<Structure>();
 			try {
@@ -74,9 +79,9 @@ public class StructureResource extends CatalogResource<Structure>{
 					@Override
 					public Structure transformRawValues(List header, List values) {
 						Structure r = new Structure();
-					
+						String value = null;
 						for (int i=0; i < header.size();i++)  try {
-							String value = values.get(i)==null?"":values.get(i).toString().trim();
+							value = values.get(i)==null?"":values.get(i).toString().trim();
 							if ("null".equals(value)) value="";
 							if ("metric".equals(header.get(i))) {
 								r.setSimilarity(value);
@@ -108,7 +113,9 @@ public class StructureResource extends CatalogResource<Structure>{
 							}
 							}
 						} catch (Exception x) {
-							x.printStackTrace();
+							if (header.get(i).toString().toUpperCase().startsWith("CAS")) r.setCas(value);
+							else if ("NAME".equals(header.get(i).toString().toUpperCase())) r.setName(value);
+							else r.getProperties().put(header.get(i).toString(),value);
 						}
 	
 						return r;

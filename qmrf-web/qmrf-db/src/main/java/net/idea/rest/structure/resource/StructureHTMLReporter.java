@@ -1,6 +1,7 @@
 package net.idea.rest.structure.resource;
 
 import java.io.Writer;
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import net.idea.qmrf.client.Resources;
@@ -87,32 +88,59 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			*/
 			protocols.append(String.format("<tr><td><a href='%s%s?structure=%s' target='_QMRF'>QMRFs</a></td></tr>",getRequest().getRootRef(),Resources.protocol,Reference.encode(item.getResourceURL().toString())));
 		} catch (Exception x) {}
+		StringBuilder properties = new StringBuilder();
+		try {
+			Enumeration<String> keys = item.getProperties().keys();
+			while (keys.hasMoreElements()) {
+				String key = keys.nextElement();
+				properties.append(String.format("<tr><th>%s</th><td>%s</td></tr>",key,item.getProperties().get(key)));
+
+			}
+		} catch (Exception x) {}		
+		String structure = 	String.format(
+					"<div class='structureright'><img src='%s?media=%s&w=150&h=150' alt='' width='150' height='150'><br>%s\n</div>\n",
+					item.getResourceURL(),
+					Reference.encode("image/png"),
+					item.cas==null?"":item.cas
+					);
+		
 		try {
 			output.write(String.format(
 			"<div class='protocol'>\n"+					
-			"<div class='structureright'>\n"+
-			"<img src='%s?media=%s&w=150&h=150' alt='' width='150' height='150'><br>\n"+
-			"%s\n"+
-			"</div>\n"+
-			"<p>\n"+
+	
+		//	"<div class='properties'>\n"+
+			"<div class='tabs'>\n"+
+			"<ul>"+
+			"<li><a href='#tabs-id'>Identifiers</a></li>"+
+			"<li><a href='#tabs-prop'>Properties</a></li>"+
+			"<li><a href='#tabs-qmrf'>QMRF</a></li>"+
+			"</ul>"+
+			"<div id='tabs-id'>"+
+			"%s\n"+ //structure			
 			"<label>CAS</label>&nbsp;%s<br>"+
 			"<label>Name</label>&nbsp;%s<br>"+
 			"<label>SMILES</label>&nbsp;%s<br>"+
 			"<label>InChI</label>&nbsp;%s<br>"+
 			"<label>InChI Key</label>&nbsp;%s<br>"+
 			"<label></label>&nbsp;%s<br>"+
-			"<table width='80%%'>%s</table>\n"+
-			"</p></div>",
-			item.getResourceURL(),
-			Reference.encode("image/png"),
-			item.cas==null?"":item.cas,
+			"</div>"+
+			"<div id='tabs-prop'>"+
+			"%s<table width='80%%'>%s</table>\n"+
+			"</div>"+
+			"<div id='tabs-qmrf'>"+
+			"%s<table width='80%%'>%s</table>\n"+
+			"</div>\n" + //tabs-qmrf
+			"</div>\n" + //tabs
+			"</div>\n", //protocol
+			structure,
 			item.cas==null?"":item.cas,
 			item.name==null?"":item.name,
 			item.SMILES==null?"":item.SMILES,
 			item.InChI==null?"":item.InChI,
 			item.InChIKey==null?"":item.InChIKey,
 			item.getSimilarity()==null?"":item.getSimilarity(),
-			protocols
+			structure,properties,
+			structure,protocols
 			)
 			);
 		} catch (Exception x) {
