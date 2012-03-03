@@ -2,6 +2,7 @@ package net.idea.rest.structure.resource;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import net.toxbank.client.resource.AbstractToxBankResource;
@@ -17,7 +18,14 @@ public class Structure extends AbstractToxBankResource implements Serializable {
 	private static final long serialVersionUID = 6291149605331598909L;
 	protected int idchemical;
 	protected int idstructure;
-	
+	protected Hashtable<String, String> properties; 
+	public Hashtable<String, String> getProperties() {
+		if (properties==null) properties = new Hashtable<String, String>();
+		return properties;
+	}
+	public void setProperties(Hashtable<String, String> properties) {
+		this.properties = properties;
+	}
 	public int getIdchemical() {
 		return idchemical;
 	}

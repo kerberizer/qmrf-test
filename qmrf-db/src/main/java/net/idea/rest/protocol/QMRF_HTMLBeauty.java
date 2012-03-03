@@ -96,8 +96,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n");
 			w.write("<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n");
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jme/jme.js\"></script>\n",baseReference));
-			w.write("<script>$(function() {$( \"#accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
-			w.write("<script>$(function() {$( \"#tabs\" ).tabs();});</script>");
+			w.write("<script>$(function() {$( \".accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
+			w.write("<script>$(function() {$( \".tabs\" ).tabs();});</script>");
 			w.write("</head>\n");
 			w.write("<body>");
 			w.write(String.format("<link rel=\"stylesheet\" href=\"%s/style/tablesorter.css\" type=\"text/css\" media=\"screen\" title=\"Flora (Default)\">\n",baseReference));

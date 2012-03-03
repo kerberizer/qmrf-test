@@ -38,6 +38,9 @@ body {
 p {
 	margin: 5px;
 	padding: 0;
+	FONT-FAMILY: Verdana, Arial;
+	COLOR: #516373;
+	FONT-SIZE: 10pt;
 }
 
 h1 {
@@ -268,6 +271,12 @@ table {
 	TEXT-ALIGN: justify
 }
 
+label {
+	COLOR: #516373;
+	FONT-FAMILY: Verdana, Arial;
+}
+
+
 .structureright {
 	float: right;
 	width: 153px;
@@ -343,3 +352,11 @@ div.structureright img {
 	border-bottom: 2px solid #ddd;
 	border-left: 1px solid #ddd;
 }
+
+.tabs {
+	float: left;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	width:100%;
+	min-height:100px;
+}	
