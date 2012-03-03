@@ -25,6 +25,7 @@ import net.idea.restnet.c.task.TaskCreator;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryResource;
 import net.idea.restnet.db.QueryURIReporter;
+import net.idea.restnet.db.convertors.OutputStreamConvertor;
 import net.idea.restnet.db.convertors.OutputWriterConvertor;
 import net.idea.restnet.db.convertors.RDFJenaConvertor;
 import net.idea.restnet.i.task.ITaskStorage;
@@ -56,6 +57,24 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected boolean version = false;
 	protected boolean editable = true;
 	protected Object structure;
+	
+	
+	@Override
+	protected void doInit() throws ResourceException {
+		super.doInit();
+		getVariants().clear();
+		customizeVariants(new MediaType[] {
+				MediaType.TEXT_HTML,
+				MediaType.APPLICATION_XML,
+				MediaType.TEXT_URI_LIST,
+				MediaType.APPLICATION_RDF_XML,
+				MediaType.APPLICATION_RDF_TURTLE,
+				MediaType.TEXT_RDF_N3,
+				MediaType.APPLICATION_PDF,
+				MediaType.APPLICATION_EXCEL,
+				MediaType.APPLICATION_JAVA_OBJECT
+		});		
+	}
 
 	@Override
 	public RepresentationConvertor createConvertor(Variant variant)
@@ -69,9 +88,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} else if (variant.getMediaType().equals(MediaType.APPLICATION_RDF_XML) ||
 					variant.getMediaType().equals(MediaType.APPLICATION_RDF_TURTLE) ||
 					variant.getMediaType().equals(MediaType.TEXT_RDF_N3) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES) ||
-					variant.getMediaType().equals(MediaType.APPLICATION_JSON) ||
-					variant.getMediaType().equals(MediaType.TEXT_CSV) 
+					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES)
 					
 					) {
 				return new RDFJenaConvertor<DBProtocol, IQueryRetrieval<DBProtocol>>(
@@ -84,10 +101,13 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					}					
 				};
 		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML))
-				return new OutputWriterConvertor(
-						new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null),
-						MediaType.TEXT_HTML);
-		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
+			return new OutputWriterConvertor(
+					new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null),
+					MediaType.TEXT_HTML);				
+		else if (singleItem && (structure==null)) {
+			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType()),variant.getMediaType());		
+		}
+		throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
 	}
 	protected boolean isEditable() {
 		return editable
