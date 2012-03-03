@@ -140,7 +140,7 @@ public class StructureResource extends CatalogResource<Structure>{
 						records.add(struc);
 					}
 				} catch (Exception x) {
-					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,String.format("Error when contacting %s",ref));
 				} finally {
 					i.close();
 				}

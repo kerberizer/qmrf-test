@@ -1,12 +1,18 @@
 package net.idea.rest.protocol.resource.db;
 
+import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Date;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.dom.DOMSource;
+
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.qmrf.client.Resources;
+import net.idea.qmrf.converters.QMRF_xml2html;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
@@ -22,6 +28,8 @@ import net.idea.restnet.db.QueryURIReporter;
 import org.restlet.Request;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
 
 public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQueryRetrieval<DBProtocol>> {
@@ -38,11 +46,15 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	}
 	public ProtocolQueryHTMLReporter(Request request, boolean collapsed,boolean editable,boolean paging) {
 		super(request,collapsed,editable);
-		setTitle("QMRF document");
+		setTitle(!collapsed?null:"QMRF document");
 		groupReporter = new GroupQueryURIReporter<IQueryRetrieval<IDBGroup>>(request);
 		userReporter = new UserURIReporter<IQueryRetrieval<DBUser>>(request);
-		this.paging = paging;
+		this.paging = !collapsed?false:paging;
 		
+	}
+	@Override
+	protected boolean printAsTable() {
+		return collapsed;
 	}
 	@Override
 	protected QueryURIReporter createURIReporter(Request request, ResourceDoc doc) {
@@ -54,6 +66,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		if (paging)
 			super.printPageNavigator(query);
 	}
+	
 	
 	@Override
 	public Object processItem(DBProtocol item) throws AmbitException  {
@@ -67,9 +80,13 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 							
 			String uri = uriReporter.getURI(item);
 			
-			if (collapsed) 
+			if (printAsTable()) 
 				printTable(output, uri,item);
-			else printForm(output,uri,item,false);
+			else { 
+				//printForm(output,uri,item,false);
+				printHTML(output, uri, item, paging);
+
+			}
 
 		} catch (Exception x) {
 			
@@ -84,6 +101,30 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		w.write("<tr><th width='5%'>#</th><th width='10%'>QMRF number</th><th>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
 
 		
+	}
+	protected void printHTML(Writer output, String uri, DBProtocol item, boolean editable) throws Exception {
+		output.write("<div  class='documentheader'>");
+		output.write(String.format("<a href='%s'>%s</a>&nbsp;<label>%s</label>&nbsp;<br>%s",
+						uri,ReadProtocol.fields.identifier.getValue(item),item.getTitle(),printDownloadLinks(uri)));
+		
+		output.write("<div id='accordion'>");
+		QMRF_xml2html qhtml = new QMRF_xml2html();
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+        factory.setValidating(false);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        String xml = item.getAbstract().replace("&lt;html&gt;","").replace("&lt;/html&gt;","")
+        		.replace("&lt;body&gt;","").replace("&lt;/body&gt;","")
+        		.replace("&lt;head&gt;","").replace("&lt;/head&gt;","").replace("&#13;","\n")
+        		.replace("&lt;p style=\"margin-top: 0\"&gt;","").replace("&lt;/p&gt;","<br/>");
+        Document xmlDocument = builder.parse( new InputSource(new StringReader(xml)));
+        DOMSource source = new DOMSource(xmlDocument);
+        
+       // File xml = new File(url.getFile());
+        qhtml.xml2html(source,output);
+		output.write("</div>");
+
+		output.write("</div>");
 	}
 	protected void printForm(Writer output, String uri, DBProtocol protocol, boolean editable) {
 		try {
@@ -242,77 +283,24 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		}
 		return b.toString();
 	}
-	protected void printTable(Writer output, String uri, DBProtocol protocol) {
+	protected void printTable(Writer output, String uri, DBProtocol item) {
 		try {
 			output.write("<tr bgcolor='FFFFFF'>\n");	
-		
 			output.write(String.format("<td>%d.</td>",record+1 ));
-			output.write(String.format("<td width='15em'><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(protocol)));			
-			output.write(String.format("<td>%s</td>",protocol.getTitle()));
-			output.write(String.format("<td width='8em'>%s</td>",simpleDateFormat.format(new Date(protocol.getTimeModified()))));
+			output.write(String.format("<td width='15em'><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
+			output.write(String.format("<td>%s</td>",item.getTitle()));
+			output.write(String.format("<td width='8em'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td width='50px'>%s</td>",printDownloadLinks(uri)));
-			
+			output.write("</tr>\n");
 			/*
-			for (ReadProtocol.fields field : ReadProtocol.displayFields) {
-
-				Object value = null; 
-				try { value = field.getValue(protocol);} catch (Exception x) {}
-				switch (field) {
-				case idprotocol: {
-					//output.write(String.format("<td><a href='%s'>%s</a></td>",uri,uri));
-					break;
-				}	
-				case updated: {
-					
-					output.write(String.format("<td><a href='%s%s?%s=%s' title='Find protocols modified since this one (Unix time stamp, ms=%s)'>%s</a></td>",
-							uriReporter.getRequest().getRootRef(),Resources.protocol,"modifiedSince",protocol.getTimeModified(),
-							protocol.getTimeModified(),
-							protocol.getTimeModified()==null?"":new Date(protocol.getTimeModified())));
-					break;
-				}
-				case identifier: {
-					output.write(String.format("<td><a href='%s'>%s</a></td>",uri,value));
-					break;
-				}
-				case filename: {
-					if ((protocol.getDocument()==null) || (protocol.getDocument().getResourceURL()==null))
-						output.write("<td>N/A</td>");
-					else					
-						output.write(String.format("<td><a href='%s%s?media=%s'>Download</a></td>",
-								uri,Resources.document,Reference.encode(MediaType.APPLICATION_ALL.toString())));
-					break;
-				}	
-				case template: {
-					if ((protocol.getDataTemplate()==null) || (protocol.getDataTemplate().getResourceURL()==null))
-						output.write("<td>N/A</td>");
-					else
-					output.write(String.format("<td><a href='%s%s'>Download</a></td>",uri,Resources.datatemplate));
-					break;
-				}						
-				case author_uri: {
-					output.write(String.format("<td><a href='%s%s'>Authors</a></td>",uri,Resources.authors));
-					break;
-				}				
-				case user_uri: {
-					output.write(String.format("<td><a href='%s'>%s</a></td>",value.toString(),
-							protocol.getOwner().getUserName()==null?"Owner":protocol.getOwner().getUserName()));
-					break;
-				}
-				case idorganisation: {
-					output.write(String.format("<td>%s</td>",value.toString()));
-					break;
-				}
-				case idproject: {
-					output.write(String.format("<td>%s</td>",value.toString()));
-					break;
-				}
-				default:
-					output.write(String.format("<td>%s</td>",value==null?"":
-								value.toString().length()>40?value.toString().substring(0,40):value.toString()));
-				}
+			if (!collapsed) {
+				output.write("<tr bgcolor='FFFFFF'><td colspan='4'>\n");
+				output.write("<div class='document'>");
+				printHTML(output, uri, item, false);
+				output.write("</div>");
+				output.write("</td></tr>\n");
 			}
 			*/
-			output.write("</tr>\n");
 		} catch (Exception x) {
 			x.printStackTrace();
 		} 

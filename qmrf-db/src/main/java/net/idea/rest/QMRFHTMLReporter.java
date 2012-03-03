@@ -74,11 +74,13 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	    
 		try {
 			if (printAsTable()) {
-				w.write(String.format("<h3>%ss</h3>",getTitle()));
+				if (getTitle()!=null)
+					w.write(String.format("<h3>%ss</h3>",getTitle()));
 				printPageNavigator(query);
 				
 			} else {
-				w.write(String.format("<h3>%s</h3>",getTitle()));
+				if (getTitle()!=null)
+					w.write(String.format("<h3>%s</h3>",getTitle()));
 			}
 		} catch (Exception x) {
 			x.printStackTrace();
