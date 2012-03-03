@@ -272,7 +272,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			MediaType mime = mimes[i];
 				
 			b.append(String.format(
-					"<a href=\"%s?media=%s\"><img src=\"%s/images/%s\" alt=\"%s\" title=\"%s\" border=\"0\"/></a>\n",
+					"<a href=\"%s?media=%s\" target='_blank'><img src=\"%s/images/%s\" alt=\"%s\" title=\"%s\" border=\"0\"/></a>\n",
 					uri,
 					Reference.encode(mime.toString()),
 					getUriReporter().getBaseReference().toString(),
