@@ -91,12 +91,13 @@ public class QMRF_xml2pdf extends QMRFConverter {
             });
             //PRIndirectReference pri;
             //pri.
+            if (ttffont!=null)
             try {
             	
             	baseFont = BaseFont.createFont(ttffont,
             	//"c:\\windows\\fonts\\times.ttf",
                     BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-            	System.out.println(ttffont);
+            	
             } catch (Exception x) {
             	x.printStackTrace();
             	baseFont = BaseFont.createFont("c:\\windows\\fonts\\times.ttf",
