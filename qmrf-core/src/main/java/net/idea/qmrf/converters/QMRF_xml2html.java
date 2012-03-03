@@ -3,6 +3,7 @@ package net.idea.qmrf.converters;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Writer;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -18,9 +19,19 @@ public class QMRF_xml2html {
 	public QMRF_xml2html() {
 	
 	}
-	
+	protected InputStream getQMRF2HTML_XSL() throws IOException {
+		return getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf2div.xsl");
+	}
+	public void xml2html(Source sourceDocument, Writer html) throws IOException, TransformerException {
+		InputStream xslt = getQMRF2HTML_XSL();
+		try {
+			transform(sourceDocument, new StreamSource(xslt), new StreamResult(html));
+		} finally {
+			try {xslt.close();} catch (Exception x) {}
+		}
+	}
 	public void xml2html(Source sourceDocument, OutputStream html) throws IOException, TransformerException {
-		InputStream xslt = getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf2html.xsl");
+		InputStream xslt = getQMRF2HTML_XSL();
 		try {
 			transform(sourceDocument, new StreamSource(xslt), new StreamResult(html));
 		} finally {
