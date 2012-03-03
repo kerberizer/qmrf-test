@@ -98,6 +98,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jme/jme.js\"></script>\n",baseReference));
 			w.write("<script>$(function() {$( \".accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
 			w.write("<script>$(function() {$( \".tabs\" ).tabs();});</script>");
+			w.write("<script type='text/javascript'>function toggleDiv(divId) {$('#'+divId).toggle();}</script>\n");
 			w.write("</head>\n");
 			w.write("<body>");
 			w.write(String.format("<link rel=\"stylesheet\" href=\"%s/style/tablesorter.css\" type=\"text/css\" media=\"screen\" title=\"Flora (Default)\">\n",baseReference));

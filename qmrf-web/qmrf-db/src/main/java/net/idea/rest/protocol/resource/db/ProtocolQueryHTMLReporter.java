@@ -84,7 +84,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				printTable(output, uri,item);
 			else { 
 				//printForm(output,uri,item,false);
-				printHTML(output, uri, item, paging);
+				printHTML(output, uri, item, false);
 
 			}
 
@@ -102,11 +102,12 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 
 		
 	}
-	protected void printHTML(Writer output, String uri, DBProtocol item, boolean editable) throws Exception {
-		output.write("<div  class='documentheader'>");
-		output.write(String.format("<a href='%s'>%s</a>&nbsp;<label>%s</label>&nbsp;<br>%s",
+	protected void printHTML(Writer output, String uri, DBProtocol item, boolean hidden) throws Exception {
+		output.write(String.format("<div id='%s' class='documentheader' style='display: %s;''>",item.getIdentifier(),hidden?"none":""));
+		if (!hidden) {
+			output.write(String.format("<a href='%s'>%s</a>&nbsp;<label>%s</label>&nbsp;<br>%s",
 						uri,ReadProtocol.fields.identifier.getValue(item),item.getTitle(),printDownloadLinks(uri)));
-		
+		}
 		output.write("<div class='accordion'>");
 		QMRF_xml2html qhtml = new QMRF_xml2html();
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -288,19 +289,17 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write("<tr bgcolor='FFFFFF'>\n");	
 			output.write(String.format("<td>%d.</td>",record+1 ));
 			output.write(String.format("<td width='15em'><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
-			output.write(String.format("<td>%s</td>",item.getTitle()));
+			output.write(String.format("<td>%s&nbsp;<a href=\"javascript:toggleDiv('%s');\" style=\"background-color: #fff; padding: 5px 10px;\">More</a></td>",item.getTitle(),item.getIdentifier()));
 			output.write(String.format("<td width='8em'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td width='50px'>%s</td>",printDownloadLinks(uri)));
 			output.write("</tr>\n");
-			/*
-			if (!collapsed) {
-				output.write("<tr bgcolor='FFFFFF'><td colspan='4'>\n");
-				output.write("<div class='document'>");
-				printHTML(output, uri, item, false);
-				output.write("</div>");
+
+			if (collapsed) {
+				output.write("<tr bgcolor='FFFFFF'><td colspan='5'>\n");
+				printHTML(output, uri, item, true);
 				output.write("</td></tr>\n");
 			}
-			*/
+
 		} catch (Exception x) {
 			x.printStackTrace();
 		} 
