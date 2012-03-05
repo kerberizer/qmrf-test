@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -15,7 +16,7 @@ import org.restlet.data.Reference;
 
 public class QMRF_HTMLBeauty extends HTMLBeauty {
 	protected String searchURI = Resources.protocol;
-	protected String searchTitle = "QMRF free text search";
+	protected String searchTitle = "QMRF documents search";
 	protected int page;
 	protected long pageSize;
 
@@ -191,7 +192,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				searchQuery = "";
 				pageSize = "10";
 			}
-			
+			SearchMode option = SearchMode.text;
+			try {
+				option = SearchMode.valueOf(form.getFirstValue("option").toLowerCase());
+			} catch (Exception x) {
+				option = SearchMode.text;
+			}
 			String imgURI = (structure==null) || !structure.startsWith("http")?"":
 				String.format("<img border='0' title='Showing QMRF documents for this chemical' width='150' height='150' src='%s?media=%s&w=150&h=150'><br>Showing QMRF documents\n",
 						structure,Reference.encode("image/png"));
@@ -201,11 +207,15 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "<div class='search'>\n"+
 			   "%s\n"+
 			   "<form method='GET' action='%s%s?pagesize=10'>\n"+
-			   "<input type='text' name='search' size='20' value='%s' tabindex='0'>\n"+
-			   "<a href='%s%s?mode=advanced' title='Advanced QMRF search'>Advanced</a>\n"+
-			   "<input type='hidden' name='pagesize' value='%s'>\n"+
+			   "<table width='200px'>\n"+
+			   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter search query'></td></tr>\n"+
+			   "<tr><td colspan='2'><input %s tabindex='1' type='radio' value='text' name='option' title='Free text search' size='20'>Free text</td></tr>\n"+
+			   "<tr><td><input %s type='radio' tabindex='2' name='option' value='endpoint' title='Search by endpoint'>Endpoint</td>\n"+
+			   "<tr><td colspan='2'><input %s tabindex='3' type='radio' value='author' name='option' title='Search by author' size='20'>Author</td></tr>\n"+
+			   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
 			   "<input type='hidden' name='structure' value='%s'>\n"+
-			   "<input type='submit' value='Search'>\n"+
+			   "<tr><td></td><td align='left'><input type='submit' tabindex='4'  value='Search'/></td></tr>\n"+
+			   "</table>\n"+			   
 			   "</form> \n"+
 			   "&nbsp;\n"+
 			   "<div class='structureright'>%s</div>"+
@@ -215,8 +225,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   baseReference,
 			   getSearchURI(),
 			   searchQuery,
-			   baseReference,
-			   getSearchURI(),
+			   SearchMode.text.equals(option)?"checked":"",
+			   SearchMode.endpoint.equals(option)?"checked":"",
+			   SearchMode.author.equals(option)?"checked":"",
 			   pageSize,
 			   structure,
 			   imgURI
