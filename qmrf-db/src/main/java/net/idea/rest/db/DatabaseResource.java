@@ -96,6 +96,11 @@ public class DatabaseResource  extends QueryResource<DBVersionQuery,DBVersion> {
 		Connection connection = null;
 		try {
 			connection = c.getConnection();
+		} catch (Exception x) {
+			try {return processSQLError(null,0, variant); } catch (Exception e) {}
+		}
+		try {
+			
 			DbCreateDatabase dbc = new DbCreateDatabase();
 			dbc.setConnection(connection);
 			if (!dbc.dbExists(c.getLoginInfo().getDatabase()))
@@ -135,10 +140,12 @@ public class DatabaseResource  extends QueryResource<DBVersionQuery,DBVersion> {
 		
 		if (!c.getLoginInfo().getDatabase().equals(form.getFirstValue("dbname")))
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,String.format("dbname parameter doesn't match the database name",form.getFirst("dbname")));
-
+/*
 		if (form.getFirstValue("user")==null)
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
 					"User credentials should be specified via user={} and pass={} web form parameters");
+			*/		
+					
 		/*
 		try {
 			if (dbExists(form.getFirstValue("dbname")))
@@ -285,7 +292,7 @@ public class DatabaseResource  extends QueryResource<DBVersionQuery,DBVersion> {
 	}
 	@Override
 	public String getConfigFile() {
-		return "conf/db.pref";
+		return "conf/qmrf-db.pref";
 	}
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {

@@ -52,8 +52,8 @@ public class DBHtmlReporter extends QueryHTMLReporter<DBVersion,DBVersionQuery> 
 		try {
 			if (isCreate()) {
 				output.write("<form method='post' action='?method=post'>");
-				output.write(String.format("<h4>The database %s does not exist. Please use the form below to create tables in database.</h4>",item.getDbname()));
-				output.write(String.format("<h5>First create the database via MySQL console.</h5>",item.getDbname()));
+				output.write(String.format("<h4>The database %s is empty. Please use the form below to create tables in database.</h4>",item.getDbname()));
+				output.write(String.format("<h5>If the database does not exist, please first create the database via MySQL console.</h5>",item.getDbname()));
 			}
 			getOutput().write("<table>");
 			
@@ -61,9 +61,9 @@ public class DBHtmlReporter extends QueryHTMLReporter<DBVersion,DBVersionQuery> 
 			if (isCreate()) {
 				
 				getOutput().write(String.format("<tr><th>DB name</th><td><input type='text' size='40' name='dbname' value='%s' title='The database name has to match with the \"Database\" property, defined in {servlet-home}/WEB-INF/classes/ambit2/rest/config/ambit.pref file'></td></tr>",item.getDbname()));
-				getOutput().write(String.format("<tr><th>Admin user name</th><td title='existing MySQL user with sufficient privileges to create a database'><input type='text' size='40' name='user' value='%s'></td></tr>",""));
-				getOutput().write(String.format("<tr><th>Password</th><td title='MySQL user password'><input type='password' size='40' name='pass' value='%s'></td></tr>",""));
-				getOutput().write("<tr><td></td><td><input align='bottom' type=\"submit\" value=\"Create database\"></td></tr>");
+			//	getOutput().write(String.format("<tr><th>Admin user name</th><td title='existing MySQL user with sufficient privileges to create a database'><input type='text' size='40' name='user' value='%s'></td></tr>",""));
+			//	getOutput().write(String.format("<tr><th>Password</th><td title='MySQL user password'><input type='password' size='40' name='pass' value='%s'></td></tr>",""));
+				getOutput().write("<tr><td></td><td><input align='bottom' type=\"submit\" value=\"Create tables\"></td></tr>");
 			} else {
 				getOutput().write(String.format("<tr><th>DB name</th><td>%s</td></tr>",item.getDbname()));
 				getOutput().write(String.format("<tr><th>Version</th><td>%d.%d</td></tr>",item.getMajor(),item.getMinor()));
