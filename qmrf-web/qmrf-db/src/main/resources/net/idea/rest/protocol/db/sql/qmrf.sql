@@ -13,9 +13,11 @@ CREATE TABLE  `user` (
   `institute` varchar(128) DEFAULT NULL,
   `weblog` varchar(45) DEFAULT NULL,
   `homepage` varchar(45) DEFAULT NULL,
+  `address` varchar(128) DEFAULT NULL,
+  `email` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`iduser`),
   UNIQUE KEY `Index_2` (`username`),
-  KEY `Index_3` (`lastname`,`firstname`)
+  UNIQUE KEY `Index_3` (`lastname`,`firstname`,`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -----------------------------------------------------

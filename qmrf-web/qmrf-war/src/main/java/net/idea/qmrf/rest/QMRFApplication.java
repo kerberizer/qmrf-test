@@ -135,7 +135,8 @@ public class QMRFApplication extends TaskApplication<String> {
 		 *  Various admin tasks, like database creation
 		 */
 		
-		router.attach(String.format("/%s",QMRFAdminResource.resource),createProtectedResource(createAdminRouter(),"admin"));
+		router.attach(String.format("/%s",QMRFAdminResource.resource),createAdminRouter());
+				//createProtectedResource(createAdminRouter(),"admin"));
 
 		/** /policy - used for testing only  */
 		//router.attach(String.format("/%s",PolicyResource.resource),PolicyResource.class);		
