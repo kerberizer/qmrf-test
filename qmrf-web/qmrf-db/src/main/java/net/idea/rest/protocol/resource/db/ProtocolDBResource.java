@@ -7,10 +7,12 @@ import java.util.List;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.rest.FileResource;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.rest.protocol.db.ReadProtocolByAuthor;
 import net.idea.rest.protocol.db.ReadProtocolByEndpoint;
 import net.idea.rest.protocol.db.ReadProtocolByStructure;
 import net.idea.rest.structure.resource.Structure;
@@ -52,13 +54,18 @@ import org.restlet.resource.ResourceException;
  * @param <Q>
  */
 public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends QueryResource<Q,DBProtocol> {
-
+	public enum SearchMode {
+		text,
+		endpoint,
+		author
+	}
 	
 	protected boolean singleItem = false;
 	protected boolean version = false;
 	protected boolean editable = true;
 	protected Object structure;
 	protected Object endpoint;
+	protected Object author;
 	
 	
 	@Override
@@ -178,12 +185,13 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} catch (Exception x) {
 			structure = null;
 		}			
-		endpoint = null;
+		SearchMode option = SearchMode.text;
 		try {
-			endpoint = form.getFirstValue("endpoint").toString();
+			option = SearchMode.valueOf(form.getFirstValue("option").toLowerCase());
 		} catch (Exception x) {
-			endpoint = null;
-		}				
+			option = SearchMode.text;
+		}		
+			
 		Object key = request.getAttributes().get(FileResource.resourceKey);
 		int userID = -1;
 		try {
@@ -192,15 +200,40 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				userID = ReadUser.parseIdentifier(userKey.toString());
 		} catch (Exception x) {}
 
+		StringCondition c = StringCondition.getInstance(StringCondition.C_REGEXP);
+		String param = getParams().getFirstValue(QueryResource.condition.toString());
 		try {
-			if (endpoint!=null) {
-				IQueryRetrieval<DBProtocol> query = new ReadProtocolByEndpoint();
-				
-				((ReadProtocolByEndpoint)query).setFieldname(endpoint.toString().trim());
-				editable = showCreateLink;
-				singleItem = false;				
-				return (Q)query;
-			} else if ((structure!=null) && structure.toString().startsWith("http")) {
+			if (param != null)	{
+				if ("startswith".equals(param.toLowerCase()))
+					c= StringCondition.getInstance(StringCondition.C_STARTS_WITH);
+				else
+					c = StringCondition.getInstance(param);
+			}
+		} catch (Exception x) {	
+		} finally {
+		}		
+		try {
+			if (search!=null)
+				switch (option) {
+				case author: {
+					IQueryRetrieval<DBProtocol> query = new ReadProtocolByAuthor();
+					
+					((ReadProtocolByAuthor)query).setFieldname(search.toString().trim());
+					editable = showCreateLink;
+					singleItem = false;				
+					return (Q)query;
+				}
+				case endpoint: {
+					IQueryRetrieval<DBProtocol> query = new ReadProtocolByEndpoint();
+					
+					((ReadProtocolByEndpoint)query).setFieldname(search.toString().trim());
+					((ReadProtocolByEndpoint)query).setCondition(c);
+					editable = showCreateLink;
+					singleItem = false;				
+					return (Q)query;
+				}
+				}
+			if ((structure!=null) && structure.toString().startsWith("http")) {
 				IQueryRetrieval<DBProtocol> query = new ReadProtocolByStructure();
 				Structure record = new Structure();
 				record.setResourceURL(new URL(structure.toString()));

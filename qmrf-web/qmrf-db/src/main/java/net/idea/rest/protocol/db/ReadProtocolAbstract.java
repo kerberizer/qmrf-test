@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
-import net.idea.modbcum.q.conditions.EQCondition;
+import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
 import net.idea.rest.protocol.DBProtocol;
 import net.toxbank.client.resource.Protocol;
@@ -13,7 +13,7 @@ import net.toxbank.client.resource.Protocol;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 
-public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtocol, EQCondition, DBProtocol>  implements IQueryRetrieval<DBProtocol> {
+public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtocol, StringCondition, DBProtocol>  implements IQueryRetrieval<DBProtocol> {
 	/**
 	 * 
 	 */

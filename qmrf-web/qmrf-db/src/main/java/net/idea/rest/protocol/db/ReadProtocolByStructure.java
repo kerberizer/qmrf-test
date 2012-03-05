@@ -41,7 +41,7 @@ public class ReadProtocolByStructure extends ReadProtocolAbstract<Structure> {
 		"join `ambit2-qmrf`.struc_dataset using(id_srcdataset)\n"+
 		"join `ambit2-qmrf`.structure using(idstructure)\n"+
 		"where idchemical=?\n"+
-		"and a.name=q.name and a.idprotocol=protocol.idprotocol and a.version=protocol.version\n";
+		"and published=true and a.name=q.name and a.idprotocol=protocol.idprotocol and a.version=protocol.version\n";
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();

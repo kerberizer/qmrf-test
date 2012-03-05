@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
-import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
