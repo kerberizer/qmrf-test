@@ -16,6 +16,7 @@ import net.idea.qmrf.task.QMRFTaskRouter;
 import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
+import net.idea.rest.protocol.facet.ProtocolsByEndpointResource;
 import net.idea.rest.structure.resource.StructureResource;
 import net.idea.rest.user.UserRouter;
 import net.idea.rest.user.resource.MyAccountResource;
@@ -177,6 +178,8 @@ public class QMRFApplication extends TaskApplication<String> {
 		router.attach("/", protocolRouter);
 		router.attach("", protocolRouter);
 		
+		
+		router.attach(Resources.endpoint, ProtocolsByEndpointResource.class);
 		router.attach(Resources.structure, StructureResource.class);
 		
 		/**
