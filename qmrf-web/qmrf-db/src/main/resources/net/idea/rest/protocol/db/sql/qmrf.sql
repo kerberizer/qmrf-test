@@ -15,6 +15,8 @@ CREATE TABLE  `user` (
   `homepage` varchar(45) DEFAULT NULL,
   `address` varchar(128) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
+   `keywords` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '""',
+  `reviewer` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'true if wants to become a reviewer',
   PRIMARY KEY (`iduser`),
   UNIQUE KEY `Index_2` (`username`),
   UNIQUE KEY `Index_3` (`lastname`,`firstname`,`email`)

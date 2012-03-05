@@ -11,6 +11,7 @@ import net.idea.rest.FileResource;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.rest.protocol.db.ReadProtocolByEndpoint;
 import net.idea.rest.protocol.db.ReadProtocolByStructure;
 import net.idea.rest.structure.resource.Structure;
 import net.idea.rest.structure.resource.StructureResource;
@@ -57,6 +58,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected boolean version = false;
 	protected boolean editable = true;
 	protected Object structure;
+	protected Object endpoint;
 	
 	
 	@Override
@@ -176,6 +178,12 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} catch (Exception x) {
 			structure = null;
 		}			
+		endpoint = null;
+		try {
+			endpoint = form.getFirstValue("endpoint").toString();
+		} catch (Exception x) {
+			endpoint = null;
+		}				
 		Object key = request.getAttributes().get(FileResource.resourceKey);
 		int userID = -1;
 		try {
@@ -185,7 +193,14 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} catch (Exception x) {}
 
 		try {
-			if ((structure!=null) && structure.toString().startsWith("http")) {
+			if (endpoint!=null) {
+				IQueryRetrieval<DBProtocol> query = new ReadProtocolByEndpoint();
+				
+				((ReadProtocolByEndpoint)query).setFieldname(endpoint.toString().trim());
+				editable = showCreateLink;
+				singleItem = false;				
+				return (Q)query;
+			} else if ((structure!=null) && structure.toString().startsWith("http")) {
 				IQueryRetrieval<DBProtocol> query = new ReadProtocolByStructure();
 				Structure record = new Structure();
 				record.setResourceURL(new URL(structure.toString()));

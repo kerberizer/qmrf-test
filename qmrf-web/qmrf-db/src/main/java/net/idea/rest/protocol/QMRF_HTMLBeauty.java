@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 
 import net.idea.qmrf.client.Resources;
-import net.idea.rest.structure.resource.StructureResource;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -117,14 +116,15 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "  <div id='left'>\n"+
 			   "	<div id='menu'>\n"+
 			   "		<ul id='navmenu'>\n"+
-			   "			<li><a href='~home'>Home</a></li>\n"+
 			   "			<li><a href='%s/protocol?pagesize=10'>Documents</a></li>\n"+
-			   "			<li><a href='%s/structure?pagesize=10'>Structures</a></li>\n"+			   
+			   "			<li><a href='%s/structure?pagesize=10'>Structures</a></li>\n"+
+			   "			<li><a href='%s/endpoint'>Endpoints</a></li>\n"+
 			   "			<li><a href='%s/organisation?pagesize=10'>Organisations</a></li>\n"+
 			   "			<li><a href='%s/user?pagesize=10'>Users</a></li>\n"+			   
 			   "			<li id='/help'><a href='/help'>Help</a></li></ul>\n"+
 			   "		</div>\n"
 			   ,				   
+			   baseReference,
 			   baseReference,
 			   baseReference,
 			   baseReference,
