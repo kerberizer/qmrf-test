@@ -95,6 +95,22 @@
   		<scope>test</scope>
   	</dependency>
   </dependencies>
+
+  <distributionManagement>
+
+	<snapshotRepository>
+		<id>ambit-plovdiv-snapshots</id>
+		<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/snapshots</url>
+		<uniqueVersion>false</uniqueVersion>
+	</snapshotRepository>
+
+	<repository>
+		<id>ambit-plovdiv-releases</id>
+		<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/releases</url>
+	</repository>
+
+  </distributionManagement>
+
   <properties>
 	<ambit.version>2.4.4-SNAPSHOT</ambit.version>
 	<junit.version>4.8.1</junit.version>
