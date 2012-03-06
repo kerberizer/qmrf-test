@@ -22,6 +22,18 @@ public class QMRF_xml2html {
 	protected InputStream getQMRF2HTML_XSL() throws IOException {
 		return getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf2div.xsl");
 	}
+	protected InputStream getQMRF2SUMMARY_XSL() throws IOException {
+		return getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf2summary.xsl");
+	}
+	public void xml2summary(Source sourceDocument, Writer html) throws IOException, TransformerException {
+		InputStream xslt = getQMRF2SUMMARY_XSL();
+		try {
+			transform(sourceDocument, new StreamSource(xslt), new StreamResult(html));
+		} finally {
+			try {xslt.close();} catch (Exception x) {}
+		}
+	}
+	
 	public void xml2html(Source sourceDocument, Writer html) throws IOException, TransformerException {
 		InputStream xslt = getQMRF2HTML_XSL();
 		try {
