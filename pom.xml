@@ -83,6 +83,13 @@
   		</snapshots>
     </repository>
   	 <repository>
+        <id>ambit-plovdiv-opennms</id>
+        <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/opennms-repo</url>
+        <snapshots>
+  			<enabled>false</enabled>
+  		</snapshots>
+    </repository>
+  	 <repository>
         <id>ambit-plovdiv-releases</id>
         <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/releases</url>
         <snapshots>
