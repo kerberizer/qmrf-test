@@ -37,6 +37,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	 */
 	private static final long serialVersionUID = -7959033048710547839L;
 	protected boolean paging = true;
+	protected boolean details = true;
 	protected GroupQueryURIReporter<IQueryRetrieval<IDBGroup>> groupReporter;
 	protected UserURIReporter<IQueryRetrieval<DBUser>> userReporter;
 	protected DocumentBuilder builder;
@@ -44,19 +45,20 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected QMRF_xml2html qhtml;
 	
 	public ProtocolQueryHTMLReporter() {
-		this(null,true,false,true);
+		this(null,true,false,true,false);
 	}
-	public ProtocolQueryHTMLReporter(Request request, boolean collapsed,boolean editable,boolean paging) {
+	public ProtocolQueryHTMLReporter(Request request, boolean collapsed,boolean editable,boolean paging, boolean details) {
 		super(request,collapsed,editable);
 		setTitle(!collapsed?null:"QMRF document");
 		groupReporter = new GroupQueryURIReporter<IQueryRetrieval<IDBGroup>>(request);
 		userReporter = new UserURIReporter<IQueryRetrieval<DBUser>>(request);
 		this.paging = !collapsed?false:paging;
+		this.details = !collapsed?true:details;
 		
 	}
 	@Override
 	protected boolean printAsTable() {
-		return collapsed;
+		return true;//collapsed;
 	}
 	@Override
 	protected QueryURIReporter createURIReporter(Request request, ResourceDoc doc) {
@@ -87,7 +89,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				printTable(output, uri,item);
 			else { 
 				//printForm(output,uri,item,false);
-				printHTML(output, uri, item, false);
+				printForm(output, uri, item, false);
 
 			}
 
@@ -101,7 +103,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	@Override
 	protected void printTableHeader(Writer w) throws Exception {
 		w.write("<table width='100%'>\n");
-		w.write("<tr><th width='5%'>#</th><th width='10%'>QMRF number</th><th colspan='2'>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
+		if (collapsed)
+			w.write("<tr><th width='5%'>#</th><th width='10%'>QMRF number</th><th colspan='2'>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
+		else
+			w.write("<tr><th width='10%'></th><th colspan='2'></th><th width='10%'></th><th width='10%'></th></tr>");
 		
 	}
 	protected DOMSource getDOMSource(DBProtocol item) throws Exception {
@@ -148,9 +153,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	        
 	        
 			output.write(String.format(
-			"<div id='%s' class='protocol'  style='display: %s;''>\n"+					
-			"<div class='tabs'>\n"+
-			"<ul>"+
+			"<div id='%s' class='protocol'  style='display: %s;'>\n"+					
+			"<div class='tabs'>\n",item.getIdentifier(),hidden?"none":""));
+			
+			output.write(String.format("<ul>"+
 			//"<li><a href='#tabs-id'>%s</a></li>"+
 			"<li><a href='#tabs-3'>Endpoint</a></li>"+
 			"<li><a href='#tabs-4'>Algorithm</a></li>"+
@@ -160,8 +166,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			"<li><a href='#tabs-8'>Interpretation</a></li>"+
 			"<li><a href='#tabs-9'>Misc</a></li>"+
 			"<li><a href='#tabs-dataset'>Download</a></li>"+
-			
-			"</ul>",item.getIdentifier(),hidden?"none":""));
+			"</ul>"));
 	
 			qhtml.xml2summary(getDOMSource(item),output);
 		
@@ -347,17 +352,22 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected void printTable(Writer output, String uri, DBProtocol item) {
 		try {
 			output.write("<tr bgcolor='FFFFFF'>\n");	
-			output.write(String.format("<td>%d.</td>",record+1 ));
+			if (collapsed)
+				output.write(String.format("<td>%d.</td>",record+1 ));
 			output.write(String.format("<td width='15em'><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
-			output.write(String.format("<td>%s</td><td>&nbsp;<a href=\"javascript:toggleDiv('%s');\" style=\"background-color: #fff; padding: 5px 10px;\">More</a></td>",item.getTitle(),item.getIdentifier()));
+			output.write(String.format("<td>%s</td>",item.getTitle()));
+			if (details)
+				output.write(String.format("<td>&nbsp;<a href=\"javascript:toggleDiv('%s');\" style=\"background-color: #fff; padding: 5px 10px;\">More</a></td>",item.getIdentifier()));
+			else 
+				output.write("<td></td>");
 			output.write(String.format("<td width='8em'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td width='50px'>%s</td>",printDownloadLinks(uri)));
 			output.write("</tr>\n");
 
-			if (collapsed) {
+			if (details) {
 				output.write("<tr bgcolor='FFFFFF'><td colspan='5'>\n");
 				//printHTML(output, uri, item, true);
-				printForm(output,uri,item,true);
+				printForm(output,uri,item,collapsed);
 				output.write("</td></tr>\n");
 			}
 

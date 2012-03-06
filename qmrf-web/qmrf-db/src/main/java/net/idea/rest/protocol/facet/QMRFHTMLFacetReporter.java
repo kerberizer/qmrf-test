@@ -31,9 +31,9 @@ public class QMRFHTMLFacetReporter extends QMRFHTMLReporter<EndpointProtocolFace
 	@Override
 	protected void printTableHeader(Writer w) throws Exception {
 		try {
-			w.write("<div class='documentheader'>");
-			w.write("<div class='accordion'>");
-			
+			w.write("<h3>QMRF documents by endpoints</h3>");
+			w.write("<div class='protocol'>");
+			//w.write("<div class='tabs'>");
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
@@ -55,15 +55,15 @@ public class QMRFHTMLFacetReporter extends QMRFHTMLReporter<EndpointProtocolFace
 		try {
 			if ((endpoint==null) || !endpoint.equals(item.getProperty1().trim())) {
 				if (endpoint!=null) output.write("</div>");
-				output.write(String.format("<h3>%s</h3>","".equals(item.getProperty1())?"Undefined endpoint":item.getProperty1()));
+				output.write(String.format("<h4>%s</h4>","".equals(item.getProperty1())?"Undefined endpoint":item.getProperty1()));
 				endpoint = item.getProperty1().trim();
-				output.write("<div>");
+				output.write("<div class='summary'>");
 			}
 			
 			String d = uri.indexOf("?")>0?"&":"?";
 			output.write(String.format(
 						"<a href=\"%s%spage=0&pagesize=10\">%s&nbsp;%s</a>&nbsp;(%d)<br>",
-						uri,d,item.getProperty2(),item.getValue().toString(),
+						uri,d,item.getProperty2().trim(),item.getValue().toString().trim(),
 						item.getCount()));
 		} catch (Exception x) {
 			x.printStackTrace();
@@ -76,8 +76,9 @@ public class QMRFHTMLFacetReporter extends QMRFHTMLReporter<EndpointProtocolFace
 	public void footer(Writer w,
 			IQueryRetrieval<EndpointProtocolFacet> query) {
 		try {
+			w.write("<br>");
 			w.write("</div>");
-			w.write(String.format("</div>")); //accordion
+			//w.write(String.format("</div>")); //accordion
 			w.write("</div>");
 		} catch (Exception x) {}
 		super.footer(w, query);

@@ -381,6 +381,17 @@ div.structureright img {
 	FONT-SIZE: 8pt;
 }
 
+.summary A:active {
+	COLOR: #109DFF;
+	FONT-WEIGHT: bolder;
+	FONT-FAMILY: Verdana, Arial
+}
+
+.summary  A:hover {
+	COLOR: # #730FFF;
+	FONT-WEIGHT: bolder;
+	FONT-FAMILY: Verdana, Arial
+}
 .summary h3 {
 	font-weight: bold;
 	FONT-SIZE: 10pt;

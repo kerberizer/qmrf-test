@@ -5,6 +5,7 @@ import java.net.URL;
 import java.sql.Connection;
 import java.util.List;
 
+import net.idea.modbcum.i.IQueryObject;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.q.conditions.StringCondition;
@@ -20,6 +21,7 @@ import net.idea.rest.structure.resource.StructureResource;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.resource.UserDBResource;
+import net.idea.restnet.c.PageParams;
 import net.idea.restnet.c.RepresentationConvertor;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.task.CallableProtectedTask;
@@ -63,9 +65,9 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected boolean singleItem = false;
 	protected boolean version = false;
 	protected boolean editable = true;
+	protected boolean details = true;
 	protected Object structure;
-	protected Object endpoint;
-	protected Object author;
+
 	
 	
 	@Override
@@ -111,7 +113,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				};
 		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML))
 			return new OutputWriterConvertor(
-					new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null),
+					new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null,details),
 					MediaType.TEXT_HTML);				
 		else if (singleItem && (structure==null)) {
 			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType()),variant.getMediaType());		
@@ -156,6 +158,32 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		}
 	}
 	
+
+	@Override
+	protected void setPaging(Form form, IQueryObject queryObject) {
+		String max = form.getFirstValue(max_hits);
+		String page = form.getFirstValue(PageParams.params.page.toString());
+		String pageSize = form.getFirstValue(PageParams.params.pagesize.toString());
+		if (max != null)
+		try {
+			queryObject.setPage(0);
+			queryObject.setPageSize(Long.parseLong(form.getFirstValue(max_hits).toString()));
+			return;
+		} catch (Exception x) {
+			
+		}
+		try {
+			queryObject.setPage(Integer.parseInt(page));
+		} catch (Exception x) {
+			queryObject.setPageSize(0);
+		}
+		try {
+			queryObject.setPageSize(Long.parseLong(pageSize));
+		} catch (Exception x) {
+			queryObject.setPageSize(10);
+		}			
+	}
+	
 	@Override
 	protected Q createQuery(Context context, Request request, Response response)
 			throws ResourceException {
@@ -166,6 +194,12 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} catch (Exception x) {
 			search = null;
 		}		
+		details = true;
+		try {
+			details = Boolean.parseBoolean(form.getFirstValue("details").toString());
+		} catch (Exception x) {
+			details = true;
+		}				
 		Object modified = null;
 		try {
 			modified = form.getFirstValue("modifiedSince").toString();
