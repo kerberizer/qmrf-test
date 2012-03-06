@@ -11,7 +11,6 @@ import javax.xml.transform.dom.DOMSource;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
-import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.converters.QMRF_xml2html;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.groups.DBOrganisation;
@@ -40,7 +39,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected boolean paging = true;
 	protected GroupQueryURIReporter<IQueryRetrieval<IDBGroup>> groupReporter;
 	protected UserURIReporter<IQueryRetrieval<DBUser>> userReporter;
-
+	protected DocumentBuilder builder;
+	protected DocumentBuilderFactory factory;
+	protected QMRF_xml2html qhtml;
+	
 	public ProtocolQueryHTMLReporter() {
 		this(null,true,false,true);
 	}
@@ -80,7 +82,8 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 							
 			String uri = uriReporter.getURI(item);
 			
-			if (printAsTable()) 
+			if (printAsTable())
+				//printForm(output,uri,item,false);
 				printTable(output, uri,item);
 			else { 
 				//printForm(output,uri,item,false);
@@ -98,9 +101,22 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	@Override
 	protected void printTableHeader(Writer w) throws Exception {
 		w.write("<table width='100%'>\n");
-		w.write("<tr><th width='5%'>#</th><th width='10%'>QMRF number</th><th>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
-
+		w.write("<tr><th width='5%'>#</th><th width='10%'>QMRF number</th><th colspan='2'>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
 		
+	}
+	protected DOMSource getDOMSource(DBProtocol item) throws Exception {
+		  String xml = item.getAbstract().replace("&lt;html&gt;","").replace("&lt;/html&gt;","")
+   		.replace("&lt;body&gt;","").replace("&lt;/body&gt;","")
+   		.replace("&lt;head&gt;","").replace("&lt;/head&gt;","").replace("&#13;","\n")
+   		.replace("&lt;p style=\"margin-top: 0\"&gt;","").replace("&lt;/p&gt;","<br/>");
+		  if (factory==null) {
+			    factory = DocumentBuilderFactory.newInstance();
+		        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		        factory.setValidating(false);
+		  }
+		   if (builder==null) builder = factory.newDocumentBuilder();
+		   Document xmlDocument = builder.parse( new InputSource(new StringReader(xml)));
+		   return new DOMSource(xmlDocument);
 	}
 	protected void printHTML(Writer output, String uri, DBProtocol item, boolean hidden) throws Exception {
 		output.write(String.format("<div id='%s' class='documentheader' style='display: %s;''>",item.getIdentifier(),hidden?"none":""));
@@ -109,24 +125,68 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 						uri,ReadProtocol.fields.identifier.getValue(item),item.getTitle(),printDownloadLinks(uri)));
 		}
 		output.write("<div class='accordion'>");
-		QMRF_xml2html qhtml = new QMRF_xml2html();
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-        factory.setValidating(false);
-        DocumentBuilder builder = factory.newDocumentBuilder();
-        String xml = item.getAbstract().replace("&lt;html&gt;","").replace("&lt;/html&gt;","")
-        		.replace("&lt;body&gt;","").replace("&lt;/body&gt;","")
-        		.replace("&lt;head&gt;","").replace("&lt;/head&gt;","").replace("&#13;","\n")
-        		.replace("&lt;p style=\"margin-top: 0\"&gt;","").replace("&lt;/p&gt;","<br/>");
-        Document xmlDocument = builder.parse( new InputSource(new StringReader(xml)));
-        DOMSource source = new DOMSource(xmlDocument);
-        
-       // File xml = new File(url.getFile());
+		if (qhtml==null) qhtml = new QMRF_xml2html();
+        DOMSource source = getDOMSource(item);
         qhtml.xml2html(source,output);
 		output.write("</div>");
 
 		output.write("</div>");
 	}
+	
+	protected void printForm(Writer output, String uri, DBProtocol item, boolean hidden) {
+		String qmrf_number = "";
+		try {
+			qmrf_number = 	String.format(
+					"<div class='structureright'><a href='%s'>%s</a><br>%s\n</div>\n",
+					uri,
+					item.getIdentifier(),
+					printDownloadLinks(uri)
+					);
+			
+			if (qhtml==null) qhtml = new QMRF_xml2html();
+
+	        
+	        
+			output.write(String.format(
+			"<div id='%s' class='protocol'  style='display: %s;''>\n"+					
+			"<div class='tabs'>\n"+
+			"<ul>"+
+			//"<li><a href='#tabs-id'>%s</a></li>"+
+			"<li><a href='#tabs-3'>Endpoint</a></li>"+
+			"<li><a href='#tabs-4'>Algorithm</a></li>"+
+			"<li><a href='#tabs-5'>App. domain</a></li>"+
+			"<li><a href='#tabs-6'>Robustness</a></li>"+
+			"<li><a href='#tabs-7'>Predictivity</a></li>"+
+			"<li><a href='#tabs-8'>Interpretation</a></li>"+
+			"<li><a href='#tabs-9'>Misc</a></li>"+
+			"<li><a href='#tabs-dataset'>Download</a></li>"+
+			
+			"</ul>",item.getIdentifier(),hidden?"none":""));
+	
+			qhtml.xml2summary(getDOMSource(item),output);
+		
+		} catch (Exception x) {
+			x.printStackTrace();
+		} 
+		
+		try {
+		//	output.write("</div>");
+					
+			output.write(String.format(
+			"<div id='tabs-dataset'>"+
+			"%s<table>%s</table>\n"+
+			"</div>\n" + //tabs-qmrf
+			"</div>\n" + //tabs
+			"</div>\n", //protocol
+			qmrf_number,
+			"datasets"
+			)
+			);
+		} catch (Exception x) {
+			x.printStackTrace();
+		} 
+	}
+	/*
 	protected void printForm(Writer output, String uri, DBProtocol protocol, boolean editable) {
 		try {
 			ReadProtocol.fields[] fields = editable?ReadProtocol.entryFields:ReadProtocol.displayFields;
@@ -249,7 +309,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.flush();
 		} catch (Exception x) {x.printStackTrace();} 
 	}	
-	
+	*/
 	protected String printDownloadLinks(String uri) throws Exception {
 		StringBuilder b = new StringBuilder();
 		MediaType[] mimes = {
@@ -289,14 +349,15 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write("<tr bgcolor='FFFFFF'>\n");	
 			output.write(String.format("<td>%d.</td>",record+1 ));
 			output.write(String.format("<td width='15em'><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
-			output.write(String.format("<td>%s&nbsp;<a href=\"javascript:toggleDiv('%s');\" style=\"background-color: #fff; padding: 5px 10px;\">More</a></td>",item.getTitle(),item.getIdentifier()));
+			output.write(String.format("<td>%s</td><td>&nbsp;<a href=\"javascript:toggleDiv('%s');\" style=\"background-color: #fff; padding: 5px 10px;\">More</a></td>",item.getTitle(),item.getIdentifier()));
 			output.write(String.format("<td width='8em'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td width='50px'>%s</td>",printDownloadLinks(uri)));
 			output.write("</tr>\n");
 
 			if (collapsed) {
 				output.write("<tr bgcolor='FFFFFF'><td colspan='5'>\n");
-				printHTML(output, uri, item, true);
+				//printHTML(output, uri, item, true);
+				printForm(output,uri,item,true);
 				output.write("</td></tr>\n");
 			}
 
