@@ -14,8 +14,10 @@ import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.AttachmentURIReporter;
+import net.idea.rest.protocol.attachments.DBAttachment;
+import net.idea.rest.protocol.db.template.ReadFilePointers;
 import net.idea.rest.user.DBUser;
-import net.idea.rest.user.author.db.ReadAuthor;
 import net.idea.rest.user.resource.UserURIReporter;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.db.QueryURIReporter;
@@ -39,13 +41,16 @@ public class ProtocolRDFReporter<Q extends IQueryRetrieval<DBProtocol>> extends 
 	private static final long serialVersionUID = -8857789530109166243L;
 	protected ProtocolIO ioClass = new ProtocolIO();
 	protected GroupQueryURIReporter<IQueryRetrieval<IDBGroup>> groupReporter;
+	protected AttachmentURIReporter<IQueryRetrieval<DBAttachment>> attachmentReporter;
 	protected UserURIReporter<IQueryRetrieval<DBUser>> userReporter;
 	
 	public ProtocolRDFReporter(Request request,MediaType mediaType,ResourceDoc doc) {
 		super(request,mediaType,doc);
 		groupReporter = new GroupQueryURIReporter<IQueryRetrieval<IDBGroup>>(request);
+		attachmentReporter = new AttachmentURIReporter<IQueryRetrieval<DBAttachment>>(request);
 		userReporter = new UserURIReporter<IQueryRetrieval<DBUser>>(request);
 		getProcessors().clear();
+		/*
 		IQueryRetrieval<DBUser> queryP = new ReadAuthor(null,null); 
 		MasterDetailsProcessor<DBProtocol,DBUser,IQueryCondition> authersReader = new MasterDetailsProcessor<DBProtocol,DBUser,IQueryCondition>(queryP) {
 			@Override
@@ -58,6 +63,19 @@ public class ProtocolRDFReporter<Q extends IQueryRetrieval<DBProtocol>> extends 
 			}
 		};
 		getProcessors().add(authersReader);
+		*/
+		IQueryRetrieval<DBAttachment> queryP = new ReadFilePointers(null,null); 
+		MasterDetailsProcessor<DBProtocol,DBAttachment,IQueryCondition> authersReader = new MasterDetailsProcessor<DBProtocol,DBAttachment,IQueryCondition>(queryP) {
+			@Override
+			protected DBProtocol processDetail(DBProtocol target, DBAttachment detail)
+					throws Exception {
+				
+				detail.setResourceURL(new URL(attachmentReporter.getURI(detail)));
+				target.getAttachments().add(detail);
+				return target;
+			}
+		};
+		getProcessors().add(authersReader);		
 		processors.add(new DefaultAmbitProcessor<DBProtocol,DBProtocol>() {
 			@Override
 			public DBProtocol process(DBProtocol target) throws AmbitException {
@@ -99,8 +117,13 @@ public class ProtocolRDFReporter<Q extends IQueryRetrieval<DBProtocol>> extends 
 			output.setNsPrefix(item.getIdentifier(), String.format("%s/",uri));
 			item.setResourceURL(new URL(uri));
 			//no local file names should be serialized!
-			if (item.getDocument()!=null) item.getDocument().setResourceURL(new URL(String.format("%s%s",uri,Resources.document)));
-			if (item.getDataTemplate()!=null) item.getDataTemplate().setResourceURL(new URL(String.format("%s%s",uri,Resources.datatemplate)));
+			//if (item.getDocument()!=null) item.getDocument().setResourceURL(new URL(String.format("%s%s",uri,Resources.document)));
+			//if (item.getDataTemplate()!=null) item.getDataTemplate().setResourceURL(new URL(String.format("%s%s",uri,Resources.datatemplate)));
+			
+			for (DBAttachment attachment : item.getAttachments()) {
+				//attachment.setResourceURL(new URL(String.format("%s%s",uri,Resources.attachment)));
+				System.out.println(attachment.getResourceURL());
+			}
 			
 			ioClass.objectToJena(
 				getJenaModel(), // create a new class

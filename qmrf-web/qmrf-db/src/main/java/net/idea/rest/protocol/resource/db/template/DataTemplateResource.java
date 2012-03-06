@@ -2,24 +2,22 @@ package net.idea.rest.protocol.resource.db.template;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.sql.Connection;
 import java.util.List;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
-import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.template.ReadFilePointers;
 import net.idea.rest.protocol.resource.db.FileReporter;
-import net.idea.rest.protocol.resource.db.ProtocolDocumentResource;
+import net.idea.rest.protocol.resource.db.ProtocolAttachmentResource;
 import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.c.task.TaskCreator;
-import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.i.task.ITaskStorage;
@@ -37,7 +35,7 @@ import org.restlet.data.Status;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.resource.ResourceException;
 
-public class DataTemplateResource extends ProtocolDocumentResource {
+public class DataTemplateResource extends ProtocolAttachmentResource {
 
 	public DataTemplateResource() {
 		super(Resources.datatemplate);
@@ -51,9 +49,9 @@ public class DataTemplateResource extends ProtocolDocumentResource {
 	protected FileReporter createFileReporter() throws ResourceException {
 		return new FileReporter() {
 			@Override
-			public Object processItem(DBProtocol item) throws AmbitException {
+			public Object processItem(DBAttachment item) throws AmbitException {
 				try {
-					File file = new File(item.getDataTemplate().getResourceURL().toURI());
+					File file = new File(item.getResourceURL().toURI());
 					setOutput(new FileRepresentation(file,MediaType.TEXT_ALL));
 					return item;
 				} catch (URISyntaxException x) {
@@ -65,7 +63,7 @@ public class DataTemplateResource extends ProtocolDocumentResource {
 	
 
 	@Override
-	protected QueryURIReporter<DBProtocol, IQueryRetrieval<DBProtocol>> getURUReporter(
+	protected QueryURIReporter<DBAttachment, IQueryRetrieval<DBAttachment>> getURUReporter(
 			Request baseReference) throws ResourceException {
 		return new ProtocolQueryURIReporter(getRequest());
 	}
@@ -83,8 +81,8 @@ public class DataTemplateResource extends ProtocolDocumentResource {
 
 	@Override
 	protected CallableProtectedTask<String> createCallable(Method method,
-			List<FileItem> input, DBProtocol item) throws ResourceException {
-
+			List<FileItem> input, DBAttachment item) throws ResourceException {
+		/*
 		Connection conn = null;
 		try {
 			ProtocolQueryURIReporter r = new ProtocolQueryURIReporter(getRequest(),"");
@@ -113,16 +111,12 @@ public class DataTemplateResource extends ProtocolDocumentResource {
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
 		}
 
-		/*
-		Form form = new Form();
-		form.add(PageParams.params.resulturi.name(),String.format("%s/ProtocolMockup",getRequest().getResourceRef()));
-		form.add(PageParams.params.delay.name(),"1");
-		return new CallableMockup(form,getToken());
 		*/
+		return null;
 	}
 	
 	@Override
-	protected IQueryRetrieval<DBProtocol> createUpdateQuery(Method method,
+	protected IQueryRetrieval<DBAttachment> createUpdateQuery(Method method,
 			Context context, Request request, Response response)
 			throws ResourceException {
 		Object key = request.getAttributes().get(FileResource.resourceKey);
