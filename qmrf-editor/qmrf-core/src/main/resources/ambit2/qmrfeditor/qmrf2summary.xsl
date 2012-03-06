@@ -11,12 +11,7 @@
 </xsl:template>
 
 <xsl:template match="QMRF_chapters">
-   <div id='tabs-id'>
-   <div  class='summary'>
-   <h3><xsl:apply-templates select="QSAR_identifier"/></h3>
-   </div>
-   </div>
-   
+    
     <div id='tabs-3'>
     <div  class='summary'>
     	<xsl:apply-templates select="QSAR_Endpoint"/>	
@@ -41,12 +36,25 @@
     	<xsl:apply-templates select="QSAR_Robustness"/>	
     </div>
     </div>    
+    
+    <div id='tabs-7'>
+    <div  class='summary'>
+    	<xsl:apply-templates select="QSAR_Predictivity"/>	
+    </div>
+    </div>      
            
     <div id='tabs-8'>
     <div  class='summary'>
     	<xsl:apply-templates select="QSAR_Interpretation"/>	
     </div>
     </div>
+    
+    <div id='tabs-9'>
+    <div  class='summary'>
+    	<xsl:apply-templates select="QSAR_Miscelaneous"/>	
+    </div>
+    </div>
+        
 </xsl:template>
 
 <xsl:template match="QSAR_identifier">
@@ -60,26 +68,56 @@
 </xsl:template>
 <!-- 3. Endpoint  -->
 <xsl:template match="QSAR_Endpoint">
-  <div><label>Species</label>
+  <label><xsl:value-of select="@name" /></label>
+   <br/>
   <xsl:apply-templates select="model_species"/>
-  </div>
-  <div>
-  <label>Endpoint</label>
+   <br/>
   <xsl:apply-templates select="model_endpoint"/>
-  <br></br>	
-  <xsl:apply-templates select="endpoint_comments"/>	
-  </div>
+   <br/>
+  <xsl:apply-templates select="endpoint_comments"/>
+   <br/>
+  <xsl:apply-templates select="endpoint_units"/>
+   <br/>		
+  <xsl:apply-templates select="endpoint_variable"/>
+   <br/>
+  <xsl:apply-templates select="endpoint_protocol"/>
+   <br/>
+  <xsl:apply-templates select="endpoint_data_quality"/>		
 </xsl:template>
 
 <xsl:template match="model_species">
+  <label><xsl:value-of select="@name" /></label>
   <xsl:value-of select="."/>		
 </xsl:template>
 
 <xsl:template match="model_endpoint">
+  <label><xsl:value-of select="@name" /></label>
    <xsl:apply-templates select="endpoint_ref"/>
 </xsl:template>
 
+<xsl:template match="endpoint_units">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:value-of select="."/>		
+</xsl:template>
+
+
 <xsl:template match="endpoint_comments">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:value-of select="."/>		
+</xsl:template>
+
+<xsl:template match="endpoint_units">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:value-of select="."/>		
+</xsl:template>
+
+<xsl:template match="endpoint_protocol">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:value-of select="."/>		
+</xsl:template>
+
+<xsl:template match="endpoint_data_quality">
+  <label><xsl:value-of select="@name" /></label>
   <xsl:value-of select="."/>		
 </xsl:template>
 
@@ -88,6 +126,7 @@
   <label><xsl:value-of select="@name" /></label>
   <br/>
   <xsl:apply-templates select="algorithm_type"/>
+   <br/>
   <xsl:apply-templates select="descriptors_generation"/>
    
 </xsl:template>
@@ -140,8 +179,8 @@
   <xsl:apply-templates select="preprocessing"/>
   <xsl:apply-templates select="training_set_data"/>
    
-   
 </xsl:template>
+
 
 <xsl:template match="goodness_of_fit">
   <label><xsl:value-of select="@name" /></label>
@@ -186,6 +225,53 @@
   <br/>	
 </xsl:template>
 
+
+<!--  7. Predictivity -->
+
+<xsl:template match="QSAR_Predictivity ">
+  <label><xsl:value-of select="@name" /></label>
+  <br/>
+  <xsl:apply-templates select="experimental_design"/>
+  <xsl:apply-templates select="validation_predictivity "/>
+  <xsl:apply-templates select="validation_assessment"/>
+  <xsl:apply-templates select="validation_comments"/>
+  <xsl:apply-templates select="validation_other_info"/>
+  <xsl:apply-templates select="validation_set_data"/>
+
+   
+</xsl:template>
+
+<xsl:template match="validation_predictivity">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:value-of select="."/>	
+  <br/>	
+</xsl:template>
+
+<xsl:template match="validation_assessment">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:value-of select="."/>	
+  <br/>	
+</xsl:template>
+
+
+<xsl:template match="validation_comments">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:value-of select="."/>	
+  <br/>	
+</xsl:template>
+
+<xsl:template match="validation_other_info">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:value-of select="."/>	
+  <br/>	
+</xsl:template>
+
+<xsl:template match="experimental_design">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:value-of select="."/>	
+  <br/>	
+</xsl:template>
+
 <!-- 8. Interpretation -->
 
 <xsl:template match="QSAR_Interpretation">
@@ -210,6 +296,18 @@
 	<xsl:value-of select="id(@idref)/@name"/>
 </xsl:template>
 
+<!-- 9. Interpretation -->
+
+<xsl:template match="QSAR_Miscelaneous">
+  <label><xsl:value-of select="@name" /></label>
+  <xsl:apply-templates select="comments"/>
+</xsl:template>
+
+<xsl:template match="comments">
+  <xsl:value-of select="."/>		
+</xsl:template>
+
+<!--  -->
 
 <xsl:template match="training_set_data"> 
     <label><xsl:value-of select="training_set_availability/@name"/></label>
