@@ -385,12 +385,14 @@ div.structureright img {
 	COLOR: #109DFF;
 	FONT-WEIGHT: bolder;
 	FONT-FAMILY: Verdana, Arial
+	FONT-SIZE: 8pt;
 }
 
 .summary  A:hover {
 	COLOR: # #730FFF;
 	FONT-WEIGHT: bolder;
 	FONT-FAMILY: Verdana, Arial
+	FONT-SIZE: 8pt;
 }
 .summary h3 {
 	font-weight: bold;
@@ -401,6 +403,11 @@ div.structureright img {
 	FONT-SIZE: 8pt;
 }
 
+.summary table {
+	FONT-SIZE: 8pt;
+}
+
+
 .summary ul {
 	FONT-SIZE: 8pt;
 }
@@ -409,3 +416,4 @@ div.structureright img {
 .summary label {
 	font-weight: bold;
 }
+

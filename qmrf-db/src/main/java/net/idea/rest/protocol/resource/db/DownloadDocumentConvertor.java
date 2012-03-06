@@ -1,19 +1,21 @@
 package net.idea.rest.protocol.resource.db;
 
+import java.io.File;
+
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.r.QueryReporter;
-import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.restnet.db.convertors.AbstractObjectConvertor;
 
 import org.restlet.data.MediaType;
 import org.restlet.representation.FileRepresentation;
 import org.restlet.representation.Representation;
 
-public class DownloadDocumentConvertor extends   AbstractObjectConvertor<DBProtocol, IQueryRetrieval<DBProtocol>,FileRepresentation> {
+public class DownloadDocumentConvertor extends   AbstractObjectConvertor<DBAttachment, IQueryRetrieval<DBAttachment>,FileRepresentation> {
 
 	public DownloadDocumentConvertor(
-			QueryReporter<DBProtocol, IQueryRetrieval<DBProtocol>, FileRepresentation> reporter,MediaType media,String fileNamePrefix) {
+			QueryReporter<DBAttachment, IQueryRetrieval<DBAttachment>, FileRepresentation> reporter,MediaType media,String fileNamePrefix) {
 		super(reporter,media,fileNamePrefix);
 	}
 
@@ -22,16 +24,16 @@ public class DownloadDocumentConvertor extends   AbstractObjectConvertor<DBProto
 	 */
 	private static final long serialVersionUID = 1979008352251532084L;
 
-	/*
-	protected File getFile(DBProtocol protocol) throws Exception  {
-		return new File(protocol.getDocument().getResourceURL().toURI());
+	protected File getFile(DBAttachment item) throws Exception  {
+		return new File(item.getResourceURL().toURI());
 	}
 
-	public Representation process(DBProtocol protocol) throws AmbitException {
+	public Representation process(DBAttachment item) throws AmbitException {
+		System.out.println("Process");
 		try {
-			if (protocol==null) throw new AmbitException("No protocol!");
+			if (item==null) throw new AmbitException("No attachment!");
 
-			File file = getFile(protocol);
+			File file = getFile(item);
 			if (!file.exists()) throw new AmbitException("No file!");
 			return new FileRepresentation(file, MediaType.APPLICATION_PDF);
 			
@@ -43,9 +45,8 @@ public class DownloadDocumentConvertor extends   AbstractObjectConvertor<DBProto
 
 	}
 	
-	*/
 	@Override
-	protected FileRepresentation createOutput(IQueryRetrieval<DBProtocol> query)
+	protected FileRepresentation createOutput(IQueryRetrieval<DBAttachment> query)
 			throws AmbitException {
 		return null;
 	}

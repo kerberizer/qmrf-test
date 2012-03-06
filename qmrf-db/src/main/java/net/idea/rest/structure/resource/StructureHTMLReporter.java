@@ -117,20 +117,20 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			"</ul>"+
 			"<div id='tabs-id'>"+
 			"%s\n"+ //structure
-			"<table>\n"+ 
+			"<span class='summary'><table>\n"+ 
 			"<tr><th width='10%%'>CAS</th><td>%s</td></tr>"+
 			"<tr><th>Name</th><td>%s</td></tr>"+
 			"<tr><th>SMILES</th><td>%s</td></tr>"+
 			"<tr><th>InChI</th><td>%s</td></tr>"+
 			"<tr><th>InChI Key</th><td>%s</td></tr>"+
 			"<tr><th></th><td>%s</td></tr>"+
-			"</table>"+
+			"</table></span>"+
 			"</div>"+
 			"<div id='tabs-prop'>"+
-			"%s<table>%s</table>\n"+
+			"%s<span class='summary'><table>%s</table></span>\n"+
 			"</div>"+
 			"<div id='tabs-qmrf'>"+
-			"%s<table>%s</table>\n"+
+			"%s<span class='summary'><table>%s</table></span>\n"+
 			"</div>\n" + //tabs-qmrf
 			"</div>\n" + //tabs
 			"</div>\n", //protocol

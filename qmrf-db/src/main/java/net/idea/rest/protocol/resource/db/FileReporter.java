@@ -7,12 +7,13 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.r.QueryReporter;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.DBAttachment;
 
 import org.restlet.data.MediaType;
 import org.restlet.representation.FileRepresentation;
 
 
-public class FileReporter extends QueryReporter<DBProtocol, IQueryRetrieval<DBProtocol>, FileRepresentation> {
+public class FileReporter extends QueryReporter<DBAttachment, IQueryRetrieval<DBAttachment>, FileRepresentation> {
 
 	/**
 	 * 
@@ -25,21 +26,23 @@ public class FileReporter extends QueryReporter<DBProtocol, IQueryRetrieval<DBPr
 	
 	@Override
 	public void header(FileRepresentation output,
-			IQueryRetrieval<DBProtocol> query) {
+			IQueryRetrieval<DBAttachment> query) {
 	}
 
 	@Override
 	public void footer(FileRepresentation output,
-			IQueryRetrieval<DBProtocol> query) {
+			IQueryRetrieval<DBAttachment> query) {
 	}
 
 	@Override
-	public Object processItem(DBProtocol item) throws AmbitException {
+	public Object processItem(DBAttachment item) throws AmbitException {
 		try {
-			File file = new File(item.getDocument().getResourceURL().toURI());
-			setOutput(new FileRepresentation(file, new MediaType(item.getDocument().getMediaType())));
+			System.out.println(item.getResourceURL().getFile());
+			File file = new File(item.getResourceURL().toURI());
+			setOutput(new FileRepresentation(file, new MediaType(item.getMediaType())));
 			return item;
 		} catch (URISyntaxException x) {
+			x.printStackTrace();
 			throw new AmbitException(x);
 		}
 	}

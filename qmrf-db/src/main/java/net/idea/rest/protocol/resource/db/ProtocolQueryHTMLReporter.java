@@ -9,8 +9,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMSource;
 
+import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.modbcum.p.DefaultAmbitProcessor;
+import net.idea.modbcum.p.MasterDetailsProcessor;
+import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.converters.QMRF_xml2html;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.groups.DBOrganisation;
@@ -18,7 +22,10 @@ import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.AttachmentURIReporter;
+import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.rest.protocol.db.template.ReadFilePointers;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserURIReporter;
 import net.idea.restnet.c.ResourceDoc;
@@ -40,6 +47,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected boolean details = true;
 	protected GroupQueryURIReporter<IQueryRetrieval<IDBGroup>> groupReporter;
 	protected UserURIReporter<IQueryRetrieval<DBUser>> userReporter;
+	protected AttachmentURIReporter<IQueryRetrieval<DBAttachment>> attachmentReporter;
 	protected DocumentBuilder builder;
 	protected DocumentBuilderFactory factory;
 	protected QMRF_xml2html qhtml;
@@ -54,8 +62,43 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		userReporter = new UserURIReporter<IQueryRetrieval<DBUser>>(request);
 		this.paging = !collapsed?false:paging;
 		this.details = !collapsed?true:details;
-		
-	}
+
+		attachmentReporter = new AttachmentURIReporter<IQueryRetrieval<DBAttachment>>(request);
+		getProcessors().clear();
+		/*
+		IQueryRetrieval<DBUser> queryP = new ReadAuthor(null,null); 
+		MasterDetailsProcessor<DBProtocol,DBUser,IQueryCondition> authersReader = new MasterDetailsProcessor<DBProtocol,DBUser,IQueryCondition>(queryP) {
+			@Override
+			protected DBProtocol processDetail(DBProtocol target, DBUser detail)
+					throws Exception {
+
+				detail.setResourceURL(new URL(userReporter.getURI(detail)));
+				target.addAuthor(detail);
+				return target;
+			}
+		};
+		getProcessors().add(authersReader);
+		*/
+		IQueryRetrieval<DBAttachment> queryP = new ReadFilePointers(null,null); 
+		MasterDetailsProcessor<DBProtocol,DBAttachment,IQueryCondition> authersReader = new MasterDetailsProcessor<DBProtocol,DBAttachment,IQueryCondition>(queryP) {
+			@Override
+			protected DBProtocol processDetail(DBProtocol target, DBAttachment detail)
+					throws Exception {
+				
+				detail.setResourceURL(new URL(attachmentReporter.getURI(detail)));
+				target.getAttachments().add(detail);
+				return target;
+			}
+		};
+		getProcessors().add(authersReader);		
+		processors.add(new DefaultAmbitProcessor<DBProtocol,DBProtocol>() {
+			@Override
+			public DBProtocol process(DBProtocol target) throws AmbitException {
+				processItem(target);
+				return target;
+			};
+		});				
+	}	
 	@Override
 	protected boolean printAsTable() {
 		return true;//collapsed;
@@ -165,7 +208,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			"<li><a href='#tabs-7'>Predictivity</a></li>"+
 			"<li><a href='#tabs-8'>Interpretation</a></li>"+
 			"<li><a href='#tabs-9'>Misc</a></li>"+
-			"<li><a href='#tabs-dataset'>Download</a></li>"+
+			"<li><a href='#tabs-dataset'>Attachments</a></li>"+
 			"</ul>"));
 	
 			qhtml.xml2summary(getDOMSource(item),output);
@@ -173,18 +216,41 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		} catch (Exception x) {
 			x.printStackTrace();
 		} 
-		
+		StringBuilder datasets = new StringBuilder();
+		if (item.getAttachments().size()>0)
+			for (DBAttachment attachment: item.getAttachments()) {
+				datasets.append("<tr>");
+				datasets.append(String.format("<th width='20%%'>%s</th>", attachment.getType()));
+				datasets.append(String.format("<td><a href='%s?media=%s' target='_attachment' title='%s %s'>%s</a></td>",
+							attachmentReporter.getURI(attachment),
+							Reference.encode(attachment.getMediaType()),
+							attachment.getTitle(),attachment.getMediaType(),
+							attachment.getDescription())
+							);
+				switch (attachment.getType()) {
+				case document: {
+					datasets.append("<td width='20%%'></td>");
+					break;
+				}
+				default: {
+					datasets.append(String.format("<td width='20%%'><a href='%s%s?option=dataset&search=%s' target='_structure'>View structures</a></td>",
+								uriReporter.getBaseReference(),Resources.structure,Reference.encode(attachment.getTitle().trim())));
+					break;
+				}
+				}
+				//datasets.append(String.format("<td>%s</td>",attachment.getMediaType()));
+				datasets.append("</tr>");
+			}
+		else datasets.append("N/A");
 		try {
-		//	output.write("</div>");
-					
+
 			output.write(String.format(
 			"<div id='tabs-dataset'>"+
-			"%s<table>%s</table>\n"+
+			"<span class='summary'><table width='100%%'>%s</table></span>\n"+
 			"</div>\n" + //tabs-qmrf
 			"</div>\n" + //tabs
 			"</div>\n", //protocol
-			qmrf_number,
-			"datasets"
+			datasets
 			)
 			);
 		} catch (Exception x) {

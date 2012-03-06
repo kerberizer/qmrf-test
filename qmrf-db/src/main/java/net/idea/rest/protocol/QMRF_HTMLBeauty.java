@@ -204,7 +204,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 				return
 			   String.format(		
-			   "<div class='search'>\n"+
+			   "<div class='search' class='jbutton'>\n"+
 			   "%s\n"+
 			   "<form method='GET' action='%s%s?pagesize=10'>\n"+
 			   "<table width='200px'>\n"+

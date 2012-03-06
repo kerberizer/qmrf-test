@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 
 import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.db.template.ReadFilePointers;
 
 
@@ -19,11 +20,11 @@ public class ReadDataTemplateTest  extends QueryTest<ReadFilePointers> {
 	protected void verify(ReadFilePointers query, ResultSet rs) throws Exception {
 		int records = 0;
 		while (rs.next()) {
-			DBProtocol protocol = query.getObject(rs);
-			Assert.assertEquals(1,protocol.getID());
-			Assert.assertNotNull(protocol.getDataTemplate().getResourceURL());
+			DBAttachment attachment = query.getObject(rs);
+			Assert.assertEquals(1,attachment.getID());
+			Assert.assertNotNull(attachment.getResourceURL());
 			
-			Assert.assertEquals("http://example.com/protocol/P1/dataTemplate",protocol.getDataTemplate().getResourceURL().toString());
+			Assert.assertTrue(attachment.getResourceURL().toString().startsWith("http://example.com/protocol/P1/attachment/"));
 			records++;
 		}
 		Assert.assertEquals(1,records);
