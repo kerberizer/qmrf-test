@@ -51,7 +51,9 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		this.editable = editable;
 	}
 	
-
+	protected void printUploadForm(Writer output, String uri, T item) {
+		
+	}
 	@Override
 	public void header(Writer w, Q query) {
 		if (!headless)
@@ -67,7 +69,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 			if (editable) {
 					w.write("<div class='protocol'><table>\n");
 					w.write(String.format("<h3>Add new %s %s</h3>",getTitle(),uri.toString().contains("versions")?"version":""));
-					printForm(output,uri.toString(),null,true);
+					printUploadForm(output,uri.toString(),null);
 					output.write(
 							"<tr><td></td><td><input type='submit' enabled='false' value='Submit'></td></tr>"
 							);
