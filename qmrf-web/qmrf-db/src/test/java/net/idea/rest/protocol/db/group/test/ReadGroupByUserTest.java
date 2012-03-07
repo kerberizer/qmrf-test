@@ -1,10 +1,11 @@
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.group.test;
 
 import java.sql.ResultSet;
 
 import junit.framework.Assert;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.db.ReadOrganisation;
+import net.idea.rest.protocol.db.test.QueryTest;
 import net.idea.rest.user.DBUser;
 
 
@@ -12,7 +13,7 @@ public class ReadGroupByUserTest extends QueryTest<ReadOrganisation> {
 	@Override
 	protected ReadOrganisation createQuery() throws Exception {
 		DBOrganisation p = new DBOrganisation();
-		DBUser user = new DBUser(1);
+		DBUser user = new DBUser(88);
 		ReadOrganisation q = new ReadOrganisation(p);
 		q.setFieldname(user);
 		return q;
@@ -23,7 +24,7 @@ public class ReadGroupByUserTest extends QueryTest<ReadOrganisation> {
 		int records = 0;
 		while (rs.next()) {
 			DBOrganisation group = query.getObject(rs);
-			Assert.assertEquals(2,group.getID());
+			Assert.assertEquals(1,group.getID());
 			records++;
 		}
 		Assert.assertEquals(1,records);

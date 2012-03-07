@@ -1,4 +1,4 @@
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.group.test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.user.db.AddGroupsPerUser;
 import net.idea.rest.groups.user.db.DeleteGroupsPerUser;
+import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.user.DBUser;
 
 import org.dbunit.database.IDatabaseConnection;
@@ -38,9 +39,9 @@ public class Group_user_crud_test  extends CRUDTest<DBUser,List<IDBGroup>> {
 	@Override
 	protected IQueryUpdate<DBUser, List<IDBGroup>> deleteQuery()
 			throws Exception {
-		DBUser ref = new DBUser(1);
+		DBUser ref = new DBUser(3);
 		List<IDBGroup> p = new ArrayList<IDBGroup>();
-		p.add(new DBProject(1));
+		p.add(new DBProject(3));
 		DeleteGroupsPerUser q = new DeleteGroupsPerUser();
 		q.setGroup(ref);
 		q.setObject(p);

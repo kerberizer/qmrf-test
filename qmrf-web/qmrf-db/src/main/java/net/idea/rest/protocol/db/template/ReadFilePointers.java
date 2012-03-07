@@ -30,6 +30,19 @@ public class ReadFilePointers extends AbstractQuery<DBProtocol, DBAttachment, EQ
 		"SELECT idprotocol,version,idattachment,type,a.name,`format`,description FROM qmrf.attachments a where %s";
 	protected static String where_protocol = "idprotocol=? and version=?";
 	protected static String where_attachment = "idattachment=?";
+	
+	/**
+	 * get datasets by structure
+SELECT * FROM attachments a, `ambit2-qmrf`.src_dataset d
+join `ambit2-qmrf`.struc_dataset using(id_srcdataset)
+join `ambit2-qmrf`.structure using(idstructure)
+where a.name=d.name
+and idchemical=282
+	 */
+	/**
+	 * 
+	 * @param protocol
+	 */
 	public ReadFilePointers(DBProtocol protocol) {
 		super();
 		setFieldname(protocol);

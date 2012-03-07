@@ -73,7 +73,7 @@ public abstract class DbUnitTest {
 	protected String getDatabase() {
 		loadProperties();
 		String p = properties.getProperty("database.test");
-		return (p==null)||("${qmrf.db}".equals(p))?"tb-test":p;
+		return (p==null)||("${qmrf.db}".equals(p))?"qmrf-test":p;
 	}
 	protected String getPort() {
 		loadProperties();

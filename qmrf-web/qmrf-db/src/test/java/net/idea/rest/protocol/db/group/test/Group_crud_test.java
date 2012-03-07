@@ -1,4 +1,4 @@
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.group.test;
 
 import junit.framework.Assert;
 import net.idea.modbcum.i.query.IQueryUpdate;
@@ -7,6 +7,7 @@ import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.db.CreateGroup;
 import net.idea.rest.groups.db.DeleteGroup;
 import net.idea.rest.groups.db.UpdateGroup;
+import net.idea.rest.protocol.db.test.CRUDTest;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
@@ -38,7 +39,7 @@ public class Group_crud_test  extends CRUDTest<Object,IDBGroup>  {
 	@Override
 	protected IQueryUpdate<Object,IDBGroup> deleteQuery() throws Exception {
 		DBProject ref = new DBProject();
-		ref.setID(3);
+		ref.setID(2);
 		return new DeleteGroup(ref);
 	}
 
@@ -46,7 +47,7 @@ public class Group_crud_test  extends CRUDTest<Object,IDBGroup>  {
 	protected void deleteVerify(IQueryUpdate<Object,IDBGroup> query)
 			throws Exception {
         IDatabaseConnection c = getConnection();	
-		ITable table = 	c.createQueryTable("EXPECTED","SELECT idproject FROM project where idproject=3");
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT idproject FROM project where idproject=2");
 		Assert.assertEquals(0,table.getRowCount());
 		c.close();
 		

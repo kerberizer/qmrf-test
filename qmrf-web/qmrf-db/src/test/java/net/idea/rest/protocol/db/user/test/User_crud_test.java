@@ -27,10 +27,11 @@
  * 
  */
 
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.user.test;
 
 import junit.framework.Assert;
 import net.idea.modbcum.i.query.IQueryUpdate;
+import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.CreateUser;
 import net.idea.rest.user.db.DeleteUser;
@@ -63,7 +64,7 @@ public final class User_crud_test  extends CRUDTest<Object,DBUser>  {
 
 	@Override
 	protected IQueryUpdate<Object,DBUser> deleteQuery() throws Exception {
-		DBUser ref = new DBUser(3);
+		DBUser ref = new DBUser(4);
 		return new DeleteUser(ref);
 	}
 
@@ -71,7 +72,7 @@ public final class User_crud_test  extends CRUDTest<Object,DBUser>  {
 	protected void deleteVerify(IQueryUpdate<Object,DBUser> query)
 			throws Exception {
         IDatabaseConnection c = getConnection();	
-		ITable table = 	c.createQueryTable("EXPECTED","SELECT iduser FROM user where iduser=3");
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT iduser FROM user where iduser=4");
 		Assert.assertEquals(0,table.getRowCount());
 		c.close();
 		

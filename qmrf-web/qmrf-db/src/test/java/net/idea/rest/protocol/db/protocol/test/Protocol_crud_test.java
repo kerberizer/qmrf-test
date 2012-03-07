@@ -27,7 +27,7 @@
  * 
  */
 
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.protocol.test;
 
 import java.net.URL;
 
@@ -39,6 +39,7 @@ import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.CreateProtocol;
 import net.idea.rest.protocol.db.DeleteProtocol;
 import net.idea.rest.protocol.db.UpdateProtocol;
+import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.author.db.AddAuthors;
 import net.toxbank.client.resource.Document;
@@ -53,7 +54,7 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 	@Override
 	protected IQueryUpdate<Object,DBProtocol> createQuery() throws Exception {
 		DBProtocol ref = new DBProtocol();
-		ref.setID(1);
+		ref.setID(2);
 		ref.setVersion(1);
 		ref.setAbstract("My abstract");
 		ref.setPublished(true);
@@ -75,7 +76,7 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 			throws Exception {
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED",
-				String.format("SELECT idprotocol,version,published,abstract FROM protocol where idprotocol=1 and version=1"));
+				String.format("SELECT idprotocol,version,published,abstract FROM protocol where idprotocol=2 and version=1"));
 		
 		Assert.assertEquals(1,table.getRowCount());
 		Assert.assertEquals(Boolean.TRUE,table.getValue(0,"published"));
@@ -104,9 +105,9 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 	 */
 	@Override
 	protected IQueryUpdate<Object,DBProtocol> updateQuery() throws Exception {
-		DBProtocol ref = new DBProtocol(1,1);
-		ref.addAuthor(new DBUser(1));
-		ref.addAuthor(new DBUser(2));
+		DBProtocol ref = new DBProtocol(2,1);
+		ref.addAuthor(new DBUser(3));
+		ref.addAuthor(new DBUser(10));
 
 		return new AddAuthors(ref);
 	}
@@ -115,7 +116,7 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 	protected void updateVerify(IQueryUpdate<Object,DBProtocol> query)
 			throws Exception {
         IDatabaseConnection c = getConnection();	
-		ITable table = 	c.createQueryTable("EXPECTED","SELECT idprotocol,version,iduser FROM protocol_authors where idprotocol=1");
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT idprotocol,version,iduser FROM protocol_authors where idprotocol=2");
 		Assert.assertEquals(2,table.getRowCount());
 		c.close();
 	}
@@ -129,7 +130,7 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 		ref.setTitle("title");
 		ref.setAbstract("abstract");
 		DBUser user = new DBUser();
-		user.setID(1);
+		user.setID(3);
 		ref.setOwner(user);
 		ref.setProject(new DBProject(1));	
 		ref.setOrganisation(new DBOrganisation(1));
@@ -145,7 +146,7 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 			throws Exception {
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED",
-				String.format("SELECT idprotocol,summarySearchable,status FROM protocol where title='title' and abstract='abstract' and iduser='1' and idproject=1 and idorganisation=1 and filename='%s'",file));
+				String.format("SELECT idprotocol,summarySearchable,status FROM protocol where title='title' and abstract='abstract' and iduser='3' and idproject=1 and idorganisation=1 and filename='%s'",file));
 		
 		Assert.assertEquals(1,table.getRowCount());
 		Assert.assertEquals(Boolean.TRUE,table.getValue(0,"summarySearchable"));

@@ -1,10 +1,11 @@
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.protocol.test;
 
 import java.sql.ResultSet;
 
 import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.rest.protocol.db.test.QueryTest;
 import net.idea.rest.user.DBUser;
 
 
@@ -13,7 +14,7 @@ public class ReadProtocolByUserTest extends QueryTest<ReadProtocol> {
 	@Override
 	protected ReadProtocol createQuery() throws Exception {
 		ReadProtocol q = new ReadProtocol();
-		q.setFieldname(new DBUser(2));
+		q.setFieldname(new DBUser(10));
 		return q;
 	}
 

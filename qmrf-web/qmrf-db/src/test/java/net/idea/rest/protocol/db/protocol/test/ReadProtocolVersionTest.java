@@ -1,17 +1,20 @@
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.protocol.test;
 
 import java.sql.ResultSet;
 
 import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.rest.protocol.db.ReadProtocolVersions;
+import net.idea.rest.protocol.db.test.QueryTest;
 
 
-public class ReadProtocolTest extends QueryTest<ReadProtocol> {
+public class ReadProtocolVersionTest extends QueryTest<ReadProtocol> {
+
 
 	@Override
 	protected ReadProtocol createQuery() throws Exception {
-		return new ReadProtocol(2,1);
+		return new ReadProtocolVersions(2);
 	}
 
 	@Override
@@ -26,7 +29,7 @@ public class ReadProtocolTest extends QueryTest<ReadProtocol> {
 			//Assert.assertNotNull(protocol.getOwner().getFirstname());
 			records++;
 		}
-		Assert.assertEquals(1,records);
+		Assert.assertEquals(2,records);
 		
 	}
 
