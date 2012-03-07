@@ -191,7 +191,6 @@ CREATE PROCEDURE createProtocolVersion(
                 IN version_id INT,
                 IN title_new VARCHAR(255),
                 IN abstract_new TEXT,
-                IN filename_new TEXT,
                 OUT version_new INT)
 begin
     DECLARE no_more_rows BOOLEAN;
@@ -211,7 +210,7 @@ begin
     select version_new;
   	-- create new version
     insert into protocol (idprotocol,version,title,abstract,iduser,summarySearchable,idproject,idorganisation,filename,status,created)
-    select idprotocol,version_new,title_new,abstract_new,iduser,summarySearchable,idproject,idorganisation,filename_new,status,now() 
+    select idprotocol,version_new,title_new,abstract_new,iduser,summarySearchable,idproject,idorganisation,null,status,now() 
     from protocol where idprotocol=protocol_id and version=version_id;
    	-- copy authors
     -- insert into protocol_authors

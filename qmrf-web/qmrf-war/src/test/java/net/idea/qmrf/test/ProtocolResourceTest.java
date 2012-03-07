@@ -183,11 +183,11 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 		IDatabaseConnection c = getConnection();
 		ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM protocol");
-		Assert.assertEquals(3, table.getRowCount());
+		Assert.assertEquals(5, table.getRowCount());
 		table = c
 				.createQueryTable(
 						"EXPECTED",
-						"SELECT p.idprotocol,p.version,published from protocol p where p.idprotocol=2 and version=1");
+						"SELECT p.idprotocol,p.version,published from protocol p where p.idprotocol=2 and version=2");
 		Assert.assertEquals(1, table.getRowCount());
 		Assert.assertEquals(Boolean.TRUE, table.getValue(0, "published"));
 
@@ -196,22 +196,22 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 	@Test
 	public void testCreateVersionEntryFromMultipartWeb() throws Exception {
-		String url = createEntryFromMultipartWeb(new Reference(getTestURI()
-				+ Resources.versions));
+		String url = createEntryFromMultipartWeb(new Reference(getTestURI()	+ Resources.versions));
 		IDatabaseConnection c = getConnection();
 		ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM protocol");
-		Assert.assertEquals(4, table.getRowCount());
+		Assert.assertEquals(6, table.getRowCount());
 		table = c
 				.createQueryTable(
 						"EXPECTED",
-						"SELECT p.idprotocol,p.version,filename from protocol p where p.idprotocol=1 order by version");
-		Assert.assertEquals(2, table.getRowCount());
+						"SELECT p.idprotocol,p.version,filename,title,abstract from protocol p where p.idprotocol=2 order by version");
+		Assert.assertEquals(3, table.getRowCount());
 		Assert.assertEquals(new BigInteger("1"), table.getValue(0, "version"));
 		Assert.assertEquals(new BigInteger("2"), table.getValue(1, "version"));
-		File f = new File(new URI(table.getValue(1, "filename").toString()));
+		Assert.assertEquals(new BigInteger("3"), table.getValue(2, "version"));
 		Assert.assertNotSame(getTestURI(), url);
-		Assert.assertTrue(f.exists());
-		f.delete();
+		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(2, "title"));
+		Assert.assertNotNull(table.getValue(2, "abstract"));
+
 		c.close();
 	}
 
@@ -225,21 +225,18 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 		IDatabaseConnection c = getConnection();
 		ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM protocol");
-		Assert.assertEquals(4, table.getRowCount());
+		Assert.assertEquals(6, table.getRowCount());
 		table = c
 				.createQueryTable(
 						"EXPECTED",
-						"SELECT p.idprotocol,p.version,filename,pa.iduser,status from protocol p join protocol_authors pa where pa.idprotocol=p.idprotocol and p.version=pa.version and p.idprotocol>2 order by pa.iduser");
+						"SELECT abstract,p.idprotocol,p.version,filename,pa.iduser,status,title,abstract from protocol p join protocol_authors pa where pa.idprotocol=p.idprotocol and p.version=pa.version and p.idprotocol>121 order by pa.iduser");
 		Assert.assertEquals(2, table.getRowCount());
 		Assert.assertEquals(new BigInteger("1"), table.getValue(0, "version"));
-		Assert.assertEquals(new BigInteger("1"), table.getValue(0, "iduser"));
-		Assert.assertEquals(new BigInteger("2"), table.getValue(1, "iduser"));
-		Assert.assertEquals(STATUS.SOP.toString(), table.getValue(0, "status"));
-
-		File f = new File(new URI(table.getValue(0, "filename").toString()));
-		// System.out.println(f);
-		Assert.assertTrue(f.exists());
-		f.delete();
+		Assert.assertEquals(new BigInteger("3"), table.getValue(0, "iduser"));
+		Assert.assertEquals(new BigInteger("88"), table.getValue(1, "iduser"));
+		Assert.assertEquals(STATUS.RESEARCH.toString(), table.getValue(0, "status"));
+		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(0, "title"));
+		Assert.assertNotNull(table.getValue(1, "abstract"));
 		c.close();
 	}
 
@@ -250,7 +247,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 	public String createEntryFromMultipartWeb(Reference uri, Method method)
 			throws Exception {
 		URL url = getClass().getClassLoader().getResource(
-				"net/idea/qmrf/protocol-sample.pdf");
+				"net/idea/qmrf/QMRF-NEW.xml");
 		File file = new File(url.getFile());
 
 		String[] names = new String[ReadProtocol.fields.values().length];
@@ -274,17 +271,17 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 			}
 			case organisation_uri: {
 				values[i] = String.format("http://localhost:%d%s/%s", port,
-						Resources.organisation, "G2");
+						Resources.organisation, "G1");
 				break;
 			}
 			case user_uri: {
 				values[i] = String.format("http://localhost:%d%s/%s", port,
-						Resources.user, "U1");
+						Resources.user, "U88");
 				break;
 			}
 			case author_uri: {
 				values[i] = String.format("http://localhost:%d%s/%s", port,
-						Resources.user, "U2");
+						Resources.user, "U88");
 				break;
 			}
 			case allowReadByGroup: {
@@ -294,19 +291,23 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 			}
 			case allowReadByUser: {
 				values[i] = String.format("http://localhost:%d%s/%s", port,
-						Resources.user, "U2");
+						Resources.user, "U3");
 				break;
 			}
 			case status: {
-				values[i] = STATUS.SOP.toString();
+				values[i] = STATUS.RESEARCH.toString();
 				break;
 			}
 			case anabstract: {
-				values[i] = "My abstract\u2122";
+				values[i] = null;
 				break;
 			}
 			case published: {
 				values[i] = Boolean.TRUE.toString();
+				break;
+			}
+			case title: {
+				values[i] = null;
 				break;
 			}
 			default: {
@@ -319,7 +320,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		}
 		// yet another author
 		values[i] = String.format("http://localhost:%d%s/%s", port,
-				Resources.user, "U1");
+				Resources.user, "U3");
 		names[i] = ReadProtocol.fields.author_uri.name();
 		values[i + 1] = null;
 		names[i + 1] = ReadProtocol.fields.author_uri.name();
@@ -328,7 +329,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 		IDatabaseConnection c = getConnection();
 		ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM protocol");
-		Assert.assertEquals(3, table.getRowCount());
+		Assert.assertEquals(5, table.getRowCount());
 		c.close();
 
 		RemoteTask task = testAsyncPoll(uri, MediaType.TEXT_URI_LIST, rep,

@@ -1,16 +1,19 @@
 package net.idea.rest.protocol;
 
 import java.io.File;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
+import net.idea.ambit.qmrf.QMRFObject;
+import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
+import net.idea.qmrf.converters.QMRFConverter;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.user.DBUser;
 import net.toxbank.client.policy.AccessRights;
-import net.toxbank.client.resource.Document;
 import net.toxbank.client.resource.Organisation;
 import net.toxbank.client.resource.Project;
 import net.toxbank.client.resource.Protocol;
@@ -56,15 +59,18 @@ public class ProtocolFactory {
 					} catch (Exception x) { protocol.setPublished(true);}
 					break;
 				}
+				/*
 				case anabstract: {
 					String s = fi.getString(utf8);
 					if ((s!=null) && !"".equals(s))
 					protocol.setAbstract(s);
 					break;
 				}
+				*/
 				case filename: {
 					if (fi.isFormField()) {
-						protocol.setDocument(new Document(new URL(fi.getString(utf8))));
+						protocol.setAbstract(fi.getString(utf8));
+						//protocol.setDocument(new Document(new URL(fi.getString(utf8))));
 					} else {	
 						if (fi.getSize()==0)  throw new ResourceException(new Status(Status.CLIENT_ERROR_BAD_REQUEST,"Empty file!"));
 						File file = null;
@@ -79,9 +85,18 @@ public class ProtocolFactory {
 				            				dir==null?System.getProperty("java.io.tmpdir"):dir,
 				            				fi.getName()));
 				        }
-				        fi.write(file);
-				        protocol.setDocument(new Document(file.toURI().toURL()));		
+				        protocol.setAbstract(fi.getString(utf8));
+				    	QMRFObject qmrf = new QMRFObject();
+						qmrf.read(new StringReader(protocol.getAbstract()));
+						protocol.setTitle(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(0).getSubchapters().getItem(0)).getText()));
+						protocol.setIdentifier(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(0)).getText()));
+						String keywords = QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(2)).getText());
+						String[] keyword = keywords.split(",");
+						for (String key:keyword) protocol.addKeyword(key);
+						qmrf.getCatalogs();
 					}
+					
+					protocol.setDocument(null);
 			        break;
 				}
 				case template: {

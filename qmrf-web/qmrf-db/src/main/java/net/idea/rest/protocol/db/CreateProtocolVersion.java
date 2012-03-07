@@ -18,9 +18,9 @@ public class CreateProtocolVersion  extends AbstractObjectUpdate<DBProtocol> imp
 			ReadProtocol.fields.version,
 			ReadProtocol.fields.title,
 			ReadProtocol.fields.anabstract,
-			ReadProtocol.fields.filename
+		//	ReadProtocol.fields.filename
 	};
-	protected String[] create_sql = {"{CALL createProtocolVersion(?,?,?,?,?,?)}"};
+	protected String[] create_sql = {"{CALL createProtocolVersion(?,?,?,?,?)}"};
 
 	public CreateProtocolVersion(DBProtocol ref) {
 		super(ref);
@@ -33,8 +33,10 @@ public class CreateProtocolVersion  extends AbstractObjectUpdate<DBProtocol> imp
 		
 		List<QueryParam> params1 = new ArrayList<QueryParam>();
 
-		for (ReadProtocol.fields field: f) 
-			params1.add(field.getParam(getObject()));
+		params1.add(ReadProtocol.fields.idprotocol.getParam(getObject()));
+		params1.add(ReadProtocol.fields.version.getParam(getObject()));
+		params1.add(ReadProtocol.fields.title.getParam(getObject()));
+		params1.add(ReadProtocol.fields.anabstract.getParam(getObject()));
 		
 		params1.add(new QueryParam<Integer>(Integer.class, -1));
 		
