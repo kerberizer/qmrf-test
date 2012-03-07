@@ -97,7 +97,7 @@ public class ProjectResourceTest  extends ResourceTest {
 		Assert.assertEquals(1,projects.size());
 		Assert.assertEquals(String.format("http://localhost:%d%s/G1",port,Resources.project),
 													projects.get(0).getResourceURL().toString());
-		Assert.assertEquals("DETECTIVE", projects.get(0).getTitle());
+		Assert.assertEquals("N/A", projects.get(0).getTitle());
 		//Assert.assertEquals("detective", projects.get(0).getGroupName());
 		return model;
 	}	

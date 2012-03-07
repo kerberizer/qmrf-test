@@ -155,13 +155,13 @@ public class OrganisationResourceTest extends ResourceTest {
 	public void testUpdate() throws Exception {
 		IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT name,ldapgroup FROM organisation where idorganisation=1");
-		Assert.assertEquals("DC",table.getValue(0,"name"));
-		Assert.assertEquals("toxbank",table.getValue(0,"ldapgroup"));
+		Assert.assertEquals("",table.getValue(0,"name"));
+		Assert.assertNull(table.getValue(0,"ldapgroup"));
 		c.close();		
 		
 		Form form = new Form();
-		form.add(DBGroup.fields.name.name(), "Douglas Connect");
-		form.add(DBGroup.fields.ldapgroup.name(), "dc");
+		form.add(DBGroup.fields.name.name(), "QMRF");
+		form.add(DBGroup.fields.ldapgroup.name(), "qmrf");
 		
 		String org = String.format("http://localhost:%d%s/G1", port,Resources.organisation);
 		RemoteTask task = testAsyncPoll(new Reference(org),
@@ -171,8 +171,8 @@ public class OrganisationResourceTest extends ResourceTest {
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT name,ldapgroup FROM organisation where idorganisation=1");
-		Assert.assertEquals("Douglas Connect",table.getValue(0,"name"));
-		Assert.assertEquals("dc",table.getValue(0,"ldapgroup"));
+		Assert.assertEquals("QMRF",table.getValue(0,"name"));
+		Assert.assertEquals("qmrf",table.getValue(0,"ldapgroup"));
 		c.close();			
 	}
 	

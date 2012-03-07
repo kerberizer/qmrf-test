@@ -29,10 +29,15 @@
 
 package net.idea.rest.protocol.db.protocol.test;
 
+import java.io.InputStream;
 import java.net.URL;
 
 import junit.framework.Assert;
+import net.idea.ambit.qmrf.QMRFObject;
+import net.idea.ambit.qmrf.catalogs.Catalog;
+import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
 import net.idea.modbcum.i.query.IQueryUpdate;
+import net.idea.qmrf.converters.QMRFConverter;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
 import net.idea.rest.protocol.DBProtocol;
@@ -56,8 +61,21 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 		DBProtocol ref = new DBProtocol();
 		ref.setID(2);
 		ref.setVersion(1);
-		ref.setAbstract("My abstract");
+		InputStream in = getClass().getClassLoader().getResourceAsStream("net/idea/qmrf/QMRF-NEW.xml");
+		//ref.setAbstract(IOUtils.toString(in, "UTF-8"));
+		QMRFObject qmrf = new QMRFObject();
+		qmrf.read(in);in.close();
+		ref.setTitle(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(0).getSubchapters().getItem(0)).getText()));
+		ref.setIdentifier(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(0)).getText()));
+		String keywords = QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(2)).getText());
+		String[] keyword = keywords.split(",");
+		for (String key:keyword) ref.addKeyword(key);
 		ref.setPublished(true);
+		/*
+		Catalog authors = qmrf.getCatalogs().get("authors_catalog");
+		for (int i=0; i < authors.size(); i++)
+			System.out.println(authors.getItem(i));
+		*/
 		/*
 		DBUser user = new DBUser();
 		user.setID(1);
@@ -76,11 +94,11 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 			throws Exception {
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED",
-				String.format("SELECT idprotocol,version,published,abstract FROM protocol where idprotocol=2 and version=1"));
+				String.format("SELECT idprotocol,version,published,title FROM protocol where idprotocol=2 and version=1"));
 		
 		Assert.assertEquals(1,table.getRowCount());
 		Assert.assertEquals(Boolean.TRUE,table.getValue(0,"published"));
-		Assert.assertEquals("My abstract",table.getValue(0,"abstract"));
+		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(0,"title"));
 		c.close();	
 	}
 
