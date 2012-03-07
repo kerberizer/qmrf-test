@@ -8,7 +8,6 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
 import net.idea.rest.protocol.DBProtocol;
-import net.toxbank.client.resource.Protocol;
 
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
@@ -95,11 +94,11 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 	
 	public static int[] parseIdentifier(String identifier) throws ResourceException {
 		String ids[] = identifier.split("-");
-		if ((ids.length!=4) || !identifier.startsWith(Protocol.id_prefix)) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid format");
+		if ((ids.length!=3) || !identifier.startsWith(DBProtocol.prefix)) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid format");
 		int[] id = new int[2];
 		for (int i=0; i < 2; i++)
 			try {
-				id[i] = Integer.parseInt(ids[i+2]);
+				id[i] = Integer.parseInt(ids[i+1]);
 			} catch (NumberFormatException x) {
 				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,x);
 			}

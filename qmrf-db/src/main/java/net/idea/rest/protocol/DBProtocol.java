@@ -17,7 +17,8 @@ public class DBProtocol extends Protocol {
 	private static final long serialVersionUID = -6632168193661223228L;
 	protected int ID;
 	protected List<DBAttachment> attachments;
-
+	public static String prefix = "QMRF";
+	
 	public List<DBAttachment> getAttachments() {
 		if (attachments==null) attachments = new ArrayList<DBAttachment>();
 		return attachments;

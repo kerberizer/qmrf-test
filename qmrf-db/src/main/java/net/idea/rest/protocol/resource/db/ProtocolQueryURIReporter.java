@@ -4,7 +4,6 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.restnet.db.QueryURIReporter;
-import net.toxbank.client.resource.Protocol;
 
 import org.restlet.Request;
 
@@ -47,7 +46,7 @@ public class ProtocolQueryURIReporter <Q extends IQueryRetrieval<DBProtocol>> ex
 		return String.format("%s%s/%s-%d-%d%s",
 				ref,
 				Resources.protocol,
-				Protocol.id_prefix,item.getID(),item.getVersion(),
+				DBProtocol.prefix,item.getID(),item.getVersion(),
 				suffix==null?"":suffix);
 	}
 
