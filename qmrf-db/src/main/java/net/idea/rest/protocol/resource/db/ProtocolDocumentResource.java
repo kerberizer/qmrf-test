@@ -1,15 +1,9 @@
 package net.idea.rest.protocol.resource.db;
 
-import net.idea.modbcum.i.IQueryRetrieval;
-import net.idea.modbcum.i.exceptions.AmbitException;
-import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
-import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
-import net.idea.rest.protocol.db.template.ReadFilePointers;
-import net.idea.restnet.c.StringConvertor;
-import net.idea.restnet.db.QueryResource;
+import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
 import org.restlet.Context;
@@ -18,11 +12,10 @@ import org.restlet.Response;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
-import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
-public class ProtocolDocumentResource extends QueryResource<IQueryRetrieval<DBProtocol>,DBProtocol> {
+public class ProtocolDocumentResource extends ProtocolDBResource<ReadProtocol> {
 	protected String suffix = Resources.document;
 	
 	public ProtocolDocumentResource() {
@@ -31,6 +24,7 @@ public class ProtocolDocumentResource extends QueryResource<IQueryRetrieval<DBPr
 	public ProtocolDocumentResource(String suffix) {
 		super();
 		this.suffix = suffix;
+		singleItem = true;
 	}
 	
 	@Override
@@ -45,20 +39,15 @@ public class ProtocolDocumentResource extends QueryResource<IQueryRetrieval<DBPr
 		getVariants().add(new Variant(MediaType.APPLICATION_TAR));
 		getVariants().add(new Variant(MediaType.APPLICATION_ZIP));
 		getVariants().add(new Variant(MediaType.APPLICATION_ALL));
+		getVariants().add(new Variant(ChemicalMediaType.CHEMICAL_MDLSDF));
+		getVariants().add(new Variant(ChemicalMediaType.CHEMICAL_MDLMOL));
+		getVariants().add(new Variant(ChemicalMediaType.CHEMICAL_SMILES));
+		getVariants().add(new Variant(ChemicalMediaType.WEKA_ARFF));
+		getVariants().add(new Variant(ChemicalMediaType.CHEMICAL_CML));
+		getVariants().add(new Variant(MediaType.TEXT_CSV));
+		getVariants().add(new Variant(MediaType.TEXT_PLAIN));
 	}
-	@Override
-	public IProcessor<IQueryRetrieval<DBProtocol>, Representation> createConvertor(
-			Variant variant) throws AmbitException, ResourceException {
-		String filenamePrefix = getRequest().getResourceRef().getPath();
-		if (variant.getMediaType().equals(MediaType.TEXT_URI_LIST)) 
-			return new StringConvertor(	
-					new ProtocolQueryURIReporter(getRequest(),suffix)
-					,MediaType.TEXT_URI_LIST,filenamePrefix);
-		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) 
-			return new StringConvertor(createHTMLReporter(),MediaType.TEXT_HTML,filenamePrefix);	
-			else	
-				return new DownloadDocumentConvertor(createFileReporter(),null,filenamePrefix);
-	}
+	
 	protected QueryHTMLReporter createHTMLReporter() throws ResourceException {
 		throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
 	}
@@ -68,14 +57,14 @@ public class ProtocolDocumentResource extends QueryResource<IQueryRetrieval<DBPr
 	}
 	
 	@Override
-	protected IQueryRetrieval<DBProtocol> createQuery(Context context, Request request,
-			Response response) throws ResourceException {
+	protected ReadProtocol createQuery(Context context, Request request, Response response)
+			throws ResourceException {
 		final Object key = request.getAttributes().get(FileResource.resourceKey);		
 		try {
 			if (key==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			else {
 				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-				return new ReadFilePointers(id[0],id[1]);
+				return new ReadProtocol(id[0],id[1]);
 			}
 		} catch (ResourceException x) {
 			throw x;
@@ -87,6 +76,7 @@ public class ProtocolDocumentResource extends QueryResource<IQueryRetrieval<DBPr
 					);
 		}
 	}
+	
 	@Override
 	protected String getExtension(MediaType mediaType) {
 		String ext = super.getExtension(mediaType);
@@ -109,6 +99,7 @@ public class ProtocolDocumentResource extends QueryResource<IQueryRetrieval<DBPr
 				return ".odt";
 			else if (MediaType.APPLICATION_LATEX.equals(mediaType))
 				return ".tex";
+			
 			else return "";
 		}
 		return ext;

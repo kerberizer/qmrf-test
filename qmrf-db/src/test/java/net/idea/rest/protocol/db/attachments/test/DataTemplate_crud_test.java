@@ -12,6 +12,11 @@ import net.toxbank.client.resource.Template;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 
+/**
+TODO: not used so far
+ * @author nina
+ *
+ */
 public class DataTemplate_crud_test  extends CRUDTest<Object,DBProtocol> {
 	String template = "http://localhost/protocol/QMRF-1-1/dataTemplate";
 	
@@ -32,15 +37,19 @@ public class DataTemplate_crud_test  extends CRUDTest<Object,DBProtocol> {
 	}
 	@Override
 	public void testDelete() throws Exception {
-		//TODO Not iplemented
+		//TODO Not implemented
 	}
 
-	
+	@Override
+	public void testUpdate() throws Exception {
+
+	}
 	@Override
 	protected IQueryUpdate<Object,DBProtocol> updateQuery() throws Exception {
 		DBProtocol protocol = new DBProtocol(1,1);
 		protocol.setDataTemplate(new Template(new URL(template)));
 		return new UpdateDataTemplate(protocol);
+
 	}
 
 	@Override
