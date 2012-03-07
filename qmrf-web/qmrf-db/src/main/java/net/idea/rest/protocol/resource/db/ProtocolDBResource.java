@@ -377,8 +377,9 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	@Override
 	protected FactoryTaskConvertor getFactoryTaskConvertor(ITaskStorage storage)
 			throws ResourceException {
-		return new FactoryTaskConvertorRDF(storage);
+		return new FactoryTaskConvertorRDF(storage,getHTMLBeauty());
 	}
+	
 	
 	protected TaskCreator getTaskCreator(Form form, final Method method, boolean async, final Reference reference) throws Exception {
 		if (Method.DELETE.equals(method))
