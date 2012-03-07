@@ -89,7 +89,6 @@ public class UpdateProtocol extends AbstractObjectUpdate<DBProtocol>{
 				d = ",";
 			}
 		String sql = String.format(update_sql,b.toString());
-		System.out.println(sql);
 		return  new String[] { sql};
 	}
 	public void setID(int index, int id) {

@@ -1,4 +1,4 @@
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.attachments.test;
 
 import java.net.URL;
 
@@ -6,6 +6,7 @@ import junit.framework.Assert;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.template.UpdateDataTemplate;
+import net.idea.rest.protocol.db.test.CRUDTest;
 import net.toxbank.client.resource.Template;
 
 import org.dbunit.database.IDatabaseConnection;

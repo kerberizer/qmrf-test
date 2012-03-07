@@ -1,21 +1,26 @@
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.protocol.test;
 
 import java.sql.ResultSet;
 
 import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocolAccessLocal;
+import net.idea.rest.protocol.db.test.QueryTest;
 import net.toxbank.client.policy.AccessRights;
 import net.toxbank.client.policy.PolicyRule;
 
-
+/**
+ * Tests local access policy (based on published flag)
+ * @author nina
+ *
+ */
 public class ReadProtocolAccessLocalTest extends QueryTest<ReadProtocolAccessLocal> {
 
 	@Override
 	protected ReadProtocolAccessLocal createQuery() throws Exception {
 		ReadProtocolAccessLocal q = new ReadProtocolAccessLocal();
-		q.setFieldname(new DBProtocol(1,1));
-		q.setValue("guest");
+		q.setFieldname(new DBProtocol(83,1));
+		q.setValue("JRC QSAR");
 		return q;
 	}
 

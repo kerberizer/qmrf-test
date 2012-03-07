@@ -1,4 +1,4 @@
-package net.idea.rest.protocol.db.test;
+package net.idea.rest.protocol.db.attachments.test;
 
 import java.sql.ResultSet;
 
@@ -6,6 +6,7 @@ import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.db.template.ReadFilePointers;
+import net.idea.rest.protocol.db.test.QueryTest;
 
 
 public class ReadDataTemplateTest  extends QueryTest<ReadFilePointers> {
