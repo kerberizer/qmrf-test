@@ -83,7 +83,8 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 			if (printAsTable()) {
 				if (!headless && getTitle()!=null)
 					w.write(String.format("<h3>%ss</h3>",getTitle()));
-				printPageNavigator(query);
+				if (!headless)
+					printPageNavigator(query);
 				
 			} else {
 				if (!headless && getTitle()!=null)
@@ -133,6 +134,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	protected HTMLBeauty createHTMLBeauty() {
 		return new QMRF_HTMLBeauty();
 	}
+	
 	abstract protected void printTableHeader(Writer output) throws Exception;
 	abstract protected void printTable(Writer output, String uri, T item);
 	abstract protected void printForm(Writer output, String uri, T item, boolean editable);

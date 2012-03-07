@@ -3,7 +3,6 @@ package net.idea.rest.user.resource;
 import java.io.Writer;
 
 import net.idea.modbcum.i.IQueryRetrieval;
-import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.user.DBUser;
@@ -33,8 +32,9 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 	}
 	@Override
 	protected boolean printAsTable() {
-		return collapsed || !editable;
+		return true; //collapsed || !editable;
 	}
+
 	
 	@Override
 	protected void printTableHeader(Writer output) throws Exception {
@@ -87,14 +87,58 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 	protected void printTable(Writer output, String uri, DBUser user) {
 		try {
 			output.write("<tr bgcolor='FFFFFF'>\n");	
-			output.write(String.format("<td><a href='%s'>%s %s %s</a></td>",uri,user.getTitle(),user.getFirstname(),user.getLastname()));
-			if (DBUser.fields.homepage.getValue(user)!=null)
-				output.write(String.format("<td><a href='%s' target='user'>%s</a></td>",DBUser.fields.homepage.getValue(user),DBUser.fields.homepage.getValue(user)));
-			else
-				output.write("<td></td>");
-			output.write(String.format("<td><a href='%s%s'>%s</a></td>",uri,Resources.protocol,"QMRF documents"));			
+			output.write(String.format("<td>%s</td>",renderItem(user)));			
 			output.write("</tr>\n");
-		} catch (Exception x) {} 
+		} catch (Exception x) {
+			x.printStackTrace();
+		} 
+	}
+	
+	
+	public String renderItem(DBUser item) {
+		
+		String protocolURI = String.format(
+				"<a href=\"%s%s/U%d%s?headless=true&details=false&media=text/html\" title=\"QMRF documents\">QMRF documents</a>",
+				uriReporter.getRequest().getRootRef(),
+				Resources.user,
+				item.getID(),
+				Resources.protocol);
+		
+		StringBuilder rendering = new StringBuilder();
+			//tab headers
+			rendering.append(String.format(
+			"<div class='protocol'>\n"+					
+			"<div class='tabs'>\n"+
+			"<ul>"+
+			"<li><a href='#tabs-id'>%s&nbsp;%s&nbsp%s</a></li>"+
+			"<li>%s<span></span></li>"+
+			"</ul>",
+			item.getTitle(),item.getFirstname(),item.getLastname(),
+			protocolURI
+			));
+			//identifiers
+			rendering.append(String.format(
+			"<div id='tabs-id'>"+
+			"<span class='summary'><table width='80%%'>\n"+ 
+			"<tr><th colspan='2'><a href='%s%s/U%d'>%s&nbsp;%s&nbsp%s</a></th></tr>"+
+			"<tr><td>%s</td><th align='left'>%s</th></tr>"+
+			"<tr><td width='10%%'>%s</td><th align='left'>%s</th></tr>"+
+			"</table></span>"+
+			"</div>",
+			uriReporter.getRequest().getRootRef(),Resources.user,item.getID(),
+			item.getTitle().trim(),item.getFirstname().trim(),item.getLastname().trim(),
+			item.getUserName()==null?"":"Username:&nbsp;",item.getUserName()==null?"":item.getUserName(),
+			item.getHomepage()==null?"":"WWW:&nbsp;",
+			item.getHomepage()==null?"":String.format("<a href='%s'>%s</a>",item.getHomepage(),item.getHomepage())					
+			));
+				
+			rendering.append(String.format("<div id='QMRF_documents'>%s</div>",protocolURI));
+
+			rendering.append("</div>\n</div>\n");//tabs , protocol
+
+			return rendering.toString();
+		
+
 	}
 
 }

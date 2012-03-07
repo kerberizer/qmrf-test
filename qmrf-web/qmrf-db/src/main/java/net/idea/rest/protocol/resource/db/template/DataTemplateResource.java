@@ -41,8 +41,9 @@ public class DataTemplateResource extends ProtocolAttachmentResource {
 		super(Resources.datatemplate);
 	}
 	@Override
-	protected QueryHTMLReporter createHTMLReporter() throws ResourceException {
-		return new DataTemplateHTMLReporter(getRequest(),true,true);
+	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
+		DataTemplateHTMLReporter rep = new DataTemplateHTMLReporter(getRequest(),true,true);
+		return rep;
 	}
 
 	@Override

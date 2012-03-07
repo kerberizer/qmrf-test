@@ -104,7 +104,7 @@ public class ReadUser<T>  extends ReadUserID<T> {
 				try {
 					String n = rs.getString(name());
 					user.setHomepage(n==null?null:new URL(n));
-				} catch (Exception x) {throw new SQLException(x);}
+				} catch (Exception x) {user.setHomepage(null);}
 			}		
 			@Override
 			public Object getValue(DBUser protocol) {
