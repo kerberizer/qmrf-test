@@ -1,15 +1,16 @@
-package net.idea.rest.protocol.resource.db;
+package net.idea.rest.protocol.attachments;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
+import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
-import net.idea.rest.protocol.attachments.AttachmentURIReporter;
-import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.template.ReadFilePointers;
+import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
+import net.idea.rest.protocol.resource.db.FileReporter;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -30,6 +31,7 @@ public class ProtocolAttachmentResource extends QueryResource<IQueryRetrieval<DB
 	public static final String resourceKey = "aid";
 	protected String suffix = Resources.document;
 	public static final String documentType = "documentType";
+	protected DBProtocol protocol = null;
 	
 	public ProtocolAttachmentResource() {
 		this(Resources.document);
@@ -73,7 +75,7 @@ public class ProtocolAttachmentResource extends QueryResource<IQueryRetrieval<DB
 				return new DownloadDocumentConvertor(createFileReporter(),null,filenamePrefix);
 	}
 	protected QueryHTMLReporter createHTMLReporter() throws ResourceException {
-		throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
+		return new AttachmentHTMLReporter(protocol,getRequest(),true,null);
 	}
 	
 	protected FileReporter createFileReporter() throws ResourceException {
@@ -83,7 +85,6 @@ public class ProtocolAttachmentResource extends QueryResource<IQueryRetrieval<DB
 	@Override
 	protected IQueryRetrieval<DBAttachment> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
-		System.out.println("createQuery");
 		final Object key = request.getAttributes().get(FileResource.resourceKey);	
 		Object aKey = request.getAttributes().get(ProtocolAttachmentResource.resourceKey);	
 		try {
@@ -95,7 +96,9 @@ public class ProtocolAttachmentResource extends QueryResource<IQueryRetrieval<DB
 			if ((key==null)&&(attachment==null)) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			else if (key!=null) {
 				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-				query = new ReadFilePointers(id[0],id[1]);
+				protocol = new DBProtocol(id[0],id[1]);
+				query = new ReadFilePointers(protocol);
+				
 			} else query = new ReadFilePointers(); 
 			query.setValue(attachment);
 			return query;
