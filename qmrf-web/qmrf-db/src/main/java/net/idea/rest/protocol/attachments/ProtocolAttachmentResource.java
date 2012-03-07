@@ -5,16 +5,14 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
+import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.protocol.DBProtocol;
-import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.template.ReadFilePointers;
 import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
 import net.idea.rest.protocol.resource.db.FileReporter;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.StringConvertor;
-import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.db.QueryResource;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
 import org.restlet.Context;
@@ -27,7 +25,7 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
-public class ProtocolAttachmentResource extends QueryResource<IQueryRetrieval<DBAttachment>,DBAttachment> {
+public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieval<DBAttachment>,DBAttachment> {
 	public static final String resourceKey = "aid";
 	protected String suffix = Resources.document;
 	public static final String documentType = "documentType";
@@ -70,12 +68,16 @@ public class ProtocolAttachmentResource extends QueryResource<IQueryRetrieval<DB
 					new AttachmentURIReporter<IQueryRetrieval<DBAttachment>>(getRequest(),suffix)
 					,MediaType.TEXT_URI_LIST,filenamePrefix);
 		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) 
-			return new StringConvertor(createHTMLReporter(),MediaType.TEXT_HTML,filenamePrefix);	
+			return new StringConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML,filenamePrefix);	
 			else	
 				return new DownloadDocumentConvertor(createFileReporter(),null,filenamePrefix);
 	}
-	protected QueryHTMLReporter createHTMLReporter() throws ResourceException {
-		return new AttachmentHTMLReporter(protocol,getRequest(),true,null);
+	
+	@Override
+	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
+		AttachmentHTMLReporter rep = new AttachmentHTMLReporter(protocol,getRequest(),true,null);
+		rep.setHeadless(headless);
+		return rep;
 	}
 	
 	protected FileReporter createFileReporter() throws ResourceException {
@@ -139,14 +141,6 @@ public class ProtocolAttachmentResource extends QueryResource<IQueryRetrieval<DB
 		}
 		return ext;
 	}
-	
-	@Override
-	protected HTMLBeauty getHTMLBeauty() {
-		return new QMRF_HTMLBeauty();
-	}
-	
-	@Override
-	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
-	}
+
+
 }

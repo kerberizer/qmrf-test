@@ -5,6 +5,7 @@ import java.sql.Connection;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.q.conditions.EQCondition;
+import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.user.CallableUserCreator;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
@@ -13,9 +14,9 @@ import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.db.DBConnection;
-import net.idea.restnet.db.QueryResource;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.db.convertors.OutputWriterConvertor;
+import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.db.convertors.RDFJenaConvertor;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
@@ -38,7 +39,7 @@ import org.restlet.resource.ResourceException;
  *
  * @param <Q>
  */
-public class UserDBResource<T>	extends QueryResource<ReadUser<T>,DBUser> {
+public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	public static final String resourceKey = "user";
 	
 	protected boolean singleItem = false;
@@ -79,9 +80,17 @@ public class UserDBResource<T>	extends QueryResource<ReadUser<T>,DBUser> {
 				};
 		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML))
 				return new OutputWriterConvertor(
-						new UserHTMLReporter(getRequest(),!singleItem,editable),
+						createHTMLReporter(headless),
 						MediaType.TEXT_HTML);
 		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
+	}
+	
+	@Override
+	protected QueryHTMLReporter createHTMLReporter(boolean headless)
+			throws ResourceException {
+		UserHTMLReporter rep = new UserHTMLReporter(getRequest(),!singleItem,editable);
+		rep.setHeadless(headless);
+		return rep;
 	}
 
 	protected ReadUser getUserQuery(Object key,String search_name,Object search_value) throws ResourceException {
@@ -153,11 +162,6 @@ public class UserDBResource<T>	extends QueryResource<ReadUser<T>,DBUser> {
 	protected QueryURIReporter<DBUser, ReadUser<T>> getURUReporter(
 			Request baseReference) throws ResourceException {
 		return new UserURIReporter(getRequest());
-	}
-
-	@Override
-	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
 	}
 	
 	@Override

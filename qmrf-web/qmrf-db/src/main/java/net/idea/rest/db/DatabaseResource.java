@@ -13,12 +13,11 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.exceptions.NotFoundException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.p.ProcessorException;
-import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.protocol.db.DbCreateDatabase;
 import net.idea.restnet.c.StringConvertor;
-import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.DBConnection;
-import net.idea.restnet.db.QueryResource;
+import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -52,7 +51,7 @@ import org.restlet.resource.ResourceException;
  * @param <Q>
  * @param <T>
  */
-public class DatabaseResource  extends QueryResource<DBVersionQuery,DBVersion> {
+public class DatabaseResource  extends QMRFQueryResource<DBVersionQuery,DBVersion> {
 	public static final String resource = "database";
 	
 	public DatabaseResource() {
@@ -67,17 +66,20 @@ public class DatabaseResource  extends QueryResource<DBVersionQuery,DBVersion> {
 		if (variant.getMediaType().equals(MediaType.TEXT_PLAIN)) {
 			return new StringConvertor(new DBTextReporter(),MediaType.TEXT_PLAIN,filenamePrefix);
 		} if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
-			return new StringConvertor(new DBHtmlReporter(getRequest(),getHTMLBeauty()),MediaType.TEXT_HTML);
-			/*} 
-		
-		
-			*/
+			return new StringConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);
+
 		} else //html 	
 			return new StringConvertor(new DBHtmlReporter(getRequest(),getHTMLBeauty()),MediaType.TEXT_HTML);
 		
 	}	
 
-
+	@Override
+	protected QueryHTMLReporter createHTMLReporter(boolean headless)
+			throws ResourceException {
+		DBHtmlReporter rep  = new DBHtmlReporter(getRequest(),getHTMLBeauty());
+		return rep;
+	}
+	
 	@Override
 	protected Representation processNotFound(NotFoundException x, int retry)
 			throws Exception {
@@ -290,12 +292,5 @@ public class DatabaseResource  extends QueryResource<DBVersionQuery,DBVersion> {
 			
 		}
 	}
-	@Override
-	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
-	}
-	@Override
-	protected HTMLBeauty getHTMLBeauty() {
-		return new QMRF_HTMLBeauty();
-	}
+
 }
