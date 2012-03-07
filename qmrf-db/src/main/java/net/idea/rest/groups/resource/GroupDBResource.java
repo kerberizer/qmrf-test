@@ -3,16 +3,18 @@ package net.idea.rest.groups.resource;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.rest.FileResource;
+import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.db.ReadGroup;
+import net.idea.rest.protocol.attachments.AttachmentHTMLReporter;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.RepresentationConvertor;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
-import net.idea.restnet.db.QueryResource;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.db.convertors.OutputWriterConvertor;
+import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.db.convertors.RDFJenaConvertor;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
@@ -35,7 +37,7 @@ import org.restlet.resource.ResourceException;
  *
  * @param <Q>
  */
-public abstract class GroupDBResource<G extends IDBGroup>	extends QueryResource<ReadGroup<G>,G> {
+public abstract class GroupDBResource<G extends IDBGroup>	extends QMRFQueryResource<ReadGroup<G>,G> {
 	public static final String resourceKey = "key";
 	
 	protected boolean singleItem = false;
@@ -69,17 +71,23 @@ public abstract class GroupDBResource<G extends IDBGroup>	extends QueryResource<
 				};
 		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML))
 				return new OutputWriterConvertor(
-						new GroupHTMLReporter(getRequest(),!singleItem,editable) {
-							@Override
-							public String getBackLink() {
-								return getGroupBackLink();
-							}
-							@Override
-							public String getTitle() {
-								return getGroupTitle();
-							}
-						},MediaType.TEXT_HTML);
+						createHTMLReporter(headless),MediaType.TEXT_HTML);
 		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
+	}
+	@Override
+	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
+		GroupHTMLReporter rep = new GroupHTMLReporter(getRequest(),!singleItem,editable) {
+			@Override
+			public String getBackLink() {
+				return getGroupBackLink();
+			}
+			@Override
+			public String getTitle() {
+				return getGroupTitle();
+			}
+		};
+		rep.setHeadless(headless);
+		return rep;
 	}
 	
 	public abstract ReadGroup<G> createGroupQuery(Integer key,String search, String groupName);
@@ -151,11 +159,6 @@ public abstract class GroupDBResource<G extends IDBGroup>	extends QueryResource<
 		return new GroupQueryURIReporter(getRequest());
 	}
 
-	@Override
-	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
-	}
-	
 	@Override
 	protected boolean isAllowedMediaType(MediaType mediaType)
 			throws ResourceException {

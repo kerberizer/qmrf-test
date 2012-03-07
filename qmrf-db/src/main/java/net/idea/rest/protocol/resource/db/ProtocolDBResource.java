@@ -10,6 +10,7 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.rest.FileResource;
+import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
@@ -32,6 +33,7 @@ import net.idea.restnet.db.QueryResource;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.db.convertors.OutputStreamConvertor;
 import net.idea.restnet.db.convertors.OutputWriterConvertor;
+import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.db.convertors.RDFJenaConvertor;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
@@ -55,7 +57,7 @@ import org.restlet.resource.ResourceException;
  *
  * @param <Q>
  */
-public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends QueryResource<Q,DBProtocol> {
+public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends QMRFQueryResource<Q,DBProtocol> {
 	public enum SearchMode {
 		text,
 		endpoint,
@@ -66,7 +68,6 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected boolean version = false;
 	protected boolean editable = true;
 	protected boolean details = true;
-	protected boolean headless = false;
 	protected Object structure;
 
 	
@@ -113,13 +114,18 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					}					
 				};
 		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
-			ProtocolQueryHTMLReporter rep = new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null,details);
-			rep.setHeadless(headless);
-			return new OutputWriterConvertor(rep,MediaType.TEXT_HTML);				
+			return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);				
 		} else if (singleItem && (structure==null)) {
 			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType()),variant.getMediaType());		
 		}
 		throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
+	}
+	
+	@Override
+	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
+		ProtocolQueryHTMLReporter rep = new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null,details);
+		rep.setHeadless(headless);
+		return rep;
 	}
 	protected boolean isEditable() {
 		return editable
@@ -189,11 +195,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected Q createQuery(Context context, Request request, Response response)
 			throws ResourceException {
 		Form form = request.getResourceRef().getQueryAsForm();
-		try {
-			headless = Boolean.parseBoolean(form.getFirstValue("headless").toString());
-		} catch (Exception x) {
-			headless = false;
-		}				
+
 		Object search = null;
 		try {
 			search = form.getFirstValue("search").toString();
@@ -302,10 +304,6 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		return new ProtocolQueryURIReporter(getRequest());
 	}
 
-	@Override
-	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
-	}
 	
 	@Override
 	protected boolean isAllowedMediaType(MediaType mediaType)
