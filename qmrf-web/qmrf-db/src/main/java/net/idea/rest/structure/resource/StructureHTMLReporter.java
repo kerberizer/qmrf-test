@@ -88,10 +88,11 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			*/
 			protocols.append(String.format("<tr><td><a href='%s%s?structure=%s' target='_QMRF'>QMRFs</a></td></tr>",getRequest().getRootRef(),Resources.protocol,Reference.encode(item.getResourceURL().toString())));
 		} catch (Exception x) {}
-		StringBuilder properties = new StringBuilder();
+		StringBuilder properties=null;
 		try {
 			Enumeration<String> keys = item.getProperties().keys();
 			while (keys.hasMoreElements()) {
+				if (properties==null) properties = new StringBuilder();
 				String key = keys.nextElement();
 				properties.append(String.format("<tr><th align='left' width='60%%'>%s</th><td align='center' width='40%%'>%s</td></tr>",key,item.getProperties().get(key)));
 
@@ -105,16 +106,17 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 					);
 		
 		try {
+			//tab headers
 			output.write(String.format(
 			"<div class='protocol'>\n"+					
-	
-		//	"<div class='properties'>\n"+
 			"<div class='tabs'>\n"+
 			"<ul>"+
 			"<li><a href='#tabs-id'>Identifiers</a></li>"+
-			"<li><a href='#tabs-prop'>Properties</a></li>"+
+			"%s"+
 			"<li><a href='#tabs-qmrf'>QMRF</a></li>"+
-			"</ul>"+
+			"</ul>",properties==null?"":"<li><a href='#tabs-prop'>Properties</a></li>"));
+			//identifiers
+			output.write(String.format(
 			"<div id='tabs-id'>"+
 			"%s\n"+ //structure
 			"<span class='summary'><table>\n"+ 
@@ -125,26 +127,30 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			"<tr><th>InChI Key</th><td>%s</td></tr>"+
 			"<tr><th></th><td>%s</td></tr>"+
 			"</table></span>"+
-			"</div>"+
-			"<div id='tabs-prop'>"+
-			"%s<span class='summary'><table>%s</table></span>\n"+
-			"</div>"+
-			"<div id='tabs-qmrf'>"+
-			"%s<span class='summary'><table>%s</table></span>\n"+
-			"</div>\n" + //tabs-qmrf
-			"</div>\n" + //tabs
-			"</div>\n", //protocol
+			"</div>",
 			structure,
 			item.cas==null?"":item.cas,
 			item.name==null?"":item.name,
 			item.SMILES==null?"":item.SMILES,
 			item.InChI==null?"":item.InChI,
 			item.InChIKey==null?"":item.InChIKey,
-			item.getSimilarity()==null?"":item.getSimilarity(),
-			structure,properties,
-			structure,protocols
-			)
-			);
+			item.getSimilarity()==null?"":item.getSimilarity()
+			));
+			
+			if (properties!=null)
+			output.write(String.format(
+			"<div id='tabs-prop'>"+
+			"%s<span class='summary'><table>%s</table></span>\n"+
+			"</div>",structure,properties));
+			
+			output.write(String.format(
+			"<div id='tabs-qmrf'>"+
+			"%s<span class='summary'><table>%s</table></span>\n"+
+			"</div>\n" + //tabs-qmrf
+			"</div>\n" + //tabs
+			"</div>\n", //protocol
+			structure,protocols));
+			
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
