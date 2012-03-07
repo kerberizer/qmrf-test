@@ -15,8 +15,8 @@ public class ProtocolRouter extends MyRouter {
 		super(context);
 		attachDefault(ProtocolDBResource.class);
 		attach(String.format("/{%s}",FileResource.resourceKey), ProtocolDBResource.class);
-		//attach(String.format("%s",Resources.attachment), ProtocolAttachmentResource.class);
-		//attach(String.format("%s/{%s}",Resources.attachment,ProtocolAttachmentResource.resourceKey), ProtocolAttachmentResource.class);
+		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.attachment), ProtocolAttachmentResource.class);
+		attach(String.format("/{%s}%s/{%s}",FileResource.resourceKey,Resources.attachment,ProtocolAttachmentResource.resourceKey), ProtocolAttachmentResource.class);
 		//attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.attachment), ProtocolAttachmentResource.class);
 		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.versions), ProtocolVersionDBResource.class);
 		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.authors), ProtocolAuthorsResource.class);

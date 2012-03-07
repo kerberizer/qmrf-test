@@ -137,22 +137,7 @@ public class StructureResource extends CatalogResource<Structure>{
 						protocol.setIdentifier("QMRF-53-1");
 						protocol.setTitle("QSAR for eye irritation (Draize test)");
 						struc.getProtocols().add(protocol);
-						protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1"));
-						protocol.setIdentifier("QMRF-121-1");
-						protocol.setTitle("Catalogic basesurface narcotic model for aquatic toxicity to Daphnia Magna ");
-						struc.getProtocols().add(protocol);		
-						protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1"));
-						protocol.setIdentifier("QMRF-121-1");
-						protocol.setTitle("Catalogic basesurface narcotic model for aquatic toxicity to Daphnia Magna ");
-						struc.getProtocols().add(protocol);		
-						protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1"));
-						protocol.setIdentifier("QMRF-121-1");
-						protocol.setTitle("Catalogic basesurface narcotic model for aquatic toxicity to Daphnia Magna ");
-						struc.getProtocols().add(protocol);		
-						protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-121-1"));
-						protocol.setIdentifier("QMRF-121-1");
-						protocol.setTitle("Catalogic basesurface narcotic model for aquatic toxicity to Daphnia Magna ");
-						struc.getProtocols().add(protocol);								
+												
 						records.add(struc);
 					}
 				} catch (Exception x) {

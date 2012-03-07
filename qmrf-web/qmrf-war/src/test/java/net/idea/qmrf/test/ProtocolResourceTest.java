@@ -11,6 +11,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.i.tools.DownloadTool;
 import net.toxbank.client.io.rdf.ProtocolIO;
@@ -49,7 +50,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 	}
 	@Override
 	public String getTestURI() {
-		return String.format("http://localhost:%d%s/%s-1-1", port,Resources.protocol,Protocol.id_prefix);
+		return String.format("http://localhost:%d%s/%s-1-1", port,Resources.protocol,DBProtocol.prefix);
 	}
 	
 	@Test
@@ -64,7 +65,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		int count = 0;
 		while ((line = r.readLine())!= null) {
 			Assert.assertEquals(
-					String.format("http://localhost:%d%s/%s-1-1",port,Resources.protocol,Protocol.id_prefix)
+					String.format("http://localhost:%d%s/%s-1-1",port,Resources.protocol,DBProtocol.prefix)
 							, line);
 			count++;
 		}
@@ -86,7 +87,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		ProtocolIO ioClass = new ProtocolIO();
 		List<Protocol> protocols = ioClass.fromJena(model);
 		Assert.assertEquals(1,protocols.size());
-		Assert.assertEquals(String.format("http://localhost:8181/protocol/%s-1-1",Protocol.id_prefix),
+		Assert.assertEquals(String.format("http://localhost:8181/protocol/%s-1-1",DBProtocol.prefix),
 					protocols.get(0).getResourceURL().toString());
 		Assert.assertEquals("QMRF-1-1", protocols.get(0).getIdentifier());
 		Assert.assertEquals("Very important protocol", protocols.get(0).getTitle());
@@ -158,7 +159,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT idprotocol,version FROM protocol where idprotocol=1 and version=1");
 		Assert.assertEquals(new BigInteger("1"),table.getValue(0,"idprotocol"));
 		c.close();		
-		String org = String.format("http://localhost:%d%s/%s-1-1", port,Resources.protocol,Protocol.id_prefix);
+		String org = String.format("http://localhost:%d%s/%s-1-1", port,Resources.protocol,DBProtocol.prefix);
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, null,
 				Method.DELETE);
@@ -313,7 +314,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 	
 	@Test
 	public void testUpdateEntryFromMultipartWeb() throws Exception {
-		String uri = String.format("http://localhost:%d%s/%s-2-1", port,Resources.protocol,Protocol.id_prefix);
+		String uri = String.format("http://localhost:%d%s/%s-2-1", port,Resources.protocol,DBProtocol.prefix);
 		createEntryFromMultipartWeb(new Reference(uri),Method.PUT);
 		
 		IDatabaseConnection c = getConnection();	
@@ -453,7 +454,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		if (!task.isCompletedOK())
 			System.out.println(task.getError());
 		Assert.assertTrue(task.getResult().toString().startsWith(
-							String.format("http://localhost:%d/protocol/%s",port,Protocol.id_prefix)));
+							String.format("http://localhost:%d/protocol/%s",port,DBProtocol.prefix)));
 		
 		return task.getResult().toString();
 
@@ -465,7 +466,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		testGet(String.format("http://localhost:%d%s/%s-1-1%s", 
 					port,
 					Resources.protocol,
-					Protocol.id_prefix,
+					DBProtocol.prefix,
 					Resources.document),
 					MediaType.APPLICATION_PDF);
 	}	

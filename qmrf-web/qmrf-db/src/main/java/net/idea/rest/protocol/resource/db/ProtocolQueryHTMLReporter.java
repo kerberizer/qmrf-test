@@ -117,6 +117,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	
 	@Override
 	public Object processItem(DBProtocol item) throws AmbitException  {
+		attachmentReporter.setPrefix(String.format("%s/%s",Resources.protocol,item.getIdentifier()));
 		try {
 			if ((item.getProject()!=null) && (item.getProject().getResourceURL()==null))
 				item.getProject().setResourceURL(new URL(groupReporter.getURI((DBProject)item.getProject())));
@@ -182,6 +183,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	}
 	
 	protected void printForm(Writer output, String uri, DBProtocol item, boolean hidden) {
+		
 		String qmrf_number = "";
 		try {
 			qmrf_number = 	String.format(

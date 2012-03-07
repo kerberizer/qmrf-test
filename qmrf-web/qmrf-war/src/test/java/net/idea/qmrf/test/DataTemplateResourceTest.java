@@ -10,6 +10,7 @@ import java.net.URL;
 
 import junit.framework.Assert;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.template.ReadFilePointers;
 import net.toxbank.client.resource.Protocol;
 
@@ -33,7 +34,7 @@ public class DataTemplateResourceTest extends ResourceTest {
 	@Override
 	public String getTestURI() {
 		return String.format("http://localhost:%d%s/%s-1-1%s", port,Resources.protocol,
-					Protocol.id_prefix,Resources.datatemplate);
+					DBProtocol.prefix,Resources.datatemplate);
 	}
 	
 	@Test
@@ -52,7 +53,7 @@ public class DataTemplateResourceTest extends ResourceTest {
 		while ((line = r.readLine())!= null) {
 			Assert.assertEquals(
 					String.format("http://localhost:%d%s/%s-1-1%s",port,Resources.protocol,
-							Protocol.id_prefix,Resources.datatemplate)
+							DBProtocol.prefix,Resources.datatemplate)
 							, line);
 			count++;
 		}
@@ -123,7 +124,7 @@ public class DataTemplateResourceTest extends ResourceTest {
 		if (!task.isCompletedOK())
 			System.out.println(task.getError());
 		Assert.assertTrue(task.getResult().toString().startsWith(
-							String.format("http://localhost:%d/protocol/%s",port,Protocol.id_prefix)));
+							String.format("http://localhost:%d/protocol/%s",port,DBProtocol.prefix)));
 		
 		return task.getResult().toString();
 
