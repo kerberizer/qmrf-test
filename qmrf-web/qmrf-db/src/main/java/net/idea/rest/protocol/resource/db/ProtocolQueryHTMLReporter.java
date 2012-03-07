@@ -22,7 +22,6 @@ import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.DBProtocol;
-import net.idea.rest.protocol.attachments.AttachmentHTMLReporter;
 import net.idea.rest.protocol.attachments.AttachmentURIReporter;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.db.ReadProtocol;
@@ -48,8 +47,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected boolean details = true;
 	protected GroupQueryURIReporter<IQueryRetrieval<IDBGroup>> groupReporter;
 	protected UserURIReporter<IQueryRetrieval<DBUser>> userReporter;
-	protected AttachmentURIReporter<IQueryRetrieval<DBAttachment>> attachmentReporter;
-	
+
 	protected DocumentBuilder builder;
 	protected DocumentBuilderFactory factory;
 	protected QMRF_xml2html qhtml;
@@ -65,41 +63,6 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		this.paging = !collapsed?false:paging;
 		this.details = !collapsed?true:details;
 
-		attachmentReporter = new AttachmentURIReporter<IQueryRetrieval<DBAttachment>>(request);
-		getProcessors().clear();
-		/*
-		IQueryRetrieval<DBUser> queryP = new ReadAuthor(null,null); 
-		MasterDetailsProcessor<DBProtocol,DBUser,IQueryCondition> authersReader = new MasterDetailsProcessor<DBProtocol,DBUser,IQueryCondition>(queryP) {
-			@Override
-			protected DBProtocol processDetail(DBProtocol target, DBUser detail)
-					throws Exception {
-
-				detail.setResourceURL(new URL(userReporter.getURI(detail)));
-				target.addAuthor(detail);
-				return target;
-			}
-		};
-		getProcessors().add(authersReader);
-		*/
-		IQueryRetrieval<DBAttachment> queryP = new ReadFilePointers(null,null); 
-		MasterDetailsProcessor<DBProtocol,DBAttachment,IQueryCondition> authersReader = new MasterDetailsProcessor<DBProtocol,DBAttachment,IQueryCondition>(queryP) {
-			@Override
-			protected DBProtocol processDetail(DBProtocol target, DBAttachment detail)
-					throws Exception {
-				
-				detail.setResourceURL(new URL(attachmentReporter.getURI(detail)));
-				target.getAttachments().add(detail);
-				return target;
-			}
-		};
-		getProcessors().add(authersReader);		
-		processors.add(new DefaultAmbitProcessor<DBProtocol,DBProtocol>() {
-			@Override
-			public DBProtocol process(DBProtocol target) throws AmbitException {
-				processItem(target);
-				return target;
-			};
-		});				
 	}	
 	@Override
 	protected boolean printAsTable() {
@@ -119,7 +82,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	
 	@Override
 	public Object processItem(DBProtocol item) throws AmbitException  {
-		attachmentReporter.setPrefix(String.format("%s/%s",Resources.protocol,item.getIdentifier()));
+		//attachmentReporter.setPrefix(String.format("%s/%s",Resources.protocol,item.getIdentifier()));
 		try {
 			if ((item.getProject()!=null) && (item.getProject().getResourceURL()==null))
 				item.getProject().setResourceURL(new URL(groupReporter.getURI((DBProject)item.getProject())));
