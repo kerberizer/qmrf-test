@@ -185,6 +185,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	}
 	
 	protected void printForm(Writer output, String uri, DBProtocol item, boolean hidden) {
+		String attachmentURI = String.format(
+				"<a href=\"%s%s?headless=true&media=text/html\" title=\"Attachments\">Attachments</a>",
+				uri,Resources.attachment);
 		
 		String qmrf_number = "";
 		try {
@@ -196,15 +199,12 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					);
 			
 			if (qhtml==null) qhtml = new QMRF_xml2html();
-
-	        
 	        
 			output.write(String.format(
 			"<div id='%s' class='protocol'  style='display: %s;'>\n"+					
 			"<div class='tabs'>\n",item.getIdentifier(),hidden?"none":""));
 			
-			output.write(String.format("<ul>"+
-			//"<li><a href='#tabs-id'>%s</a></li>"+
+			output.write(String.format("<ul>\n"+
 			"<li><a href='#tabs-3'>Endpoint</a></li>"+
 			"<li><a href='#tabs-4'>Algorithm</a></li>"+
 			"<li><a href='#tabs-5'>App. domain</a></li>"+
@@ -212,14 +212,20 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			"<li><a href='#tabs-7'>Predictivity</a></li>"+
 			"<li><a href='#tabs-8'>Interpretation</a></li>"+
 			"<li><a href='#tabs-9'>Misc</a></li>"+
-			"<li><a href='#tabs-dataset'>Attachments</a></li>"+
-			"</ul>"));
+			//"<li><a href='#tabs-dataset'>Attachments</a></li>"+
+			"<li>%s<span></span></li>"+
+			"</ul>",attachmentURI));
 	
 			qhtml.xml2summary(getDOMSource(item),output);
 		
+			output.write(String.format("<div id='Attachments'><span class='summary'>%s</span></div>","N/A"));
+			
+			output.write("</div>\n</div>\n");//tabs , protocol
 		} catch (Exception x) {
 			x.printStackTrace();
 		} 
+	
+		/*
 		StringBuilder datasets = new StringBuilder();
 		AttachmentHTMLReporter reporter = new AttachmentHTMLReporter(item,uriReporter.getRequest(),true,false);
 		if (item.getAttachments().size()>0)
@@ -240,6 +246,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		} catch (Exception x) {
 			x.printStackTrace();
 		} 
+		*/
 	}
 	/*
 	protected void printForm(Writer output, String uri, DBProtocol protocol, boolean editable) {
