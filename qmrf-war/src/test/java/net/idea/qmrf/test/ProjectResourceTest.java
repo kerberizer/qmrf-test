@@ -148,17 +148,17 @@ public class ProjectResourceTest  extends ResourceTest {
 	@Test
 	public void testDelete() throws Exception {
 		IDatabaseConnection c = getConnection();	
-		ITable table = 	c.createQueryTable("EXPECTED","SELECT idproject FROM project where idproject=3");
-		Assert.assertEquals(new BigInteger("3"),table.getValue(0,"idproject"));
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT idproject FROM project where idproject=2");
+		Assert.assertEquals(new BigInteger("2"),table.getValue(0,"idproject"));
 		c.close();		
-		String org = String.format("http://localhost:%d%s/G3", port,Resources.project);
+		String org = String.format("http://localhost:%d%s/G2", port,Resources.project);
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, null,
 				Method.DELETE);
 		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
-		table = 	c.createQueryTable("EXPECTED","SELECT * FROM project where idproject=3");
+		table = 	c.createQueryTable("EXPECTED","SELECT * FROM project where idproject=2");
 		Assert.assertEquals(0,table.getRowCount());
 		c.close();			
 	}
@@ -166,11 +166,11 @@ public class ProjectResourceTest  extends ResourceTest {
 	@Test
 	public void testDeleteFromUserProfile() throws Exception {
 		IDatabaseConnection c = getConnection();	
-		String sql = "SELECT iduser FROM user_project where idproject=1 and iduser=1";
+		String sql = "SELECT iduser FROM user_project where idproject=3 and iduser=3";
 		ITable table = 	c.createQueryTable("EXPECTED",sql);
 		Assert.assertEquals(1,table.getRowCount());
 		c.close();		
-		String org = String.format("http://localhost:%d%s/U1%s/G1", port,Resources.user,Resources.project);
+		String org = String.format("http://localhost:%d%s/U3%s/G3", port,Resources.user,Resources.project);
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, null,
 				Method.DELETE);
@@ -185,22 +185,22 @@ public class ProjectResourceTest  extends ResourceTest {
 	@Test
 	public void testAddProjectToUserProfile() throws Exception {
 		IDatabaseConnection c = getConnection();	
-		String sql = "SELECT iduser FROM user_project where idproject=1 and iduser=1";
+		String sql = "SELECT iduser FROM user_project where idproject=3 and iduser=3";
 		ITable table = 	c.createQueryTable("EXPECTED",sql);
 		Assert.assertEquals(1,table.getRowCount());
 		c.close();		
 		
 		Form form = new Form();
-		form.add("project_uri",String.format("http://localhost:%d%s/G2",port,Resources.project));
+		form.add("project_uri",String.format("http://localhost:%d%s/G1",port,Resources.project));
 
-		String org = String.format("http://localhost:%d%s/U1%s", port,Resources.user,Resources.project);
+		String org = String.format("http://localhost:%d%s/U3%s", port,Resources.user,Resources.project);
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, form.getWebRepresentation(),
 				Method.POST);
 		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
-		sql = "SELECT iduser FROM user_project where idproject=2 and iduser=1";
+		sql = "SELECT iduser FROM user_project where idproject=1 and iduser=3";
 		table = 	c.createQueryTable("EXPECTED",sql);
 		Assert.assertEquals(1,table.getRowCount());
 		c.close();			
@@ -210,12 +210,13 @@ public class ProjectResourceTest  extends ResourceTest {
 	public void testUpdate() throws Exception {
 		IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT name,ldapgroup FROM project where idproject=2");
-		Assert.assertEquals("Toxbank",table.getValue(0,"name"));
-		Assert.assertEquals("toxbank",table.getValue(0,"ldapgroup"));
+		Assert.assertEquals("ToDelete",table.getValue(0,"name"));
+		Assert.assertNull(table.getValue(0,"ldapgroup"));
 		c.close();		
 		
 		Form form = new Form();
-		form.add(DBGroup.fields.name.name(), "ToxBank");
+		form.add(DBGroup.fields.name.name(), "QMRF");
+		form.add(DBGroup.fields.ldapgroup.name(), "qmrf");
 		
 		String org = String.format("http://localhost:%d%s/G2", port,Resources.project);
 		RemoteTask task = testAsyncPoll(new Reference(org),
@@ -225,8 +226,8 @@ public class ProjectResourceTest  extends ResourceTest {
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT name,ldapgroup FROM project where idproject=2");
-		Assert.assertEquals("ToxBank",table.getValue(0,"name"));
-		Assert.assertEquals("toxbank",table.getValue(0,"ldapgroup"));
+		Assert.assertEquals("QMRF",table.getValue(0,"name"));
+		Assert.assertEquals("qmrf",table.getValue(0,"ldapgroup"));
 		c.close();			
 	}
 	

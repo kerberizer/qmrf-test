@@ -82,7 +82,7 @@ public class OrganisationResourceTest extends ResourceTest {
 	
 	@Test
 	public void testRDF() throws Exception {
-		testGet(String.format("http://localhost:%d%s/G1", port,Resources.organisation),MediaType.APPLICATION_RDF_XML);
+		testGet(String.format("http://localhost:%d%s/G2", port,Resources.organisation),MediaType.APPLICATION_RDF_XML);
 	}
 	
 	@Override
@@ -95,10 +95,9 @@ public class OrganisationResourceTest extends ResourceTest {
 		OrganisationIO ioClass = new OrganisationIO();
 		List<Organisation> orgs = ioClass.fromJena(model);
 		Assert.assertEquals(1,orgs.size());
-		Assert.assertEquals(String.format("http://localhost:%d%s/G1",port,Resources.organisation),
+		Assert.assertEquals(String.format("http://localhost:%d%s/G2",port,Resources.organisation),
 													orgs.get(0).getResourceURL().toString());
-		Assert.assertEquals("DC", orgs.get(0).getTitle());
-		//Assert.assertEquals("toxbank", orgs.get(0).getGroupName());
+		Assert.assertEquals("NoName", orgs.get(0).getTitle());
 		return model;
 	}	
 	@Override
@@ -114,7 +113,7 @@ public class OrganisationResourceTest extends ResourceTest {
 	public void testCreateEntryFromWebForm() throws Exception {
 		Form form = new Form();
 		form.add(DBGroup.fields.name.name(), "organisation");
-		form.add(DBGroup.fields.ldapgroup.name(), "toxbank");
+		form.add(DBGroup.fields.ldapgroup.name(), "qmrf");
 
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM organisation");
@@ -138,9 +137,9 @@ public class OrganisationResourceTest extends ResourceTest {
         c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT * FROM organisation");
 		Assert.assertEquals(4,table.getRowCount());
-		table = 	c.createQueryTable("EXPECTED","SELECT idorganisation,name,ldapgroup from organisation where idorganisation>3");
+		table = 	c.createQueryTable("EXPECTED","SELECT idorganisation,name,ldapgroup from organisation where idorganisation>5");
 		Assert.assertEquals(1,table.getRowCount());
-		Assert.assertEquals("toxbank",table.getValue(0,"ldapgroup"));
+		Assert.assertEquals("qmrf",table.getValue(0,"ldapgroup"));
 		Assert.assertEquals("organisation",table.getValue(0,"name"));
 		
 
@@ -180,17 +179,17 @@ public class OrganisationResourceTest extends ResourceTest {
 	@Test
 	public void testDelete() throws Exception {
 		IDatabaseConnection c = getConnection();	
-		ITable table = 	c.createQueryTable("EXPECTED","SELECT idorganisation FROM organisation where idorganisation=3");
-		Assert.assertEquals(new BigInteger("3"),table.getValue(0,"idorganisation"));
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT idorganisation FROM organisation where idorganisation=2");
+		Assert.assertEquals(new BigInteger("2"),table.getValue(0,"idorganisation"));
 		c.close();		
-		String org = String.format("http://localhost:%d%s/G3", port,Resources.organisation);
+		String org = String.format("http://localhost:%d%s/G2", port,Resources.organisation);
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, null,
 				Method.DELETE);
 		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
-		table = 	c.createQueryTable("EXPECTED","SELECT * FROM organisation where idorganisation=3");
+		table = 	c.createQueryTable("EXPECTED","SELECT * FROM organisation where idorganisation=2");
 		Assert.assertEquals(0,table.getRowCount());
 		c.close();			
 	}
@@ -198,11 +197,11 @@ public class OrganisationResourceTest extends ResourceTest {
 	@Test
 	public void testDeleteFromUserProfile() throws Exception {
 		IDatabaseConnection c = getConnection();	
-		String sql = "SELECT idorganisation FROM user_organisation where idorganisation=1 and iduser=1";
+		String sql = "SELECT idorganisation FROM user_organisation where idorganisation=1 and iduser=3";
 		ITable table = 	c.createQueryTable("EXPECTED",sql);
 		Assert.assertEquals(1,table.getRowCount());
 		c.close();		
-		String org = String.format("http://localhost:%d%s/U1%s/G1", port,Resources.user,Resources.organisation);
+		String org = String.format("http://localhost:%d%s/U3%s/G1", port,Resources.user,Resources.organisation);
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, null,
 				Method.DELETE);
@@ -217,22 +216,22 @@ public class OrganisationResourceTest extends ResourceTest {
 	@Test
 	public void testAddOrganisationToUserProfile() throws Exception {
 		IDatabaseConnection c = getConnection();	
-		String sql = "SELECT iduser FROM user_organisation where idorganisation=1 and iduser=1";
+		String sql = "SELECT iduser FROM user_organisation where idorganisation=1 and iduser=3";
 		ITable table = 	c.createQueryTable("EXPECTED",sql);
 		Assert.assertEquals(1,table.getRowCount());
 		c.close();		
 		
 		Form form = new Form();
-		form.add("organisation_uri",String.format("http://localhost:%d%s/G2",port,Resources.organisation));
+		form.add("organisation_uri",String.format("http://localhost:%d%s/G5",port,Resources.organisation));
 
-		String org = String.format("http://localhost:%d%s/U1%s", port,Resources.user,Resources.organisation);
+		String org = String.format("http://localhost:%d%s/U3%s", port,Resources.user,Resources.organisation);
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, form.getWebRepresentation(),
 				Method.POST);
 		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
-		sql = "SELECT iduser FROM user_organisation where idorganisation=2 and iduser=1";
+		sql = "SELECT iduser FROM user_organisation where idorganisation=5 and iduser=3";
 		table = 	c.createQueryTable("EXPECTED",sql);
 		Assert.assertEquals(1,table.getRowCount());
 		c.close();			
