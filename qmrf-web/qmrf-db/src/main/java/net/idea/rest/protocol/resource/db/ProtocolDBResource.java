@@ -66,6 +66,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected boolean version = false;
 	protected boolean editable = true;
 	protected boolean details = true;
+	protected boolean headless = false;
 	protected Object structure;
 
 	
@@ -111,11 +112,11 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 						return TOXBANK.URI;
 					}					
 				};
-		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML))
-			return new OutputWriterConvertor(
-					new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null,details),
-					MediaType.TEXT_HTML);				
-		else if (singleItem && (structure==null)) {
+		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
+			ProtocolQueryHTMLReporter rep = new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null,details);
+			rep.setHeadless(headless);
+			return new OutputWriterConvertor(rep,MediaType.TEXT_HTML);				
+		} else if (singleItem && (structure==null)) {
 			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType()),variant.getMediaType());		
 		}
 		throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
@@ -188,6 +189,11 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected Q createQuery(Context context, Request request, Response response)
 			throws ResourceException {
 		Form form = request.getResourceRef().getQueryAsForm();
+		try {
+			headless = Boolean.parseBoolean(form.getFirstValue("headless").toString());
+		} catch (Exception x) {
+			headless = false;
+		}				
 		Object search = null;
 		try {
 			search = form.getFirstValue("search").toString();

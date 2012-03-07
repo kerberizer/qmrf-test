@@ -23,7 +23,14 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	protected SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
 	protected boolean editable = false;
 	protected String title;
+	protected boolean headless = false;
 	
+	public boolean isHeadless() {
+		return headless;
+	}
+	public void setHeadless(boolean headless) {
+		this.headless = headless;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -47,7 +54,8 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 
 	@Override
 	public void header(Writer w, Q query) {
-		super.header(w, query);
+		if (!headless)
+			super.header(w, query);
 		
 		record = query.getPage()*query.getPageSize();
 		
@@ -73,12 +81,12 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	    
 		try {
 			if (printAsTable()) {
-				if (getTitle()!=null)
+				if (!headless && getTitle()!=null)
 					w.write(String.format("<h3>%ss</h3>",getTitle()));
 				printPageNavigator(query);
 				
 			} else {
-				if (getTitle()!=null)
+				if (!headless && getTitle()!=null)
 					w.write(String.format("<h3>%s</h3>",getTitle()));
 			}
 		} catch (Exception x) {
@@ -118,7 +126,8 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 			if (printAsTable()) output.write("</table>\n");				
 			output.write("</div>\n");
 		} catch (Exception x) {}
-		super.footer(output, query);
+		if (!headless)
+			super.footer(output, query);
 	}
 	@Override
 	protected HTMLBeauty createHTMLBeauty() {

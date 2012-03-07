@@ -59,10 +59,11 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 		try {
 			if (printAsTable()) {
 				w.write(String.format("<h3>%ss</h3>",getTitle()));
-				w.write(((QMRF_HTMLBeauty)getHtmlBeauty()).getPaging(0,2));
+				w.write(((QMRF_HTMLBeauty)htmlBeauty).getPaging(0,2));
 				
 			} else {
 				w.write(String.format("<h3>%s</h3>",getTitle()));
+				w.write(((QMRF_HTMLBeauty)htmlBeauty).getPaging(0,2));
 			}
 		} catch (Exception x) {
 			x.printStackTrace();
@@ -78,15 +79,24 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 	}		
 	@Override
 	public void processItem(Structure item, Writer output) {
-		StringBuilder protocols = new StringBuilder();
+		try {
+			output.write(renderItem(item));
+		} catch (Exception x) {
+			x.printStackTrace();
+		}
+	}
+	
+	public String renderItem(Structure item) {
+		StringBuilder protocols = null;
 		try {/*
 			for (Protocol protocol:item.getProtocols()) {
+				if (protocols==null) protocols = new StringBuilder();
 				protocols.append(String.format("<tr><td><a href='%s'>%s</a></td><td>%s</td></tr>",
 						protocol.getResourceURL(),protocol.getIdentifier(),protocol.getTitle()));
 
 			}
 			*/
-			protocols.append(String.format("<tr><td><a href='%s%s?structure=%s' target='_QMRF'>QMRFs</a></td></tr>",getRequest().getRootRef(),Resources.protocol,Reference.encode(item.getResourceURL().toString())));
+			
 		} catch (Exception x) {}
 		StringBuilder properties=null;
 		try {
@@ -105,18 +115,28 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 					item.cas==null?"":item.cas
 					);
 		
-		try {
+		String protocolURI = String.format(
+				"<a href=\"%s%s?structure=%s&headless=true&details=false&media=text/html\" title=\"QMRF documents\">QMRF documents</a>",
+				getRequest().getRootRef(),Resources.protocol,Reference.encode(item.getResourceURL().toString()));
+		
+		StringBuilder rendering = new StringBuilder();
 			//tab headers
-			output.write(String.format(
+			rendering.append(String.format(
 			"<div class='protocol'>\n"+					
 			"<div class='tabs'>\n"+
 			"<ul>"+
-			"<li><a href='#tabs-id'>Identifiers</a></li>"+
+			"<li><a href='#tabs-id'>Molecule</a></li>"+
 			"%s"+
-			"<li><a href='#tabs-qmrf'>QMRF</a></li>"+
-			"</ul>",properties==null?"":"<li><a href='#tabs-prop'>Properties</a></li>"));
+			"<li>%s<span></span></li>"+
+			//"%s"+
+			"</ul>",
+			properties==null?"":"<li><a href='#tabs-prop'>Properties</a></li>",
+			protocolURI
+			//protocols==null?"":"<li><a href='#tabs-qmrf'>QMRF</a></li>"
+			
+			));
 			//identifiers
-			output.write(String.format(
+			rendering.append(String.format(
 			"<div id='tabs-id'>"+
 			"%s\n"+ //structure
 			"<span class='summary'><table>\n"+ 
@@ -138,22 +158,16 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 			));
 			
 			if (properties!=null)
-			output.write(String.format(
-			"<div id='tabs-prop'>"+
-			"%s<span class='summary'><table>%s</table></span>\n"+
-			"</div>",structure,properties));
-			
-			output.write(String.format(
-			"<div id='tabs-qmrf'>"+
-			"%s<span class='summary'><table>%s</table></span>\n"+
-			"</div>\n" + //tabs-qmrf
-			"</div>\n" + //tabs
-			"</div>\n", //protocol
-			structure,protocols));
-			
-		} catch (Exception x) {
-			x.printStackTrace();
-		}
+				rendering.append(String.format(
+				"<div id='tabs-prop'>"+
+				"%s<span class='summary'><table>%s</table></span>\n"+
+				"</div>",structure,properties));			
+				
+			rendering.append(String.format("<div id='QMRF_documents'>%s</div>",protocolURI));
+
+			rendering.append("</div>\n</div>\n");//tabs , protocol
+
+			return rendering.toString();
 		
 
 	}
@@ -206,7 +220,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		String searchQuery = form.getFirstValue(QueryResource.search_param);
 		
 		pageSize = 10;
-		try { pageSize = Long.parseLong(form.getFirstValue("pagesize")); if (pageSize>100) pageSize=10;} catch (Exception x) { pageSize=10;}
+		try { pageSize = Long.parseLong(form.getFirstValue("pagesize")); if ((pageSize<1) && (pageSize>100)) pageSize=10;} catch (Exception x) { pageSize=10;}
 		page = 0;
 		try { page = Integer.parseInt(form.getFirstValue("page")); if ((page<0) || (page>100)) page=0;} catch (Exception x) { page=0;}
 		String threshold = form.getFirstValue("threshold");

@@ -27,8 +27,6 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
-import com.ibm.icu.text.DecimalFormat;
-
 public class StructureResource extends CatalogResource<Structure>{
 	public static String queryService="http://localhost:8080/ambit2";
 	public enum SearchMode {
