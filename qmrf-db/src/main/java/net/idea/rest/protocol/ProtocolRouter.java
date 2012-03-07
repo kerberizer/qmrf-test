@@ -2,7 +2,7 @@ package net.idea.rest.protocol;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
-import net.idea.rest.protocol.resource.db.ProtocolAttachmentResource;
+import net.idea.rest.protocol.attachments.ProtocolAttachmentResource;
 import net.idea.rest.protocol.resource.db.ProtocolDBResource;
 import net.idea.rest.protocol.resource.db.ProtocolVersionDBResource;
 import net.idea.rest.user.author.resource.ProtocolAuthorsResource;

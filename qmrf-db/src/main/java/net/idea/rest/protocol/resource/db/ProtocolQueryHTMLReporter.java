@@ -22,6 +22,7 @@ import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.AttachmentHTMLReporter;
 import net.idea.rest.protocol.attachments.AttachmentURIReporter;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.db.ReadProtocol;
@@ -48,6 +49,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected GroupQueryURIReporter<IQueryRetrieval<IDBGroup>> groupReporter;
 	protected UserURIReporter<IQueryRetrieval<DBUser>> userReporter;
 	protected AttachmentURIReporter<IQueryRetrieval<DBAttachment>> attachmentReporter;
+	
 	protected DocumentBuilder builder;
 	protected DocumentBuilderFactory factory;
 	protected QMRF_xml2html qhtml;
@@ -219,30 +221,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			x.printStackTrace();
 		} 
 		StringBuilder datasets = new StringBuilder();
+		AttachmentHTMLReporter reporter = new AttachmentHTMLReporter(item,uriReporter.getRequest(),true,false);
 		if (item.getAttachments().size()>0)
-			for (DBAttachment attachment: item.getAttachments()) {
-				datasets.append("<tr>");
-				datasets.append(String.format("<th width='20%%'>%s</th>", attachment.getType()));
-				datasets.append(String.format("<td><a href='%s?media=%s' target='_attachment' title='%s %s'>%s</a></td>",
-							attachmentReporter.getURI(attachment),
-							Reference.encode(attachment.getMediaType()),
-							attachment.getTitle(),attachment.getMediaType(),
-							attachment.getDescription())
-							);
-				switch (attachment.getType()) {
-				case document: {
-					datasets.append("<td width='20%%'></td>");
-					break;
-				}
-				default: {
-					datasets.append(String.format("<td width='20%%'><a href='%s%s?option=dataset&search=%s' target='_structure'>View structures</a></td>",
-								uriReporter.getBaseReference(),Resources.structure,Reference.encode(attachment.getTitle().trim())));
-					break;
-				}
-				}
-				//datasets.append(String.format("<td>%s</td>",attachment.getMediaType()));
-				datasets.append("</tr>");
-			}
+			for (DBAttachment attachment: item.getAttachments())
+				datasets.append(reporter.printTable(attachment));
 		else datasets.append("N/A");
 		try {
 
