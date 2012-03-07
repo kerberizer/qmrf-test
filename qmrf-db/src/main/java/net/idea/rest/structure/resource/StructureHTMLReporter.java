@@ -87,17 +87,6 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 	}
 	
 	public String renderItem(Structure item) {
-		StringBuilder protocols = null;
-		try {/*
-			for (Protocol protocol:item.getProtocols()) {
-				if (protocols==null) protocols = new StringBuilder();
-				protocols.append(String.format("<tr><td><a href='%s'>%s</a></td><td>%s</td></tr>",
-						protocol.getResourceURL(),protocol.getIdentifier(),protocol.getTitle()));
-
-			}
-			*/
-			
-		} catch (Exception x) {}
 		StringBuilder properties=null;
 		try {
 			Enumeration<String> keys = item.getProperties().keys();
