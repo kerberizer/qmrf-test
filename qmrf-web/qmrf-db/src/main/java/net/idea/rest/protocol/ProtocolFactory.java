@@ -249,12 +249,17 @@ public class ProtocolFactory {
 		        	try { 
 		        		if ((dir!=null) && !dir.exists())  dir.mkdir();
 		        	} catch (Exception x) {dir = null; }
+		        	try { 
+		        		dir = new File(dir==null?new File(System.getProperty("java.io.tmpdir")):dir,type.name());
+		        		if ((dir!=null) && !dir.exists())  dir.mkdir();
+		        	} catch (Exception x) {dir = null; }
 		          	file = new File(
 		            		String.format("%s/%s",
 		            				dir==null?System.getProperty("java.io.tmpdir"):dir,
 		            				fi.getName()));
 		        }
 		        fi.write(file);
+		       
 		        return DBAttachment.file2attachment(file, file.getName(), type);
 		        
 			}
