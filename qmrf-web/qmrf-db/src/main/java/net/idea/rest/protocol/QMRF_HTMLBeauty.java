@@ -257,7 +257,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		    	b.append(String.format(url,i,pageSize,i+1)); //zero numbered pages
 		    b.append(String.format(url,page+1,pageSize,"Next"));
 		   // b.append(String.format("<li><label name='pageSize' value='%d' size='4' title='Page size'></li>",pageSize));
-		    b.append("</ul></div>");
+		    b.append("</ul></div><br>");
 		    return b.toString();
 		}
 		
