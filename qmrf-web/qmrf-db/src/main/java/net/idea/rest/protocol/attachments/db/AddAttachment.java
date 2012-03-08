@@ -1,0 +1,44 @@
+package net.idea.rest.protocol.attachments.db;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.modbcum.i.query.QueryParam;
+import net.idea.modbcum.q.update.AbstractUpdate;
+import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.DBAttachment;
+
+
+public class AddAttachment extends AbstractUpdate<DBProtocol,DBAttachment>{
+	public static final String[] create_sql = {
+		"insert into attachments " +
+		"(idattachment,idprotocol,version,name,description,type,updated,format,original_name,imported)\n"+
+		"values (null,?,?,?,?,?,now(),?,?,?)"
+	};
+
+	public AddAttachment(DBProtocol protocol,DBAttachment attachment) {
+		super(attachment);
+		setGroup(protocol);
+	}
+	
+	public List<QueryParam> getParameters(int index) throws AmbitException {
+		List<QueryParam> params = new ArrayList<QueryParam>();
+		for (AttachmentFields field : AttachmentFields.values()) 
+			if (AttachmentFields.idattachment.equals(field)) continue;
+			else params.add(field.getParam(this));
+		
+		return params;
+	}
+
+	public String[] getSQL() throws AmbitException {
+		return create_sql;
+	}
+	public void setID(int index, int id) {
+		getObject().setID(id);
+	}
+	@Override
+	public boolean returnKeys(int index) {
+		return true;
+	}
+}
