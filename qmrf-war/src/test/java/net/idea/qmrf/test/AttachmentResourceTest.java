@@ -55,34 +55,15 @@ public class AttachmentResourceTest extends ResourceTest {
 							));
 			count++;
 		}
-		return count==5;
+		return count==4;
 	}	
-	
-	//have to ensure test files are stored in a reachable location
-	public void testTXT() throws Exception {
-		testGet(getTestURI(),MediaType.TEXT_PLAIN);
-	}
-	/**
-	 * Reading the template and ensuring the same garbage we put in is being read
-	 */
-	@Override
-	public boolean verifyResponseTXT(String uri, MediaType media, InputStream in)
-			throws Exception {
-		BufferedReader r = new BufferedReader(new InputStreamReader(in));
-		String line = null;
-		int count = 0;
-		while ((line = r.readLine())!= null) {
-			Assert.assertEquals("ABCDEFGH", line);
-			count++;
-		}
-		return count==1;
-	}
 	
 	@Test
 	public void testCreateEntryFromMultipartWeb() throws Exception {
 		String url = createEntryFromMultipartWeb(new Reference(getTestURI()));
 		
-		testGet(url,MediaType.TEXT_URI_LIST);		
+		Assert.assertEquals(String.format("http://localhost:%d/protocol/QMRF-83-1/attachment",port),url);
+
 		
    	    IDatabaseConnection c = getConnection();	
 		ITable  table = 	c.createQueryTable("EXPECTED","SELECT * FROM protocol");
