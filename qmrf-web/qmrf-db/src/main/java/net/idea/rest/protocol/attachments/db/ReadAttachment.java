@@ -25,7 +25,7 @@ public class ReadAttachment extends AbstractQuery<DBProtocol, DBAttachment, EQCo
 	private static final long serialVersionUID = 6228939989116141217L;
 	protected String dir = "file:///Z:/QMRF/attachments/qmrf"; //TODO
 	protected static String sql = 
-		"SELECT idprotocol,version,idattachment,type,a.name,`format`,description FROM qmrf.attachments a where %s";
+		"SELECT idprotocol,version,idattachment,type,a.name,`format`,description FROM attachments a where %s";
 	protected static String where_protocol = "idprotocol=? and version=?";
 	protected static String where_attachment = "idattachment=?";
 	
