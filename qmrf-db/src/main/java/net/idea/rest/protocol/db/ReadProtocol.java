@@ -22,9 +22,6 @@ import net.toxbank.client.resource.Protocol;
 import net.toxbank.client.resource.Protocol.STATUS;
 import net.toxbank.client.resource.Template;
 
-import org.restlet.data.Status;
-import org.restlet.resource.ResourceException;
-
 /**
  * Retrieve references (by id or all)
  * @author nina
@@ -38,25 +35,10 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 	
 
 	public static final ReadProtocol.fields[] entryFields = new ReadProtocol.fields[] {
-			fields.filename,
+			
 			fields.title,
-			fields.anabstract,
-			fields.author_uri,
-			fields.author_uri,
-			fields.author_uri,
-			fields.keywords,
-			fields.summarySearchable,
-			fields.status,
-			fields.project_uri,
-			fields.organisation_uri,
-			fields.user_uri,
-			fields.allowReadByUser,
-			fields.allowReadByGroup,
+			fields.filename,
 			fields.published
-			
-			
-			//ReadProtocol.fields.version
-			//ReadProtocol.fields.accesslevel
 		};
 	public static final ReadProtocol.fields[] displayFields = new ReadProtocol.fields[] {
 			fields.idprotocol,

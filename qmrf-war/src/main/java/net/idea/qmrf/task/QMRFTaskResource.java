@@ -12,10 +12,9 @@ import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.TaskResource;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.i.task.ITaskStorage;
-import net.idea.restnet.rdf.reporter.TaskRDFReporter;
+import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
 import org.restlet.Request;
-import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 public class QMRFTaskResource extends TaskResource<String> {
@@ -28,13 +27,12 @@ public class QMRFTaskResource extends TaskResource<String> {
 	@Override
 	protected FactoryTaskConvertor getFactoryTaskConvertor(ITaskStorage storage)
 			throws ResourceException {
-		return new FactoryTaskConvertor<Object>(storage,getHTMLBeauty()) {
+		return new FactoryTaskConvertorRDF<Object>(storage,getHTMLBeauty()) {
 			@Override
-			public synchronized Reporter<Iterator<UUID>, Writer> createTaskReporterRDF(
-					Variant variant, Request request, ResourceDoc doc)
-					throws AmbitException, ResourceException {
-				return new TaskRDFReporter(storage,request,variant.getMediaType(),doc);
-			}
+			public synchronized Reporter<Iterator<UUID>, Writer> createTaskReporterHTML(
+					Request request,ResourceDoc doc,HTMLBeauty htmlbeauty) throws AmbitException, ResourceException {
+				return	new QMRFTaskHTMLReporter<Object>(storage,request,doc,htmlbeauty);
+			}			
 		};
 	}
 }

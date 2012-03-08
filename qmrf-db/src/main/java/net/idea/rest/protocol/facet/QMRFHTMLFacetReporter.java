@@ -31,8 +31,8 @@ public class QMRFHTMLFacetReporter extends QMRFHTMLReporter<EndpointProtocolFace
 	@Override
 	protected void printTableHeader(Writer w) throws Exception {
 		try {
-			w.write("<h3>QMRF documents by endpoints</h3>");
-			w.write("<div class='protocol'>");
+			w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%s<strong></p></div>","QMRF documents by endpoints"));
+			//w.write("<div class='protocol'>");
 			//w.write("<div class='tabs'>");
 		} catch (Exception x) {
 			x.printStackTrace();
@@ -54,23 +54,30 @@ public class QMRFHTMLFacetReporter extends QMRFHTMLReporter<EndpointProtocolFace
 			EndpointProtocolFacet item) {
 		try {
 			if ((endpoint==null) || !endpoint.equals(item.getProperty1().trim())) {
-				if (endpoint!=null) output.write("</div>");
-				output.write(String.format("<h4>%s</h4>","".equals(item.getProperty1())?"Undefined endpoint":item.getProperty1()));
+				if (endpoint!=null) {
+					output.write(printWidgetContentFooter());
+					output.write(printWidgetFooter());
+				}
+				output.write(printWidgetHeader("".equals(item.getProperty1())?"Undefined endpoint":item.getProperty1()));
 				endpoint = item.getProperty1().trim();
-				output.write("<div class='summary'>");
+				output.write(printWidgetContentHeader(""));
 			}
 			
 			String d = uri.indexOf("?")>0?"&":"?";
-			output.write(String.format(
+			output.write(printWidgetContentContent(String.format(
 						"<a href=\"%s%spage=0&pagesize=10\">%s&nbsp;%s</a>&nbsp;(%d)<br>",
 						uri,d,item.getProperty2().trim(),item.getValue().toString().trim(),
-						item.getCount()));
+						item.getCount())));
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
 
 		
+	
+		
 	}
+	
+	
 	
 	@Override
 	public void footer(Writer w,

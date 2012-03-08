@@ -209,8 +209,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 				return
 			   String.format(		
-			   "<div class='search' class='jbutton'>\n"+
-			   "%s\n"+
+			   "<div class='search ui-widget'>\n"+
+			   "<p>%s</p>\n"+
 			   "<form method='GET' action='%s%s?pagesize=10'>\n"+
 			   "<table width='200px'>\n"+
 			   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter search query'></td></tr>\n"+
@@ -225,7 +225,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "&nbsp;\n"+
 			   "<div class='structureright'>%s</div>"+
 			   "</div>\n",
-	   
+
 			   getSearchTitle(),
 			   baseReference,
 			   getSearchURI(),

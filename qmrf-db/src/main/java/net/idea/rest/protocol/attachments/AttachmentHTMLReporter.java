@@ -39,7 +39,6 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	}
 	@Override
 	protected void printTableHeader(Writer w) throws Exception {
-		w.write("<div class='summary'>");
 		w.write("<table width='100%'>\n");
 	
 		
@@ -87,7 +86,10 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 
 	@Override
 	public void footer(Writer output, IQueryRetrieval<DBAttachment> query) {
-		try {output.write("</div>"); } catch (Exception x) {}
+		try {
+			output.write(printWidgetContentFooter()); 
+			//output.write(printWidgetFooter());
+		} catch (Exception x) {}
 		super.footer(output, query);
 	}
 	@Override

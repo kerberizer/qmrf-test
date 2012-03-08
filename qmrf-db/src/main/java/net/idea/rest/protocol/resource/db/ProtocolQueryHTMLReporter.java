@@ -9,11 +9,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.dom.DOMSource;
 
-import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
-import net.idea.modbcum.p.DefaultAmbitProcessor;
-import net.idea.modbcum.p.MasterDetailsProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.converters.QMRF_xml2html;
 import net.idea.rest.QMRFHTMLReporter;
@@ -22,10 +19,7 @@ import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.DBProtocol;
-import net.idea.rest.protocol.attachments.AttachmentURIReporter;
-import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.db.ReadProtocol;
-import net.idea.rest.protocol.db.template.ReadFilePointers;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserURIReporter;
 import net.idea.restnet.c.ResourceDoc;
@@ -82,7 +76,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	
 	@Override
 	public Object processItem(DBProtocol item) throws AmbitException  {
-		//attachmentReporter.setPrefix(String.format("%s/%s",Resources.protocol,item.getIdentifier()));
+
 		try {
 			if ((item.getProject()!=null) && (item.getProject().getResourceURL()==null))
 				item.getProject().setResourceURL(new URL(groupReporter.getURI((DBProject)item.getProject())));
@@ -164,7 +158,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			if (qhtml==null) qhtml = new QMRF_xml2html();
 	        
 			output.write(String.format(
-			"<div id='%s' class='protocol'  style='display: %s;'>\n"+					
+			"<div id='%s' style='display: %s;'>\n"+					
 			"<div class='tabs'>\n",item.getIdentifier(),hidden?"none":""));
 			
 			output.write(String.format("<ul>\n"+
@@ -183,158 +177,55 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		
 			output.write(String.format("<div id='Attachments'><span class='summary'>%s</span></div>","N/A"));
 			
-			output.write("</div>\n</div>\n");//tabs , protocol
+			output.write("\n</div>\n");//tabs , protocol
 		} catch (Exception x) {
 			x.printStackTrace();
 		} 
 	
-		/*
-		StringBuilder datasets = new StringBuilder();
-		AttachmentHTMLReporter reporter = new AttachmentHTMLReporter(item,uriReporter.getRequest(),true,false);
-		if (item.getAttachments().size()>0)
-			for (DBAttachment attachment: item.getAttachments())
-				datasets.append(reporter.printTable(attachment));
-		else datasets.append("N/A");
-		try {
-
-			output.write(String.format(
-			"<div id='tabs-dataset'>"+
-			"<span class='summary'><table width='100%%'>%s</table></span>\n"+
-			"</div>\n" + //tabs-qmrf
-			"</div>\n" + //tabs
-			"</div>\n", //protocol
-			datasets
-			)
-			);
-		} catch (Exception x) {
-			x.printStackTrace();
-		} 
-		*/
 	}
-	/*
-	protected void printForm(Writer output, String uri, DBProtocol protocol, boolean editable) {
+	
+	@Override
+	protected void printUploadForm(Writer output, String uri, DBProtocol protocol) {
 		try {
-			ReadProtocol.fields[] fields = editable?ReadProtocol.entryFields:ReadProtocol.displayFields;
-			for (ReadProtocol.fields field : fields) {
-				output.write("<tr bgcolor='FFFFFF'>\n");	
-				Object value = null;
-				
-				try { value = protocol==null?field.getExampleValue(uri):field.getValue(protocol);} catch (Exception x) {}
+			StringBuilder content = new StringBuilder();
 
-				if (editable) {
-					value = field.getHTMLField(protocol);
-				} else 
-					if (value==null) value = "";
-							
-				switch (field) {
-				case idprotocol: {
-					if (!editable)
-						output.write(String.format("<th title='%s'>%s</th><td align='left'><a href='%s'>%s</a></td><td align='left'></td>\n",
-							field.name(),	
-							field.toString(),
-							uri,
-							uri));		
-					break;
-				}	
-				case updated: {
-					output.write(String.format("<th title='%s'>%s</th><td align='left'>%s</td><td align='left'></td>\n",
-						field.name(),	
-						field.toString(),
-						protocol.getTimeModified()==null?"":simpleDateFormat.format(new Date(protocol.getTimeModified()))
-						));		
-					break;
-				}					
-				case filename: {
-					if (editable)
-					output.write(String.format("<th title='%s'>%s</th><td align='left'><input type=\"file\" name=\"%s\" title='%s' size=\"60\"></td><td align='left'></td>",
-							field.name(),	
-							field.toString(),
-							field.name(),
-							"PDF|MS Word file")); 					
-					else 
-						if ((protocol.getDocument()==null) || (protocol.getDocument().getResourceURL()==null))
-							output.write(String.format("<th title='%s'>%s</th><td align='left'>N/A</td><td></td>",
-									field.name(),	
-									field.toString()));							
-						else
-						output.write(String.format("<th title='%s'>%s</th><td align='left'><a href='%s%s?media=%s'>Download</a></td><td></td>",
-									field.name(),	
-									field.toString(),
-									uri,
-									Resources.document,
-									Reference.encode(MediaType.APPLICATION_ALL.toString())));
+			content.append("<form method='POST' class='.ui-widget' action='' ENCTYPE=\"multipart/form-data\">");
 
-					break;
-				}	
-				case template: {
-					if (editable)
-					output.write(String.format("<th title='%s'>%s</th><td align='left'><input type=\"file\" name=\"%s\" title='%s' size=\"60\"></td><td align='left'></td>",
-							field.name(),	
-							field.toString(),
-							field.name(),
-							"ISA-TAB template")); 					
-					else 
-						if (protocol.getDataTemplate()==null)
-							output.write(String.format("<th title='%s'>%s</th><td align='left'><a href='%s%s?media=text/html'>Create data template</a></td><td></td>",
-									field.name(),	
-									field.toString(),
-									uri,
-									Resources.datatemplate		
-							));
-							
-						else
-						output.write(String.format("<th title='%s'>%s</th><td align='left'><a href='%s%s?media=text/plain'>Download</a></td><td></td>",
-									field.name(),	
-									field.toString(),
-									uri,
-									Resources.datatemplate));
+			String help = ReadProtocol.fields.published.getHelp(uriReporter.getRequest().getRootRef().toString());
+		
+			content.append(String.format("<p><strong>%s</strong><input type=\"file\" class='.ui-widget' class='multi max-1 accept-xml' name=\"%s\" title='%s' size=\"60\"></p>",
 
-					break;
-				}					
-				case author_uri: {
-					if (!editable) {
-						output.write(String.format("<th>%s</th><td><a href='%s%s'>Authors</a></td>",
-								field.toString(),uri,Resources.authors));
-						break;
-					}
-				}
-				case allowReadByGroup: {
-					if (!editable) {
-						output.write(String.format("<th>%s</th><td><a href='%s%s'>Allow read by</a></td>",
-								field.toString(),uri,Resources.organisation));
-						break;
-					}
-				}			
-				case allowReadByUser: {
-					if (!editable) {
-						output.write(String.format("<th>%s</th><td><a href='%s%s'>Allow read by</a></td>",
-								field.toString(),uri,Resources.user));
-						break;
-					}
-				}		
-				case published :  {
-					String help = field.getHelp(uriReporter.getRequest().getRootRef().toString());
-					output.write(String.format("<th>%s</th><td align='left'>%s</td><td align='left'>%s</td>\n",
-									field.toString(),
-									value,
-									help==null?"":help));
-					break;
-				}				
-				default :  {
-					String help = field.getHelp(uriReporter.getRequest().getRootRef().toString());
-					output.write(String.format("<th>%s</th><td align='left'>%s</td><td align='left'>%s</td>\n",
-									field.toString(),
-									value,
-									help==null?"":help));
-				}
-				}
-							
-				output.write("</tr>\n");				
-			}
+					"QMRF XML file",
+					ReadProtocol.fields.filename.name(),
+					"QMRF XML")); 		
+			content.append(String.format("<p><strong>%s</strong>%s</p>",
+					"Publish immediately",
+					ReadProtocol.fields.published.getHTMLField(null)
+					));					
+			content.append("<input type='submit' enabled='false' value='Submit'>");
+			content.append("</form>");
+
+			
+/*
+			content.append(String.format("<tr bgcolor='FFFFFF'><th title='%s'>%s</th><td align='left'><input type=\"file\" class='multi max-1 accept-xml' name=\"%s\" title='%s' size=\"60\"></td><td align='left'></td></tr>",
+					ReadProtocol.fields.filename.name(),	
+					"QMRF XML file",
+					ReadProtocol.fields.filename.name(),
+					"QMRF XML")); 	
+			String help = ReadProtocol.fields.published.getHelp(uriReporter.getRequest().getRootRef().toString());
+			content.append(String.format("<tr bgcolor='FFFFFF'><th>%s</th><td align='left'>%s</td><td align='left'>%s</td></tr>\n",
+							"Publish immediately",
+							ReadProtocol.fields.published.getHTMLField(null),
+							help==null?"":help));	
+							*/
+			output.write(printWidget(
+						String.format("Add new %s %s",getTitle(),uri.toString().contains("versions")?"version":""),
+						content.toString(),
+						""));			
 			output.flush();
 		} catch (Exception x) {x.printStackTrace();} 
 	}	
-	*/
+	
 	protected String printDownloadLinks(String uri) throws Exception {
 		StringBuilder b = new StringBuilder();
 		MediaType[] mimes = {
