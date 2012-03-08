@@ -5,6 +5,7 @@ import java.io.Writer;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.facet.IFacet;
 import net.idea.rest.QMRFHTMLReporter;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
@@ -55,16 +56,16 @@ public class QMRFHTMLFacetReporter extends QMRFHTMLReporter<EndpointProtocolFace
 		try {
 			if ((endpoint==null) || !endpoint.equals(item.getProperty1().trim())) {
 				if (endpoint!=null) {
-					output.write(printWidgetContentFooter());
-					output.write(printWidgetFooter());
+					output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetContentFooter());
+					output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetFooter());
 				}
-				output.write(printWidgetHeader("".equals(item.getProperty1())?"Undefined endpoint":item.getProperty1()));
+				output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetHeader("".equals(item.getProperty1())?"Undefined endpoint":item.getProperty1()));
 				endpoint = item.getProperty1().trim();
-				output.write(printWidgetContentHeader(""));
+				output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetContentHeader(""));
 			}
 			
 			String d = uri.indexOf("?")>0?"&":"?";
-			output.write(printWidgetContentContent(String.format(
+			output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetContentContent(String.format(
 						"<a href=\"%s%spage=0&pagesize=10\">%s&nbsp;%s</a>&nbsp;(%d)<br>",
 						uri,d,item.getProperty2().trim(),item.getValue().toString().trim(),
 						item.getCount())));

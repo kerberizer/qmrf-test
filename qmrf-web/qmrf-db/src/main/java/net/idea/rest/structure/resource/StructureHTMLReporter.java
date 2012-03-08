@@ -6,23 +6,23 @@ import java.util.Iterator;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.qmrf.admin.QMRFCatalogHTMLReporter;
 import net.idea.rest.structure.resource.StructureResource.SearchMode;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.c.reporters.CatalogHTMLReporter;
 import net.idea.restnet.db.QueryResource;
 
 import org.restlet.Request;
 import org.restlet.data.Form;
 import org.restlet.data.Reference;
 
-public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
+public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -244654733174669345L;
-	protected long record = 0;
+	
 	
 	public StructureHTMLReporter(Request request, ResourceDoc doc) {
 		this(request, doc, new StructureHTMLBeauty());
@@ -31,52 +31,13 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 	
 	public StructureHTMLReporter(Request request, ResourceDoc doc,
 			HTMLBeauty htmlbeauty) {
-		super(request, doc, htmlbeauty);
-		setTitle("Structure");
+		super(request, doc, htmlbeauty,"Structure");
 	}
-	protected String title;
-	
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}	
+
 	protected boolean printAsTable() {
 		return false;
 	}
-	@Override
-	public void header(Writer w, Iterator<Structure> query) {
-
-		super.header(w, query);
-		
-		record = 0;//query.getPage()*query.getPageSize();
-		
-		Reference uri = getRequest().getResourceRef().clone();
-		uri.setQuery(null);
-		
-	    
-		try {
-			if (printAsTable()) {
-				w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
-				w.write(((QMRF_HTMLBeauty)htmlBeauty).getPaging(0,2));
-				
-			} else {
-				w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
-				w.write(((QMRF_HTMLBeauty)htmlBeauty).getPaging(0,2));
-			}
-		} catch (Exception x) {
-			x.printStackTrace();
-		} finally {
-			try {
-				w.write("<div class='protocol'>\n");
-				if (printAsTable()) {
-					printTableHeader(w);
-				}
-			} catch (Exception x) {}
-		}
-		
-	}		
+	
 	@Override
 	public void processItem(Structure item, Writer output) {
 		try {
@@ -174,7 +135,6 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 	public void footer(Writer output, Iterator<Structure> query) {
 		try {
 			if (printAsTable()) output.write("</table>\n");				
-			output.write("</div>\n");
 		} catch (Exception x) {}
 		super.footer(output, query);
 	}

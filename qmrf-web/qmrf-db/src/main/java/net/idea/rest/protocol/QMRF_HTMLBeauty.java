@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
@@ -102,7 +103,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\"});});</script>");
 			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true, ajaxOptions: {error: function( xhr, status, index, anchor ) {$( anchor.hash ).html(status );}}});});</script>");
 			w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true});});</script>");
-			
+			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
 			w.write("<script type='text/javascript'>function toggleDiv(divId) {$('#'+divId).toggle();}</script>\n");
 			w.write("</head>\n");
 			w.write("<body>");
@@ -281,4 +282,92 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		public String getPaging(int start, int last) {
 			return getPaging(page, start, last, pageSize);
 		}
+		
+		public String printUploadForm(String uri, DBProtocol protocol,boolean attachments) throws Exception {
+			return printUploadForm("",uri, protocol,attachments);
+		}
+		public String printUploadForm(String action, String uri, DBProtocol protocol,boolean attachments) throws Exception {
+
+				StringBuilder content = new StringBuilder();
+
+				content.append(String.format("<form method='POST' action=\"%s\" ENCTYPE=\"multipart/form-data\">",action));
+
+				content.append("<div class='ui-widget-content'><p><strong>QMRF XML file</strong> (1 file) </p></div>");
+				content.append(String.format("<p><input type=\"file\" class='multi max-1 accept-xml' name=\"%s\" title='%s' size=\"60\"></p>",
+						ReadProtocol.fields.filename.name(),
+						"QMRF XML")); 	
+				if (attachments) {
+				content.append("<div class='ui-widget-content'><p>Attachments: Training dataset(s) - SDF, MOL, CSV, XLS formats, 3 files max</p></div>");
+				content.append(String.format("<p><input type=\"file\"  class='multi' maxlength='3' accept='sdf|mol|csv|xls' name=\"%s\" title='%s' size=\"60\"></p>",
+						"data_training",
+						"Training dataset(s) - SDF, MOL, CSV, XLS formats")); 		
+				content.append("<div class='ui-widget-content'><p>Attachments: Test dataset(s) - SDF, MOL, CSV, XLS formats, 3 files max</p></div>");
+				content.append(String.format("<p><input type=\"file\"  class='multi' maxlength='3' accept='sdf|mol|csv|xls' name=\"%s\" title='%s' size=\"60\"></p>",
+						"data_validation",
+						"Test dataset(s) - SDF, MOL, CSV, XLS formats")); 			
+				content.append("<div class='ui-widget-content'><p>Attachments: Related document(s) - PDF,3 files max</p></div>");
+				content.append(String.format("<p><input type=\"file\"  class='multi' maxlength='3' accept='pdf|doc|xls' name=\"%s\" title='%s' size=\"60\"></p>",
+						"document",
+						"Related documents - PDF"));
+				}
+				content.append("<div class='ui-widget-content'><p>Options</p></div>");
+				content.append(String.format("<p><strong>%s</strong>%s</p>",
+						"Publish immediately",
+						ReadProtocol.fields.published.getHTMLField(null)
+						));					
+				
+				content.append("<div  class='ui-widget-header ui-corner-bottom'><p><input type='submit' enabled='false' value='Submit'></p></div>");
+//				content.append("<input type='submit' enabled='false' value='Submit'>");
+				content.append("</form>");
+
+				
+
+				return printWidget(
+							String.format("Add new %s %s",getTitle(),uri.toString().contains("versions")?"version":""),
+							content.toString(),
+							"");
+
+		}	
+		
+		public String printWidgetHeader(String header) {
+			return	String.format(
+					"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
+					"<div class=\"ui-widget-header ui-corner-top\"><p>%s</p></div>\n",header);
+		}
+		public String printWidgetFooter() {
+			return	String.format("</div>\n");
+		}
+		public String printWidgetContentHeader(String style) {
+			return	String.format("<div class=\"ui-widget-content ui-corner-bottom %s\">\n",style);
+		}
+		public String printWidgetContentFooter() {
+			return	String.format("</div>\n");
+		}	
+		public String printWidgetContentContent(String content) {
+			return
+			String.format("<p>%s</p>\n",content);
+		}	
+		public String printWidgetContent(String content,String style) {
+			return String.format("%s\n%s\n%s",
+					printWidgetContentHeader(style),
+					printWidgetContentContent(content),
+					printWidgetContentFooter());
+		}
+		
+		
+		public String printWidget(String header,String content,String style) {
+			return String.format("%s\n%s\n%s",
+					printWidgetHeader(header),
+					printWidgetContent(content,style),
+					printWidgetFooter());
+
+		}
+		
+		public String printWidget(String header,String content) {
+			return String.format("%s\n%s\n%s",
+					printWidgetHeader(header),
+					printWidgetContent(content,""),
+					printWidgetFooter());
+
+		}		
 }

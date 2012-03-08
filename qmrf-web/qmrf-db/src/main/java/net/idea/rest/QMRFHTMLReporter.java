@@ -127,47 +127,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	protected HTMLBeauty createHTMLBeauty() {
 		return new QMRF_HTMLBeauty();
 	}
-	protected String printWidgetHeader(String header) {
-		return	String.format(
-				"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
-				"<div class=\"ui-widget-header ui-corner-top\"><p>%s</p></div>\n",header);
-	}
-	protected String printWidgetFooter() {
-		return	String.format("</div>\n");
-	}
-	protected String printWidgetContentHeader(String style) {
-		return	String.format("<div class=\"ui-widget-content ui-corner-bottom %s\">\n",style);
-	}
-	protected String printWidgetContentFooter() {
-		return	String.format("</div>\n");
-	}	
-	protected String printWidgetContentContent(String content) {
-		return
-		String.format("<p>%s</p>\n",content);
-	}	
-	protected String printWidgetContent(String content,String style) {
-		return String.format("%s\n%s\n%s",
-				printWidgetContentHeader(style),
-				printWidgetContentContent(content),
-				printWidgetContentFooter());
-	}
 	
-	
-	protected String printWidget(String header,String content,String style) {
-		return String.format("%s\n%s\n%s",
-				printWidgetHeader(header),
-				printWidgetContent(content,style),
-				printWidgetFooter());
-
-	}
-	
-	protected String printWidget(String header,String content) {
-		return String.format("%s\n%s\n%s",
-				printWidgetHeader(header),
-				printWidgetContent(content,""),
-				printWidgetFooter());
-
-	}
 	abstract protected void printTableHeader(Writer output) throws Exception;
 	abstract protected void printTable(Writer output, String uri, T item);
 	abstract protected void printForm(Writer output, String uri, T item, boolean editable);
