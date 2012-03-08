@@ -58,11 +58,11 @@ public class StructureHTMLReporter extends CatalogHTMLReporter<Structure> {
 	    
 		try {
 			if (printAsTable()) {
-				w.write(String.format("<h3>%ss</h3>",getTitle()));
+				w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
 				w.write(((QMRF_HTMLBeauty)htmlBeauty).getPaging(0,2));
 				
 			} else {
-				w.write(String.format("<h3>%s</h3>",getTitle()));
+				w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
 				w.write(((QMRF_HTMLBeauty)htmlBeauty).getPaging(0,2));
 			}
 		} catch (Exception x) {
@@ -224,8 +224,8 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 						 StructureResource.queryService,Reference.encode(searchQuery),Reference.encode("image/png"));
 			return
 		   String.format(		
-		   "<div class='search'>\n"+
-		   "%s\n"+
+		   "<div class='search ui-widget'>\n"+
+		   "<p>%s</p>\n"+
 		   "<form method='GET' name='form' action='%s%s'>\n"+
 		   "\n"+
 		   "<input type='hidden' name='page' value='%s'>\n"+

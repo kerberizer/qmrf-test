@@ -66,37 +66,28 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		
 		try {
 			//
-			if (editable) {
-					w.write("<div class='protocol'><table>\n");
-					w.write(String.format("<h3>Add new %s %s</h3>",getTitle(),uri.toString().contains("versions")?"version":""));
+			if (editable) 
 					printUploadForm(output,uri.toString(),null);
-					output.write(
-							"<tr><td></td><td><input type='submit' enabled='false' value='Submit'></td></tr>"
-							);
-					w.write("</table>\n");
-					output.write("</form>");
-					output.write("</div>");	
-				
-			}
+			
 	    } catch (Exception x) {}
 		
 	    
 		try {
 			if (printAsTable()) {
 				if (!headless && getTitle()!=null)
-					w.write(String.format("<h3>%ss</h3>",getTitle()));
+					w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
 				if (!headless)
 					printPageNavigator(query);
 				
 			} else {
 				if (!headless && getTitle()!=null)
-					w.write(String.format("<h3>%s</h3>",getTitle()));
+					w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
 			}
 		} catch (Exception x) {
 			x.printStackTrace();
 		} finally {
 			try {
-				w.write("<div class='protocol'>\n");
+				w.write("<div class='ui-widget'>\n");
 				if (printAsTable()) {
 					printTableHeader(w);
 				}
@@ -127,7 +118,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	public void footer(Writer output, Q query) {
 		try {
 			if (printAsTable()) output.write("</table>\n");				
-			output.write("</div>\n");
+			//output.write("</div>\n");
 		} catch (Exception x) {}
 		if (!headless)
 			super.footer(output, query);
@@ -136,7 +127,47 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	protected HTMLBeauty createHTMLBeauty() {
 		return new QMRF_HTMLBeauty();
 	}
+	protected String printWidgetHeader(String header) {
+		return	String.format(
+				"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
+				"<div class=\"ui-widget-header ui-corner-top\"><p>%s</p></div>\n",header);
+	}
+	protected String printWidgetFooter() {
+		return	String.format("</div>\n");
+	}
+	protected String printWidgetContentHeader(String style) {
+		return	String.format("<div class=\"ui-widget-content ui-corner-bottom %s\">\n",style);
+	}
+	protected String printWidgetContentFooter() {
+		return	String.format("</div>\n");
+	}	
+	protected String printWidgetContentContent(String content) {
+		return
+		String.format("<p>%s</p>\n",content);
+	}	
+	protected String printWidgetContent(String content,String style) {
+		return String.format("%s\n%s\n%s",
+				printWidgetContentHeader(style),
+				printWidgetContentContent(content),
+				printWidgetContentFooter());
+	}
 	
+	
+	protected String printWidget(String header,String content,String style) {
+		return String.format("%s\n%s\n%s",
+				printWidgetHeader(header),
+				printWidgetContent(content,style),
+				printWidgetFooter());
+
+	}
+	
+	protected String printWidget(String header,String content) {
+		return String.format("%s\n%s\n%s",
+				printWidgetHeader(header),
+				printWidgetContent(content,""),
+				printWidgetFooter());
+
+	}
 	abstract protected void printTableHeader(Writer output) throws Exception;
 	abstract protected void printTable(Writer output, String uri, T item);
 	abstract protected void printForm(Writer output, String uri, T item, boolean editable);
