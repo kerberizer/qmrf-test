@@ -55,7 +55,7 @@ public class AttachmentResourceTest extends ResourceTest {
 							));
 			count++;
 		}
-		return count==4;
+		return count==5;
 	}	
 	
 	//have to ensure test files are stored in a reachable location
