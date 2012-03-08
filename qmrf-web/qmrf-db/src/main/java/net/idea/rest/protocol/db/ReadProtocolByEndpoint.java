@@ -62,7 +62,7 @@ public class ReadProtocolByEndpoint extends ReadProtocolAbstract<String> {
 			x.printStackTrace();
 			return null;
 		} finally {
-			if (p!=null) p.setIdentifier(String.format("QMRF-%d-%d", p.getID(),p.getVersion()));
+			if (p!=null) p.setIdentifier(ReadProtocol.generateIdentifier(p));
 		}
 	}	
 }

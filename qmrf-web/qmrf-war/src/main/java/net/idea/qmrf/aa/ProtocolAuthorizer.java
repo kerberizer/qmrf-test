@@ -50,7 +50,7 @@ public class ProtocolAuthorizer  extends OpenSSOAuthorizer {
 		Template template3 = new Template(String.format("%s%s/{%s}%s",request.getRootRef(),Resources.protocol,FileResource.resourceKey,Resources.versions));
 		Template template4 = new Template(String.format("%s%s/{%s}%s",request.getRootRef(),Resources.protocol,FileResource.resourceKey,Resources.previous));
 		Template template5 = new Template(String.format("%s%s/{%s}%s",request.getRootRef(),Resources.protocol,FileResource.resourceKey,Resources.document));
-		Template template6 = new Template(String.format("%s%s/{%s}%s",request.getRootRef(),Resources.protocol,FileResource.resourceKey,Resources.datatemplate));
+		Template template6 = new Template(String.format("%s%s/{%s}%s",request.getRootRef(),Resources.protocol,FileResource.resourceKey,Resources.attachment));
 		Map<String, Object> vars = new HashMap<String, Object>();
 		Reference ref = request.getResourceRef().clone();
 		ref.setQuery(null);

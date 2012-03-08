@@ -1,24 +1,36 @@
 package net.idea.rest.protocol.attachments;
 
+import java.io.File;
+import java.sql.Connection;
+import java.util.List;
+
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.rest.protocol.db.ReadProtocol;
-import net.idea.rest.protocol.db.template.ReadFilePointers;
 import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
 import net.idea.rest.protocol.resource.db.FileReporter;
+import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.task.CallableProtectedTask;
+import net.idea.restnet.c.task.TaskCreator;
+import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
+import org.apache.commons.fileupload.FileItem;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.Form;
 import org.restlet.data.MediaType;
+import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
@@ -27,16 +39,10 @@ import org.restlet.resource.ResourceException;
 
 public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieval<DBAttachment>,DBAttachment> {
 	public static final String resourceKey = "aid";
-	protected String suffix = Resources.document;
-	public static final String documentType = "documentType";
 	protected DBProtocol protocol = null;
-	
+
 	public ProtocolAttachmentResource() {
-		this(Resources.document);
-	}
-	public ProtocolAttachmentResource(String suffix) {
 		super();
-		this.suffix = suffix;
 	}
 	
 	@Override
@@ -65,7 +71,8 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 		String filenamePrefix = getRequest().getResourceRef().getPath();
 		if (variant.getMediaType().equals(MediaType.TEXT_URI_LIST)) 
 			return new StringConvertor(	
-					new AttachmentURIReporter<IQueryRetrieval<DBAttachment>>(getRequest(),suffix)
+					new AttachmentURIReporter<IQueryRetrieval<DBAttachment>>(getRequest(),
+							protocol==null?"":String.format("%s/%s",Resources.protocol ,protocol.getIdentifier()))
 					,MediaType.TEXT_URI_LIST,filenamePrefix);
 		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) 
 			return new StringConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML,filenamePrefix);	
@@ -88,9 +95,9 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 	protected IQueryRetrieval<DBAttachment> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
 		final Object key = request.getAttributes().get(FileResource.resourceKey);	
-		Object aKey = request.getAttributes().get(ProtocolAttachmentResource.resourceKey);	
+		final Object aKey = request.getAttributes().get(ProtocolAttachmentResource.resourceKey);	
 		try {
-			ReadFilePointers query = null;
+			ReadAttachment query = null;
 			DBAttachment attachment = null;
 			if ((aKey!=null) && aKey.toString().startsWith("A")) try {
 				attachment = new DBAttachment(new Integer(Reference.decode(aKey.toString().substring(1))));
@@ -99,9 +106,10 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 			else if (key!=null) {
 				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
 				protocol = new DBProtocol(id[0],id[1]);
-				query = new ReadFilePointers(protocol);
+				protocol.setIdentifier(ReadProtocol.generateIdentifier(protocol));
+				query = new ReadAttachment(protocol);
 				
-			} else query = new ReadFilePointers(); 
+			} else query = new ReadAttachment(); 
 			query.setValue(attachment);
 			return query;
 		} catch (ResourceException x) {
@@ -142,5 +150,76 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 		return ext;
 	}
 
+	protected TaskCreator getTaskCreator(Form form, final Method method, boolean async, final Reference reference) throws Exception {
+		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Not multipart web form!");
+	}	
+	
+	@Override
+	protected IQueryRetrieval<DBAttachment> createUpdateQuery(Method method,
+			Context context, Request request, Response response)
+			throws ResourceException {
+		Object key = request.getAttributes().get(FileResource.resourceKey);
+		Object aKey = request.getAttributes().get(ProtocolAttachmentResource.resourceKey);	
+		if (key==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,String.format("No protocol ID"));
+		if (Method.POST.equals(method)) {
+			if (aKey==null)  //post allowed only on /protocol/id/attachment
+				return null;
 
+		} else if (Method.DELETE.equals(method)) {
+			if (key!=null) return super.createUpdateQuery(method, context, request, response);
+			//if (key!=null) return super.createUpdateQuery(method, context, request, response);
+		}
+		throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);		
+	}	
+
+
+	@Override
+	protected boolean isAllowedMediaType(MediaType mediaType)
+			throws ResourceException {
+		return MediaType.MULTIPART_FORM_DATA.equals(mediaType);
+	}
+	@Override
+	protected CallableProtectedTask<String> createCallable(Method method,
+			List<FileItem> input, DBAttachment item) throws ResourceException {
+		/*
+		if ((getRequest().getClientInfo().getUser()==null) ||
+				getRequest().getClientInfo().getUser().getIdentifier()==null)
+				throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
+			
+		DBUser user = new DBUser();
+		user.setUserName(getRequest().getClientInfo().getUser().getIdentifier());
+		*/
+		if (protocol==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"No protocol id");
+		Connection conn = null;
+		try {
+			ProtocolQueryURIReporter r = new ProtocolQueryURIReporter(getRequest(),"");
+			class TDBConnection extends DBConnection {
+				public TDBConnection(Context context,String configFile) {
+					super(context,configFile);
+				}
+				public String getDir() {
+					loadProperties();
+					return properties.getProperty("dir.protocol");
+				}
+			};
+			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getConfigFile());
+			conn = dbc.getConnection(getRequest());
+
+			String dir = dbc.getDir();
+			if ("".equals(dir)) dir = null;
+			CallableProtocolUpload callable = new CallableProtocolUpload(method,protocol,null,input,conn,r,getToken(),getRequest().getRootRef().toString(),
+						dir==null?null:new File(dir)
+			);
+			callable.setSetDataTemplateOnly(true);
+			return callable;
+		} catch (ResourceException x) {
+			throw x;
+		} catch (Exception x) {
+			try { conn.close(); } catch (Exception xx) {}
+			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
+		}
+
+	}
+	
+	
 }

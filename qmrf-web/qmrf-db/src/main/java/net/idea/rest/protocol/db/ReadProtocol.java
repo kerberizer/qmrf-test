@@ -20,7 +20,6 @@ import net.toxbank.client.resource.Organisation;
 import net.toxbank.client.resource.Project;
 import net.toxbank.client.resource.Protocol;
 import net.toxbank.client.resource.Protocol.STATUS;
-import net.toxbank.client.resource.Template;
 
 /**
  * Retrieve references (by id or all)
@@ -38,7 +37,11 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			
 			fields.title,
 			fields.filename,
-			fields.published
+			fields.published,
+			fields.user_uri,
+			fields.author_uri,
+			fields.organisation_uri,
+			fields.project_uri
 		};
 	public static final ReadProtocol.fields[] displayFields = new ReadProtocol.fields[] {
 			fields.idprotocol,
@@ -58,7 +61,9 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			fields.idproject,
 			fields.idorganisation,
 			fields.user_uri,
-			fields.template,
+			fields.data_training,
+			fields.data_validation,
+			fields.attachment
 
 			//ReadProtocol.fields.accesslevel
 		};	
@@ -483,36 +488,68 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			public String toString() {
 				return "Document";
 			}
-		},		
-		template {
+		},	
+		data_training {
 			@Override
 			public QueryParam getParam(DBProtocol protocol) {
-				return new QueryParam<String>(String.class, getValue(protocol).toString());
+				return null;
 			}			
 			@Override
 			public void setParam(DBProtocol protocol, ResultSet rs) throws SQLException {
-				try {
-					protocol.setDataTemplate(new Template(new URL(rs.getString(name()))));
-				} catch (Exception x) {
-					protocol.setDataTemplate(null);
-				}
+				
 			}
 			@Override
 			public Object getValue(DBProtocol protocol) {
-				return  protocol==null?null:
-					protocol.getDataTemplate()==null?null:
-					protocol.getDataTemplate().getResourceURL();
+				return null;
 			}				
 			public String getHTMLField(DBProtocol protocol) {
-				Object value = getValue(protocol);
-				return String.format("<input name='%s' type='file' title='%s' size='40' value='%s'>\n",
-						name(),
-						getDescription(),
-						value==null?"":value.toString());
+				return null;
 			}		
 			@Override
 			public String toString() {
-				return "Data template";
+				return "Attachment (document)";
+			}
+		},
+		data_validation {
+			@Override
+			public QueryParam getParam(DBProtocol protocol) {
+				return null;
+			}			
+			@Override
+			public void setParam(DBProtocol protocol, ResultSet rs) throws SQLException {
+				
+			}
+			@Override
+			public Object getValue(DBProtocol protocol) {
+				return null;
+			}				
+			public String getHTMLField(DBProtocol protocol) {
+				return null;
+			}		
+			@Override
+			public String toString() {
+				return "Attachment (document)";
+			}
+		},
+		attachment {
+			@Override
+			public QueryParam getParam(DBProtocol protocol) {
+				return null;
+			}			
+			@Override
+			public void setParam(DBProtocol protocol, ResultSet rs) throws SQLException {
+				
+			}
+			@Override
+			public Object getValue(DBProtocol protocol) {
+				return null;
+			}				
+			public String getHTMLField(DBProtocol protocol) {
+				return null;
+			}		
+			@Override
+			public String toString() {
+				return "Attachment (document)";
 			}
 		},
 		status {
@@ -677,7 +714,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		"select idprotocol,version,protocol.title,abstract as anabstract,iduser,summarySearchable," +
 		"idproject,project.name as project,project.ldapgroup as pgroupname," +
 		"idorganisation,organisation.name as organisation,organisation.ldapgroup as ogroupname," +
-		"filename,keywords,template,updated,status,`created`,published\n" +
+		"filename,keywords,updated,status,`created`,published\n" +
 		"from protocol join organisation using(idorganisation)\n" +
 		"join project using(idproject)\n" +
 		"left join keywords using(idprotocol,version) %s %s order by idprotocol,version desc";
@@ -695,7 +732,6 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		fields.organisation,
 		fields.filename,
 		fields.keywords,
-		fields.template,
 		fields.status,
 		fields.published
 		
@@ -802,7 +838,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			x.printStackTrace();
 			return null;
 		} finally {
-			if (p!=null) p.setIdentifier(String.format("QMRF-%d-%d", p.getID(),p.getVersion()));
+			if (p!=null) p.setIdentifier(ReadProtocol.generateIdentifier(p));
 		}
 	}
 	@Override

@@ -5,14 +5,12 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
-import java.net.URI;
 import java.net.URL;
 
 import junit.framework.Assert;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.DBProtocol;
-import net.idea.rest.protocol.db.template.ReadFilePointers;
-import net.toxbank.client.resource.Protocol;
+import net.idea.rest.protocol.attachments.db.ReadAttachment;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
@@ -23,7 +21,7 @@ import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.representation.Representation;
 
-public class DataTemplateResourceTest extends ResourceTest {
+public class AttachmentResourceTest extends ResourceTest {
 	
 	@Override
 	public void setUp() throws Exception {
@@ -33,8 +31,8 @@ public class DataTemplateResourceTest extends ResourceTest {
 	}
 	@Override
 	public String getTestURI() {
-		return String.format("http://localhost:%d%s/%s-1-1%s", port,Resources.protocol,
-					DBProtocol.prefix,Resources.datatemplate);
+		return String.format("http://localhost:%d%s/%s-83-1%s", port,Resources.protocol,
+					DBProtocol.prefix,Resources.attachment);
 	}
 	
 	@Test
@@ -42,7 +40,7 @@ public class DataTemplateResourceTest extends ResourceTest {
 		testGet(getTestURI(),MediaType.TEXT_URI_LIST);
 	}
 	/**
-	 * The URI should be /protocol/QMRF-1-1/datatemplate
+	 * The URI should be /protocol/QMRF-83-1/attachment
 	 */
 	@Override
 	public boolean verifyResponseURI(String uri, MediaType media, InputStream in)
@@ -51,13 +49,13 @@ public class DataTemplateResourceTest extends ResourceTest {
 		String line = null;
 		int count = 0;
 		while ((line = r.readLine())!= null) {
-			Assert.assertEquals(
-					String.format("http://localhost:%d%s/%s-1-1%s",port,Resources.protocol,
-							DBProtocol.prefix,Resources.datatemplate)
-							, line);
+			Assert.assertTrue(line.startsWith(
+					String.format("http://localhost:%d%s/%s-83-1%s",port,Resources.protocol,
+							DBProtocol.prefix,Resources.attachment)
+							));
 			count++;
 		}
-		return count==1;
+		return count==4;
 	}	
 	
 	//have to ensure test files are stored in a reachable location
@@ -86,16 +84,13 @@ public class DataTemplateResourceTest extends ResourceTest {
 		
 		testGet(url,MediaType.TEXT_URI_LIST);		
 		
-		 IDatabaseConnection c = getConnection();	
-		 ITable  table = 	c.createQueryTable("EXPECTED","SELECT * FROM protocol");
-		Assert.assertEquals(3,table.getRowCount());
-		table = 	c.createQueryTable("EXPECTED","SELECT p.idprotocol,p.version,filename,template from protocol p where p.idprotocol=1 and p.version=1");
-		Assert.assertEquals(1,table.getRowCount());
+   	    IDatabaseConnection c = getConnection();	
+		ITable  table = 	c.createQueryTable("EXPECTED","SELECT * FROM protocol");
+		Assert.assertEquals(5,table.getRowCount());
+		table = 	c.createQueryTable("EXPECTED","SELECT idattachment,idprotocol,version from attachments p where p.idprotocol=83 and p.version=1");
+		Assert.assertEquals(5,table.getRowCount());
 		Assert.assertEquals(new BigInteger("1"),table.getValue(0,"version"));
-		Assert.assertEquals(new BigInteger("1"),table.getValue(0,"idprotocol"));
-		File f = new File(new URI(table.getValue(0,"template").toString()));
-		Assert.assertTrue(f.exists());
-		f.delete();
+		Assert.assertEquals(new BigInteger("83"),table.getValue(0,"idprotocol"));
 		c.close();
 	}
 	
@@ -105,11 +100,11 @@ public class DataTemplateResourceTest extends ResourceTest {
 		
 		String[] names = new String[0];
 		String[] values = new String[0];
-		Representation rep = getMultipartWebFormRepresentation(names,values,"template",file,MediaType.APPLICATION_PDF.toString());
+		Representation rep = getMultipartWebFormRepresentation(names,values,"attachment",file,MediaType.APPLICATION_PDF.toString());
 		
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM protocol");
-		Assert.assertEquals(3,table.getRowCount());
+		Assert.assertEquals(5,table.getRowCount());
 		c.close();
 
 		RemoteTask task = testAsyncPoll(uri,
@@ -134,7 +129,7 @@ public class DataTemplateResourceTest extends ResourceTest {
 	public Object verifyResponseJavaObject(String uri, MediaType media,
 			Representation rep) throws Exception {
 		Object o = super.verifyResponseJavaObject(uri, media, rep);
-		Assert.assertTrue(o instanceof ReadFilePointers);
+		Assert.assertTrue(o instanceof ReadAttachment);
 
 		return o;
 	}

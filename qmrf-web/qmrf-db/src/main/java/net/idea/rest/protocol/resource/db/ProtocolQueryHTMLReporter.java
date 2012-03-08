@@ -188,7 +188,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	@Override
 	protected void printUploadForm(Writer output, String uri, DBProtocol protocol) {
 		try {
-		output.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm("", uri, protocol));
+			output.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm("", uri, protocol,true));
 		} catch (Exception x) {x.printStackTrace();} 
 		
 	}	

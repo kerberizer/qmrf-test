@@ -16,7 +16,7 @@ import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.AttachmentURIReporter;
 import net.idea.rest.protocol.attachments.DBAttachment;
-import net.idea.rest.protocol.db.template.ReadFilePointers;
+import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserURIReporter;
 import net.idea.restnet.c.ResourceDoc;
@@ -64,7 +64,7 @@ public class ProtocolRDFReporter<Q extends IQueryRetrieval<DBProtocol>> extends 
 		};
 		getProcessors().add(authersReader);
 		*/
-		IQueryRetrieval<DBAttachment> queryP = new ReadFilePointers(null,null); 
+		IQueryRetrieval<DBAttachment> queryP = new ReadAttachment(null,null); 
 		MasterDetailsProcessor<DBProtocol,DBAttachment,IQueryCondition> authersReader = new MasterDetailsProcessor<DBProtocol,DBAttachment,IQueryCondition>(queryP) {
 			@Override
 			protected DBProtocol processDetail(DBProtocol target, DBAttachment detail)
