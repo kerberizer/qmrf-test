@@ -27,7 +27,6 @@ public class ReadProtocolByStructure extends ReadProtocolAbstract<Structure> {
 		fields.idproject,
 		fields.idorganisation,
 		fields.filename,
-		fields.template,
 		fields.status,
 		fields.published
 		
@@ -83,7 +82,7 @@ public class ReadProtocolByStructure extends ReadProtocolAbstract<Structure> {
 			x.printStackTrace();
 			return null;
 		} finally {
-			if (p!=null) p.setIdentifier(String.format("QMRF-%d-%d", p.getID(),p.getVersion()));
+			if (p!=null) p.setIdentifier(ReadProtocol.generateIdentifier(p));
 		}
 	}	
 }

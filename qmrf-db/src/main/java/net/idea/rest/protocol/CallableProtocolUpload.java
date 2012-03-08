@@ -18,12 +18,13 @@ import net.idea.rest.groups.db.ReadGroup;
 import net.idea.rest.groups.db.ReadOrganisation;
 import net.idea.rest.groups.db.ReadProject;
 import net.idea.rest.policy.SimpleAccessRights;
+import net.idea.rest.protocol.attachments.DBAttachment;
+import net.idea.rest.protocol.attachments.db.AddAttachment;
 import net.idea.rest.protocol.db.CreateProtocol;
 import net.idea.rest.protocol.db.CreateProtocolVersion;
 import net.idea.rest.protocol.db.DeleteProtocol;
 import net.idea.rest.protocol.db.UpdateKeywords;
 import net.idea.rest.protocol.db.UpdateProtocol;
-import net.idea.rest.protocol.db.template.UpdateDataTemplate;
 import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.author.db.AddAuthors;
@@ -33,7 +34,6 @@ import net.idea.rest.user.db.ReadUser;
 import net.idea.restnet.aa.opensso.OpenSSOServicesConfig;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.i.task.TaskResult;
-import net.toxbank.client.Resources;
 import net.toxbank.client.policy.AccessRights;
 import net.toxbank.client.policy.GroupPolicyRule;
 import net.toxbank.client.policy.PolicyRule;
@@ -162,15 +162,19 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		switch (updateMode) {
 		case dataTemplateOnly:  {
 			try {
-				if ((protocol.getDataTemplate()!=null) && protocol.getDataTemplate().getResourceURL().toString().startsWith("file:")) {
+				if ((protocol.getAttachments()!=null) && protocol.getAttachments().size()>0) {
 					connection.setAutoCommit(false);
 					//protocol.setOwner(user);
 					exec = new UpdateExecutor<IQueryUpdate>();
-					exec.setConnection(connection);					
-					UpdateDataTemplate k = new UpdateDataTemplate(protocol);
-					exec.process(k);
+					exec.setConnection(connection);
+					AddAttachment k = new AddAttachment(protocol,null);
+					for (DBAttachment attachment : protocol.getAttachments()) {
+						//.getResourceURL().toString().startsWith("file:")
+						k.setObject(attachment);
+						exec.process(k);
+					}
 					connection.commit();
-					String uri = String.format("%s%s",reporter.getURI(protocol),Resources.datatemplate);
+					String uri = String.format("%s%s",reporter.getURI(protocol),net.idea.qmrf.client.Resources.attachment);
 					return new TaskResult(uri,false);
 				} else throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Data template");
 			} catch (ProcessorException x) {
@@ -257,12 +261,11 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					exec.process(k);
 				}
 				
-				if ((protocol.getDataTemplate()!=null) && 
-						(protocol.getDataTemplate().getResourceURL()!=null) &&
-						 protocol.getDataTemplate().getResourceURL().toString().startsWith("file:")) {
-					UpdateDataTemplate k = new UpdateDataTemplate(protocol);
-					exec.process(k);
-				}	
+				if ((protocol.getAttachments()!=null) && protocol.getAttachments().size()>0) 
+					for (DBAttachment attachment: protocol.getAttachments()) {
+						AddAttachment k = new AddAttachment(protocol,attachment);
+						exec.process(k);
+					}
 				
 				connection.commit();
 				TaskResult result = new TaskResult(uri,true);
@@ -356,12 +359,12 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					}
 				}
 				
-				if ((protocol.getDataTemplate()!=null) && 
-						(protocol.getDataTemplate().getResourceURL()!=null) &&
-						 protocol.getDataTemplate().getResourceURL().toString().startsWith("file:")) {
-					UpdateDataTemplate k = new UpdateDataTemplate(protocol);
-					exec.process(k);
-				}	
+				if ((protocol.getAttachments()!=null) && protocol.getAttachments().size()>0) 
+					for (DBAttachment attachment: protocol.getAttachments()) {
+						AddAttachment k = new AddAttachment(protocol,attachment);
+						exec.process(k);
+					}
+					
 				
 				connection.commit();
 				TaskResult result = new TaskResult(uri,false);

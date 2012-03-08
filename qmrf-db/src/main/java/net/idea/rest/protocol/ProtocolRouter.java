@@ -20,7 +20,7 @@ public class ProtocolRouter extends MyRouter {
 		//attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.attachment), ProtocolAttachmentResource.class);
 		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.versions), ProtocolVersionDBResource.class);
 		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.authors), ProtocolAuthorsResource.class);
-//		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.datatemplate), DataTemplateResource.class);
+
 		
 	//	attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.previous), ProtocolPreviousVersionDBResource.class);
 		

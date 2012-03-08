@@ -30,11 +30,9 @@
 package net.idea.rest.protocol.db.protocol.test;
 
 import java.io.InputStream;
-import java.net.URL;
 
 import junit.framework.Assert;
 import net.idea.ambit.qmrf.QMRFObject;
-import net.idea.ambit.qmrf.catalogs.Catalog;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.qmrf.converters.QMRFConverter;
@@ -47,14 +45,14 @@ import net.idea.rest.protocol.db.UpdateProtocol;
 import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.author.db.AddAuthors;
-import net.toxbank.client.resource.Document;
 import net.toxbank.client.resource.Protocol.STATUS;
 
+import org.apache.commons.io.IOUtils;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 
 public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
-	String file = "http://localhost/1.pdf";
+	
 
 	@Override
 	protected IQueryUpdate<Object,DBProtocol> createQuery() throws Exception {
@@ -145,17 +143,19 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 		DBProtocol ref = new DBProtocol();
 		//ref.setID(3);
 		//ref.setVersion(1);
-		ref.setTitle("title");
-		ref.setAbstract("abstract");
 		DBUser user = new DBUser();
 		user.setID(3);
 		ref.setOwner(user);
 		ref.setProject(new DBProject(1));	
 		ref.setOrganisation(new DBOrganisation(1));
 		ref.setSearchable(true);
-		ref.setDocument(new Document(new URL(file)));
 		ref.setStatus(STATUS.SOP);
 		ref.setPublished(false);
+		
+		InputStream in = getClass().getClassLoader().getResourceAsStream("net/idea/qmrf/QMRF-NEW.xml");
+		ref.setAbstract(IOUtils.toString(in, "UTF-8"));
+		ref.setTitle("title");
+
 		return new CreateProtocol(ref);
 	}
 
@@ -164,7 +164,7 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 			throws Exception {
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED",
-				String.format("SELECT idprotocol,summarySearchable,status FROM protocol where title='title' and abstract='abstract' and iduser='3' and idproject=1 and idorganisation=1 and filename='%s'",file));
+				String.format("SELECT idprotocol,summarySearchable,status FROM protocol where title='title' and abstract regexp '<QMRF' and iduser='3' and idproject=1 and idorganisation=1"));
 		
 		Assert.assertEquals(1,table.getRowCount());
 		Assert.assertEquals(Boolean.TRUE,table.getValue(0,"summarySearchable"));

@@ -11,6 +11,8 @@ import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
 import net.idea.qmrf.converters.QMRFConverter;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
+import net.idea.rest.protocol.attachments.DBAttachment;
+import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.user.DBUser;
 import net.toxbank.client.policy.AccessRights;
@@ -99,28 +101,22 @@ public class ProtocolFactory {
 					protocol.setDocument(null);
 			        break;
 				}
-				case template: {
-					if (fi.isFormField()) {
-						protocol.setDataTemplate(new Template(new URL(fi.getString(utf8))));
-					} else {	
-						if (fi.getSize()==0)  throw new ResourceException(new Status(Status.CLIENT_ERROR_BAD_REQUEST,"Empty file!"));
-						File file = null;
-				        if (fi.getName()==null)
-				           	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"File name can't be empty!");
-				        else {
-				        	try { 
-				        		if ((dir!=null) && !dir.exists())  dir.mkdir();
-				        	} catch (Exception x) {dir = null; }
-				          	file = new File(
-				            		String.format("%s/%s",
-				            				dir==null?System.getProperty("java.io.tmpdir"):dir,
-				            				fi.getName()));
-				        }
-				        fi.write(file);
-				        protocol.setDataTemplate(new Template(file.toURI().toURL()));		
-					}
-			        break;
-				}				
+				case data_training :{
+					DBAttachment attachment = createAttachment(fi,protocol,attachment_type.data_training,dir);
+					if (attachment!=null) protocol.getAttachments().add(attachment);
+					break;
+				}
+				case data_validation :{
+					DBAttachment attachment = createAttachment(fi,protocol,attachment_type.data_validation,dir);
+					if (attachment!=null) protocol.getAttachments().add(attachment);
+					break;
+				}
+				case attachment :{
+					DBAttachment attachment = createAttachment(fi,protocol,attachment_type.document,dir);
+					if (attachment!=null) protocol.getAttachments().add(attachment);
+					break;
+				}
+					
 				case project_uri: {
 					String s = fi.getString(utf8);
 					if ((s!=null) && !"".equals(s)) {
@@ -240,4 +236,29 @@ public class ProtocolFactory {
 		return protocol;
 	}
 	
+	protected static DBAttachment createAttachment(FileItem fi, DBProtocol protocol, attachment_type type, File dir) throws Exception {
+			
+			if (fi.isFormField()) {
+//				protocol.setDataTemplate(new Template(new URL(fi.getString(utf8))));
+			} else {	
+				if (fi.getSize()==0)  throw new ResourceException(new Status(Status.CLIENT_ERROR_BAD_REQUEST,"Empty file!"));
+				File file = null;
+		        if (fi.getName()==null)
+		           	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"File name can't be empty!");
+		        else {
+		        	try { 
+		        		if ((dir!=null) && !dir.exists())  dir.mkdir();
+		        	} catch (Exception x) {dir = null; }
+		          	file = new File(
+		            		String.format("%s/%s",
+		            				dir==null?System.getProperty("java.io.tmpdir"):dir,
+		            				fi.getName()));
+		        }
+		        fi.write(file);
+		        return DBAttachment.file2attachment(file, file.getName(), type);
+		        
+			}
+			return null;
+		}	
+
 }

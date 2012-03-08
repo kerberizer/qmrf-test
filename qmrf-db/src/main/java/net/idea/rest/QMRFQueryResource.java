@@ -9,8 +9,11 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.attachments.AttachmentHTMLReporter;
 import net.idea.restnet.c.html.HTMLBeauty;
+import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.db.QueryResource;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
+import net.idea.restnet.i.task.ITaskStorage;
+import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
 public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends Serializable> extends QueryResource<Q,T>{
 	protected boolean headless = false;
@@ -50,6 +53,11 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 		}	
 	}
 	
+	@Override
+	protected FactoryTaskConvertor getFactoryTaskConvertor(ITaskStorage storage)
+			throws ResourceException {
+		return new FactoryTaskConvertorRDF(storage,getHTMLBeauty());
+	}
 	
 	protected abstract QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException;
 }

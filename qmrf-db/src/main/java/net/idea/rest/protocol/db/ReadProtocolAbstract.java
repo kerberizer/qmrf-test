@@ -31,7 +31,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"select idprotocol,version,protocol.title,abstract as anabstract,iduser,summarySearchable," +
 		"idproject,project.name as project,project.ldapgroup as pgroupname," +
 		"idorganisation,organisation.name as organisation,organisation.ldapgroup as ogroupname," +
-		"filename,keywords,template,updated,status,`created`,published\n" +
+		"filename,keywords,updated,status,`created`,published\n" +
 		"from protocol join organisation using(idorganisation)\n" +
 		"join project using(idproject)\n" +
 		"left join keywords using(idprotocol,version) %s %s order by idprotocol,version desc";
@@ -84,7 +84,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 			x.printStackTrace();
 			return null;
 		} finally {
-			if (p!=null) p.setIdentifier(String.format("QMRF-%d-%d", p.getID(),p.getVersion()));
+			if (p!=null) p.setIdentifier(generateIdentifier(p));
 		}
 	}
 	@Override
@@ -92,6 +92,9 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		return getValue()==null?"All protocols":String.format("Protocol id=P%s",getValue().getID());
 	}
 	
+	public static String generateIdentifier(DBProtocol protocol) throws ResourceException {
+		return String.format("QMRF-%d-%d", protocol.getID(),protocol.getVersion());
+	}
 	public static int[] parseIdentifier(String identifier) throws ResourceException {
 		String ids[] = identifier.split("-");
 		if ((ids.length!=3) || !identifier.startsWith(DBProtocol.prefix)) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid format");
