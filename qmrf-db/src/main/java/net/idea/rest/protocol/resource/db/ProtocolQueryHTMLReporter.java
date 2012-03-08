@@ -19,6 +19,7 @@ import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserURIReporter;
@@ -187,43 +188,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	@Override
 	protected void printUploadForm(Writer output, String uri, DBProtocol protocol) {
 		try {
-			StringBuilder content = new StringBuilder();
-
-			content.append("<form method='POST' class='.ui-widget' action='' ENCTYPE=\"multipart/form-data\">");
-
-			String help = ReadProtocol.fields.published.getHelp(uriReporter.getRequest().getRootRef().toString());
-		
-			content.append(String.format("<p><strong>%s</strong><input type=\"file\" class='.ui-widget' class='multi max-1 accept-xml' name=\"%s\" title='%s' size=\"60\"></p>",
-
-					"QMRF XML file",
-					ReadProtocol.fields.filename.name(),
-					"QMRF XML")); 		
-			content.append(String.format("<p><strong>%s</strong>%s</p>",
-					"Publish immediately",
-					ReadProtocol.fields.published.getHTMLField(null)
-					));					
-			content.append("<input type='submit' enabled='false' value='Submit'>");
-			content.append("</form>");
-
-			
-/*
-			content.append(String.format("<tr bgcolor='FFFFFF'><th title='%s'>%s</th><td align='left'><input type=\"file\" class='multi max-1 accept-xml' name=\"%s\" title='%s' size=\"60\"></td><td align='left'></td></tr>",
-					ReadProtocol.fields.filename.name(),	
-					"QMRF XML file",
-					ReadProtocol.fields.filename.name(),
-					"QMRF XML")); 	
-			String help = ReadProtocol.fields.published.getHelp(uriReporter.getRequest().getRootRef().toString());
-			content.append(String.format("<tr bgcolor='FFFFFF'><th>%s</th><td align='left'>%s</td><td align='left'>%s</td></tr>\n",
-							"Publish immediately",
-							ReadProtocol.fields.published.getHTMLField(null),
-							help==null?"":help));	
-							*/
-			output.write(printWidget(
-						String.format("Add new %s %s",getTitle(),uri.toString().contains("versions")?"version":""),
-						content.toString(),
-						""));			
-			output.flush();
+		output.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm("", uri, protocol));
 		} catch (Exception x) {x.printStackTrace();} 
+		
 	}	
 	
 	protected String printDownloadLinks(String uri) throws Exception {

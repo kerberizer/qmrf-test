@@ -6,6 +6,7 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
@@ -87,7 +88,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	@Override
 	public void footer(Writer output, IQueryRetrieval<DBAttachment> query) {
 		try {
-			output.write(printWidgetContentFooter()); 
+			output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetContentFooter()); 
 			//output.write(printWidgetFooter());
 		} catch (Exception x) {}
 		super.footer(output, query);
