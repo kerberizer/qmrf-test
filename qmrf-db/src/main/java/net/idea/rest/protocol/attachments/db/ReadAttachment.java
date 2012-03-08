@@ -81,10 +81,7 @@ and idchemical=282
 			if (c>0) b.append(" and ");
 			b.append(where_attachment); 
 		}
-		String query =  String.format(sql,b);
-		System.out.println(query);
-		return query;
-			
+		return String.format(sql,b);			
 	}
 
 	public DBAttachment getObject(ResultSet rs) throws AmbitException {

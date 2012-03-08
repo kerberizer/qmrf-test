@@ -338,7 +338,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				}
 				public String getDir() {
 					loadProperties();
-					return properties.getProperty("dir.protocol");
+					return properties.getProperty("dir.qmrf");
 				}
 			};
 			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getConfigFile());
