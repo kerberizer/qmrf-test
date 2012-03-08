@@ -104,6 +104,13 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 				item.getID(),
 				Resources.protocol);
 		
+		String orgURI = String.format(
+				"<a href=\"%s%s/U%d%s?headless=true&details=false&media=text/html\" title=\"Affiliation\">Affiliation</a>",
+				uriReporter.getRequest().getRootRef(),
+				Resources.user,
+				item.getID(),
+				Resources.organisation);
+		
 		StringBuilder rendering = new StringBuilder();
 			//tab headers
 			rendering.append(String.format(
@@ -112,8 +119,10 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			"<ul>"+
 			"<li><a href='#tabs-id'>%s&nbsp;%s&nbsp%s</a></li>"+
 			"<li>%s<span></span></li>"+
+			"<li>%s<span></span></li>"+
 			"</ul>",
 			item.getTitle(),item.getFirstname(),item.getLastname(),
+			orgURI,
 			protocolURI
 			));
 			//identifiers
@@ -131,7 +140,7 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			item.getHomepage()==null?"":"WWW:&nbsp;",
 			item.getHomepage()==null?"":String.format("<a href='%s'>%s</a>",item.getHomepage(),item.getHomepage())					
 			));
-				
+			rendering.append(String.format("<div id='Affiliation'>%s</div>",orgURI));				
 			rendering.append(String.format("<div id='QMRF_documents'>%s</div>",protocolURI));
 
 			rendering.append("</div>\n</div>\n");//tabs , protocol

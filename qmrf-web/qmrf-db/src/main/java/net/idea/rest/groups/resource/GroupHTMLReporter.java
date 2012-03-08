@@ -39,10 +39,11 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 	@Override
 	protected void printTableHeader(Writer output) throws Exception {
 		output.write("<table width='100%'>\n");
-
-		output.write("<tr bgcolor='FFFFFF' >\n");	
-		output.write(String.format("<th>%s</th>",DBGroup.fields.name.toString()));
-		output.write("</tr>\n");
+		if (!headless) {
+			output.write("<tr bgcolor='FFFFFF' >\n");	
+			output.write(String.format("<th>%s</th>",DBGroup.fields.name.toString()));
+			output.write("</tr>\n");
+		}
 		
 	}
 
