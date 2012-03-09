@@ -1,0 +1,132 @@
+How to migrate old 'qmrf_documents' database to a new qmrf database.
+
+The most recent versions of SQL scripts are available at 
+https://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/qmrf.sql
+https://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/migrate.sql
+
+0. Create the old database by running the create.sql script in mysql console.
+$mysql -uroot -p
+
+create database qmrf_documents;
+GRANT ALL ON `qmrf_documents`.* TO 'guest'@'localhost';
+use qmrf_documents;
+source `qmrf_documents-20120217.sql`;
+
+If the old qmrf_documents already exists, skip this step. 
+
+1. Create new qmrf database in mysql console 
+$mysql -uroot -p
+
+create database qmrf;
+GRANT ALL ON qmrf.* TO 'guest'@'localhost';
+use qmrf;
+source qmrf.sql;
+
+The output should look like as :
+
+----------------------------
+mysql> create database qmrf;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> GRANT ALL ON qmrf.* TO 'guest'@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> use qmrf;
+Database changed
+mysql> source qmrf.sql;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.06 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+----------------------------
+
+2. Migrate the old content, by running 'migrate.sql' script in mysql console.  The script assumes both databases 'qmrf_documents.sql' and 'qmrf.sql' 
+exist.
+
+use qmrf;
+source migrate.sql;
+
+----------------------------
+mysql> use qmrf
+Database changed
+mysql> source migrate.sql
+Database changed
+Query OK, 0 rows affected (0.00 sec)
+
+Query OK, 1 row affected (0.00 sec)
+
+Query OK, 60 rows affected (0.01 sec)
+Records: 60  Duplicates: 0  Warnings: 0
+
+Query OK, 39 rows affected (0.00 sec)
+Records: 39  Duplicates: 0  Warnings: 0
+
+Query OK, 132 rows affected (0.03 sec)
+Records: 121  Duplicates: 11  Warnings: 0
+
+Query OK, 149 rows affected (0.00 sec)
+Records: 149  Duplicates: 0  Warnings: 0
+
+Query OK, 153 rows affected (0.51 sec)
+Records: 153  Duplicates: 0  Warnings: 0
+
+Query OK, 70 rows affected (0.01 sec)
+Records: 70  Duplicates: 0  Warnings: 0
+
+Query OK, 276 rows affected (0.03 sec)
+Records: 277  Duplicates: 1  Warnings: 0
+
+----------------------------
+
+2. Deploy qmrf.war.  Open   http://yourhost:port/qmrf with a browser; it should display the first 10 QMRF documents.
+
+If the migration has been successful,  http://yourhost:port/qmrf/admin/database will show
+
+DB name	qmrf
+Version	2.0
+Created	2012
+Note	QMRF schema
+
+3. 
+
