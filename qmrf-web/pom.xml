@@ -404,27 +404,34 @@
 			<!-- Protect /admin resource by AA -->
 			<qmrf.aa.admin>false</qmrf.aa.admin>
 			<!-- Not used so far -->
-			<service.ontology>http://apps.ideaconsult.net:8080/ontology</service.ontology>
-			<!-- Not used so far -->
-			<license.intextfiles>false</license.intextfiles>
-			<!-- Not used so far -->
 			<aa.admin>false</aa.admin>
 			<!-- Controls whether database could be created by 
-			curl -X POST -d "dbname=tb" /admin/database  
+			curl -X POST -d "dbname=qmrf" http://host:port/{this-app}/admin/database  
 			-->
-			<qmrf.db.create.allow>true</qmrf.db.create.allow>						
-		<!-- Used in surefire tests only-->
+			<qmrf.db.create.allow>true</qmrf.db.create.allow>	
+			<!-- Use OpenSSO service for authentication and authorisation - true or false  -->
+  			<qmrf_opensso_protected>false</qmrf_opensso_protected>
+  			<!-- File path to store attachments_ If notdefined will use the temp folder -->
+  			<qmrf_attachments_dir></qmrf_attachments_dir>
+  			<!-- #URI of Ambit web service to store and query structures and data via OpenTox REST API
+				 #The service (ambit2.war) could be downloaded from http://ambit_sf_net
+				 #If not defined, structure search will not be available 
+  			 -->
+			<qmrf_ambit_service>http://localhost:8080/ambit2</qmrf_ambit_service>
+			<!-- If not OpenSSO protected, use fixed user/pass to allow POST/PUT/DELETE. GET is allowed to anybody.  -->
+			<qmrf_admin_password>admin</qmrf_admin_password>		
+			
+						
+			<!-- Used in surefire tests only-->
 			<!-- Database for tests -->
 			<qmrf.db.test>qmrf-test</qmrf.db.test>
 			<!-- DB user for tests -->
 			<qmrf.db.user.test>guest</qmrf.db.user.test>
 			<!-- DB password for tests -->
 			<qmrf.db.user.password.test>guest</qmrf.db.user.password.test>
-			<!-- used to create the DB in tests - not necessary, if the test DB exists 
-			<qmrf.db.user.root.password></qmrf.db.user.root.password>
-			-->
-	
-		</properties>
+			
+  	</properties>
+
 	</profile>
 </profiles>
 

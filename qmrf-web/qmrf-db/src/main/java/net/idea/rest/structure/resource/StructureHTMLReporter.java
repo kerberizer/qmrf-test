@@ -23,12 +23,6 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 	 */
 	private static final long serialVersionUID = -244654733174669345L;
 	
-	
-	public StructureHTMLReporter(Request request, ResourceDoc doc) {
-		this(request, doc, new StructureHTMLBeauty());
-
-	}
-	
 	public StructureHTMLReporter(Request request, ResourceDoc doc,
 			HTMLBeauty htmlbeauty) {
 		super(request, doc, htmlbeauty,"Structure");
@@ -127,8 +121,7 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 	}
 	@Override
 	public HTMLBeauty getHtmlBeauty() {
-
-		return new StructureHTMLBeauty();
+		return htmlBeauty;
 	}
 	
 	@Override
@@ -151,9 +144,10 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 }
 
 class StructureHTMLBeauty extends QMRF_HTMLBeauty {
-	
-	public StructureHTMLBeauty() {
+	protected String queryService;
+	public StructureHTMLBeauty(String queryService) {
 		super();
+		this.queryService = queryService;
 	}
 	@Override
 	public String getSearchURI() {
@@ -181,7 +175,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		}
 		String imgURI = searchQuery==null?"":
 				String.format("<img title='Search query' border='1' width='150' height='150' src='%s/depict/cdk?search=%s&media=%s&w=150&h=150'>",
-						 StructureResource.queryService,Reference.encode(searchQuery),Reference.encode("image/png"));
+						 queryService,Reference.encode(searchQuery),Reference.encode("image/png"));
 			return
 		   String.format(		
 		   "<div class='search ui-widget'>\n"+

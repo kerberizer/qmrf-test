@@ -4,7 +4,8 @@ The most recent versions of SQL scripts are available at
 https://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/qmrf.sql
 https://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/migrate.sql
 
-0. Create the old database by running the create.sql script in mysql console.
+0. If the old qmrf_documents already exists, skip this step. 
+Create the old database by running the create.sql script in mysql console.
 $mysql -uroot -p
 
 create database qmrf_documents;
@@ -12,7 +13,6 @@ GRANT ALL ON `qmrf_documents`.* TO 'guest'@'localhost';
 use qmrf_documents;
 source `qmrf_documents-20120217.sql`;
 
-If the old qmrf_documents already exists, skip this step. 
 
 1. Create new qmrf database in mysql console 
 $mysql -uroot -p
@@ -118,6 +118,26 @@ Query OK, 276 rows affected (0.03 sec)
 Records: 277  Duplicates: 1  Warnings: 0
 
 ----------------------------
+
+2. Migrate chemical structures database.  Run  `ambit2-qmrf.sql` in mysql console:
+
+$mysql -uroot -p
+source ambit2-qmrf.sql;
+
+On success the following command will list all training and validation datasets, imported in the chemical structure database.
+
+mysql> select name from src_dataset;
++----------------------------------------------------------+
+| name                                                     |
++----------------------------------------------------------+
+...
+| qmrf83_Mutagenicity training                             |
++----------------------------------------------------------+
+59 rows in set (0.00 sec)
+
+Run
+GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'localhost';
+
 
 2. Deploy qmrf.war.  Open   http://yourhost:port/qmrf with a browser; it should display the first 10 QMRF documents.
 

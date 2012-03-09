@@ -19,7 +19,7 @@ public class ReadAttachmentsTest  extends QueryTest<ReadAttachment> {
 	@Override
 	protected ReadAttachment createQuery() throws Exception {
 		DBProtocol protocol = new DBProtocol(83,1);
-		return new ReadAttachment(protocol);
+		return new ReadAttachment(protocol,System.getProperty("java.io.tmpdir"));
 	}
 
 	@Override
@@ -36,8 +36,8 @@ public class ReadAttachmentsTest  extends QueryTest<ReadAttachment> {
 			}
 
 			Assert.assertNotNull(attachment.getResourceURL());
-			System.out.println(attachment.getResourceURL());
-			Assert.assertTrue(attachment.getResourceURL().toString().startsWith("file:/Z:/QMRF/attachments/qmrf/"));
+			String expected = String.format("file:/%s",System.getProperty("java.io.tmpdir")).replace("\\", "/");
+			Assert.assertTrue(attachment.getResourceURL().toString().startsWith(expected));
 			records++;
 		}
 		Assert.assertEquals(4,records);

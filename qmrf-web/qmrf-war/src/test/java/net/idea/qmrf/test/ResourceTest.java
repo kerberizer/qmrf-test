@@ -12,7 +12,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.Assert;
 import net.idea.modbcum.i.config.Preferences;
-import net.idea.qmrf.rest.QMRFApplication;
+import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.rest.QMRFRESTComponent;
 import net.idea.rest.protocol.db.test.DbUnitTest;
 import net.idea.restnet.c.ChemicalMediaType;
@@ -63,7 +63,7 @@ public abstract class ResourceTest extends DbUnitTest {
         context.getParameters().add(Preferences.PASSWORD, getPWD());
         context.getParameters().add(Preferences.PORT, getPort());
         context.getParameters().add(Preferences.HOST, getHost());
-        context.getParameters().add(QMRFApplication._AAENABLED_PROPERTY, "false");
+        context.getParameters().add(Resources.Config.qmrf_opensso_protected.name(), "false");
         
         // Create a component
         component = new QMRFRESTComponent(context);

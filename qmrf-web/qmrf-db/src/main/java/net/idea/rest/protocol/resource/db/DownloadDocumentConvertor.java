@@ -29,7 +29,6 @@ public class DownloadDocumentConvertor extends   AbstractObjectConvertor<DBAttac
 	}
 
 	public Representation process(DBAttachment item) throws AmbitException {
-		System.out.println("Process");
 		try {
 			if (item==null) throw new AmbitException("No attachment!");
 

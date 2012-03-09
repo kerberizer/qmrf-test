@@ -23,7 +23,7 @@ public class ReadAttachment extends AbstractQuery<DBProtocol, DBAttachment, EQCo
 	 * 
 	 */
 	private static final long serialVersionUID = 6228939989116141217L;
-	protected String dir = "file:///Z:/QMRF/attachments/qmrf"; //TODO
+	protected String dir = null;
 	protected static String sql = 
 		"SELECT idprotocol,version,idattachment,type,a.name,`format`,description FROM attachments a where %s";
 	protected static String where_protocol = "idprotocol=? and version=?";
@@ -41,16 +41,18 @@ and idchemical=282
 	 * 
 	 * @param protocol
 	 */
-	public ReadAttachment(DBProtocol protocol) {
+	public ReadAttachment(DBProtocol protocol,String dir) {
 		super();
 		setFieldname(protocol);
+		this.dir = dir;
 	}
-	public ReadAttachment(Integer id, Integer version) {
+	public ReadAttachment(Integer id, Integer version,String dir) {
 		super();
 		setFieldname(id==null?null:new DBProtocol(id,version));
+		this.dir = dir;
 	}
-	public ReadAttachment() {
-		this((DBProtocol)null);
+	public ReadAttachment(String dir) {
+		this((DBProtocol)null,dir);
 	}
 		
 	public double calculateMetric(DBAttachment object) {
@@ -89,7 +91,7 @@ and idchemical=282
 				String format = rs.getString("format");
 				String name = rs.getString("name");
 				String type = rs.getString("type");
-				String url = String.format("%s/%s/%s.%s",dir,type,name.replace(" ","%20"),format);
+				String url = String.format("file:/%s/%s/%s.%s",dir,type,name.replace(" ","%20"),format);
 				DBAttachment attachment = new DBAttachment(new URL(url));
 				if ("pdf".equals(format)) attachment.setMediaType(MediaType.APPLICATION_PDF.toString());
 				else if ("sdf".equals(format)) attachment.setMediaType(ChemicalMediaType.CHEMICAL_MDLSDF.toString());
