@@ -16,5 +16,13 @@ public class Resources {
 	public static final String data_training = "/data_training";
 	public static final String data_validation = "/data_validation";
 	*/
-
+	public enum Config {
+		qmrf_opensso_protected,
+		qmrf_attachments_dir,
+		qmrf_ambit_service,
+		qmrf_admin_password,
+		google_analytics,
+		logo_left,
+		logo_right
+	}
 }

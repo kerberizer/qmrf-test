@@ -18,7 +18,6 @@ import net.idea.rest.protocol.db.ReadProtocolByAuthor;
 import net.idea.rest.protocol.db.ReadProtocolByEndpoint;
 import net.idea.rest.protocol.db.ReadProtocolByStructure;
 import net.idea.rest.structure.resource.Structure;
-import net.idea.rest.structure.resource.StructureResource;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.resource.UserDBResource;
@@ -194,6 +193,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	@Override
 	protected Q createQuery(Context context, Request request, Response response)
 			throws ResourceException {
+		
 		Form form = request.getResourceRef().getQueryAsForm();
 
 		Object search = null;
@@ -279,7 +279,8 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				IQueryRetrieval<DBProtocol> query = new ReadProtocolByStructure();
 				Structure record = new Structure();
 				record.setResourceURL(new URL(structure.toString()));
-				Object[] ids = record.parseURI(new Reference(StructureResource.queryService));
+
+				Object[] ids = record.parseURI(new Reference(getQueryService()));
 				record.setIdchemical((Integer)ids[0]);
 				record.setIdstructure((Integer)ids[1]);
 				((ReadProtocolByStructure)query).setFieldname(record);
@@ -338,7 +339,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				}
 				public String getDir() {
 					loadProperties();
-					return properties.getProperty("dir.qmrf");
+					return getAttachmentDir();
 				}
 			};
 			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getConfigFile());

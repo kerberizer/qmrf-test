@@ -24,6 +24,4 @@ service.ontology=${service.ontology}
 license.intextfiles=${license.intextfiles}
 #Protect /admin resources via OpenTox AA
 aa.admin=${aa.admin}
-#Folder to store qmrf attachment files
-dir.qmrf=${dir.qmrf}
 MAXRECORDS=0

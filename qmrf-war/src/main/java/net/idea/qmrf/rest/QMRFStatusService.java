@@ -58,7 +58,7 @@ public class QMRFStatusService extends StatusService {
 				w.write(String.format("<h4>%s</h4>",
 						status.getDescription()
 						));
-				/*
+				
 				if (status.getThrowable()!= null) {
 					w.write("<blockquote>");				
 					status.getThrowable().printStackTrace(new PrintWriter(w) {
@@ -70,7 +70,7 @@ public class QMRFStatusService extends StatusService {
 					});
 					w.write("</blockquote>");
 				} 
-				*/
+				
 				if(htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty();
 				htmlBeauty.writeHTMLFooter(w, status.getName(), request);
 				return new StringRepresentation(w.toString(),MediaType.TEXT_HTML);

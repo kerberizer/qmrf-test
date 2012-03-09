@@ -9,7 +9,7 @@ import java.util.Locale;
 
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
-import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.db.QueryResource;
@@ -28,7 +28,12 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 public class StructureResource extends CatalogResource<Structure>{
-	public static String queryService="http://localhost:8080/ambit2";
+	protected String queryService;
+	
+	public StructureResource() {
+		super();
+		queryService = ((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name());
+	}
 	public enum SearchMode {
 		auto,
 		similarity,
@@ -156,7 +161,8 @@ public class StructureResource extends CatalogResource<Structure>{
 	
 	@Override
 	protected Reporter createHTMLReporter() {
-		return new StructureHTMLReporter(getRequest(), null);
+		return new StructureHTMLReporter(getRequest(), null, new StructureHTMLBeauty(queryService)); 
+
 	}
 
 	@Override
@@ -168,9 +174,6 @@ public class StructureResource extends CatalogResource<Structure>{
 	
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		QMRF_HTMLBeauty q = new QMRF_HTMLBeauty();
-		q.setSearchTitle("Structure search");
-		q.setSearchURI(Resources.structure);
-		return q;
+		return new StructureHTMLBeauty(queryService);
 	}
 }

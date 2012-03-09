@@ -107,9 +107,10 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
 				protocol = new DBProtocol(id[0],id[1]);
 				protocol.setIdentifier(ReadProtocol.generateIdentifier(protocol));
-				query = new ReadAttachment(protocol);
 				
-			} else query = new ReadAttachment(); 
+				query = new ReadAttachment(protocol,getAttachmentDir());
+				
+			} else query = new ReadAttachment(getAttachmentDir()); 
 			query.setValue(attachment);
 			return query;
 		} catch (ResourceException x) {
@@ -199,7 +200,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 				}
 				public String getDir() {
 					loadProperties();
-					return properties.getProperty("dir.qmrf");
+					return getAttachmentDir();
 				}
 			};
 			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getConfigFile());

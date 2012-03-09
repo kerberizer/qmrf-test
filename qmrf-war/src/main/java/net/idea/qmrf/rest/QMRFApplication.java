@@ -1,8 +1,6 @@
 package net.idea.qmrf.rest;
 
-import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.Properties;
 
 import net.idea.modbcum.i.config.Preferences;
 import net.idea.qmrf.aa.ProtocolAuthorizer;
@@ -55,21 +53,15 @@ import org.restlet.security.Verifier;
 import org.restlet.service.TunnelService;
 import org.restlet.util.RouteList;
 
-
 /**
- * AMBIT implementation of OpenTox REST services as described in http://opentox.org/development/wiki/
- * http://opentox.org/wiki/1/Dataset
+ * (Q)SAR Model Reporting Format web services / web application 
  * @author nina
- */
-
- /* 
- * http://www.slideshare.net/guest7d0e11/creating-a-web-of-data-with-restlet-presentation
- * http://stackoverflow.com/questions/810171/how-to-read-context-parameters-from-a-restlet
  *
  */
 public class QMRFApplication extends TaskApplication<String> {
-	public static final String _AAENABLED_PROPERTY = "qmrf.protected";
+
 	protected boolean aaenabled = false;
+	
 	public QMRFApplication() {
 		super();
 
@@ -77,14 +69,7 @@ public class QMRFApplication extends TaskApplication<String> {
 		setDescription("(Q)SAR Model Reporting Format Inventory");
 		setOwner("Institute for Health and Consumer Protection, JRC");
 		setAuthor("Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC");		
-
-		
-		/*
-		String tmpDir = System.getProperty("java.io.tmpdir");
-        File logFile = new File(tmpDir,"ambit2-www.log");		
-		System.setProperty("java.util.logging.config.file",logFile.getAbsolutePath());
-		*/
-		
+		setConfigFile("config/qmrf.properties");
 
 		setStatusService(new QMRFStatusService());
 		setTunnelService(new TunnelService(true,true) {
@@ -116,48 +101,29 @@ public class QMRFApplication extends TaskApplication<String> {
 		aaenabled = isProtected();
 		Router router = new MyRouter(this.getContext());
 		//router.attach("/help", AmbitResource.class);
-		
-
 		/**
 		 * OpenSSO login / logout
 		 * Sets a cookie with OpenSSO token
 		 */
+		//TODO - only if Config.qmrf_opensso_protected
 		Restlet login = createOpenSSOLoginRouter();
 		router.attach("/login",login );
 		
+		//alternative login/logout for local users . TODO refactor to use cookies as in /opentoxuser
+       //router.attach(SwitchUserResource.resource,createGuardGuest(SwitchUserResource.class));
 
-
-		/**
-		 *  Points to the Ontology service
-		 *  /sparqlendpoint 
-		 */
-		//router.attach(SPARQLPointerResource.resource, SPARQLPointerResource.class);
-		
 		/**		 *  /admin 
 		 *  Various admin tasks, like database creation
 		 */
-		
+		//TODO set a filter, allowing only admin users, if not  Config.qmrf_opensso_protected
 		router.attach(String.format("/%s",QMRFAdminResource.resource),createAdminRouter());
 				//createProtectedResource(createAdminRouter(),"admin"));
 
-		/** /policy - used for testing only  */
-		//router.attach(String.format("/%s",PolicyResource.resource),PolicyResource.class);		
-		
-		/**
-		 *  List of datasets 
-		 *  /dataset , /datasets
-		
-		Router allDatasetsRouter = new MyRouter(getContext());
-		allDatasetsRouter.attachDefault(DatasetsResource.class);
-		
-		router.attach(DatasetsResource.datasets, createProtectedResource(allDatasetsRouter,"datasets"));		
- */
 		/**  /task  */
 		router.attach(QMRFTaskResource.resource, createOpenSSOVerifiedResource(new QMRFTaskRouter(getContext())));
 
 		ProtocolRouter protocols = new ProtocolRouter(getContext());
 		/**  /protocol  */
-		//router.attach(Resources.protocol, createProtectedResource(new ProtocolRouter(getContext()),"",false));
 		OrganisationRouter org_router = new OrganisationRouter(getContext());
 		ProjectRouter projectRouter = new ProjectRouter(getContext());
 		Restlet protocolRouter;
@@ -182,42 +148,20 @@ public class QMRFApplication extends TaskApplication<String> {
 		router.attach(String.format("%s/{%s}",Resources.attachment,ProtocolAttachmentResource.resourceKey), ProtocolAttachmentResource.class);
 		router.attach(Resources.endpoint, ProtocolsByEndpointResource.class);
 		router.attach(Resources.structure, StructureResource.class);
-		
-		/**
-		 * Queries
-		 *  /query
-		 *  
-		 */
-		//Router queryRouter = createQueryRouter();
-		//router.attach(QueryResource.query_resource,queryRouter);
-		
-		/**
-		 *  API extensions from this point on
-		 */
-
-		
-		/**  /bookmark  */
-		//router.attach(BookmarkResource.resource,createBookmarksRouter());				
 	
 		/**
 		 * Images, styles, favicons, applets
 		 */
 		attachStaticResources(router);
 
-
-		 /**
-		  * login/logout for local users . TODO refactor to use cookies as in /opentoxuser
-		  */
-	     //router.attach(SwitchUserResource.resource,createGuardGuest(SwitchUserResource.class));
-
-	     router.setDefaultMatchingMode(Template.MODE_STARTS_WITH); 
-	     router.setRoutingMode(Router.MODE_BEST_MATCH); 
-	     
-	     StringWriter w = new StringWriter();
-	     QMRFApplication.printRoutes(router,">",w);
-	     System.out.println(w.toString());
-		 
-		 return router;
+	    router.setDefaultMatchingMode(Template.MODE_STARTS_WITH); 
+	    router.setRoutingMode(Router.MODE_BEST_MATCH); 
+	    /*
+	    StringWriter w = new StringWriter();
+	    QMRFApplication.printRoutes(router,">",w);
+	    System.out.println(w.toString());
+		*/
+		return router;
 	}
 	protected Restlet createOpenSSOVerifiedResource(Restlet next) {
 		Filter userAuthn = new OpenSSOAuthenticator(getContext(),!aaenabled,"opentox.org",new OpenSSOVerifierSetUser(false));
@@ -254,57 +198,6 @@ public class QMRFApplication extends TaskApplication<String> {
 		return authN;
 	}
 	
-
-
-	/**
-	 * Everything under /query
-	 * @return
-	 */
-	protected Router createQueryRouter() {
-		
-		Router queryRouter = new MyRouter(getContext());
-		//queryRouter.attachDefault(QueryListResource.class);
-		
-		
-		
-		/**
-		 *  PubChem query
-		 */
-		/*
-		Router pubchem = new MyRouter(getContext());
-		queryRouter.attach(PubchemResource.resource,pubchem);
-		pubchem.attachDefault(PubchemResource.class);
-		pubchem.attach(PubchemResource.resourceID,PubchemResource.class);
-		*/
-		/**
-		 * CIR query
-
-		Router cir = new MyRouter(getContext());
-		queryRouter.attach(CSLSResource.resource,cir);
-		cir.attachDefault(CSLSResource.class);
-		cir.attach(CSLSResource.resourceID,CSLSResource.class);
-		cir.attach(CSLSResource.resourceID+CSLSResource.representationID,CSLSResource.class);
-		 */
-		/**
-		 * ChEBI query
-
-		Router chebi = new MyRouter(getContext());
-		queryRouter.attach(ChEBIResource.resource,chebi);
-		chebi.attachDefault(ChEBIResource.class);
-		chebi.attach(ChEBIResource.resourceID,ChEBIResource.class);
-		 */
-		/**
-		 * Compound search
-		 * /query/compound/lookup
-
-		Router lookup = new MyRouter(getContext());
-		queryRouter.attach(CompoundLookup.resource,lookup);
-		lookup.attachDefault(CompoundLookup.class);
-		lookup.attach(CompoundLookup.resourceID,CompoundLookup.class);
-		lookup.attach(CompoundLookup.resourceID+CompoundLookup.representationID,CompoundLookup.class);		
-				 */
-		return queryRouter;
-	}
 
 	/**
 	 * Check for OpenSSO token and set the user, if available
@@ -360,20 +253,7 @@ public class QMRFApplication extends TaskApplication<String> {
 		//dbguard.setNext(adminRouter);
 		//return dbguard;
 	}
-	/**
-	 *  /ontology RDF playground, not used currently
-	 * @return
-	 */
-	protected Restlet createRDFPlayground() {
-		//test removed, there is ontology service
-		//router.attach(RDFGraphResource.resource,RDFGraphResource.class);
-		//router.attach(RDFGraphResource.resource+"/test",OntologyPlayground.class);
 
-		//router.attach(OntologyResource.resource, OntologyResource.class);
-		//router.attach(OntologyResource.resourceID, OntologyResource.class);
-		//router.attach(OntologyResource.resourceTree, OntologyResource.class);
-		return null;
-	}
 	
 	/**
 	 * Resource protection via local MySQL/ Ambit database users.
@@ -465,7 +345,7 @@ public class QMRFApplication extends TaskApplication<String> {
     	
     	Enroler enroler = new Enroler() {
     		public void enrole(ClientInfo subject) {
-    			System.out.println(subject);
+    		
     			
     		}
     	};
@@ -519,22 +399,17 @@ public class QMRFApplication extends TaskApplication<String> {
 	 	}
    
    	protected boolean isProtected() {
-   		InputStream in = null;
 		try {
-			Properties properties = new Properties();
-			in = this.getClass().getClassLoader().getResourceAsStream("net/idea/rest/config/qmrf.properties");
-			properties.load(in);
-			
-			boolean aa = Boolean.parseBoolean(properties.get(_AAENABLED_PROPERTY).toString());
+
+			boolean aa = Boolean.parseBoolean(getProperty(Resources.Config.qmrf_opensso_protected.name()));
 			
 			if ((getContext()!=null) && 
 				(getContext().getParameters()!=null) && 
-				(getContext().getParameters().getFirstValue(_AAENABLED_PROPERTY)!=null))
-				aa = Boolean.parseBoolean(getContext().getParameters().getFirstValue(_AAENABLED_PROPERTY));
+				(getContext().getParameters().getFirstValue(Resources.Config.qmrf_opensso_protected.name()))!=null)
+				aa = Boolean.parseBoolean(getContext().getParameters().getFirstValue(Resources.Config.qmrf_opensso_protected.name()));
 			return aa;
 		} catch (Exception x) {
 			x.printStackTrace();
-			try {in.close(); } catch (Exception xx) {}	
 		}
 		return false;
 	}   	

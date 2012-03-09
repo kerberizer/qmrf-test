@@ -51,7 +51,6 @@ public class ReadProtocolByStructure extends ReadProtocolAbstract<Structure> {
 	}
 
 	public String getSQL() throws AmbitException {
-		System.out.println(sql);
 		return sql;
 
 	}
