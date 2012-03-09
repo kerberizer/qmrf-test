@@ -1,3 +1,5 @@
+use qmrf;
+GRANT ALL ON qmrf.* TO 'guest'@'localhost';
 -- project
 insert into qmrf.project values(1,"N/A",null,null);
 
@@ -12,7 +14,7 @@ insert into qmrf.`user`
 SELECT id_author,null,"",
 trim(substring_index(name," ",1)),
 trim(substring(name,instr(name," "))),
-affiliation,null,webpage,address,email,"",0 FROM qmrf_documents.catalog_authors u
+affiliation,null,webpage,address,email,"",0 FROM qmrf_documents.catalog_authors u;
 
 -- users
 insert into qmrf.`user`
@@ -22,7 +24,7 @@ on duplicate key update keywords=values(keywords), reviewer=values(reviewer), us
 
 -- user_organisation
 insert ignore into qmrf.user_organisation
-SELECT iduser,idorganisation,1 FROM `user` join organisation on user.institute=organisation.name
+SELECT iduser,idorganisation,1 FROM `user` join organisation on user.institute=organisation.name;
 
 -- documents
 insert ignore into protocol
@@ -42,12 +44,12 @@ SELECT ifnull(idqmrf_origin,idqmrf),version, id_author FROM
  
  
 -- keywords
-SELECT idprotocol,version,abstract,
-extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@id'),
-extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name'),
-extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group'),
-extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@subgroup')
-FROM protocol p;
+-- SELECT idprotocol,version,abstract,
+-- extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@id'),
+-- extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name'),
+-- extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group'),
+-- extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@subgroup')
+-- FROM protocol p;
 
 -- authors
 -- SELECT idprotocol,version,abstract,
@@ -61,7 +63,7 @@ SELECT idattachment,ifnull(idqmrf_origin,idqmrf),version,
 if(instr(name,'.')=0,name,substr(name,1,instr(name,'.')-1)),
 description,type,olda.updated,format,original_name,imported
 from qmrf_documents.documents docs
-join qmrf_documents.attachments olda using(idqmrf)
+join qmrf_documents.attachments olda using(idqmrf);
 
 
 -- attachments - to retrieve files from 
