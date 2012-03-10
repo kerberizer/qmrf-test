@@ -110,7 +110,7 @@ ul#navmenu {
 #navmenu li {
 	margin: 0;
 	display: block;
-	border-bottom: 1px solid #109DFF;
+	border-bottom: 1px solid white;
 	padding: 0;
 }
 
@@ -132,15 +132,15 @@ ul#navmenu {
 	height: 1px;
 }
 
-#navmenu li a:link,#navmenu li a:visited {
+#navmenu li a:link, #navmenu li a:visited {
 	color: #109DFF;
 	font-size: 0.9em;
 	font-weight: 500;
-	background-color: #FFFFff;
+	background-color: #d9ecf9;
 }
 
 #navmenu li a:hover {
-	color: #FFEB0F;
+	color: white;
 	background-color: #109DFF;
 	display: block;
 	font-weight: 900;
@@ -151,7 +151,7 @@ ul#navmenu {
 	background-color: #109DFF;
 }
 
-#navmenu li input,#navmenu li form,#navmenu li#createbutton {
+#navmenu li input, #navmenu li form, #navmenu li#createbutton {
 	width: 100%;
 	padding: 0;
 	margin: 0;
