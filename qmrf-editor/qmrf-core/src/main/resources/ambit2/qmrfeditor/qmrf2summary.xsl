@@ -69,19 +69,19 @@
 <!-- 3. Endpoint  -->
 <xsl:template match="QSAR_Endpoint">
   <label><xsl:value-of select="@name" /></label>
-   <br/>
+   <br/><br/>
   <xsl:apply-templates select="model_species"/>
-   <br/>
+   <br/><br/>
   <xsl:apply-templates select="model_endpoint"/>
-   <br/>
+   <br/><br/>
   <xsl:apply-templates select="endpoint_comments"/>
-   <br/>
+   <br/><br/>
   <xsl:apply-templates select="endpoint_units"/>
-   <br/>		
+   <br/><br/>		
   <xsl:apply-templates select="endpoint_variable"/>
-   <br/>
+   <br/><br/>
   <xsl:apply-templates select="endpoint_protocol"/>
-   <br/>
+   <br/><br/>
   <xsl:apply-templates select="endpoint_data_quality"/>		
 </xsl:template>
 
@@ -124,9 +124,9 @@
 <!-- 4. Algorithm -->
 <xsl:template match="QSAR_Algorithm">
   <label><xsl:value-of select="@name" /></label>
-  <br/>
+  <br/><br/>
   <xsl:apply-templates select="algorithm_type"/>
-   <br/>
+   <br/><br/>
   <xsl:apply-templates select="descriptors_generation"/>
    
 </xsl:template>
@@ -146,8 +146,9 @@
 <!-- 5. App domain -->
 <xsl:template match="QSAR_Applicability_domain">
   <label><xsl:value-of select="@name" /></label>
-  <br/>
+  <br/><br/>
   <xsl:apply-templates select="app_domain_description"/>
+  <br/><br/>
   <xsl:apply-templates select="app_domain_method"/>
    
 </xsl:template>
@@ -170,13 +171,21 @@
   <label><xsl:value-of select="@name" /></label>
   <br/>
   <xsl:apply-templates select="goodness_of_fit"/>
+  <br/>
   <xsl:apply-templates select="loo"/>
+  <br/>
   <xsl:apply-templates select="lmo"/>
+  <br/>
   <xsl:apply-templates select="yscrambling"/>
+  <br/>
   <xsl:apply-templates select="bootstrap"/>
+  <br/>
   <xsl:apply-templates select="other_statistics"/>
+  <br/>
   <xsl:apply-templates select="other_info"/>
+  <br/>
   <xsl:apply-templates select="preprocessing"/>
+  <br/>
   <xsl:apply-templates select="training_set_data"/>
    
 </xsl:template>
@@ -232,10 +241,15 @@
   <label><xsl:value-of select="@name" /></label>
   <br/>
   <xsl:apply-templates select="experimental_design"/>
+  <br/>
   <xsl:apply-templates select="validation_predictivity "/>
+  <br/>
   <xsl:apply-templates select="validation_assessment"/>
+  <br/>
   <xsl:apply-templates select="validation_comments"/>
+  <br/>
   <xsl:apply-templates select="validation_other_info"/>
+  <br/>
   <xsl:apply-templates select="validation_set_data"/>
 
    
