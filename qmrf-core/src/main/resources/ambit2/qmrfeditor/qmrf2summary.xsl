@@ -63,238 +63,252 @@
 
 <xsl:template match="QSAR_title">
   
-  <xsl:value-of select="."/>
+  <xsl:value-of select="." disable-output-escaping="yes"/>
   		
 </xsl:template>
 <!-- 3. Endpoint  -->
 <xsl:template match="QSAR_Endpoint">
-  <label><xsl:value-of select="@name" /></label>
-   <br/><br/>
+  <h2><xsl:value-of select="@name" /></h2>
+   <div class='summary'><p>
   <xsl:apply-templates select="model_species"/>
-   <br/><br/>
+  </p></div>
+   <div class='summary'><p>
   <xsl:apply-templates select="model_endpoint"/>
-   <br/><br/>
+     </p></div>
+   <div class='summary'><p>
   <xsl:apply-templates select="endpoint_comments"/>
-   <br/><br/>
+    </p> </div>
+    <div class='summary'><p>
   <xsl:apply-templates select="endpoint_units"/>
-   <br/><br/>		
+   </p>  </div>
+   <div>		<p>
   <xsl:apply-templates select="endpoint_variable"/>
-   <br/><br/>
+    </p></div>
+    <div class='summary'><p>
   <xsl:apply-templates select="endpoint_protocol"/>
-   <br/><br/>
-  <xsl:apply-templates select="endpoint_data_quality"/>		
+    </p> </div>
+     <div class='summary'><p>
+  <xsl:apply-templates select="endpoint_data_quality"/>
+   </p> </div>		
 </xsl:template>
 
 <xsl:template match="model_species">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>		
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
 </xsl:template>
 
 <xsl:template match="model_endpoint">
-  <label><xsl:value-of select="@name" /></label>
+  <strong><xsl:value-of select="@name" /></strong>
    <xsl:apply-templates select="endpoint_ref"/>
 </xsl:template>
 
 <xsl:template match="endpoint_units">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>		
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
 </xsl:template>
 
 
 <xsl:template match="endpoint_comments">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>		
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
 </xsl:template>
 
 <xsl:template match="endpoint_units">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>		
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
 </xsl:template>
 
 <xsl:template match="endpoint_protocol">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>		
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="."  disable-output-escaping="yes"/>		
+</xsl:template>
+
+<xsl:template match="endpoint_variable">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="."  disable-output-escaping="yes"/>		
 </xsl:template>
 
 <xsl:template match="endpoint_data_quality">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>		
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="."  disable-output-escaping="yes"/>		
 </xsl:template>
 
 <!-- 4. Algorithm -->
 <xsl:template match="QSAR_Algorithm">
-  <label><xsl:value-of select="@name" /></label>
-  <br/><br/>
+  <h2><xsl:value-of select="@name" /></h2>
+  <div class='summary'><p>
   <xsl:apply-templates select="algorithm_type"/>
-   <br/><br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="descriptors_generation"/>
-   
+  </p></div> 
 </xsl:template>
 
 <xsl:template match="algorithm_type">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>		
-  <br/>
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
+
 </xsl:template>
 
 <xsl:template match="descriptors_generation">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+
 </xsl:template>
 
 <!-- 5. App domain -->
 <xsl:template match="QSAR_Applicability_domain">
-  <label><xsl:value-of select="@name" /></label>
-  <br/><br/>
+  <h2><xsl:value-of select="@name" /></h2>
+  <div class='summary'><p>
   <xsl:apply-templates select="app_domain_description"/>
-  <br/><br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="app_domain_method"/>
-   
+   </p></div>
 </xsl:template>
 
 <xsl:template match="app_domain_method">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
  
 <xsl:template match="app_domain_description">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 <!--  6. Robustness -->
 
 <xsl:template match="QSAR_Robustness">
-  <label><xsl:value-of select="@name" /></label>
-  <br/>
+  <h2><xsl:value-of select="@name" /></h2>
+  <div class='summary'><p>
   <xsl:apply-templates select="goodness_of_fit"/>
-  <br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="loo"/>
-  <br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="lmo"/>
-  <br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="yscrambling"/>
-  <br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="bootstrap"/>
-  <br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="other_statistics"/>
-  <br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="other_info"/>
-  <br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="preprocessing"/>
-  <br/>
+  </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="training_set_data"/>
-   
+   </p></div>
 </xsl:template>
 
 
 <xsl:template match="goodness_of_fit">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 <xsl:template match="loo">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 <xsl:template match="lmo">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 <xsl:template match="yscrambling">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 <xsl:template match="bootstrap">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 <xsl:template match="other_statistics">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 <xsl:template match="other_info">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 <xsl:template match="preprocessing">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 
 <!--  7. Predictivity -->
 
 <xsl:template match="QSAR_Predictivity ">
-  <label><xsl:value-of select="@name" /></label>
-  <br/>
+  <h2><xsl:value-of select="@name" /></h2>
+  <div class='summary'><p>
   <xsl:apply-templates select="experimental_design"/>
-  <br/>
+    </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="validation_predictivity "/>
-  <br/>
+    </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="validation_assessment"/>
-  <br/>
+    </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="validation_comments"/>
-  <br/>
+    </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="validation_other_info"/>
-  <br/>
+    </p></div>
+  <div class='summary'><p>
   <xsl:apply-templates select="validation_set_data"/>
-
-   
+    </p></div>
 </xsl:template>
 
 <xsl:template match="validation_predictivity">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 <xsl:template match="validation_assessment">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 
 <xsl:template match="validation_comments">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 <xsl:template match="validation_other_info">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 <xsl:template match="experimental_design">
-  <label><xsl:value-of select="@name" /></label>
-  <xsl:value-of select="."/>	
-  <br/>	
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 <!-- 8. Interpretation -->
 
 <xsl:template match="QSAR_Interpretation">
-  <label><xsl:value-of select="@name" /></label>
+  <h2><xsl:value-of select="@name" /></h2>
+  <div class='summary'><p>
   <xsl:apply-templates select="mechanistic_basis"/>
+     </p></div>
 </xsl:template>
 
 <xsl:template match="mechanistic_basis">
-  <xsl:value-of select="."/>		
+    <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
  <xsl:template name="print_href">
@@ -313,20 +327,24 @@
 <!-- 9. Interpretation -->
 
 <xsl:template match="QSAR_Miscelaneous">
-  <label><xsl:value-of select="@name" /></label>
+  <h2><xsl:value-of select="@name" /></h2>
+  <div class='summary'><p>
   <xsl:apply-templates select="comments"/>
+     </p></div>  
+
 </xsl:template>
 
 <xsl:template match="comments">
-  <xsl:value-of select="."/>		
+    <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
 <!--  -->
 
 <xsl:template match="training_set_data"> 
-    <label><xsl:value-of select="training_set_availability/@name"/></label>
+    <strong><xsl:value-of select="training_set_availability/@name"/></strong>
     <xsl:value-of select="training_set_availability/@answer"/>
-	<label><xsl:value-of select="@name" /></label>
+	<strong><xsl:value-of select="@name" /></strong>
 	<ul>
 	<li><b>Chemname:</b><xsl:text> </xsl:text> <xsl:value-of select="@chemname"/></li>				
 	<li><b>SMILES:</b><xsl:text> </xsl:text><xsl:value-of select="@smiles"/></li>				
@@ -338,7 +356,7 @@
 </xsl:template> 	
 
 <xsl:template match="validation_set_data"> 
-    <label><xsl:value-of select="validation_set_availability/@name"/></label>
+    <strong><xsl:value-of select="validation_set_availability/@name"/></strong>
     <xsl:value-of select="validation_set_availability/@answer"/>
 	 <label><xsl:value-of select="@name" /></label>
 	<ul>
