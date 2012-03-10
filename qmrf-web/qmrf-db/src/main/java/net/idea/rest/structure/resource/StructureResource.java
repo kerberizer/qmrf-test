@@ -3,6 +3,7 @@ package net.idea.rest.structure.resource;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -10,6 +11,7 @@ import java.util.Locale;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
 import net.idea.restnet.c.TaskApplication;
+import net.idea.restnet.c.exception.RResourceException;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.db.QueryResource;
@@ -45,6 +47,7 @@ public class StructureResource extends CatalogResource<Structure>{
 			Request request, Response response) throws ResourceException {
 		Form form = request.getResourceRef().getQueryAsForm();
 		String search = form.getFirstValue(QueryResource.search_param)==null?"": form.getFirstValue(QueryResource.search_param);
+		if ((search==null) || "".equals(search)) return Collections.EMPTY_LIST.iterator();
 		String pagesize = form.getFirstValue("pagesize");
 		String page = form.getFirstValue("page");
 		try { int psize = Integer.parseInt(pagesize); if (psize>100) pagesize="10";} catch (Exception x) { pagesize="10";}
@@ -144,8 +147,8 @@ public class StructureResource extends CatalogResource<Structure>{
 												
 						records.add(struc);
 					}
-				} catch (Exception x) {
-					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,String.format("Error when contacting %s",ref),x);
+				} catch (Throwable x) {
+					throw createException(Status.SERVER_ERROR_BAD_GATEWAY, search, option.toString(), ref.toString(), x);					
 				} finally {
 					i.close();
 				}
@@ -153,13 +156,20 @@ public class StructureResource extends CatalogResource<Structure>{
 			} catch (ResourceException x) {
 				throw x;
 			} catch (Exception x) {
-				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,ref.toString(),x);
+				throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option.toString(), ref.toString(), x);				
 			}
 		} catch (Exception x) {
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,ref.toString(),x);
+			throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option.toString(), ref.toString(), x);
 		}
 	}
 	
+	protected ResourceException createException(Status status,String search,String option,String ref, Throwable x) {
+		throw new ResourceException(status.getCode(),
+				String.format("Search query '%s' failed",search),
+				String.format("Error when contacting (%s) structure search service at %s",option,ref),
+				"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html",
+				x);	
+	}
 	@Override
 	protected Reporter createHTMLReporter() {
 		return new StructureHTMLReporter(getRequest(), null, new StructureHTMLBeauty(queryService)); 
