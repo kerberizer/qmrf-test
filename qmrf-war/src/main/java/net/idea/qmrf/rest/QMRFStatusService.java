@@ -54,22 +54,37 @@ public class QMRFStatusService extends StatusService {
 				if(htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty();
 				htmlBeauty.writeHTMLHeader(w, status.getName(), request,null);
 				
-				
-				w.write(String.format("<h4>%s</h4>",
-						status.getDescription()
-						));
-				
+				StringWriter details = new StringWriter();
+
 				if (status.getThrowable()!= null) {
-					w.write("<blockquote>");				
-					status.getThrowable().printStackTrace(new PrintWriter(w) {
+					status.getThrowable().printStackTrace(new PrintWriter(details) {
 						@Override
 						public void print(String s) {
 							super.print(String.format("%s<br>", s));
 							
 						}
 					});
-					w.write("</blockquote>");
 				} 
+				
+				
+				w.write(
+						String.format(		
+						"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
+						"<div class=\"ui-widget-header ui-corner-top\"><p>Error code <a href='%s' target='help'>%d</a>&nbsp;%s</p></div>\n"+
+						"<div class=\"ui-widget-content ui-corner-bottom \">\n"+
+						"<p>%s</p><p>"+
+						"<a href=\"javascript:toggleDiv('%s');\" style=\"background-color: #fff; padding: 5px 10px;\">Details</a>\n"+	
+						"</p>\n"+
+						"<div class=\"ui-widget\" style='display: none;' id='details'><p>%s</p></div>\n"+
+						"</div></div>\n",
+						status.getUri(),
+						status.getCode(),
+						status.getName(),
+						status.getDescription(),
+						"details",
+						details
+						)
+				);
 				
 				if(htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty();
 				htmlBeauty.writeHTMLFooter(w, status.getName(), request);
