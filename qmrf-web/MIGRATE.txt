@@ -138,8 +138,9 @@ mysql> select name from src_dataset;
 Run
 GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'localhost';
 
+3. Deploy qmrfdata.war Open   http://yourhost:port/qmrfdata/dataset with a browser; it should display the training and validation datasets.
 
-2. Deploy qmrf.war.  Open   http://yourhost:port/qmrf with a browser; it should display the first 10 QMRF documents.
+4. Deploy qmrf.war.  Open   http://yourhost:port/qmrf with a browser; it should display the first 10 QMRF documents.
 
 If the migration has been successful,  http://yourhost:port/qmrf/admin/database will show
 
@@ -148,5 +149,23 @@ Version	2.0
 Created	2012
 Note	QMRF schema
 
-3. 
+3. Configuration
+
+{tomcat-dir}/webapps/qmrf/WEB-INF/classes/config/qmrf.properties
+
+#Use OpenSSO service for authentication and authorisation - true or false
+qmrf_openssso_protected=false
+#File path to store attachments_ If null will use the temp folder <<<< REPLACE with the folder where attachments are stored
+qmrf_attachments_dir=/tmp/qmrf/attachments  
+#URI of Ambit web service to store and query structures and data via OpenTox REST API
+#Can be downloaded by http://ambit_sf_net
+#If not defined, query by structure will not be available
+qmrf_ambit_service=https://ambit.uni-plovdiv.bg:8443/qmrfdata  <<<< REPLACE with http://yourhost:port/qmrfdata/
+#If not OpenSSO protected, will have POST/PUT/DELETE enabled only for admin user with this password
+qmrf_admin_password=admin
+#Allow connections to SSL sites without certs (similar to curl -k option)
+insecure=true
+#google.analytics code
+google_analytics=XYZ
+ 
 
