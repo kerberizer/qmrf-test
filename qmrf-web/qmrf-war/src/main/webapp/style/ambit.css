@@ -86,7 +86,7 @@ h1 {
 	background-color: #ffffff;
 	color: #109DFF;
 	margin: 0;
-	padding: 0;
+	padding: 0px 0px 5px;
 	height: 60px;
 	text-align: center;
 }
@@ -199,7 +199,7 @@ A:hover {
 
 .logo_header {
 	position: absolute;
-	top: -50px;
+	top: -55px;
 	width: 100%;
 }
 
@@ -279,7 +279,11 @@ table {
 	MARGIN-LEFT: 0px;
 	MARGIN-RIGHT: 0px;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
-	TEXT-ALIGN: justify
+	text-align: justify;
+}
+
+th {
+	text-align: left;
 }
 
 label {
@@ -427,4 +431,3 @@ div.structureright img {
 .summary label {
 	font-weight: bold;
 }
-
