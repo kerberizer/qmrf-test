@@ -1,7 +1,7 @@
 package net.idea.rest.protocol.db.attachments.test;
 
 import java.sql.ResultSet;
-
+import java.net.URL;
 import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
@@ -36,8 +36,12 @@ public class ReadAttachmentsTest  extends QueryTest<ReadAttachment> {
 			}
 
 			Assert.assertNotNull(attachment.getResourceURL());
-			String expected = String.format("file://%s",System.getProperty("java.io.tmpdir")).replace("\\", "/");
-			Assert.assertTrue(attachment.getResourceURL().toString().startsWith(expected));
+			URL expected = 
+			new URL(String.format("file://%s",System.getProperty("java.io.tmpdir")).replace("\\","/"));
+			System.out.println(attachment.getResourceURL().toExternalForm());
+			System.out.println(expected.toExternalForm());
+
+			Assert.assertTrue(attachment.getResourceURL().toExternalForm().startsWith(expected.toExternalForm()));
 			records++;
 		}
 		Assert.assertEquals(4,records);
