@@ -114,10 +114,14 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		
 	}
 	protected DOMSource getDOMSource(DBProtocol item) throws Exception {
-		  String xml = item.getAbstract().replace("&lt;html&gt;","").replace("&lt;/html&gt;","")
+		  String xml = item.getAbstract();
+		  /*
+		  .replace("&lt;html&gt;","").replace("&lt;/html&gt;","")
    		.replace("&lt;body&gt;","").replace("&lt;/body&gt;","")
-   		.replace("&lt;head&gt;","").replace("&lt;/head&gt;","").replace("&#13;","\n")
+   		.replace("&lt;head&gt;","").replace("&lt;/head&gt;","").replace("&#13;","\n");
+		  /*
    		.replace("&lt;p style=\"margin-top: 0\"&gt;","").replace("&lt;/p&gt;","<br/>");
+   		*/
 		  if (factory==null) {
 			    factory = DocumentBuilderFactory.newInstance();
 		        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
