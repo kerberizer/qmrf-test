@@ -8,8 +8,11 @@ import java.util.List;
 
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.FileResource;
+import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
@@ -30,7 +33,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 	private static final long serialVersionUID = 1658864353613787327L;
 	protected List<DBProtocol> items = new ArrayList<DBProtocol>();
 	public static final String resource = "new";
-	public boolean attachments = true;
+	protected Object key = null;
 	
 	public QMRFUploadUIResource() {
 		super();
@@ -39,8 +42,16 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 	protected Iterator<DBProtocol> createQuery(Context context,
 			Request request, Response response) throws ResourceException {
 		try { 
-			attachments = Boolean.parseBoolean(getRequest().getResourceRef().getQueryAsForm().getFirstValue("attachments"));
-		} catch (Exception x) {attachments = true;}
+			key = request.getAttributes().get(FileResource.resourceKey);
+			if (key!=null)  
+			try { //add attachments to a protocol
+				int ids[] = ReadProtocol.parseIdentifier(key.toString());
+				
+			} catch (Exception x) {
+				throw new InvalidQMRFNumberException(key.toString());
+			}
+			//else //new protocol
+		} catch (Exception x) {}
 		
 		return items.iterator();
 	}
@@ -49,10 +60,12 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 			@Override
 			public void header(Writer w, Iterator<DBProtocol> query) {
 				super.header(w, query);
-				String uri = String.format("%s%s",getRequest().getRootRef().toString(), Resources.protocol);
+				String uri = key==null?String.format("%s%s",getRequest().getRootRef().toString(), Resources.protocol):
+					String.format("%s%s/%s%s",getRequest().getRootRef().toString(), Resources.protocol,key,Resources.attachment);
 				DBProtocol protocol = new DBProtocol();
 				try {
 					protocol = new DBProtocol();
+					protocol.setPublished(true);
 					protocol.setOrganisation(new Organisation(new URL(String.format("%s%s",getRequest().getRootRef(),
 					((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_organisation.name())))));
 					protocol.setProject(new Project(new URL(String.format("%s%s",getRequest().getRootRef(),
@@ -64,7 +77,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 					protocol = null;
 				}
 				try {
-					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,attachments));
+					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,key!=null));
 				} catch (Exception x) {
 					x.printStackTrace();
 				}

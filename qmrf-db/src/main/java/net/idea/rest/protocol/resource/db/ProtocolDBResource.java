@@ -11,6 +11,8 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.rest.FileResource;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
+import net.idea.rest.db.exceptions.MethodNotAllowedException;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
@@ -60,7 +62,8 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	public enum SearchMode {
 		text,
 		endpoint,
-		author
+		author,
+		qmrfnumber
 	}
 	
 	protected boolean singleItem = false;
@@ -274,6 +277,36 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					singleItem = false;				
 					return (Q)query;
 				}
+				case qmrfnumber: {
+					try {
+						int[] ids = ReadProtocol.parseIdentifier(search.toString().trim());
+						IQueryRetrieval<DBProtocol> query = new ReadProtocol(ids[0],ids[1],ids[2]);
+						editable = showCreateLink;
+						singleItem = false;				
+						return (Q)query;						
+					} catch (Exception x) {
+						throw new InvalidQMRFNumberException(search.toString());
+
+					}
+
+				}		
+				/*
+				case modifiedSince: {
+					try {
+						Long.parseLong(search.toString().trim());
+						modified = search.toString();
+						structure = null;
+						search = null;
+						//go to the standard processing 
+					} catch (Exception x) {
+						throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST.getCode(),
+								String.format("Invalid date %s",new Date(search.toString())),
+								String.format("The date entered is not valid",search),
+								null
+								);
+					}
+				}
+				*/
 				}
 			if ((structure!=null) && structure.toString().startsWith("http")) {
 				IQueryRetrieval<DBProtocol> query = new ReadProtocolByStructure();
@@ -291,11 +324,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		}catch (ResourceException x) {
 			throw x;
 		} catch (Exception x) {
-			throw new ResourceException(
-					Status.CLIENT_ERROR_BAD_REQUEST,
-					String.format("Invalid protocol id %s",key),
-					x
-					);
+			throw new InvalidQMRFNumberException(key==null?"":key.toString());
 		}
 	} 
 
@@ -317,7 +346,8 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			Form form, DBProtocol item) throws ResourceException {
 		if (Method.DELETE.equals(method))
 			return createCallable(method,(List<FileItem>) null, item);
-		else throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED,method.toString());
+		else throw new MethodNotAllowedException(getRequest().getResourceRef(),method);
+
 	}
 	@Override
 	protected CallableProtectedTask<String> createCallable(Method method,
