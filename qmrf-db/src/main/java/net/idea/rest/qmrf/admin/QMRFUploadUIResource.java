@@ -1,6 +1,7 @@
 package net.idea.rest.qmrf.admin;
 
 import java.io.Writer;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -9,8 +10,12 @@ import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
+import net.toxbank.client.resource.Organisation;
+import net.toxbank.client.resource.Project;
+import net.toxbank.client.resource.User;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -45,8 +50,21 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 			public void header(Writer w, Iterator<DBProtocol> query) {
 				super.header(w, query);
 				String uri = String.format("%s%s",getRequest().getRootRef().toString(), Resources.protocol);
+				DBProtocol protocol = new DBProtocol();
 				try {
-					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, null,attachments));
+					protocol = new DBProtocol();
+					protocol.setOrganisation(new Organisation(new URL(String.format("%s%s",getRequest().getRootRef(),
+					((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_organisation.name())))));
+					protocol.setProject(new Project(new URL(String.format("%s%s",getRequest().getRootRef(),
+							((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_project.name())))));
+					protocol.setOwner(new User(new URL(String.format("%s%s",getRequest().getRootRef(),
+							((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_owner.name())))));					
+				} catch (Exception x) {
+					logger.debug(x);
+					protocol = null;
+				}
+				try {
+					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,attachments));
 				} catch (Exception x) {
 					x.printStackTrace();
 				}

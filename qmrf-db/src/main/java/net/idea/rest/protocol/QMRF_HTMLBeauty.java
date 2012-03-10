@@ -8,6 +8,7 @@ import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 
 import org.restlet.Request;
@@ -221,6 +222,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "<tr><td colspan='2'><input %s tabindex='1' type='radio' value='text' name='option' title='Free text search' size='20'>Free text</td></tr>\n"+
 			   "<tr><td><input %s type='radio' tabindex='2' name='option' value='endpoint' title='Search by endpoint'>Endpoint</td>\n"+
 			   "<tr><td colspan='2'><input %s tabindex='3' type='radio' value='author' name='option' title='Search by author' size='20'>Author</td></tr>\n"+
+			   "<tr><td><input %s type='radio' tabindex='4' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF number</td>\n"+
 			   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
 			   "<input type='hidden' name='structure' value='%s'>\n"+
 			   "<tr><td></td><td align='left'><input type='submit' tabindex='4'  value='Search'/></td></tr>\n"+
@@ -237,6 +239,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   SearchMode.text.equals(option)?"checked":"",
 			   SearchMode.endpoint.equals(option)?"checked":"",
 			   SearchMode.author.equals(option)?"checked":"",
+			   SearchMode.qmrfnumber.equals(option)?"checked":"",
 			   pageSize,
 			   structure,
 			   imgURI
@@ -299,6 +302,15 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				content.append(String.format("<p><input type=\"file\" class='multi max-1 accept-xml' name=\"%s\" title='%s' size=\"60\"></p>",
 						ReadProtocol.fields.filename.name(),
 						"QMRF XML")); 	
+				try {
+				content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
+						ReadProtocol.fields.user_uri.name(),"Owner",protocol==null?"":protocol.getOwner()==null?"":protocol.getOwner().getResourceURL()));
+				content.append(String.format(
+						"<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
+						ReadProtocol.fields.organisation_uri.name(),"Organisation",protocol==null?"":protocol.getOrganisation()==null?"":protocol.getOrganisation().getResourceURL()));
+				content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
+						ReadProtocol.fields.project_uri.name(),"Project",protocol==null?"":protocol.getProject()==null?"":protocol.getProject().getResourceURL()));
+				} catch (Exception x) {x.printStackTrace(); /*ok, no defaults if anything goes wrong */ }		
 				if (attachments) {
 				content.append("<div class='ui-widget-content'><p>Attachments: Training dataset(s) - SDF, MOL, CSV, XLS formats, 3 files max</p></div>");
 				content.append(String.format("<p><input type=\"file\"  class='multi' maxlength='3' accept='sdf|mol|csv|xls' name=\"%s\" title='%s' size=\"60\"></p>",
