@@ -112,7 +112,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			StringBuilder header = new StringBuilder();
 			header.append(String.format("<a href='#'><img  border='0' class='floatleft' src='%s/images/IHCP_logo.jpg'></a>\n",baseReference));
-			header.append("<label>(Q)SAR Model Reporting Format Inventory</label>\n");
+			
+			header.append(String.format(
+					"<span style='margin: 5px 0 0 0;'><img src='%s/images/(q)sar_model_reporting_format_inventory.png' alt='%s' title='%s' ></span>",
+					baseReference,getTitle(),getTitle()));
 			header.append(String.format("<a href='#'><img  border='0' class='floatright' src='%s/images/JRC_logo.jpg'></a>\n",baseReference));
 			
 			w.write(String.format("<div id='wrap'><div id='header'>%s</div>\n",header));
