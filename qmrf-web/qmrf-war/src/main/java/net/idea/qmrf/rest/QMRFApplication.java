@@ -1,7 +1,5 @@
 package net.idea.qmrf.rest;
 
-import java.io.StringWriter;
-
 import net.idea.modbcum.i.config.Preferences;
 import net.idea.qmrf.aa.ProtocolAuthorizer;
 import net.idea.qmrf.aa.QMRFLoginResource;
@@ -42,16 +40,13 @@ import org.restlet.data.ChallengeScheme;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.Protocol;
 import org.restlet.resource.Directory;
-import org.restlet.resource.Finder;
 import org.restlet.routing.Filter;
-import org.restlet.routing.Route;
 import org.restlet.routing.Router;
 import org.restlet.routing.Template;
 import org.restlet.security.ChallengeAuthenticator;
 import org.restlet.security.Enroler;
 import org.restlet.security.Verifier;
 import org.restlet.service.TunnelService;
-import org.restlet.util.RouteList;
 
 /**
  * (Q)SAR Model Reporting Format web services / web application 

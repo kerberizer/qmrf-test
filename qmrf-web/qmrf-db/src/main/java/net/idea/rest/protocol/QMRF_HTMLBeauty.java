@@ -79,11 +79,17 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					title,
 					ref
 					)); 
+			w.write(String.format("<link rel=\"meta\" type=\"text/n3\" title=\"%s\" href=\"%s\"/>\n",
+					title,
+					ref
+					)); 
 			
 			w.write(String.format("<link rel=\"primarytopic\" type=\"application/rdf+xml\" href=\"%s\"/>",
 					ref
 					)); 		
-			
+			w.write(String.format("<link rel=\"primarytopic\" type=\"text/n3\" href=\"%s\"/>",
+					ref
+					)); 			
 			w.write(String.format("<title>%s</title>\n",title));
 			
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery-1.7.1.min.js\"></script>\n",baseReference));
@@ -328,7 +334,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				content.append("<div class='ui-widget-content'><p>Options</p></div>");
 				content.append(String.format("<p><strong>%s</strong>%s</p>",
 						"Publish immediately",
-						ReadProtocol.fields.published.getHTMLField(null)
+						ReadProtocol.fields.published.getHTMLField(protocol)
 						));					
 				
 				content.append("<div  class='ui-widget-header ui-corner-bottom'><p><input type='submit' enabled='false' value='Submit'></p></div>");
@@ -338,6 +344,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				
 
 				return printWidget(
+							attachments?String.format("Add attachment(s) to <a href='%s' target='_blank'>%s</a>",protocol.getResourceURL(),protocol.getIdentifier()):
 							String.format("Add new %s %s",getTitle(),uri.toString().contains("versions")?"version":""),
 							content.toString(),
 							"");
