@@ -70,7 +70,7 @@ public class QMRFTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERID> {
 				item.getError()!=null?"":item.getTimeCompleted()>0?new Date(item.getTimeCompleted()):"",
 				baseReference.toString(),
 				item.isDone()?(item.getError()==null?"tick.png":"cross.png"):"progress.gif",
-				(item.isDone()&&item.getError()==null)?"Results available":"",(item.isDone()&&item.getError()==null)?t:"",
+				(item.isDone()&&item.getError()==null)?t:"",(item.isDone()&&item.getError()==null)?"Results available":"",
 			
 				item.isDone()?(item.getError()==null?"ui-icon-check":"ui-icon-alert"):"ui-icon-info",
 				status,item.getError()==null?"":item.getError().getMessage(),
