@@ -56,9 +56,10 @@ public class StructureResource extends CatalogResource<Structure>{
 		} catch (Exception x) {
 			option = SearchMode.auto;
 		}
+		Reference ref = null;
 		if (search!=null) search = search.replace("<","").replace(">","");
 		try {
-			Reference ref = new Reference(String.format("%s/query/compound/search/all",queryService));
+			ref = new Reference(String.format("%s/query/compound/search/all",queryService));
 			switch (option) {
 			case similarity: {
 				ref = new Reference(String.format("%s/query/similarity?threshold=%s",queryService,threshold));
@@ -144,7 +145,7 @@ public class StructureResource extends CatalogResource<Structure>{
 						records.add(struc);
 					}
 				} catch (Exception x) {
-					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,String.format("Error when contacting %s",ref));
+					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,String.format("Error when contacting %s",ref),x);
 				} finally {
 					i.close();
 				}
@@ -152,10 +153,10 @@ public class StructureResource extends CatalogResource<Structure>{
 			} catch (ResourceException x) {
 				throw x;
 			} catch (Exception x) {
-				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,ref.toString(),x);
 			}
 		} catch (Exception x) {
-			throw new ResourceException(x);
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,ref.toString(),x);
 		}
 	}
 	
