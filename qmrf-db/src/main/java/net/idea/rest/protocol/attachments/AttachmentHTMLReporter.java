@@ -7,6 +7,7 @@ import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
@@ -33,7 +34,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	public AttachmentHTMLReporter(DBProtocol protocol,Request request, boolean collapsed,boolean editable) {
 		super(request,collapsed,editable);
 		if (protocol!=null) {
-			String qmrf = String.format("%s-%d-%d", DBProtocol.prefix,protocol.getID(),protocol.getVersion());
+			String qmrf = ReadProtocol.generateIdentifier(protocol);
 			((AttachmentURIReporter)uriReporter).setPrefix(String.format("%s/%s",Resources.protocol,qmrf));
 			setTitle(String.format("<a href='%s%s/%s'>%s</a> attachment",request.getRootRef(),Resources.protocol,qmrf,qmrf));
 		} else 		setTitle("Attachment");

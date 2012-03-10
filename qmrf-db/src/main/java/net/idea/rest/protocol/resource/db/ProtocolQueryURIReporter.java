@@ -3,6 +3,7 @@ package net.idea.rest.protocol.resource.db;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.db.ReadProtocolByAuthor;
 import net.idea.restnet.db.QueryURIReporter;
 
 import org.restlet.Request;
@@ -42,11 +43,11 @@ public class ProtocolQueryURIReporter <Q extends IQueryRetrieval<DBProtocol>> ex
 
 	@Override
 	public String getURI(String ref, DBProtocol item) {
-
-		return String.format("%s%s/%s-%d-%d%s",
+		
+		return String.format("%s%s/%s%s",
 				ref,
 				Resources.protocol,
-				DBProtocol.prefix,item.getID(),item.getVersion(),
+				ReadProtocolByAuthor.generateIdentifier(item),
 				suffix==null?"":suffix);
 	}
 

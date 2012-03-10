@@ -24,7 +24,7 @@ public class ProtocolVersionDBResource<Q extends ReadProtocol> extends ProtocolD
 			editable = showCreateLink;
 			singleItem = false;
 			int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-			return (Q)new ReadProtocolVersions(id[0]);
+			return (Q)new ReadProtocolVersions(id[0],id[2]);
 		}
 	}
 	
@@ -35,7 +35,7 @@ public class ProtocolVersionDBResource<Q extends ReadProtocol> extends ProtocolD
 		if (Method.POST.equals(method)) {
 			if (key!=null) { //post allowed only on /protocol/id/versions
 				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-				return (Q)new ReadProtocol(id[0],id[1]);
+				return (Q)new ReadProtocol(id[0],id[1],id[2]);
 			}
 		} else {
 			//if (key!=null) return super.createUpdateQuery(method, context, request, response);

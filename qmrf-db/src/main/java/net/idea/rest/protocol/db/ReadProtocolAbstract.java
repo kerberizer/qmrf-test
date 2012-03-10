@@ -42,7 +42,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 	}
 	public ReadProtocolAbstract(Integer id, Integer version) {
 		super();
-		setValue(id==null?null:new DBProtocol(id,version));
+		setValue(id==null?null:new DBProtocol(id,version,2009));
 		setFieldname(null);
 	}
 	public ReadProtocolAbstract() {
@@ -93,15 +93,17 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 	}
 	
 	public static String generateIdentifier(DBProtocol protocol) throws ResourceException {
-		return String.format("QMRF-%d-%d", protocol.getID(),protocol.getVersion());
+		return String.format("QMRF-%d-%d-%d", protocol.getYear(),protocol.getID(),protocol.getVersion());
 	}
 	public static int[] parseIdentifier(String identifier) throws ResourceException {
 		String ids[] = identifier.split("-");
-		if ((ids.length!=3) || !identifier.startsWith(DBProtocol.prefix)) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid format");
-		int[] id = new int[2];
+		if ((ids.length!=4) || !identifier.startsWith(DBProtocol.prefix)) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid format");
+		
+		int[] id = new int[3];
+		id[2] = Integer.parseInt(ids[1]); //year ; added last for compatibility
 		for (int i=0; i < 2; i++)
 			try {
-				id[i] = Integer.parseInt(ids[i+1]);
+				id[i] = Integer.parseInt(ids[i+2]);
 			} catch (NumberFormatException x) {
 				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,x);
 			}

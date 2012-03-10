@@ -12,7 +12,7 @@ public class ReadProtocolTest extends QueryTest<ReadProtocol> {
 
 	@Override
 	protected ReadProtocol createQuery() throws Exception {
-		return new ReadProtocol(83,1);
+		return new ReadProtocol(83,1,2009);
 	}
 
 	@Override

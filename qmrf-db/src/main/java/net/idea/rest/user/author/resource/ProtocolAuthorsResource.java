@@ -28,7 +28,7 @@ public class ProtocolAuthorsResource extends UserDBResource<DBProtocol> {
 		Object protocolKey = getRequest().getAttributes().get(FileResource.resourceKey);	
 		if (protocolKey==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 		int id[] = ReadProtocol.parseIdentifier(Reference.decode(protocolKey.toString()));
-		DBProtocol protocol = new DBProtocol(id[0],id[1]);
+		DBProtocol protocol = new DBProtocol(id[0],id[1],id[2]);
 		DBUser user = null;
 		
 		if (key!=null) {

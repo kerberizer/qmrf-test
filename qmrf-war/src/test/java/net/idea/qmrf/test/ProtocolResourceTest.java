@@ -53,7 +53,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 	@Override
 	public String getTestURI() {
-		return String.format("http://localhost:%d%s/%s-2-2", port,
+		return String.format("http://localhost:%d%s/%s-2009-2-2", port,
 				Resources.protocol, DBProtocol.prefix);
 	}
 
@@ -69,7 +69,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		String line = null;
 		int count = 0;
 		while ((line = r.readLine()) != null) {
-			Assert.assertEquals(String.format("http://localhost:%d%s/%s-2-2",
+			Assert.assertEquals(String.format("http://localhost:%d%s/%s-2009-2-2",
 					port, Resources.protocol, DBProtocol.prefix), line);
 			count++;
 		}
@@ -92,9 +92,9 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		List<Protocol> protocols = ioClass.fromJena(model);
 		Assert.assertEquals(1, protocols.size());
 		Assert.assertEquals(String.format(
-				"http://localhost:8181/protocol/%s-2-2", DBProtocol.prefix),
+				"http://localhost:8181/protocol/%s-2009-2-2", DBProtocol.prefix),
 				protocols.get(0).getResourceURL().toString());
-		Assert.assertEquals("QMRF-2-2", protocols.get(0).getIdentifier());
+		Assert.assertEquals("QMRF-2009-2-2", protocols.get(0).getIdentifier());
 		Assert.assertEquals("QSAR model for narcosis", protocols.get(0)
 				.getTitle());
 		Assert.assertNotNull(protocols.get(0).getAbstract());
@@ -154,7 +154,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 						"SELECT idprotocol,version FROM protocol where idprotocol=2 and version=2");
 		Assert.assertEquals(new BigInteger("2"),table.getValue(0, "idprotocol"));
 		c.close();
-		String org = String.format("http://localhost:%d%s/%s-2-2", port,
+		String org = String.format("http://localhost:%d%s/%s-2009-2-2", port,
 				Resources.protocol, DBProtocol.prefix);
 		RemoteTask task = testAsyncPoll(new Reference(org),	MediaType.TEXT_URI_LIST, null, Method.DELETE);
 		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
@@ -177,7 +177,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 	@Test
 	public void testUpdateEntryFromMultipartWeb() throws Exception {
-		String uri = String.format("http://localhost:%d%s/%s-2-2", port,
+		String uri = String.format("http://localhost:%d%s/%s-2009-2-2", port,
 				Resources.protocol, DBProtocol.prefix);
 		createEntryFromMultipartWeb(new Reference(uri), Method.PUT);
 

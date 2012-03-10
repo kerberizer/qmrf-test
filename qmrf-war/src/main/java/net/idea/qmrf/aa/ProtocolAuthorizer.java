@@ -73,7 +73,7 @@ public class ProtocolAuthorizer  extends OpenSSOAuthorizer {
 					return super.authorize(ssoToken, request);
 
 				try {retrieveUserAttributes(ssoToken, request);} catch (Exception x) { return super.authorize(ssoToken, request); }
-				DBProtocol protocol = new DBProtocol(ids[0],ids[1]);
+				DBProtocol protocol = new DBProtocol(ids[0],ids[1],ids[2]);
 				String username = request.getClientInfo().getUser().getIdentifier();
 				policy = verify(protocol,username);
 				

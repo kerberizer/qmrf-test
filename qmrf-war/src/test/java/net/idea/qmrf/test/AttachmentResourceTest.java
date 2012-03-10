@@ -31,7 +31,7 @@ public class AttachmentResourceTest extends ResourceTest {
 	}
 	@Override
 	public String getTestURI() {
-		return String.format("http://localhost:%d%s/%s-83-1%s", port,Resources.protocol,
+		return String.format("http://localhost:%d%s/%s-2009-83-1%s", port,Resources.protocol,
 					DBProtocol.prefix,Resources.attachment);
 	}
 	
@@ -40,7 +40,7 @@ public class AttachmentResourceTest extends ResourceTest {
 		testGet(getTestURI(),MediaType.TEXT_URI_LIST);
 	}
 	/**
-	 * The URI should be /protocol/QMRF-83-1/attachment
+	 * The URI should be /protocol/QMRF-200983-1/attachment
 	 */
 	@Override
 	public boolean verifyResponseURI(String uri, MediaType media, InputStream in)
@@ -49,8 +49,9 @@ public class AttachmentResourceTest extends ResourceTest {
 		String line = null;
 		int count = 0;
 		while ((line = r.readLine())!= null) {
+			System.out.println(line);
 			Assert.assertTrue(line.startsWith(
-					String.format("http://localhost:%d%s/%s-83-1%s",port,Resources.protocol,
+					String.format("http://localhost:%d%s/%s-2009-83-1%s",port,Resources.protocol,
 							DBProtocol.prefix,Resources.attachment)
 							));
 			count++;
@@ -62,7 +63,7 @@ public class AttachmentResourceTest extends ResourceTest {
 	public void testCreateEntryFromMultipartWeb() throws Exception {
 		String url = createEntryFromMultipartWeb(new Reference(getTestURI()));
 		
-		Assert.assertEquals(String.format("http://localhost:%d/protocol/QMRF-83-1/attachment",port),url);
+		Assert.assertEquals(String.format("http://localhost:%d/protocol/QMRF-2009-83-1/attachment",port),url);
 
 		
    	    IDatabaseConnection c = getConnection();	

@@ -29,7 +29,7 @@ public class ProtocolPreviousVersionDBResource<Q extends ReadProtocol> extends P
 			editable = showCreateLink;
 			singleItem = false;
 			int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-			return (Q)new ReadProtocolPreviousVersion(id[0],id[1]);
+			return (Q)new ReadProtocolPreviousVersion(id[0],id[1],id[2]);
 		}
 	}
 	

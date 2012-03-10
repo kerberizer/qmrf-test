@@ -46,9 +46,9 @@ and idchemical=282
 		setFieldname(protocol);
 		this.dir = dir;
 	}
-	public ReadAttachment(Integer id, Integer version,String dir) {
+	public ReadAttachment(Integer id, Integer version,Integer year, String dir) {
 		super();
-		setFieldname(id==null?null:new DBProtocol(id,version));
+		setFieldname(id==null?null:new DBProtocol(id,version,year));
 		this.dir = dir;
 	}
 	public ReadAttachment(String dir) {

@@ -140,11 +140,6 @@ public class StructureResource extends CatalogResource<Structure>{
 				try {
 					while (i.hasNext()) {
 						Structure struc = i.next();
-						Protocol protocol = new Protocol(new URL("http://localhost:8081/qmrf/protocol/SEURAT-Protocol-53-1"));
-						protocol.setIdentifier("QMRF-53-1");
-						protocol.setTitle("QSAR for eye irritation (Draize test)");
-						struc.getProtocols().add(protocol);
-												
 						records.add(struc);
 					}
 				} catch (Throwable x) {

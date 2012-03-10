@@ -13,7 +13,7 @@ public class ReadProtocolAuthorsTest extends QueryTest<ReadAuthor> {
 
 	@Override
 	protected ReadAuthor createQuery() throws Exception {
-		return new ReadAuthor(new DBProtocol(83,1),null);
+		return new ReadAuthor(new DBProtocol(83,1,2009),null);
 	}
 
 	@Override
