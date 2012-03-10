@@ -314,12 +314,12 @@
     <xsl:value-of select="training_set_availability/@answer"/>
 	<label><xsl:value-of select="@name" /></label>
 	<ul>
-	<li><b>Chemname:</b> <xsl:value-of select="@chemname"/></li>				
-	<li><b>SMILES:</b> <xsl:value-of select="@smiles"/></li>				
-	<li><b>CAS RN:</b> <xsl:value-of select="@cas"/></li>	
-	<li><b>InChI:</b> <xsl:value-of select="@inchi"/></li>	
-	<li><b>MOL file:</b> <xsl:value-of select="@mol"/></li>	
-	<li><b>Formula:</b> <xsl:value-of select="@formula"/></li>	
+	<li><b>Chemname:</b><xsl:text> </xsl:text> <xsl:value-of select="@chemname"/></li>				
+	<li><b>SMILES:</b><xsl:text> </xsl:text><xsl:value-of select="@smiles"/></li>				
+	<li><b>CAS RN:</b><xsl:text> </xsl:text><xsl:text> </xsl:text><xsl:value-of select="@cas"/></li>	
+	<li><b>InChI:</b><xsl:text> </xsl:text><xsl:value-of select="@inchi"/></li>	
+	<li><b>MOL file:</b><xsl:text> </xsl:text><xsl:value-of select="@mol"/></li>	
+	<li><b>Formula:</b><xsl:text> </xsl:text><xsl:value-of select="@formula"/></li>	
 	</ul>
 </xsl:template> 	
 
@@ -328,12 +328,12 @@
     <xsl:value-of select="validation_set_availability/@answer"/>
 	 <label><xsl:value-of select="@name" /></label>
 	<ul>
-	<li><b>Chemname:</b> <xsl:value-of select="@chemname"/>	</li>			
-	<li><b>SMILES:</b> <xsl:value-of select="@smiles"/>	</li>				
-	<li><b>CAS RN:</b> <xsl:value-of select="@cas"/></li>	
-	<li><b>InChI:</b> <xsl:value-of select="@inchi"/></li>	
-	<li><b>MOL file:</b> <xsl:value-of select="@mol"/>	</li>
-	<li><b>Formula:</b> <xsl:value-of select="@formula"/>	</li>
+	<li><b>Chemname:</b><xsl:text> </xsl:text><xsl:value-of select="@chemname"/>	</li>			
+	<li><b>SMILES:</b><xsl:text> </xsl:text><xsl:value-of select="@smiles"/>	</li>				
+	<li><b>CAS RN:</b><xsl:text> </xsl:text><xsl:value-of select="@cas"/></li>	
+	<li><b>InChI:</b><xsl:text> </xsl:text><xsl:value-of select="@inchi"/></li>	
+	<li><b>MOL file:</b><xsl:text> </xsl:text><xsl:value-of select="@mol"/>	</li>
+	<li><b>Formula:</b><xsl:text> </xsl:text><xsl:value-of select="@formula"/>	</li>
 	</ul>
 </xsl:template> 	
 <!-- start xslt -->
