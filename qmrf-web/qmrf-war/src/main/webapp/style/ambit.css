@@ -190,14 +190,24 @@ A:hover {
 	FONT-FAMILY: Verdana, Arial
 }
 
-.floatright {
-	float: right;
-	height: 60px;
+.logo_top-left {
+	position: absolute;
+	top: 5px;
+	left: 1em;
+	border: 0;
 }
 
-.floatleft {
-	float: left;
-	height: 60px;
+.logo_header {
+	position: absolute;
+	top: -50px;
+	width: 100%;
+}
+
+.logo_top-right {
+	position: absolute;
+	top: 5px;
+	right: 1em;
+	border: 0;
 }
 
 ul#hnavlist {
