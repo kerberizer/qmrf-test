@@ -87,11 +87,12 @@ and idchemical=282
 	}
 
 	public DBAttachment getObject(ResultSet rs) throws AmbitException {
+		String url = "";
 		try {
 				String format = rs.getString("format");
 				String name = rs.getString("name");
 				String type = rs.getString("type");
-				String url = String.format("file:/%s/%s/%s.%s",dir,type,name.replace(" ","%20"),format);
+				url = String.format("file://%s/%s/%s.%s",dir,type,name.replace(" ","%20"),format);
 				DBAttachment attachment = new DBAttachment(new URL(url));
 				if ("pdf".equals(format)) attachment.setMediaType(MediaType.APPLICATION_PDF.toString());
 				else if ("sdf".equals(format)) attachment.setMediaType(ChemicalMediaType.CHEMICAL_MDLSDF.toString());
@@ -101,6 +102,7 @@ and idchemical=282
 				else if ("smi".equals(format)) attachment.setMediaType(ChemicalMediaType.CHEMICAL_SMILES.toString());
 				else if ("doc".equals(format)) attachment.setMediaType(MediaType.APPLICATION_WORD.toString());
 				else if ("docx".equals(format)) attachment.setMediaType(MediaType.APPLICATION_MSOFFICE_DOCX.toString());
+				else attachment.setMediaType(MediaType.APPLICATION_ALL.toString());
 				attachment.setID(rs.getInt("idattachment"));
 				attachment.setTitle(name);
 				attachment.setType(DBAttachment.attachment_type.valueOf(type));
@@ -108,8 +110,7 @@ and idchemical=282
 				return attachment;
 
 		} catch (Exception x) {
-			x.printStackTrace();
-			return null;
+			throw new AmbitException(String.format("Error reading %s", url),x);
 		}
 	}
 	@Override

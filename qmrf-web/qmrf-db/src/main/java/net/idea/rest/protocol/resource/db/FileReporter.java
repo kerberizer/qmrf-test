@@ -1,12 +1,10 @@
 package net.idea.rest.protocol.resource.db;
 
 import java.io.File;
-import java.net.URISyntaxException;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.r.QueryReporter;
-import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
 
 import org.restlet.data.MediaType;
@@ -38,12 +36,14 @@ public class FileReporter extends QueryReporter<DBAttachment, IQueryRetrieval<DB
 	public Object processItem(DBAttachment item) throws AmbitException {
 		try {
 			System.out.println(item.getResourceURL().getFile());
+			System.out.println(item.getResourceURL().toExternalForm());
+			System.out.println(item.getResourceURL().toURI());
 			File file = new File(item.getResourceURL().toURI());
 			setOutput(new FileRepresentation(file, new MediaType(item.getMediaType())));
 			return item;
-		} catch (URISyntaxException x) {
+		} catch (Exception x) {
 			x.printStackTrace();
-			throw new AmbitException(x);
+			throw new AmbitException(item.getResourceURL().toExternalForm(),x);
 		}
 	}
 
