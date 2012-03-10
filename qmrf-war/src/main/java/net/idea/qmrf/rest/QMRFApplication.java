@@ -90,7 +90,8 @@ public class QMRFApplication extends TaskApplication<String> {
 		getMetadataService().addExtension("inchi", ChemicalMediaType.CHEMICAL_INCHI, true);
 		getMetadataService().addExtension("cml", ChemicalMediaType.CHEMICAL_CML, true);
 		getMetadataService().addExtension("smiles", ChemicalMediaType.CHEMICAL_SMILES, true);
-
+		
+		if (isInsecure()) insecureConfig();
 		
 	}
 
@@ -362,42 +363,6 @@ public class QMRFApplication extends TaskApplication<String> {
 		 return guard;
     }
 
-   public static String printRoutes(Restlet re,String delimiter,StringWriter b) {
-	   		
-	 		while (re != null) {
-	 			
-	 			b.append(re.getClass().toString());
-	 			b.append('\t');
-	 			if (re instanceof Finder) {
-	 				b.append(((Finder)re).getTargetClass().getName());
-	 				b.append('\n');
-	 				re = null;
-	 			} else if (re instanceof Filter)
-		 			re = ((Filter)re).getNext();
-		 		else if (re instanceof Router) {
-		 			b.append('\n');
-		 			RouteList list = ((Router)re).getRoutes();
-		 		 	for (Route r : list) { 
-		 		 		
-		 		 		b.append(delimiter);
-		 		 		b.append(r.getTemplate().getPattern());
-		 		 		b.append('\t');
-		 		 		b.append(r.getTemplate().getVariableNames().toString());
-		 		 		printRoutes(r.getNext(),'\t'+delimiter+r.getTemplate().getPattern(),b);
-		 		 	}	
-		 		 	
-		 			break;
-		 		} else {
-		 			break;
-		 		}
-		 		
-		 		
-	 		}
-
-	 		return b.toString();
-
-	 	}
-   
    	protected boolean isProtected() {
 		try {
 
@@ -414,5 +379,7 @@ public class QMRFApplication extends TaskApplication<String> {
 		return false;
 	}   	
 
+   	//Allow connections to SSL sites without certs (similar to curl -k )
+   	
 }
 
