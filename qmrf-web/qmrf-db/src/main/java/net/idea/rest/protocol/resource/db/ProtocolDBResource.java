@@ -157,7 +157,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			editable = showCreateLink;
 			singleItem = true;
 			int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-			ReadProtocol query =  new ReadProtocol(id[0],id[1]);
+			ReadProtocol query =  new ReadProtocol(id[0],id[1],id[2]);
 			query.setShowUnpublished(true);
 			if (userID>0) query.setFieldname(new DBUser(userID));
 			return (Q)query;
@@ -370,7 +370,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} else if (Method.PUT.equals(method)) {
 			if (key!=null) {
 				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-				return (Q)new ReadProtocol(id[0],id[1]);
+				return (Q)new ReadProtocol(id[0],id[1],id[2]);
 			}
 		}
 		throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);		

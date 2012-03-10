@@ -739,15 +739,15 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 	};	
 	
 	public ReadProtocol(Integer id) {
-		this(id,null);
+		this(id,null,null);
 	}
-	public ReadProtocol(Integer id, Integer version) {
+	public ReadProtocol(Integer id, Integer version, Integer year) {
 		super();
-		setValue(id==null?null:new DBProtocol(id,version));
+		setValue(id==null?null:new DBProtocol(id,version,year));
 		setFieldname(null);
 	}
 	public ReadProtocol() {
-		this(null,null);
+		this(null,null,null);
 	}
 		
 

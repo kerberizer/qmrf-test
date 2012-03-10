@@ -64,7 +64,7 @@ public class ProtocolDocumentResource extends ProtocolDBResource<ReadProtocol> {
 			if (key==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			else {
 				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-				return new ReadProtocol(id[0],id[1]);
+				return new ReadProtocol(id[0],id[1],id[2]);
 			}
 		} catch (ResourceException x) {
 			throw x;

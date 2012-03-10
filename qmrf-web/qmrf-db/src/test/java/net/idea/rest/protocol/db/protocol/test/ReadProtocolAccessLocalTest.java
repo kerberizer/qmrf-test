@@ -19,7 +19,7 @@ public class ReadProtocolAccessLocalTest extends QueryTest<ReadProtocolAccessLoc
 	@Override
 	protected ReadProtocolAccessLocal createQuery() throws Exception {
 		ReadProtocolAccessLocal q = new ReadProtocolAccessLocal();
-		q.setFieldname(new DBProtocol(83,1));
+		q.setFieldname(new DBProtocol(83,1,2009));
 		q.setValue("JRC QSAR");
 		return q;
 	}

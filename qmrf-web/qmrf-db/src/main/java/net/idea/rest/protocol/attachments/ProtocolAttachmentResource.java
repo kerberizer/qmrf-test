@@ -105,7 +105,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 			if ((key==null)&&(attachment==null)) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			else if (key!=null) {
 				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-				protocol = new DBProtocol(id[0],id[1]);
+				protocol = new DBProtocol(id[0],id[1],id[2]);
 				protocol.setIdentifier(ReadProtocol.generateIdentifier(protocol));
 				
 				query = new ReadAttachment(protocol,getAttachmentDir());

@@ -1,7 +1,8 @@
 package net.idea.rest.protocol.db.attachments.test;
 
-import java.sql.ResultSet;
 import java.net.URL;
+import java.sql.ResultSet;
+
 import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
@@ -18,7 +19,7 @@ public class ReadAttachmentsTest  extends QueryTest<ReadAttachment> {
 
 	@Override
 	protected ReadAttachment createQuery() throws Exception {
-		DBProtocol protocol = new DBProtocol(83,1);
+		DBProtocol protocol = new DBProtocol(83,1,2009);
 		return new ReadAttachment(protocol,System.getProperty("java.io.tmpdir"));
 	}
 

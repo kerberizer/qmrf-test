@@ -102,7 +102,7 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 
 	@Override
 	protected IQueryUpdate<Object,DBProtocol> deleteQuery() throws Exception {
-		DBProtocol ref = new DBProtocol(2,1);
+		DBProtocol ref = new DBProtocol(2,1,2009);
 		return new DeleteProtocol(ref);
 	}
 
@@ -121,7 +121,7 @@ public final class Protocol_crud_test  extends CRUDTest<Object,DBProtocol>  {
 	 */
 	@Override
 	protected IQueryUpdate<Object,DBProtocol> updateQuery() throws Exception {
-		DBProtocol ref = new DBProtocol(2,1);
+		DBProtocol ref = new DBProtocol(2,1,2009);
 		ref.addAuthor(new DBUser(3));
 		ref.addAuthor(new DBUser(10));
 

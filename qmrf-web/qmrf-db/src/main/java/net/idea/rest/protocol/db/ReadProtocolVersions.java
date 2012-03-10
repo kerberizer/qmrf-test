@@ -12,8 +12,8 @@ public class ReadProtocolVersions extends ReadProtocol {
 	 * 
 	 */
 	private static final long serialVersionUID = -806521374100593321L;
-	public ReadProtocolVersions(Integer id) {
-		super(id,-1);
+	public ReadProtocolVersions(Integer id,Integer year) {
+		super(id,-1,year);
 	}
 	public String getSQL() throws AmbitException {
 		if (getValue()!=null) {

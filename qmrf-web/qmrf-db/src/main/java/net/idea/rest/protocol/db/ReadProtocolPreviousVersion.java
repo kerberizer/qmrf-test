@@ -13,8 +13,8 @@ public class ReadProtocolPreviousVersion extends ReadProtocol {
 	 */
 	private static final long serialVersionUID = -779583796759381542L;
 	
-	public ReadProtocolPreviousVersion(Integer id, Integer version) {
-		super(id,version);
+	public ReadProtocolPreviousVersion(Integer id, Integer version, Integer year) {
+		super(id,version,year);
 		setPage(0);
 		setPageSize(1);
 	}

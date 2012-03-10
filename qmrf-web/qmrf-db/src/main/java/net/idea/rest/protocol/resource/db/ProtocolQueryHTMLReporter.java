@@ -108,9 +108,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected void printTableHeader(Writer w) throws Exception {
 		w.write("<table width='100%'>\n");
 		if (collapsed)
-			w.write("<tr><th width='5%'>#</th><th width='10%'>QMRF number</th><th colspan='2'>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
+			w.write("<tr><th width='5%'>#</th><th width='15%'>QMRF number</th><th colspan='2'>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
 		else
-			w.write("<tr><th width='10%'></th><th colspan='2'></th><th width='10%'></th><th width='10%'></th></tr>");
+			w.write("<tr><th width='15%'></th><th colspan='2'></th><th width='10%'></th><th width='10%'></th></tr>");
 		
 	}
 	protected DOMSource getDOMSource(DBProtocol item) throws Exception {
