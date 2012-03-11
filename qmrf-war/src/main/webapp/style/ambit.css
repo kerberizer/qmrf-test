@@ -94,6 +94,7 @@ h1 {
 #menu {
 	position: relative;
 	padding: 10px;
+	z-index: 2;
 }
 
 ul#navmenu {
