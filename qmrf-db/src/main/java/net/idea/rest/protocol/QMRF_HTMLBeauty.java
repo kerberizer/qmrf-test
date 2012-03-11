@@ -52,7 +52,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	};
 	public QMRF_HTMLBeauty(String searchURI) {
 		super();
-		setSearchQuery(searchURI);
+		setSearchURI(searchURI);
 
 	};
 
