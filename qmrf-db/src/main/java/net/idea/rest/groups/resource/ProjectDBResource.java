@@ -10,6 +10,7 @@ import net.idea.rest.groups.db.ReadGroup;
 import net.idea.rest.groups.db.ReadProject;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserDBResource;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.db.DBConnection;
 
@@ -39,6 +40,11 @@ public class ProjectDBResource extends GroupDBResource<DBProject> {
 		return GroupType.PROJECT.toString();
 	}
 
+	
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		return new GroupHTMLBeauty(Resources.project);
+	}
 	@Override
 	protected CallableProtectedTask<String> createCallable(Method method,
 			Form form, DBProject item) throws ResourceException {

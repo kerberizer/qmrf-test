@@ -10,6 +10,7 @@ import net.idea.rest.groups.db.ReadGroup;
 import net.idea.rest.groups.db.ReadOrganisation;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserDBResource;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.db.DBConnection;
 
@@ -39,6 +40,10 @@ public class OrganisationDBResource extends GroupDBResource<DBOrganisation> {
 		return GroupType.ORGANISATION.toString();
 	}
 	
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		return new GroupHTMLBeauty(Resources.organisation);
+	}
 
 	@Override
 	protected CallableProtectedTask<String> createCallable(Method method,

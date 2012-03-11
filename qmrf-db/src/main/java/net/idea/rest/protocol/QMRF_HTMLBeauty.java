@@ -47,7 +47,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	}
 	
 	public QMRF_HTMLBeauty() {
+		this(Resources.protocol);
+
+	};
+	public QMRF_HTMLBeauty(String searchURI) {
 		super();
+		setSearchQuery(searchURI);
 
 	};
 
@@ -165,7 +170,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "			<li %s><a href='%s/endpoint'>Endpoints</a></li>\n"+
 			   "			<li %s><a href='%s/organisation?pagesize=10'>Organisations</a></li>\n"+
 			   "			<li %s><a href='%s/user?pagesize=10'>Users</a></li>\n"+
-			   "			<li ><a href='%s/%s'>%s</a></li>\n"+	
+			   "			<li %s><a href='%s/%s'>%s</a></li>\n"+	
 			   "			<li id='/help'><a href='http://qmrf.sf.net'>Help</a></li></ul>\n"+
 			   "		</div>\n"
 			   ,				  
@@ -179,6 +184,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   baseReference,
 			   getSearchURI().equals(Resources.user)?"class='selected'":"",
 			   baseReference,
+			   getSearchURI().equals(Resources.login)||getSearchURI().equals(Resources.myaccount)?"class='selected'":"",
 			   baseReference,
 			   request.getClientInfo().getUser()==null?"login":"myaccount",
 			   request.getClientInfo().getUser()==null?"Login":"My account"
