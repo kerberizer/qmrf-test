@@ -21,7 +21,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	 * 
 	 */
 	private static final long serialVersionUID = -5453025922862783009L;
-
+	protected String uploadUI;
 	public AttachmentHTMLReporter(DBProtocol protocol) {
 		this(protocol,null,true,null,null);
 	}
@@ -35,7 +35,11 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 			
 			((AttachmentURIReporter)uriReporter).setPrefix(String.format("%s/%s",Resources.protocol,qmrf));
 			setTitle(String.format("<a href='%s%s/%s'>%s</a> attachment",request.getRootRef(),Resources.protocol,qmrf,qmrf));
-		} else 		setTitle("Attachment");
+			uploadUI = String.format("<a href='%s%s%s/%s' target='upload'>%s</a>",request.getRootRef(),Resources.admin,"/new",qmrf,"Add attachment(s)");
+		} else {
+			setTitle("Attachment");
+			uploadUI = String.format("<a href='%s%s%s'  target='upload'>%s</a>",request.getRootRef(),Resources.admin,"/new","Add new QMRF");
+		}
 	}
 	@Override
 	protected void printTableHeader(Writer w) throws Exception {
@@ -87,7 +91,10 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	@Override
 	public void footer(Writer output, IQueryRetrieval<DBAttachment> query) {
 		try {
-			output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetContentFooter()); 
+			if (uploadUI!=null)	output.write(uploadUI);
+			output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetContentFooter());
+			
+					
 			//output.write(printWidgetFooter());
 		} catch (Exception x) {}
 		super.footer(output, query);
