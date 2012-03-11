@@ -2,6 +2,7 @@ package net.idea.rest.protocol.facet;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.facet.IFacet;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
@@ -60,7 +61,8 @@ public class ProtocolsByEndpointResource extends FacetResource<IQueryRetrieval<I
 	
 	@Override
 	protected QueryHTMLReporter getHTMLReporter(Request request) {
-
-		return new QMRFHTMLFacetReporter(request,true,null,getHTMLBeauty());
+		QMRF_HTMLBeauty hb = (QMRF_HTMLBeauty)getHTMLBeauty();
+		hb.setSearchURI(Resources.endpoint);
+		return new QMRFHTMLFacetReporter(request,true,null,hb);
 	}
 }
