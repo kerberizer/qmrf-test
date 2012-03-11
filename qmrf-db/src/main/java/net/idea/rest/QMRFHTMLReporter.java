@@ -96,7 +96,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		
 	}	
 	protected void printPageNavigator(Q query) throws Exception {
-		getOutput().write(QMRF_HTMLBeauty.getPaging(query.getPage(),0,2,query.getPageSize()));
+		getOutput().write(((QMRF_HTMLBeauty)htmlBeauty).getPaging(query.getPage(),0,2,query.getPageSize()));
 	}
 	protected boolean printAsTable() {
 		return collapsed;
@@ -117,8 +117,15 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	@Override
 	public void footer(Writer output, Q query) {
 		try {
-			if (printAsTable()) output.write("</table>\n");				
-			//output.write("</div>\n");
+			if (printAsTable()) output.write("</table>\n");	
+			if (record==(query.getPage()*query.getPageSize())) {
+				if (((QMRF_HTMLBeauty)htmlBeauty).getSearchQuery()==null) {
+					 output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidget("You haven't specified a QMRF document search query", "Please try the documents search menu."));
+				} else  
+					output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidget(
+							record==0?"Query returns no results":"No more results", 
+							"Please try a different query"));
+			}
 		} catch (Exception x) {}
 		if (!headless)
 			super.footer(output, query);

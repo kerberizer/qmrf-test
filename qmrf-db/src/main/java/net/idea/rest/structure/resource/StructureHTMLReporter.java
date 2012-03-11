@@ -36,6 +36,7 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 	public void processItem(Structure item, Writer output) {
 		try {
 			output.write(renderItem(item));
+			record++;
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
@@ -127,11 +128,23 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 	@Override
 	public void footer(Writer output, Iterator<Structure> query) {
 		try {
-			if (printAsTable()) output.write("</table>\n");				
+			if (printAsTable()) output.write("</table>\n");		
+
+			if (record==(((QMRF_HTMLBeauty)htmlBeauty).getPage()*((QMRF_HTMLBeauty)htmlBeauty).getPageSize())) {
+				if (((QMRF_HTMLBeauty)htmlBeauty).getSearchQuery()==null) {
+					 output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidget("You haven't specified a structure search query", "Please try the structure search menu."));
+				} else  
+					output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidget(
+							record==0?"Query returns no results":"No more results", 
+							"Please try a different query"));
+			}			
 		} catch (Exception x) {}
 		super.footer(output, query);
 	}
 	
+	protected void printStructureDiagramEditor() throws Exception {
+		
+	}
 	protected void printTableHeader(Writer output) throws Exception {
 		output.write("<table width='90%'>\n");
 
@@ -145,6 +158,10 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 
 class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	protected String queryService;
+
+	protected String threshold; 
+	protected SearchMode option;
+
 	public StructureHTMLBeauty(String queryService) {
 		super();
 		this.queryService = queryService;
@@ -160,14 +177,14 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	
 	@Override
 	protected String searchMenu(Reference baseReference, Form form) {
-		String searchQuery = form.getFirstValue(QueryResource.search_param);
+		searchQuery = form.getFirstValue(QueryResource.search_param);
 		
 		pageSize = 10;
 		try { pageSize = Long.parseLong(form.getFirstValue("pagesize")); if ((pageSize<1) && (pageSize>100)) pageSize=10;} catch (Exception x) { pageSize=10;}
 		page = 0;
 		try { page = Integer.parseInt(form.getFirstValue("page")); if ((page<0) || (page>100)) page=0;} catch (Exception x) { page=0;}
-		String threshold = form.getFirstValue("threshold");
-		SearchMode option = SearchMode.auto;
+		threshold = form.getFirstValue("threshold");
+		option = SearchMode.auto;
 		try {
 			option = SearchMode.valueOf(form.getFirstValue("option").toLowerCase());
 		} catch (Exception x) {
@@ -212,5 +229,23 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   pageSize,
 		   imgURI
 		   );
+	}
+	@Override
+	public String getPaging(int page,int start, int last, long pageSize) {
+		String url = "<li><a href='?page=%d&pagesize=%d&search=%s&option=%s&threshold=%s'>%s</a></li>";
+	    StringBuilder b = new StringBuilder(); 
+	    b.append("<div><ul id='hnavlist'>");
+	    b.append(String.format("<li><a href='#'>Pages:</a></li>"));
+	    b.append(String.format(url,0,pageSize,searchQuery==null?"":searchQuery,option==null?"":option.name(),threshold==null?"":threshold,"<<"));
+	    b.append(String.format(url,page==0?page:page-1,pageSize,searchQuery==null?"":searchQuery,option==null?"":option.name(),threshold==null?"":threshold,"Prev"));
+	    for (int i=start; i<= last; i++)
+	    	b.append(String.format(url,i,pageSize,//zero numbered pages
+	    			searchQuery==null?"":searchQuery,option==null?"":option.name(),threshold==null?"":threshold,
+	    			i+1
+	    			)); 
+	    b.append(String.format(url,page+1,pageSize,searchQuery==null?"":searchQuery,option==null?"":option.name(),threshold==null?"":threshold,"Next"));
+	   // b.append(String.format("<li><label name='pageSize' value='%d' size='4' title='Page size'></li>",pageSize));
+	    b.append("</ul></div><br>");
+	    return b.toString();
 	}
 }

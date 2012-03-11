@@ -8,7 +8,6 @@ import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
-import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 
 import org.restlet.Request;
@@ -20,8 +19,33 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	protected String searchURI = Resources.protocol;
 	protected String searchTitle = "QMRF documents search";
 	protected int page;
-	protected long pageSize;
+	public int getPage() {
+		return page;
+	}
+	public void setPage(int page) {
+		this.page = page;
+	}
 
+	protected long pageSize;
+	
+	public long getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(long pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	protected String searchQuery;
+	protected String condition;
+	protected SearchMode option;
+	
+	public String getSearchQuery() {
+		return searchQuery;
+	}
+	public void setSearchQuery(String searchQuery) {
+		this.searchQuery = searchQuery;
+	}
+	
 	public QMRF_HTMLBeauty() {
 		super();
 
@@ -195,7 +219,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		}	
 	
 		protected String searchMenu(Reference baseReference,Form form)  {
-			String searchQuery = "";
 			String pageSize = "10";
 			String structure = null;
 			try {
@@ -208,12 +231,18 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				searchQuery = "";
 				pageSize = "10";
 			}
-			SearchMode option = SearchMode.text;
+			option = SearchMode.text;
 			try {
 				option = SearchMode.valueOf(form.getFirstValue("option").toLowerCase());
 			} catch (Exception x) {
 				option = SearchMode.text;
 			}
+			condition = "";
+			try {
+				condition = form.getFirstValue("condition").toLowerCase();
+			} catch (Exception x) {
+				condition = "";
+			}			
 			String imgURI = (structure==null) || !structure.startsWith("http")?"":
 				String.format("<img border='0' title='Showing QMRF documents for this chemical' width='150' height='150' src='%s?media=%s&w=150&h=150'><br>Showing QMRF documents\n",
 						structure,Reference.encode("image/png"));
@@ -241,13 +270,13 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   getSearchTitle(),
 			   baseReference,
 			   getSearchURI(),
-			   searchQuery,
+			   searchQuery==null?"":searchQuery,
 			   SearchMode.text.equals(option)?"checked":"",
 			   SearchMode.endpoint.equals(option)?"checked":"",
 			   SearchMode.author.equals(option)?"checked":"",
 			   SearchMode.qmrfnumber.equals(option)?"checked":"",
 			   pageSize,
-			   structure,
+			   structure==null?"":structure,
 			   imgURI
 			   );
 		}
@@ -259,7 +288,27 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("<div id='content'>\n");
 		}
 		
-		public static String getPaging(int page,int start, int last, long pageSize) {
+		public String getPaging(int page,int start, int last, long pageSize) {
+			String search = searchQuery==null?"":Reference.encode(searchQuery);
+			String cond = condition==null?"":Reference.encode(condition);
+			String url = "<li><a href='?page=%d&pagesize=%d&search=%s&option=%s&condition=%s'>%s</a></li>";
+		    StringBuilder b = new StringBuilder(); 
+		    b.append("<div><ul id='hnavlist'>");
+		    b.append(String.format("<li><a href='#'>Pages:</a></li>"));
+		    b.append(String.format(url,0,pageSize,search,option==null?"":option.name(),cond,"<<"));
+		    b.append(String.format(url,page==0?page:page-1,pageSize,search,option==null?"":option.name(),cond,"Prev"));
+		    for (int i=start; i<= last; i++)
+		    	b.append(String.format(url,i,pageSize,//zero numbered pages
+		    			search,option==null?"":option.name(),cond,
+		    			i+1
+		    			)); 
+		    b.append(String.format(url,page+1,pageSize,search,option==null?"":option.name(),cond,"Next"));
+		    b.append("</ul></div><br>");
+		    return b.toString();
+		}
+		/*
+		
+		public String getPaging(int page,int start, int last, long pageSize) {
 			String url = "<li><a href='?page=%d&pagesize=%d'>%s</a></li>";
 		    StringBuilder b = new StringBuilder(); 
 		    b.append("<div><ul id='hnavlist'>");
@@ -273,7 +322,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		    b.append("</ul></div><br>");
 		    return b.toString();
 		}
-		
+		*/
 		public String getSearchURI() {
 			return searchURI;
 		}
