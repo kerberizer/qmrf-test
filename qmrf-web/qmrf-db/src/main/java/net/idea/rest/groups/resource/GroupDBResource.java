@@ -6,6 +6,7 @@ import net.idea.rest.FileResource;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.db.ReadGroup;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.attachments.AttachmentHTMLReporter;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserDBResource;
@@ -76,7 +77,7 @@ public abstract class GroupDBResource<G extends IDBGroup>	extends QMRFQueryResou
 	}
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
-		GroupHTMLReporter rep = new GroupHTMLReporter(getRequest(),!singleItem,editable) {
+		GroupHTMLReporter rep = new GroupHTMLReporter(getRequest(),!singleItem,editable,(QMRF_HTMLBeauty)getHTMLBeauty()) {
 			@Override
 			public String getBackLink() {
 				return getGroupBackLink();

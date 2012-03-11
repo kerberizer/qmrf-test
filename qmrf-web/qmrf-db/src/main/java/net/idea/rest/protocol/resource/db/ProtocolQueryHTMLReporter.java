@@ -51,7 +51,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		this(null,true,false,true,false);
 	}
 	public ProtocolQueryHTMLReporter(Request request, boolean collapsed,boolean editable,boolean paging, boolean details) {
-		super(request,collapsed,editable);
+		super(request,collapsed,null,null);
 		setTitle(!collapsed?null:"QMRF document");
 		groupReporter = new GroupQueryURIReporter<IQueryRetrieval<IDBGroup>>(request);
 		userReporter = new UserURIReporter<IQueryRetrieval<DBUser>>(request);

@@ -37,20 +37,12 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public QMRFHTMLReporter() {
-		this(null,true,null,null);
-	}
-	public QMRFHTMLReporter(Request request, boolean collapsed,ResourceDoc doc) {
-		this(request,collapsed,doc,null);
-	}
+
 	public QMRFHTMLReporter(Request request, boolean collapsed,ResourceDoc doc, HTMLBeauty htmlBeauty) {
-		super(request,collapsed,doc);
+		super(request,collapsed,doc,htmlBeauty);
+		this.htmlBeauty = htmlBeauty;
 	}
-	public QMRFHTMLReporter(Request request, boolean collapsed,boolean editable) {
-		super(request,collapsed,null);
-		this.editable = editable;
-	}
-	
+
 	protected void printUploadForm(Writer output, String uri, T item) {
 		
 	}

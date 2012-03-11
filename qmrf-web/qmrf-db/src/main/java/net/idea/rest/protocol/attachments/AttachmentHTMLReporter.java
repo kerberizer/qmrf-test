@@ -29,12 +29,10 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 		this(protocol,request,collapsed,doc,null);
 	}
 	public AttachmentHTMLReporter(DBProtocol protocol,Request request, boolean collapsed,ResourceDoc doc, HTMLBeauty htmlBeauty) {
-		this(protocol,request,collapsed,false);
-	}
-	public AttachmentHTMLReporter(DBProtocol protocol,Request request, boolean collapsed,boolean editable) {
-		super(request,collapsed,editable);
+		super(request,collapsed,doc,htmlBeauty);
 		if (protocol!=null) {
 			String qmrf = ReadProtocol.generateIdentifier(protocol);
+			
 			((AttachmentURIReporter)uriReporter).setPrefix(String.format("%s/%s",Resources.protocol,qmrf));
 			setTitle(String.format("<a href='%s%s/%s'>%s</a> attachment",request.getRootRef(),Resources.protocol,qmrf,qmrf));
 		} else 		setTitle("Attachment");

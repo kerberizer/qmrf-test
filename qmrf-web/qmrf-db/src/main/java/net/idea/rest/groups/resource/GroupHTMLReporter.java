@@ -7,6 +7,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.groups.DBGroup;
 import net.idea.rest.groups.IDBGroup;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.db.QueryURIReporter;
@@ -22,11 +23,10 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 	protected DBUser user = null;
 	
 	protected boolean editable = false;
-	public GroupHTMLReporter() {
-		this(null,true,false);
-	}
-	public GroupHTMLReporter(Request baseRef, boolean collapsed,boolean editable) {
-		super(baseRef,collapsed,editable);
+	
+	public GroupHTMLReporter(Request baseRef, boolean collapsed,boolean editable,QMRF_HTMLBeauty htmlBeauty) {
+		super(baseRef,collapsed,null,htmlBeauty);
+		this.editable = editable;
 	}
 	
 	
