@@ -159,37 +159,35 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			w.write(String.format("<div id='wrap'><div id='header'>%s</div>\n",header));
 			//menu
-			w.write(
-			   String.format(		
-			   "<div id='inner-wrap'>\n"+
-			   "  <div id='left'>\n"+
-			   "	<div id='menu'>\n"+
-			   "		<ul id='navmenu'>\n"+
-			   "			<li %s><a href='%s/protocol?pagesize=10'>Documents</a></li>\n"+
-			   "			<li %s><a href='%s/structure?pagesize=10'>Structures</a></li>\n"+
-			   "			<li %s><a href='%s/endpoint'>Endpoints</a></li>\n"+
-			   "			<li %s><a href='%s/organisation?pagesize=10'>Organisations</a></li>\n"+
-			   "			<li %s><a href='%s/user?pagesize=10'>Users</a></li>\n"+
-			   "			<li %s><a href='%s/%s'>%s</a></li>\n"+	
-			   "			<li id='/help'><a href='http://qmrf.sf.net'>Help</a></li></ul>\n"+
-			   "		</div>\n"
-			   ,				  
-			   getSearchURI().equals(Resources.protocol)?"class='selected'":"",
-			   baseReference,
-			   getSearchURI().equals(Resources.structure)?"class='selected'":"",
-			   baseReference,
-			   getSearchURI().equals(Resources.endpoint)?"class='selected'":"",
-			   baseReference,
-			   getSearchURI().equals(Resources.organisation)?"class='selected'":"",
-			   baseReference,
-			   getSearchURI().equals(Resources.user)?"class='selected'":"",
-			   baseReference,
-			   getSearchURI().equals(Resources.login)||getSearchURI().equals(Resources.myaccount)?"class='selected'":"",
-			   baseReference,
-			   request.getClientInfo().getUser()==null?"login":"myaccount",
-			   request.getClientInfo().getUser()==null?"Login":"My account"
-			   )
-			   );
+			String onMouseOver = "onmouseover='javascript:$(this).effect( \"highlight\", 500 );'";
+			w.write(String.format(		
+				"<div id='inner-wrap'>\n"+
+				"\t<div id='left'>\n"+
+				"\t\t<div id='menu'>\n"+
+				"\t\t\t<ul id='navmenu'>\n"+
+				"\t\t\t\t<li><a %s href='%s/protocol?pagesize=10'" + onMouseOver + ">Documents</a></li>\n"+
+				"\t\t\t\t<li><a %s href='%s/structure?pagesize=10'" + onMouseOver + ">Structures</a></li>\n"+
+				"\t\t\t\t<li><a %s href='%s/endpoint'" + onMouseOver + ">Endpoints</a></li>\n"+
+				"\t\t\t\t<li><a %s href='%s/organisation?pagesize=10'" + onMouseOver + ">Organisations</a></li>\n"+
+				"\t\t\t\t<li><a %s href='%s/user?pagesize=10'" + onMouseOver + ">Users</a></li>\n"+
+				"\t\t\t\t<li><a href='%s/%s'" + onMouseOver + ">%s</a></li>\n"+	
+				"\t\t\t\t<li id='/help'><a href='http://qmrf.sf.net'" + onMouseOver + ">Help</a></li>"+
+				"\t\t\t</ul>\n"+
+				"\t\t</div>\n",				  
+				getSearchURI().equals(Resources.protocol)?"class='selected'":"",
+				baseReference,
+				getSearchURI().equals(Resources.structure)?"class='selected'":"",
+				baseReference,
+				getSearchURI().equals(Resources.endpoint)?"class='selected'":"",
+				baseReference,
+				getSearchURI().equals(Resources.organisation)?"class='selected'":"",
+				baseReference,
+				getSearchURI().equals(Resources.user)?"class='selected'":"",
+				baseReference,
+				baseReference,
+				request.getClientInfo().getUser()==null?"login":"myaccount",
+				request.getClientInfo().getUser()==null?"Login":"My account"
+			));
 				
 			//followed by the search form
 			
