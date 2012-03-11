@@ -11,6 +11,7 @@ import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
 import net.idea.restnet.c.RepresentationConvertor;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.db.DBConnection;
@@ -40,6 +41,7 @@ import org.restlet.resource.ResourceException;
  * @param <Q>
  */
 public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
+		
 	public static final String resourceKey = "user";
 	
 	protected boolean singleItem = false;
@@ -88,7 +90,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless)
 			throws ResourceException {
-		UserHTMLReporter rep = new UserHTMLReporter(getRequest(),!singleItem,editable);
+		UserHTMLReporter rep = new UserHTMLReporter(getRequest(),!singleItem,editable,(UserHTMLBeauty)getHTMLBeauty());
 		rep.setHeadless(headless);
 		return rep;
 	}
@@ -103,6 +105,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 					user.setLastname(s);
 					user.setFirstname(s);
 					query.setValue(user);
+
 				} else if ("username".equals(search_name)) { 
 					DBUser user = new DBUser();
 					query.setCondition(EQCondition.getInstance());
@@ -205,5 +208,10 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	protected boolean isAllowedMediaType(MediaType mediaType)
 			throws ResourceException {
 		return MediaType.APPLICATION_WWW_FORM.equals(mediaType);
+	}
+	
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		return new UserHTMLBeauty();
 	}
 }
