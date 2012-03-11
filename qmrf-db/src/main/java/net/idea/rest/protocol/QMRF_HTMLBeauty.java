@@ -394,7 +394,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 				return printWidget(
 							attachments?String.format("Add attachment(s) to <a href='%s' target='_blank'>%s</a>",protocol.getResourceURL(),protocol.getIdentifier()):
-							String.format("Add new %s %s",getTitle(),uri.toString().contains("versions")?"version":""),
+							String.format("Add new %s %s","QMRF document",uri.toString().contains("versions")?"version":""),
 							content.toString(),
 							"");
 
