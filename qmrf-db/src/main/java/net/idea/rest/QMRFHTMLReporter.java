@@ -100,7 +100,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 			if (printAsTable()) 
 				printTable(output, uri,protocol);
 			else printForm(output,uri,protocol,false);
-
+			record++;
 		} catch (Exception x) {
 			
 		}

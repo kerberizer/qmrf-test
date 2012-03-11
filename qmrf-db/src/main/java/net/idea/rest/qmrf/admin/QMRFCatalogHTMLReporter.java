@@ -81,11 +81,10 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	@Override
 	public void processItem(T item, Writer output) {
 		try {
-			record++;
 			output.write(
 			((QMRF_HTMLBeauty)htmlBeauty).printWidget(renderItemTitle(item), renderItem(item))
 			);
-
+			record++;
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
