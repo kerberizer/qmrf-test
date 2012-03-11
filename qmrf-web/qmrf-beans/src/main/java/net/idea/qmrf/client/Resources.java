@@ -12,6 +12,8 @@ public class Resources {
 	public static final String authors = "/authors";
 	public static final String document = "/document";
 	public static final String attachment = "/attachment";
+	public static final String login = "/login";
+	public static final String myaccount = "/myaccount";
 	/*
 	public static final String data_training = "/data_training";
 	public static final String data_validation = "/data_validation";
