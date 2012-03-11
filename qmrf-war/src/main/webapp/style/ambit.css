@@ -150,6 +150,12 @@ ul#navmenu {
 	color: white;
 	background-color: #109DFF;
 }
+#navmenu li a.selected {
+	color: white;
+	background-color: #109DFF;
+	display: block;
+	font-weight: 900;
+}
 
 #navmenu li input, #navmenu li form, #navmenu li#createbutton {
 	width: 100%;
