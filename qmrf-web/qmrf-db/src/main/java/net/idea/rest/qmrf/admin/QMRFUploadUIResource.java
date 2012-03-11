@@ -33,7 +33,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 	private static final long serialVersionUID = 1658864353613787327L;
 	protected List<DBProtocol> items = new ArrayList<DBProtocol>();
 	public static final String resource = "new";
-	protected Object key = null;
+	protected DBProtocol protocol = null;
 	
 	public QMRFUploadUIResource() {
 		super();
@@ -42,14 +42,17 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 	protected Iterator<DBProtocol> createQuery(Context context,
 			Request request, Response response) throws ResourceException {
 		try { 
-			key = request.getAttributes().get(FileResource.resourceKey);
+			Object key = request.getAttributes().get(FileResource.resourceKey);
 			if (key!=null)  
 			try { //add attachments to a protocol
 				int ids[] = ReadProtocol.parseIdentifier(key.toString());
-				
+				protocol = new DBProtocol(ids[0],ids[1],ids[2]);
+				protocol.setIdentifier(ReadProtocol.generateIdentifier(protocol));
+				protocol.setResourceURL(new URL(String.format("%s%s/%s", getRequest().getRootRef(),Resources.protocol, protocol.getIdentifier())));
 			} catch (Exception x) {
 				throw new InvalidQMRFNumberException(key.toString());
 			}
+			else protocol=null;
 			//else //new protocol
 		} catch (Exception x) {}
 		
@@ -60,24 +63,27 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 			@Override
 			public void header(Writer w, Iterator<DBProtocol> query) {
 				super.header(w, query);
-				String uri = key==null?String.format("%s%s",getRequest().getRootRef().toString(), Resources.protocol):
-					String.format("%s%s/%s%s",getRequest().getRootRef().toString(), Resources.protocol,key,Resources.attachment);
-				DBProtocol protocol = new DBProtocol();
+				String uri = protocol==null?String.format("%s%s",getRequest().getRootRef().toString(), Resources.protocol):
+					String.format("%s/%s",protocol.getResourceURL(),Resources.attachment);
+				boolean attachments = true;
 				try {
-					protocol = new DBProtocol();
-					protocol.setPublished(true);
-					protocol.setOrganisation(new Organisation(new URL(String.format("%s%s",getRequest().getRootRef(),
-					((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_organisation.name())))));
-					protocol.setProject(new Project(new URL(String.format("%s%s",getRequest().getRootRef(),
-							((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_project.name())))));
-					protocol.setOwner(new User(new URL(String.format("%s%s",getRequest().getRootRef(),
-							((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_owner.name())))));					
+					if (protocol==null) {
+						attachments = false;
+						protocol= new DBProtocol();
+						protocol.setPublished(true);
+						protocol.setOrganisation(new Organisation(new URL(String.format("%s%s",getRequest().getRootRef(),
+						((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_organisation.name())))));
+						protocol.setProject(new Project(new URL(String.format("%s%s",getRequest().getRootRef(),
+								((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_project.name())))));
+						protocol.setOwner(new User(new URL(String.format("%s%s",getRequest().getRootRef(),
+								((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_default_owner.name())))));	
+					}
 				} catch (Exception x) {
 					logger.debug(x);
 					protocol = null;
 				}
 				try {
-					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,key!=null));
+					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,attachments));
 				} catch (Exception x) {
 					x.printStackTrace();
 				}
