@@ -89,6 +89,7 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			output.write("<tr bgcolor='FFFFFF'>\n");	
 			output.write(String.format("<td>%s</td>",renderItem(user)));			
 			output.write("</tr>\n");
+			record++;
 		} catch (Exception x) {
 			x.printStackTrace();
 		} 

@@ -54,7 +54,7 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 			if (collapsed) 
 				printTable(output, uri,protocol);
 			else  printTable(output, uri,protocol);// printForm(output,uri,protocol,false);
-
+			record++;
 		} catch (Exception x) {
 			
 		}
