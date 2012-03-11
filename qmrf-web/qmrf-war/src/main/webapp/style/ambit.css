@@ -94,7 +94,6 @@ h1 {
 #menu {
 	position: relative;
 	padding: 10px;
-	z-index: 2;
 }
 
 ul#navmenu {
@@ -202,7 +201,6 @@ A:hover {
 	position: absolute;
 	top: -55px;
 	width: 100%;
-	z-index: 1;
 }
 
 .logo_top-right {
@@ -283,8 +281,15 @@ table {
 	text-align: justify;
 }
 
+/* Fix table headers not left-aligned on IE */
 th {
 	text-align: left;
+}
+
+/* Fix the header logo being ugly overlapped by any tables below. For unknown reason, while the tables and the cells themselves
+   are transparent, the table rows have implicit white background. */
+tr {
+	background-color: transparent;
 }
 
 label {
