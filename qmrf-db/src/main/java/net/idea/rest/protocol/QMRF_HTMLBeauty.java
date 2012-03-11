@@ -71,6 +71,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			w.write(String.format("<a href='%s%s'>Users</a>&nbsp;",baseReference,Resources.user));
 */
+			
+			
 		}
 	
 		@Override
@@ -80,7 +82,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		@Override
 		public void writeTopHeader(Writer w,String title,Request request,String meta,ResourceDoc doc) throws IOException {
 			Reference baseReference = request==null?null:request.getRootRef();
-
+			
 			w.write(
 					"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n"
 				);
@@ -149,6 +151,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			header.append(String.format("<a href='#'><img class='logo_top-right' src='%s/images/JRC_logo.jpg' alt='JRC logo'></a>\n",
 					baseReference));
 			
+			
 			w.write(String.format("<div id='wrap'><div id='header'>%s</div>\n",header));
 			//menu
 			w.write(
@@ -157,19 +160,28 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "  <div id='left'>\n"+
 			   "	<div id='menu'>\n"+
 			   "		<ul id='navmenu'>\n"+
-			   "			<li><a href='%s/protocol?pagesize=10'>Documents</a></li>\n"+
-			   "			<li><a href='%s/structure?pagesize=10'>Structures</a></li>\n"+
-			   "			<li><a href='%s/endpoint'>Endpoints</a></li>\n"+
-			   "			<li><a href='%s/organisation?pagesize=10'>Organisations</a></li>\n"+
-			   "			<li><a href='%s/user?pagesize=10'>Users</a></li>\n"+			   
-			   "			<li id='/help'><a href='/help'>Help</a></li></ul>\n"+
+			   "			<li %s><a href='%s/protocol?pagesize=10'>Documents</a></li>\n"+
+			   "			<li %s><a href='%s/structure?pagesize=10'>Structures</a></li>\n"+
+			   "			<li %s><a href='%s/endpoint'>Endpoints</a></li>\n"+
+			   "			<li %s><a href='%s/organisation?pagesize=10'>Organisations</a></li>\n"+
+			   "			<li %s><a href='%s/user?pagesize=10'>Users</a></li>\n"+
+			   "			<li ><a href='%s/%s'>%s</a></li>\n"+	
+			   "			<li id='/help'><a href='http://qmrf.sf.net'>Help</a></li></ul>\n"+
 			   "		</div>\n"
-			   ,				   
+			   ,				  
+			   getSearchURI().equals(Resources.protocol)?"class='selected'":"",
+			   baseReference,
+			   getSearchURI().equals(Resources.structure)?"class='selected'":"",
+			   baseReference,
+			   getSearchURI().equals(Resources.endpoint)?"class='selected'":"",
+			   baseReference,
+			   getSearchURI().equals(Resources.organisation)?"class='selected'":"",
+			   baseReference,
+			   getSearchURI().equals(Resources.user)?"class='selected'":"",
 			   baseReference,
 			   baseReference,
-			   baseReference,
-			   baseReference,
-			   baseReference
+			   request.getClientInfo().getUser()==null?"login":"myaccount",
+			   request.getClientInfo().getUser()==null?"Login":"My account"
 			   )
 			   );
 				
