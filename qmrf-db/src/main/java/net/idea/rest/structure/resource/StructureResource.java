@@ -143,7 +143,8 @@ public class StructureResource extends CatalogResource<Structure>{
 						records.add(struc);
 					}
 				} catch (Throwable x) {
-					throw createException(Status.SERVER_ERROR_BAD_GATEWAY, search, option.toString(), ref.toString(), x);					
+
+					throw createException(Status.SERVER_ERROR_BAD_GATEWAY, search, option, ref.toString(), x);					
 				} finally {
 					i.close();
 				}
@@ -151,17 +152,35 @@ public class StructureResource extends CatalogResource<Structure>{
 			} catch (ResourceException x) {
 				throw x;
 			} catch (Exception x) {
-				throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option.toString(), ref.toString(), x);				
+				throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option, ref.toString(), x);				
 			}
 		} catch (Exception x) {
-			throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option.toString(), ref.toString(), x);
+			throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option, ref.toString(), x);
 		}
 	}
 	
-	protected ResourceException createException(Status status,String search,String option,String ref, Throwable x) {
+	protected ResourceException createException(Status status,String search,SearchMode option,String ref, Throwable x) {
+		String message = String.format("Search query '%s' failed",search);
+		switch (option) {
+		case similarity: {
+			message = String.format("SMILES or InChI expected instead of '%s'",search);
+			break;
+		}
+		case smarts: {
+			message = String.format("SMARTS expected instead of '%s'",search);
+			break;
+		}
+		case dataset: {
+			if (search==null)
+				message = String.format("Dataset name expected");
+			else
+				message = String.format("Dataset name expected instead of '%s'",search);
+			break;
+		}			
+		}		
 		throw new ResourceException(status.getCode(),
-				String.format("Search query '%s' failed",search),
-				String.format("Error when contacting (%s) structure search service at %s",option,ref),
+				message,
+				String.format("Error when contacting (%s) structure search service at %s",option.toString(),ref),
 				"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html",
 				x);	
 	}

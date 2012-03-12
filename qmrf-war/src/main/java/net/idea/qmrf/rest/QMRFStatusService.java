@@ -69,22 +69,25 @@ public class QMRFStatusService extends StatusService {
 				
 				String detailsDiv = details==null?"":
 					String.format("<a href=\"javascript:toggleDiv('%s');\" style=\"background-color: #fff; padding: 5px 10px;\">Details</a>\n",
-							"Details");
+							"details");
 						
+				String errName = new Status(status.getCode()).getName();
+				if (Status.CLIENT_ERROR_BAD_REQUEST.equals(status)) errName = "Invalid input";
+				
 				w.write(
 						String.format(		
 						"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
-						"<div class=\"ui-widget-header ui-corner-top\"><p>Error code <a href='%s' target='help'>%d</a>&nbsp;%s</p></div>\n"+
+						"<div class=\"ui-widget-header ui-corner-top\"><p>Error <a href='%s' target='help'>%s</a></p></div>\n"+
 						"<div class=\"ui-widget-content ui-corner-bottom \">\n"+
-						"<p>%s</p><p>"+
+						"<p><label title='%s'>%s</label></p><p>"+
 						"%s\n"+	
 						"</p>\n"+
 						"<div class=\"ui-widget\" style='display: none;' id='details'><p>%s</p></div>\n"+
 						"</div></div>\n",
 						status.getUri(),
-						status.getCode(),
-						status.getName(),
+						errName,
 						status.getDescription(),
+						status.getName(),
 						detailsDiv,
 						details==null?"":details
 						)
