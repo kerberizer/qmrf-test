@@ -235,6 +235,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			//footer
 			output.write("\n<div id='footer'>");
 			output.write("Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC"); 
+
 			output.write("</div>\n");
 			output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
 			//div id=wrap
@@ -438,45 +439,4 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 		}	
 		
-		public String printWidgetHeader(String header) {
-			return	String.format(
-					"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
-					"<div class=\"ui-widget-header ui-corner-top\"><p>%s</p></div>\n",header);
-		}
-		public String printWidgetFooter() {
-			return	String.format("</div>\n");
-		}
-		public String printWidgetContentHeader(String style) {
-			return	String.format("<div class=\"ui-widget-content ui-corner-bottom %s\">\n",style);
-		}
-		public String printWidgetContentFooter() {
-			return	String.format("</div>\n");
-		}	
-		public String printWidgetContentContent(String content) {
-			return
-			String.format("<p>%s</p>\n",content);
-		}	
-		public String printWidgetContent(String content,String style) {
-			return String.format("%s\n%s\n%s",
-					printWidgetContentHeader(style),
-					printWidgetContentContent(content),
-					printWidgetContentFooter());
-		}
-		
-		
-		public String printWidget(String header,String content,String style) {
-			return String.format("%s\n%s\n%s",
-					printWidgetHeader(header),
-					printWidgetContent(content,style),
-					printWidgetFooter());
-
-		}
-		
-		public String printWidget(String header,String content) {
-			return String.format("%s\n%s\n%s",
-					printWidgetHeader(header),
-					printWidgetContent(content,""),
-					printWidgetFooter());
-
-		}		
 }
