@@ -1,9 +1,9 @@
 package net.idea.qmrf.rest;
 
+import java.io.StringWriter;
+
 import net.idea.modbcum.i.config.Preferences;
-import net.idea.qmrf.aa.ProtocolAuthorizer;
-import net.idea.qmrf.aa.QMRFLoginResource;
-import net.idea.qmrf.aa.UserAuthorizer;
+import net.idea.qmrf.aa.QMRFLoginFormResource;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.task.QMRFAdminResource;
 import net.idea.qmrf.task.QMRFAdminRouter;
@@ -12,23 +12,19 @@ import net.idea.qmrf.task.QMRFTaskRouter;
 import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
-import net.idea.rest.protocol.attachments.ProtocolAttachmentResource;
 import net.idea.rest.protocol.facet.ProtocolsByEndpointResource;
 import net.idea.rest.structure.resource.StructureResource;
 import net.idea.rest.user.UserRouter;
 import net.idea.rest.user.resource.MyAccountResource;
-import net.idea.restnet.aa.opensso.OpenSSOAuthenticator;
-import net.idea.restnet.aa.opensso.OpenSSOAuthorizer;
-import net.idea.restnet.aa.opensso.OpenSSOVerifierSetUser;
-import net.idea.restnet.aa.opensso.policy.CallablePolicyCreator;
-import net.idea.restnet.aa.opensso.policy.PolicyProtectedTask;
+import net.idea.restnet.aa.cookie.CookieAuthenticator;
+import net.idea.restnet.aa.local.UserLoginPOSTResource;
+import net.idea.restnet.aa.local.UserLogoutPOSTResource;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.routers.MyRouter;
-import net.idea.restnet.c.task.TaskStorage;
-import net.idea.restnet.i.task.ICallableTask;
-import net.idea.restnet.i.task.Task;
-import net.idea.restnet.i.task.TaskResult;
+import net.idea.restnet.db.aalocal.DBRole;
+import net.idea.restnet.db.aalocal.DBVerifier;
+import net.idea.restnet.db.aalocal.DbEnroller;
 
 import org.restlet.Component;
 import org.restlet.Context;
@@ -36,38 +32,37 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.Server;
-import org.restlet.data.ChallengeScheme;
-import org.restlet.data.ClientInfo;
+import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Filter;
 import org.restlet.routing.Router;
 import org.restlet.routing.Template;
-import org.restlet.security.ChallengeAuthenticator;
-import org.restlet.security.Enroler;
-import org.restlet.security.Verifier;
+import org.restlet.security.Authorizer;
+import org.restlet.security.RoleAuthorizer;
+import org.restlet.security.SecretVerifier;
+import org.restlet.security.User;
 import org.restlet.service.TunnelService;
 
 /**
- * (Q)SAR Model Reporting Format web services / web application 
+ * (Q)SAR Model Reporting Format web services / web application
+ * 
  * @author nina
- *
+ * 
  */
 public class QMRFApplication extends TaskApplication<String> {
 
-	protected boolean aaenabled = false;
-	
 	public QMRFApplication() {
 		super();
 
 		setName("(Q)SAR Model Reporting Format Inventory");
 		setDescription("(Q)SAR Model Reporting Format Inventory");
 		setOwner("Institute for Health and Consumer Protection, JRC");
-		setAuthor("Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC");		
+		setAuthor("Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC");
 		setConfigFile("config/qmrf.properties");
 
 		setStatusService(new QMRFStatusService());
-		setTunnelService(new TunnelService(true,true) {
+		setTunnelService(new TunnelService(true, true) {
 			@Override
 			public Filter createInboundFilter(Context context) {
 				return new QMRFTunnelFilter(context);
@@ -77,304 +72,248 @@ public class QMRFApplication extends TaskApplication<String> {
 		getTunnelService().setExtensionsTunnel(false);
 		getTunnelService().setMethodTunnel(true);
 
-		Preferences.setProperty(Preferences.MAXRECORDS,"0");
-		
+		Preferences.setProperty(Preferences.MAXRECORDS, "0");
+
 		getMetadataService().setEnabled(true);
-		getMetadataService().addExtension("sdf", ChemicalMediaType.CHEMICAL_MDLSDF, true);
-		getMetadataService().addExtension("mol", ChemicalMediaType.CHEMICAL_MDLMOL, true);
-		getMetadataService().addExtension("inchi", ChemicalMediaType.CHEMICAL_INCHI, true);
-		getMetadataService().addExtension("cml", ChemicalMediaType.CHEMICAL_CML, true);
-		getMetadataService().addExtension("smiles", ChemicalMediaType.CHEMICAL_SMILES, true);
-		
-		if (isInsecure()) insecureConfig();
-		
+		getMetadataService().addExtension("sdf",
+				ChemicalMediaType.CHEMICAL_MDLSDF, true);
+		getMetadataService().addExtension("mol",
+				ChemicalMediaType.CHEMICAL_MDLMOL, true);
+		getMetadataService().addExtension("inchi",
+				ChemicalMediaType.CHEMICAL_INCHI, true);
+		getMetadataService().addExtension("cml",
+				ChemicalMediaType.CHEMICAL_CML, true);
+		getMetadataService().addExtension("smiles",
+				ChemicalMediaType.CHEMICAL_SMILES, true);
+
+		if (isInsecure())
+			insecureConfig();
+
 	}
-
-
 
 	@Override
 	public Restlet createInboundRoot() {
-		aaenabled = isProtected();
+
 		Router router = new MyRouter(this.getContext());
-		//router.attach("/help", AmbitResource.class);
-		/**
-		 * OpenSSO login / logout
-		 * Sets a cookie with OpenSSO token
-		 */
-		//TODO - only if Config.qmrf_opensso_protected
-		Restlet login = createOpenSSOLoginRouter();
-		router.attach("/login",login );
-		
-		//alternative login/logout for local users . TODO refactor to use cookies as in /opentoxuser
-       //router.attach(SwitchUserResource.resource,createGuardGuest(SwitchUserResource.class));
 
-		/**		 *  /admin 
-		 *  Various admin tasks, like database creation
-		 */
-		//TODO set a filter, allowing only admin users, if not  Config.qmrf_opensso_protected
-		router.attach(String.format("/%s",QMRFAdminResource.resource),createAdminRouter());
-				//createProtectedResource(createAdminRouter(),"admin"));
-
-		/**  /task  */
-		router.attach(QMRFTaskResource.resource, createOpenSSOVerifiedResource(new QMRFTaskRouter(getContext())));
-
+		/** /task */
+		router.attach(QMRFTaskResource.resource, new QMRFTaskRouter(
+				getContext()));
+		/** QMRF documents **/
 		ProtocolRouter protocols = new ProtocolRouter(getContext());
-		/**  /protocol  */
 		OrganisationRouter org_router = new OrganisationRouter(getContext());
 		ProjectRouter projectRouter = new ProjectRouter(getContext());
 		Restlet protocolRouter;
-		if (aaenabled) {
-			protocolRouter = createProtectedResource(protocols,"protocol",new ProtocolAuthorizer());
-			router.attach(Resources.protocol, protocolRouter );
-			router.attach(Resources.project, createProtectedResource(projectRouter,"project",true));
-			router.attach(Resources.organisation, createProtectedResource(org_router,"organisation",true));
-			router.attach(Resources.user, createProtectedResource(
-							new UserRouter(getContext(),protocols,org_router,projectRouter),"user",new UserAuthorizer()));
-		} else {
-			protocolRouter = createOpenSSOVerifiedResource(protocols);
-			router.attach(Resources.protocol, protocols);
-			router.attach(Resources.project, createOpenSSOVerifiedResource(projectRouter));
-			router.attach(Resources.organisation, createOpenSSOVerifiedResource(org_router));
-			router.attach(Resources.user, createOpenSSOVerifiedResource(new UserRouter(getContext(),protocols,org_router,projectRouter)));
-		}
-		router.attach("/myaccount", createOpenSSOVerifiedResource(MyAccountResource.class));	
+
+		protocolRouter = protocols; // createProtectedResource(protocols,"protocol",new
+									// ProtocolAuthorizer());
+		router.attach(Resources.protocol, protocolRouter);
+		router.attach(Resources.project, projectRouter);
+		router.attach(Resources.organisation, org_router);
+		router.attach(Resources.user, new UserRouter(getContext(), protocols,
+				org_router, projectRouter));
+
+		
 		router.attach("/", protocolRouter);
 		router.attach("", protocolRouter);
-		
-		router.attach(String.format("%s/{%s}",Resources.attachment,ProtocolAttachmentResource.resourceKey), ProtocolAttachmentResource.class);
+
 		router.attach(Resources.endpoint, ProtocolsByEndpointResource.class);
 		router.attach(Resources.structure, StructureResource.class);
-	
+
 		/**
 		 * Images, styles, favicons, applets
 		 */
 		attachStaticResources(router);
 
-	    router.setDefaultMatchingMode(Template.MODE_STARTS_WITH); 
-	    router.setRoutingMode(Router.MODE_BEST_MATCH); 
-	    /*
-	    StringWriter w = new StringWriter();
-	    QMRFApplication.printRoutes(router,">",w);
-	    System.out.println(w.toString());
-		*/
+		Filter auth = createCookieAuthenticator(true);
+		auth.setNext(QMRFLoginFormResource.class);
+
+		router.attach(String.format("/%s", QMRFLoginFormResource.resource),auth);
+		auth = createCookieAuthenticator(true);
+		auth.setNext(MyAccountResource.class);
+		router.attach("/myaccount",auth);
+		
+		Router protectedRouter = new MyRouter(getContext());
+		protectedRouter.attach("/roles", QMRFLoginFormResource.class);
+		protectedRouter.attach(String.format("/%s", UserLoginPOSTResource.resource),UserLoginPOSTResource.class);
+		protectedRouter.attach(String.format("/%s", UserLogoutPOSTResource.resource),UserLogoutPOSTResource.class);
+
+		auth = createCookieAuthenticator(false);
+		auth.setNext(protectedRouter);
+		router.attach("/protected", auth);
+		router.attach(String.format("/%s", QMRFAdminResource.resource),
+				createAdminRouter());
+	
+		router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
+		router.setRoutingMode(Router.MODE_BEST_MATCH);
+
+		StringWriter w = new StringWriter();
+		QMRFApplication.printRoutes(router, ">", w);
+		System.out.println(w.toString());
+
 		return router;
 	}
-	protected Restlet createOpenSSOVerifiedResource(Restlet next) {
-		Filter userAuthn = new OpenSSOAuthenticator(getContext(),!aaenabled,"opentox.org",new OpenSSOVerifierSetUser(false));
-		userAuthn.setNext(next);
-		return userAuthn;
-	}
-	protected Restlet createOpenSSOVerifiedResource(Class clazz) {
-		Filter userAuthn = new OpenSSOAuthenticator(getContext(),!aaenabled,"opentox.org",new OpenSSOVerifierSetUser(false));
-		userAuthn.setNext(clazz);
-		return userAuthn;
-	}
-	protected Restlet createOpenSSOLoginRouter() {
-		return createOpenSSOVerifiedResource(QMRFLoginResource.class);
-	}
 
-	protected Restlet createProtectedResource(Restlet router) {
-		return createProtectedResource(router,null);
-	}
-	protected Restlet createProtectedResource(Restlet router,String prefix) {
-		return createProtectedResource(router, prefix,true);
-	}
-	protected Restlet createProtectedResource(Restlet router,String prefix,boolean authzEnabled) {
-		return createProtectedResource(router,prefix, authzEnabled?new OpenSSOAuthorizer():null);
-	}
-	protected Restlet createProtectedResource(Restlet router,String prefix,OpenSSOAuthorizer authz) {
-		Filter authN = new OpenSSOAuthenticator(getContext(),false,"opentox.org",new OpenSSOVerifierSetUser(false));
-		if (authz!=null) {
-			authz.setPrefix(prefix);
-			authN.setNext(authz);
-			authz.setNext(router);
-		} else {
-			authN.setNext(router);
-		}
-		return authN;
-	}
-	
-
-	/**
-	 * Check for OpenSSO token and set the user, if available
-	 * but don't verify the policy
-	 * @return
+	/*
+	 * protected Restlet createLocalAAVerifiedResource(Class clazz) {
+	 * 
+	 * Filter userAuthn = new
+	 * ChallengeAuthenticatorDBLocal(getContext(),true,"conf/qmrf-db.pref"
+	 * ,"tomcat_users"); userAuthn.setNext(clazz); return userAuthn; }
 	 */
-	protected Restlet createAuthenticatedOpenResource(Router router) {
-		Filter algAuthn = new OpenSSOAuthenticator(getContext(),false,"opentox.org",new OpenSSOVerifierSetUser(false));
-		algAuthn.setNext(router);
-		return algAuthn;
-	}
+	protected Filter createCookieAuthenticator(boolean optional) {
+		CookieAuthenticator cookieAuth 	= new CookieAuthenticator(getContext(),
+				"tomcat_users", "encryptSecretKey".getBytes());
+		
+		if (!optional) {
+			//cookieAuth.setCookieName("subjectId");
+			cookieAuth.setLoginFormPath("/login");
+			cookieAuth.setLoginPath("/signin");
+			cookieAuth.setLogoutPath("/signout");			
 
-	protected TaskStorage<String> createTaskStorage() {
-		return new TaskStorage<String>(getName(),getLogger()) {
-			
+			cookieAuth.setVerifier(new DBVerifier(getContext(),
+					"config/qmrf.properties", "tomcat_users"));
+			cookieAuth.setEnroler(new DbEnroller(getContext(),
+					"config/qmrf.properties", "tomcat_users"));
+			return cookieAuth;
+		} else {
+			cookieAuth.setVerifier(new SecretVerifier() {
+		
 			
 			@Override
-			protected Task<TaskResult, String> createTask(String user,ICallableTask callable) {
-				
-				return new PolicyProtectedTask(user,!(callable instanceof CallablePolicyCreator)) {
-					@Override
-					public synchronized void setPolicy() throws Exception {
-
-						super.setPolicy();
-					}
-				};
+		    public int verify(Request request, Response response) {
+		        int result = RESULT_VALID;
+		         
+		        if (request.getChallengeResponse() != null) {
+		            String identifier = getIdentifier(request, response);
+		            char[] secret = getSecret(request, response);
+		            if (verify(identifier, secret)) {
+		                request.getClientInfo().setUser(new User(identifier));
+		            }
+		        }
+		        return result;
+		    }	
+			@Override
+			public boolean verify(String identifier, char[] secret) {
+				return true;
 			}
+			
+		});
+		}
+		return cookieAuth;
+	}
 
-		};
+		/*
+		MethodAuthorizer methodAuthorizer = new MethodAuthorizer();
+			methodAuthorizer.getAnonymousMethods().add(Method.GET);
+			methodAuthorizer.getAnonymousMethods().add(Method.POST);
+			methodAuthorizer.getAnonymousMethods().add(Method.PUT);
+			methodAuthorizer.getAnonymousMethods().add(Method.DELETE);
+		 */
+	protected Restlet createProtected(Restlet router, String prefix,
+			Authorizer authz) {
+		return router;
+		/*
+		 * Filter authN = new
+		 * ChallengeAuthenticatorDBLocal(getContext(),true,"conf/qmrf-db.pref"
+		 * ,"tomcat_users"); if (authz!=null) { //authz.setPrefix(prefix);
+		 * authN.setNext(authz); authz.setNext(router); } else {
+		 * authN.setNext(router); } return authN;
+		 */
 	}
 
 	/**
 	 * Resource /bookmark
+	 * 
 	 * @return
-	 
-	protected Restlet createBookmarksRouter() {
-		BookmarksRouter bookmarkRouter = new BookmarksRouter(getContext());
-
-		Filter bookmarkAuth = new OpenSSOAuthenticator(getContext(),false,"opentox.org");
-		Filter bookmarkAuthz = new BookmarksAuthorizer();		
-		bookmarkAuth.setNext(bookmarkAuthz);
-		bookmarkAuthz.setNext(bookmarkRouter);
-		return bookmarkAuth;
-	}
-	*/
+	 * 
+	 *         protected Restlet createBookmarksRouter() { BookmarksRouter
+	 *         bookmarkRouter = new BookmarksRouter(getContext());
+	 * 
+	 *         Filter bookmarkAuth = new
+	 *         OpenSSOAuthenticator(getContext(),false,"opentox.org"); Filter
+	 *         bookmarkAuthz = new BookmarksAuthorizer();
+	 *         bookmarkAuth.setNext(bookmarkAuthz);
+	 *         bookmarkAuthz.setNext(bookmarkRouter); return bookmarkAuth; }
+	 */
 	/**
 	 * Resource /admin
+	 * 
 	 * @return
 	 */
 	protected Restlet createAdminRouter() {
 		return new QMRFAdminRouter(getContext());
-		//DBCreateAllowedGuard dbguard = new DBCreateAllowedGuard();
-		//dbguard.setNext(adminRouter);
-		//return dbguard;
 	}
 
-	
 	/**
-	 * Resource protection via local MySQL/ Ambit database users.
-	 * Not used currenty;
-	 * @return
-	 */
-	protected Restlet createLocalUsersGuard() {
-		
-		//
-		
-		/**
-		//   These are users from the DB
-		//  /user
-		DBVerifier verifier = new DBVerifier(this);
-		Router usersRouter = new MyRouter(getContext());
-		usersRouter.attachDefault(UserResource.class);
-		//   /user/{userid}
-		Router userRouter = new MyRouter(getContext());
-		userRouter.attachDefault(UserResource.class);
-	 	usersRouter.attach(UserResource.resourceID,userRouter);
-	 	//  authentication mandatory for users resource
-		Filter guard = createGuard(verifier,false);
-		// Simple authorizer
-    	MethodAuthorizer authorizer = new MethodAuthorizer();
-    	authorizer.getAnonymousMethods().add(Method.GET);
-    	authorizer.getAnonymousMethods().add(Method.HEAD);
-    	authorizer.getAnonymousMethods().add(Method.OPTIONS);
-    	authorizer.getAuthenticatedMethods().add(Method.PUT);
-    	authorizer.getAuthenticatedMethods().add(Method.DELETE);
-    	authorizer.getAuthenticatedMethods().add(Method.POST);
-    	authorizer.getAuthenticatedMethods().add(Method.OPTIONS);
-		authorizer.setNext(usersRouter);
-		guard.setNext(authorizer);
-	 	router.attach(UserResource.resource, guard);
-	 	router.attach(UserResource.resource, usersRouter);
-		*/
-		return null;
-	}
-	
-		
-	/**
-	 * Images, styles, icons
-	 * Works if packaged as war only!
+	 * Images, styles, icons Works if packaged as war only!
+	 * 
 	 * @return
 	 */
 	protected void attachStaticResources(Router router) {
-		/*  router.attach("/images",new Directory(getContext(), LocalReference.createFileReference("/webapps/images")));   */
+		/*
+		 * router.attach("/images",new Directory(getContext(),
+		 * LocalReference.createFileReference("/webapps/images")));
+		 */
 
-		 Directory metaDir = new Directory(getContext(), "war:///META-INF");
-		 Directory imgDir = new Directory(getContext(), "war:///images");
-		 Directory jmolDir = new Directory(getContext(), "war:///jmol");
-		 Directory jmeDir = new Directory(getContext(), "war:///jme");
-		 Directory styleDir = new Directory(getContext(), "war:///style");
-		 Directory jquery = new Directory(getContext(), "war:///jquery");
+		Directory metaDir = new Directory(getContext(), "war:///META-INF");
+		Directory imgDir = new Directory(getContext(), "war:///images");
+		Directory jmolDir = new Directory(getContext(), "war:///jmol");
+		Directory jmeDir = new Directory(getContext(), "war:///jme");
+		Directory styleDir = new Directory(getContext(), "war:///style");
+		Directory jquery = new Directory(getContext(), "war:///jquery");
 
-		 
-		 router.attach("/meta/", metaDir);
-		 router.attach("/images/", imgDir);
-		 router.attach("/jmol/", jmolDir);
-		 router.attach("/jme/", jmeDir);
-		 router.attach("/jquery/", jquery);
-		 router.attach("/style/", styleDir);
-		 router.attach("/favicon.ico", FavIconResource.class);
-		 router.attach("/favicon.png", FavIconResource.class);
+		router.attach("/meta/", metaDir);
+		router.attach("/images/", imgDir);
+		router.attach("/jmol/", jmolDir);
+		router.attach("/jme/", jmeDir);
+		router.attach("/jquery/", jquery);
+		router.attach("/style/", styleDir);
+		router.attach("/favicon.ico", FavIconResource.class);
+		router.attach("/favicon.png", FavIconResource.class);
 	}
-
 
 	/**
 	 * Standalone, for testing mainly
+	 * 
 	 * @param args
 	 * @throws Exception
 	 */
-    public static void main(String[] args) throws Exception {
-        
-        // Create a component
-        Component component = new QMRFRESTComponent();
-        final Server server = component.getServers().add(Protocol.HTTP, 8080);
-        component.start();
-   
-        System.out.println("Server started on port " + server.getPort());
-        System.out.println("Press key to stop server");
-        System.in.read();
-        System.out.println("Stopping server");
-        component.stop();
-        System.out.println("Server stopped");
-    }
-    	
-    protected ChallengeAuthenticator createGuard(Verifier verifier,boolean optional) {
-    	
-    	Enroler enroler = new Enroler() {
-    		public void enrole(ClientInfo subject) {
-    		
-    			
-    		}
-    	};
-	        // Create a Guard
-	     ChallengeAuthenticator guard = new ChallengeAuthenticator(getContext(),optional,ChallengeScheme.HTTP_BASIC, "ambit2") {
-	    	@Override
-	    	protected boolean authenticate(Request request, Response response) {
-	    		return super.authenticate(request, response);
-	    	} 
-	     };
-	     guard.setVerifier(verifier);
-	     guard.setEnroler(enroler);
-	     
-		 return guard;
-    }
+	public static void main(String[] args) throws Exception {
 
-   	protected boolean isProtected() {
-		try {
+		// Create a component
+		Component component = new QMRFRESTComponent();
+		final Server server = component.getServers().add(Protocol.HTTP, 8080);
+		component.start();
 
-			boolean aa = Boolean.parseBoolean(getProperty(Resources.Config.qmrf_opensso_protected.name()));
-			
-			if ((getContext()!=null) && 
-				(getContext().getParameters()!=null) && 
-				(getContext().getParameters().getFirstValue(Resources.Config.qmrf_opensso_protected.name()))!=null)
-				aa = Boolean.parseBoolean(getContext().getParameters().getFirstValue(Resources.Config.qmrf_opensso_protected.name()));
-			return aa;
-		} catch (Exception x) {
-			x.printStackTrace();
-		}
-		return false;
-	}   	
+		System.out.println("Server started on port " + server.getPort());
+		System.out.println("Press key to stop server");
+		System.in.read();
+		System.out.println("Stopping server");
+		component.stop();
+		System.out.println("Server stopped");
+	}
 
-   	//Allow connections to SSL sites without certs (similar to curl -k )
-   	
 }
 
+/**
+ * GET allowed always; POST/PUT/DELETE depends on roles
+ * 
+ * @author nina
+ * 
+ */
+class SimpleRoleAndMethodAuthorizer extends RoleAuthorizer {
+	public SimpleRoleAndMethodAuthorizer(DBRole... roles) {
+		super();
+		for (DBRole role : roles)
+			getAuthorizedRoles().add(role);
+	}
+
+	@Override
+	public boolean authorize(Request request, Response response) {
+		if (Method.GET.equals(request.getMethod()))
+			return true;
+		return super.authorize(request, response);
+	}
+
+}
