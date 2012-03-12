@@ -138,9 +138,19 @@ mysql> select name from src_dataset;
 Run
 GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'localhost';
 
-3. Deploy qmrfdata.war Open   http://yourhost:port/qmrfdata/dataset with a browser; it should display the training and validation datasets.
+3. Migrate users database (skip this steps , if it already exists).
 
-4. Deploy qmrf.war.  Open   http://yourhost:port/qmrf with a browser; it should display the first 10 QMRF documents.
+mysql> create database tomcat_users;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use tomcat_users;
+Database changed
+mysql> source tomcat_users.sql
+
+
+4. Deploy qmrfdata.war Open   http://yourhost:port/qmrfdata/dataset with a browser; it should display the training and validation datasets.
+
+5. Deploy qmrf.war.  Open   http://yourhost:port/qmrf with a browser; it should display the first 10 QMRF documents.
 
 If the migration has been successful,  http://yourhost:port/qmrf/admin/database will show
 
@@ -149,7 +159,7 @@ Version	2.0
 Created	2012
 Note	QMRF schema
 
-3. Configuration
+6. Configuration
 
 {tomcat-dir}/webapps/qmrf/WEB-INF/classes/config/qmrf.properties
 
