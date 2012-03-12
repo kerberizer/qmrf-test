@@ -52,11 +52,13 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 				properties.append(String.format("<tr><th align='left' width='60%%'>%s</th><td align='center' width='40%%'>%s</td></tr>",key,item.getProperties().get(key)));
 
 			}
-		} catch (Exception x) {}		
+		} catch (Exception x) {}
+		String query = ((StructureHTMLBeauty)htmlBeauty).getSearchQuery();
 		String structure = 	String.format(
-					"<div class='structureright'><img src='%s?media=%s&w=150&h=150' alt='' width='150' height='150'><br>%s\n</div>\n",
+					"<div class='structureright'><img src='%s?media=%s&w=150&h=150' alt='%s' title='%s' width='150' height='150'><br>%s\n</div>\n",
 					item.getResourceURL(),
 					Reference.encode("image/png"),
+					query,query,
 					item.cas==null?"":item.cas
 					);
 		
@@ -189,7 +191,8 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 			option = SearchMode.auto;
 		}
 		String imgURI = searchQuery==null?"":
-				String.format("<img title='Search query' border='1' width='150' height='150' src='%s/depict/cdk?search=%s&media=%s&w=150&h=150'>",
+				String.format("<img title='%s' alt='%s' border='1' width='150' height='150' src='%s/depict/cdk?search=%s&media=%s&w=150&h=150' onError=\"hideDiv('querypic')\">",
+						getSearchQuery(),getSearchQuery(),
 						 queryService,Reference.encode(searchQuery),Reference.encode("image/png"));
 			return
 		   String.format(		
@@ -213,7 +216,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "</table>\n"+
 		   "</form> \n"+
 		   "&nbsp;\n"+
-		   "<div class='structureright'>%s</div>"+
+		   "<div id='querypic' class='structureright'>%s</div>"+
 		   "</div>\n",	
 		   getSearchTitle(),
 		   baseReference,

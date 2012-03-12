@@ -11,11 +11,9 @@ import java.util.Locale;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
 import net.idea.restnet.c.TaskApplication;
-import net.idea.restnet.c.exception.RResourceException;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.db.QueryResource;
-import net.toxbank.client.resource.Protocol;
 
 import org.opentox.csv.CSVFeatureValuesIterator;
 import org.opentox.dsl.OTCompound;

@@ -143,6 +143,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true});});</script>");
 			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
 			w.write("<script type='text/javascript'>function toggleDiv(divId) {$('#'+divId).toggle();}</script>\n");
+			w.write("<script type='text/javascript'>function hideDiv(divId) {$('#'+divId).hide();}</script>\n");
 			w.write("</head>\n");
 			w.write("<body>");
 			w.write(String.format("<link rel=\"stylesheet\" href=\"%s/style/tablesorter.css\" type=\"text/css\" media=\"screen\" title=\"Flora (Default)\">\n",baseReference));
