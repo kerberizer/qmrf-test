@@ -160,33 +160,54 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<div id='wrap'><div id='header'>%s</div>\n",header));
 			//menu
 			w.write(String.format(		
-				"<div id='inner-wrap'>\n"+
-				"\t<div id='left'>\n"+
-				"\t\t<div id='menu'>\n"+
-				"\t\t\t<ul id='navmenu'>\n"+
-				"\t\t\t\t<li><a %s href='%s/protocol?pagesize=10'>Documents</a></li>\n"+
-				"\t\t\t\t<li><a %s href='%s/structure?pagesize=10'>Structures</a></li>\n"+
-				"\t\t\t\t<li><a %s href='%s/endpoint'>Endpoints</a></li>\n"+
-				"\t\t\t\t<li><a %s href='%s/organisation?pagesize=10'>Organisations</a></li>\n"+
-				"\t\t\t\t<li><a %s href='%s/user?pagesize=10'>Users</a></li>\n"+
-				"\t\t\t\t<li><a %s href='%s/%s'>%s</a></li>\n"+	
-				"\t\t\t\t<li id='/help'><a href='http://qmrf.sf.net'>Help</a></li>\n"+
-				"\t\t\t</ul>\n"+
+				"<div id='inner-wrap'>\n" +
+				"\t<div id='left'>\n" +
+				"\t\t<div id='menu'>\n" +
+				"\t\t\t<ul id='navmenu'>\n" +
+				"\t\t\t\t<li><a class='%s' href='%s/protocol?pagesize=10'>Documents</a></li>\n" +
+				"\t\t\t\t<li><a class='%s' href='%s/structure?pagesize=10'>Structures</a></li>\n" +
+				"\t\t\t\t<li><a class='%s' href='%s/endpoint'>Endpoints</a></li>\n" +
+				"\t\t\t\t<li><a class='%s' href='%s/organisation?pagesize=10'>Organisations</a></li>\n" +
+				"\t\t\t\t<li><a class='%s' href='%s/user?pagesize=10'>Users</a></li>\n" +
+				"\t\t\t\t<li><a class='%s' href='%s/%s'>%s</a></li>\n" +
+				"\t\t\t\t<li id='/help'><a class='selectable' href='http://qmrf.sf.net'>Help</a></li>\n" +
+				"\t\t\t</ul>\n" +
 				"\t\t</div>\n",				  
-				getSearchURI().equals(Resources.protocol)?"class='selected'":"",
+				getSearchURI().equals(Resources.protocol)?"selected":"selectable",
 				baseReference,
-				getSearchURI().equals(Resources.structure)?"class='selected'":"",
+				getSearchURI().equals(Resources.structure)?"selected":"selectable",
 				baseReference,
-				getSearchURI().equals(Resources.endpoint)?"class='selected'":"",
+				getSearchURI().equals(Resources.endpoint)?"selected":"selectable",
 				baseReference,
-				getSearchURI().equals(Resources.organisation)?"class='selected'":"",
+				getSearchURI().equals(Resources.organisation)?"selected":"selectable",
 				baseReference,
-				getSearchURI().equals(Resources.user)?"class='selected'":"",
+				getSearchURI().equals(Resources.user)?"selected":"selectable",
 				baseReference,
-				getSearchURI().equals(Resources.login)||getSearchURI().equals(Resources.myaccount)?"class='selected'":"",
+				getSearchURI().equals(Resources.login)||getSearchURI().equals(Resources.myaccount)?"selected":"selectable",
 				baseReference,
 				request.getClientInfo().getUser()==null?"login":"myaccount",
 				request.getClientInfo().getUser()==null?"Login":"My account"
+			));
+
+			/*
+			This script creates a blinking effect for the menu option that is currently being hovered with the mouse.
+			The effect is achieved through the .animate() effect of jQuery UI, using the window.setInterval() timer.
+			A custom CSS class (not necessary to be defined in any .css) is used to denote the 'hovered' option.
+			*/
+			w.write(String.format(
+				"<script>\n" +
+
+				"int = self.setInterval('blinker()', 1000);\n" +
+				"function blinker() {" +
+					"$('a.hovered')." +
+						"animate( { color: '#ffffff', backgroundColor: '#109dff' }, 200 )." +
+						"delay(200)." +
+						"animate( { color: '#107feb', backgroundColor: '#d9ecf9' }, 500 );" +
+				"};\n" +
+				"$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );\n" +
+				"$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );\n" +
+
+				"</script>\n"
 			));
 				
 			//followed by the search form

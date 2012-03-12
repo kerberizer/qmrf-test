@@ -139,17 +139,11 @@ ul#navmenu {
 	background-color: #d9ecf9;
 }
 
-#navmenu li a:hover {
-	color: white;
-	background-color: #109DFF;
-	display: block;
-	font-weight: 900;
-}
-
 #navmenu li a:active {
 	color: white;
 	background-color: #109DFF;
 }
+
 #navmenu li a.selected {
 	color: white;
 	background-color: #109DFF;
