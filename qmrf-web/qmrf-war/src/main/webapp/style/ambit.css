@@ -58,7 +58,7 @@ h1 {
 }
 
 #content {
-	padding: 5px;
+	padding: 24px 5px 5px;
 	margin: auto 5px auto 200px;
 	text-align: left;
 	position: relative;
@@ -230,7 +230,7 @@ ul#hnavlist li a {
 	float: left;
 	color: #fff;
 	padding: 0.2em 0.5em;
-	height: 1em;
+	height: 19px;
 	text-decoration: none;
 	border-right: 1px solid #109DFF;
 	color: #109DFF;
