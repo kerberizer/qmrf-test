@@ -65,16 +65,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		
 	    
 		try {
-			if (printAsTable()) {
-				if (!headless && getTitle()!=null)
-					w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
-				if (!headless)
-					printPageNavigator(query);
-				
-			} else {
-				if (!headless && getTitle()!=null)
-					w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
-			}
+			if (printAsTable() && !headless) printPageNavigator(query);
 		} catch (Exception x) {
 			x.printStackTrace();
 		} finally {
