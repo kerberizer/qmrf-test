@@ -291,12 +291,6 @@ th {
 	text-align: left;
 }
 
-/* Fix the header logo being ugly overlapped by any tables below. For unknown reason, while the tables and the cells themselves
-   are transparent, the table rows have implicit white background. */
-tr {
-	background-color: transparent;
-}
-
 label {
 	COLOR: #516373;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
