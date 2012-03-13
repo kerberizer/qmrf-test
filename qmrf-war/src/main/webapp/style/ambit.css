@@ -215,6 +215,16 @@ A:hover {
 	border: 0;
 }
 
+li#pagerPages {
+	color: white;
+	background-color: #109DFF;
+	float: left;
+	padding: 0.2em 0.5em;
+	height: 19px;
+	text-decoration: none;
+	border-right: 1px solid white;
+}
+
 ul#hnavlist {
 	list-style-type: none;
 	padding: 0;
@@ -228,19 +238,20 @@ ul#hnavlist li {
 
 ul#hnavlist li a {
 	float: left;
-	color: #fff;
+	color: #107FEB;
 	padding: 0.2em 0.5em;
 	height: 19px;
 	text-decoration: none;
-	border-right: 1px solid #109DFF;
-	color: #109DFF;
-	background-color: #fff;
+	border-right: 1px solid white;
+	background-color: #d9ecf9;
 }
 
+/*
 ul#hnavlist li a:hover {
 	background-color: #fff;
 	color: navy;
 }
+*/
 
 .protocol {
 	width: 100%;
@@ -279,7 +290,7 @@ div.protocol label {
 table {
 	color: #516373;
 	font-size: 10pt;
-	margin-top: 5px;
+	margin-top: 10px;
 	margin-left: 0px;
 	margin-right: 0px;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;

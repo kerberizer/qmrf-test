@@ -365,7 +365,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			StringBuilder b = new StringBuilder(); 
 			b.append("<div><ul id='hnavlist'>");
-			b.append(String.format("<li><a href='#'>Pages:</a></li>"));
+			b.append(String.format("<li id='pagerPages'>Pages</li>"));
 			// Don't display "First" for the first page
 			if (page != 0) b.append(String.format(url, 0, pageSize, search, option==null?"":option.name(), cond, "<<"));
 			// Careful if we are on the second page
