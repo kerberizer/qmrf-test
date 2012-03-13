@@ -54,6 +54,8 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			}
 		} catch (Exception x) {}
 		String query = ((StructureHTMLBeauty)htmlBeauty).getSearchQuery();
+		String smartsOption = ((StructureHTMLBeauty)htmlBeauty).getSmartsOption();
+		//TODO smarts highlight
 		String structure = 	String.format(
 					"<div class='structureright'><img src='%s?media=%s&w=150&h=150' alt='%s' title='%s' width='150' height='150'><br>%s\n</div>\n",
 					item.getResourceURL(),
@@ -175,6 +177,11 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		return "Structure search";
 	}
 	
+	public String getSmartsOption() {
+		return SearchMode.smarts.equals(option)?String.format("&smarts=%s", Reference.encode(searchQuery)):"";
+	}
+
+
 	@Override
 	protected String searchMenu(Reference baseReference, Form form) {
 		searchQuery = form.getFirstValue(QueryResource.search_param);
@@ -202,9 +209,13 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "\n"+
 		   "<input type='hidden' name='page' value='%s'>\n"+
 		   "<input type='hidden' name='type' value='smiles'>\n"+
-		   "<table width='200px'>\n"+
-		   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.'></td></tr>\n"+
-		   "<tr><td colspan='2'><input type='button' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor(\"%s\");'></td></tr>\n"+
+		   "<table width='100%%'>\n"+
+		   "<tr><td colspan='2' align='center'><input type='button' class='draw' tabindex='0' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor(\"%s\");'></td></tr>\n"+
+		   "<tr><td colspan='2' align='center'><input type='text' name='search' size='20' value='%s' tabindex='1' title='Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.'></td></tr>\n"+
+		   "<tr><td colspan='2' align='center'><input tabindex='2' id='submit' type='submit' value='Search'/></td></tr>\n"+
+		   "<tr><td colspan='2' align='center'><a href=\"javascript:toggleDiv('advanced');\">Advanced</a></td></tr>\n"+
+		   "</table>\n"+
+		   "<table id='advanced' style='display:none' width='100%%'>\n"+
 		   "<tr><td colspan='2'><input %s type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>\n"+
 		   "<tr><td><input %s type='radio' name='option' value='similarity' title='Enter SMILES or draw structure'>Similarity</td>\n"+
 		   "<td align='left'>\n"+
@@ -212,7 +223,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "</td></tr>\n"+
 		   "<tr><td colspan='2'><input %s type='radio' name='option' value='smarts' title='Enter or draw a SMARTS query' size='20'>Substructure</td></tr>\n"+
 		   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
-		   "<tr><td colspan='2' align='right'><input type='submit' value='Search'/></td></tr>\n"+
+		   "</div>\n"+
 		   "</table>\n"+
 		   "</form> \n"+
 		   "&nbsp;\n"+
@@ -222,8 +233,10 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   baseReference,
 		   getSearchURI(),
 		   page,
+			//JME		   
+		   baseReference,		   
+		   //search
 		   searchQuery==null?"":searchQuery,
-		   baseReference,
 		   SearchMode.auto.equals(option)?"checked":"",
 		   SearchMode.similarity.equals(option)?"checked":"",
 		   SearchMode.smarts.equals(option)?"checked":"",
