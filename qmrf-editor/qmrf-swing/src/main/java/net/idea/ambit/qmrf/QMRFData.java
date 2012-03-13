@@ -38,7 +38,8 @@ public class QMRFData<OBJECT,LIST> extends DefaultSharedData<OBJECT,LIST>  imple
 		super(configFile);
 
 		qmrf = new QMRFObject(args,adminUser);
-		qmrf.init();
+		if (qmrf.getChapters().size()==0)
+			qmrf.init();
         qmrf.addAmbitObjectListener(this);
 
 

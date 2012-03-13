@@ -65,7 +65,7 @@ usage: QMRFEditor
 public class QMRFEditor extends CoreApp implements Observer {
 	protected QMRFData qmrfData;
     
-	protected final String QmrfEditorVersion = "0.05";
+	protected final String QmrfEditorVersion = "2.0.0";
 	public QMRFEditor(String title, int w , int h,String[] args) {
 		super(title, w, h,args);
         int state = mainFrame.getExtendedState();
@@ -77,10 +77,10 @@ public class QMRFEditor extends CoreApp implements Observer {
         mainFrame.setExtendedState(state);
 		//centerScreen();
         AmbitLogger.configureLog4j(true);
-		Package adPackage = Package.getPackage("ambit.data.qmrf");
+		Package adPackage = null;//Package.getPackage("net.idea.ambit.qmrf.swing");
 		//version will be only available if started from jar file
 		//version is specified in package manifest 
-		// See MANIFEST_AD.MFT file
+		// See MANIFEST.MFT file
 		String pTitle = null;
 		String version = null;
 		if (adPackage != null) {
