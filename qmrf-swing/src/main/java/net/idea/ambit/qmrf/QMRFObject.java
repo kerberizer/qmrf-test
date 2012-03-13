@@ -1,7 +1,7 @@
 /*
-Copyright (C) 2005-2006  
+Copyright (C) 2005-2012
 
-Contact: nina@acad.bg
+Contact: http://qmrf.sf.net
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public License
@@ -31,6 +31,8 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -74,6 +76,12 @@ import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.PosixParser;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -97,8 +105,8 @@ QSAR_Interpretation,QSAR_Miscelaneous,Catalogs)>
           author CDATA #FIXED "European Chemicals Bureau" 
           date CDATA #FIXED "July 2007" 
           contact CDATA #FIXED "European Chemicals Bureau, IHCP, Joint Research Centre, European Commission" 
-          email CDATA #FIXED "ecb.qsar@jrc.it" 
-          www CDATA #FIXED "http://ecb.jrc.it/QSAR/" 
+          email CDATA #FIXED "JRC-IHCP-COMPUTOX@ec.europa.eu" 
+          www CDATA #FIXED "http://ihcp.jrc.ec.europa.eu/our_labs/computational_toxicology" 
           >
    </pre>       
    
@@ -136,7 +144,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 			"1.2","European Chemicals Bureau","July 2007",
 //			"European Chemicals Bureau, IHCP, Joint Research Centre, European Commission",
 			"EUROPEAN COMMISSION, DIRECTORATE GENERAL, JOINT RESEARCH CENTRE, Institute for Health and Consumer Protection, Toxicology and Chemical Substances Unit",
-			"ecb.qsar@jrc.it","http://ecb.jrc.it/QSAR/"};	
+			"JRC-IHCP-COMPUTOX@ec.europa.eu","http://ihcp.jrc.ec.europa.eu/our_labs/computational_toxicology"};	
     
     protected String[][] chaptersID = {
             {"QSAR_identifier","QSAR identifier"},
@@ -169,35 +177,11 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 		setAdminUser(adminUser);
 		external_catalogs = new Catalogs();
 		external_catalogs.setEditable(false);
-		setParameters(args);
 		attributes = new QMRFAttributes();//attrNames,attrValues);
 		chapters = new ArrayList<QMRFChapter>();
 		catalogs = new Catalogs();
-		/*
-        
-        for (int i=0; i < chaptersID.length;i++) {
-            String title = Integer.toString(i+1);
-            QMRFChapter chapter = new QMRFChapter(chaptersID[i][0],title,chaptersID[i][1],"");
-            chapters.add(chapter);
-            QMRFSubChapterText tt = new QMRFSubChapterText();
-            tt.getAttributes().put("chapter","1");
-            tt.getAttributes().put("name","1");
-            tt.getAttributes().put("help","ssssssssssssssssss1");
-            tt.getAttributes().put("question","1");
-            chapter.addSubchapter(tt);
-            QMRFSubChapterText t = new QMRFSubChapterText();
-            t.setMultiline(false);
-            t.setChapter("1");t.setText("Single line");
-            chapter.addSubchapter(t);
-            chapter.addSubchapter(new QMRFSubChapterQuestion("answer",new String[] {"Yes","No"}));
-            chapter.addSubchapter(new QMRFSubChapterText());     
-            QMRFAttachments a = new QMRFAttachments("attachments");
-            a.addAttachment(2, new QMRFAttachment("","file","pdf"));
-            a.addAttachment(0, new QMRFAttachment("","url","sdfile"));
-            chapter.addSubchapter(a);
-        }    
-        */
-        
+		setParameters(args);
+
         setModified(true);
 	}
 	public QMRFObject(String[] args, InputStream in, boolean adminUser) throws Exception {
@@ -206,6 +190,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 		read(in);
 	}
 	public void init() {
+
 		try {
 	        String filename = "ambit2/qmrfeditor/qmrf.xml";
 	        try {
@@ -250,11 +235,13 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	}	
 	public void clear() {
 		setSelectedChapter(null);
-		catalogs.clear();
-        for (int i=0; i < chapters.size();i++)
-            chapters.get(i).removeAmbitObjectListener(this);
-        chapters.clear();
-        attributes.clear();
+		if (catalogs!=null) catalogs.clear();
+		if (chapters!=null) {
+	        for (int i=0; i < chapters.size();i++)
+	            chapters.get(i).removeAmbitObjectListener(this);
+	        chapters.clear();
+		} 
+		if (attributes!=null) attributes.clear();
         setModified(true);
 	}
 	public AbstractQMRFChapter findChapter(Object query) {
@@ -269,7 +256,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 		return "Welcome";
 	}
 	public static String getBackground() {
-		return "The set of information that you provide will be used to facilitate regulatory considerations of (Q)SARs. For this purpose, the structure of the QMRF is devised to reflect as much as possible the OECD principles for the validation, for regulatory purposes, of (Q)SAR models. <br>You are invited to consult the OECD <i>\"Guidance Document on the Validation of (Quantitative) Structure-Activity Relationship Models\"</i> that can aid you in filling in a number of fields of the QMRF (visit the following webpage for downloading the proper documentation: <a href=\"http://ecb.jrc.it/qsar/background/background_oecd_principles.php\">http://ecb.jrc.it/qsar/background/background_oecd_principles.php</a>)</html>";
+		return "The set of information that you provide will be used to facilitate regulatory considerations of (Q)SARs. For this purpose, the structure of the QMRF is devised to reflect as much as possible the OECD principles for the validation, for regulatory purposes, of (Q)SAR models. <br>You are invited to consult the OECD <i>\"Guidance Document on the Validation of (Quantitative) Structure-Activity Relationship Models\"</i> that can aid you in filling in a number of fields of the QMRF (visit the following webpage for downloading the proper documentation: <a href=\"http://ihcp.jrc.ec.europa.eu/our_labs/computational_toxicology/background/oecd-principles\">OECD principles</a>)</html>";
 	}
 	protected String getProperty(String property) {
 		Object o = attributes.get(property);
@@ -297,16 +284,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	public void setTitle(String title) {
 		setProperty("name",title);
 	}
-	/*
-	 *           schema_version CDATA  #FIXED "0.4"
-          version CDATA  #FIXED "1.1"
-          name CDATA #FIXED "(Q)SAR Model Reporting Format" 
-          author CDATA #FIXED "European Chemicals Bureau" 
-          date CDATA #FIXED "June 2006" 
-          contact CDATA #FIXED "European Chemicals Bureau, IHCP, Joint Research Centre, European Commission" 
-          email CDATA #FIXED "ecb.qsar@jrc.it" 
-          url CDATA #FIXED "http://ecb.jrc.it/QSAR/" 
-	 */
+	
 	public void setAuthor(String author) {
 		setProperty("author",author);
 	}
@@ -793,10 +771,52 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
         }        
         if (external_catalogs.size() == 0)
         	readDefaultCatalogs(external_catalogs);
-
+        
+        if( line.hasOption( "x" ) ) {
+        	URI remoteFile  = null;
+        	try {
+	        	remoteFile = new URI(line.getOptionValue( "x" ));
+	        	init();
+	        	readURI(remoteFile);
+        	} catch (MalformedURLException x) {
+        		System.err.println(String.format("Invalid URL %s: %s", line.getOptionValue( "x" ),x.getMessage()));
+        	}  catch (Exception x) {
+        		x.printStackTrace();
+        		System.err.println(String.format("Error reading URL %s: %s", remoteFile,x.getMessage()));
+	        } finally {
+	        	
+	        }
+        }
      
     }
 
+    public void readURI(URI remoteFile) throws Exception {
+    	HttpClient cli = new DefaultHttpClient();
+    		System.out.println(String.format("Reading QMRF XML from %s", remoteFile));
+    		HttpGet httpGet = new HttpGet(remoteFile);
+    		httpGet.addHeader("Accept","application/xml");
+    		httpGet.addHeader("Accept-Charset", "utf-8");
+
+    		InputStream in = null;
+    		try {
+    			HttpResponse response = cli.execute(httpGet);
+    			HttpEntity entity  = response.getEntity();
+    			in = entity.getContent();
+    			System.out.println(response.getStatusLine());
+    			if (response.getStatusLine().getStatusCode()== HttpStatus.SC_OK) {
+    				read(new InputStreamReader(in,"UTF-8"));
+    	        	System.out.println(String.format("Reading %s completed.", remoteFile));
+
+    			} else 	
+    				 throw new IOException(String.format("Error reading URL %s\n%s",remoteFile,response.getStatusLine()));
+    		} catch (Exception x) {	
+    			throw x;
+    		} finally {
+    			try {if (in != null) in.close();} catch (Exception x) {}
+    		}        		
+        	
+
+    }
 	public QMRFAttributes getAttributes() {
 		return attributes;
 	}

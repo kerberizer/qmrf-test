@@ -51,6 +51,7 @@ public class QMRFGUITools {
 		JMenu fileMenu = new JMenu("File");
 		fileMenu.add(createMenuItem(toolBar,new QMRFNewAction(qmrfData,mainFrame)));
 		fileMenu.add(createMenuItem(toolBar,new QMRFFileOpenAction(qmrfData,mainFrame)));
+		fileMenu.add(createMenuItem(toolBar,new QMRFURIOpenAction(qmrfData,mainFrame)));
         fileMenu.add(createMenuItem(toolBar,new QMRFFileSaveAction(qmrfData,mainFrame)));
 		fileMenu.add(createMenuItem(toolBar,new QMRFFileSaveAsAction(qmrfData,mainFrame)));
 		fileMenu.add(createMenuItem(toolBar,new QMRFBatchAction(qmrfData,mainFrame)));
