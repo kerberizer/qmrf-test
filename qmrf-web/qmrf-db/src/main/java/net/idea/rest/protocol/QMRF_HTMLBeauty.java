@@ -366,10 +366,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			StringBuilder b = new StringBuilder(); 
 			b.append("<div><ul id='hnavlist'>");
 			b.append(String.format("<li id='pagerPages'>Pages</li>"));
-			// Don't display "First" for the first page
-			if (page != 0) b.append(String.format(url, 0, pageSize, search, option==null?"":option.name(), cond, "<<"));
-			// Careful if we are on the second page
-			b.append(String.format(url, page==0?page:page-1, pageSize, search, option==null?"":option.name(), cond, "<"));
+			// Don't display "first" and "previous" for the first page
+			if (page > 0) {
+				b.append(String.format(url, 0, pageSize, search, option==null?"":option.name(), cond, "<<"));
+				b.append(String.format(url, page-1, pageSize, search, option==null?"":option.name(), cond, "<"));
+			}
 			// Display links to pages. Pages are counted from zero! Hence why we display "i+1".
 			for (int i=start; i<= last; i++)
 				b.append(String.format(url, i, pageSize, search, option==null?"":option.name(), cond, i+1)); 
