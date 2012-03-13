@@ -183,7 +183,7 @@ public class DatabaseResource  extends QMRFQueryResource<DBVersionQuery,DBVersio
 		try {
     		DBConnection dbc = new DBConnection(getContext(),getConfigFile());
     	
-    		connection = dbc.getConnection(getRequest());
+    		connection = dbc.getConnection();
 			
 			st = connection.createStatement();
 			rs = st.executeQuery("show databases");
