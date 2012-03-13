@@ -198,8 +198,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(printMenuItem(Resources.login, 
 					request.getClientInfo().getUser()==null?"Login":"Logout", 
 					baseReference.toString(),null,
-					request.getClientInfo().getUser()==null?"Login is only required for editors(to submit new documents)":String.format("%s logout",request.getClientInfo().getUser())));
-			w.write("\t\t\t\t<li id='/help'><a class='selectable' target='_help' href='http://qmrf.sf.net'>Help</a></li>\n");
+					request.getClientInfo().getUser()==null?"Login is only required for editors (to submit new documents)":String.format("%s logout",request.getClientInfo().getUser())));
+			w.write("\t\t\t\t<li id='/help'><a class='selectable' target='_help' href='http://qmrf.sf.net/'>Help</a></li>\n");
 			w.write(
 			"\t\t\t</ul>\n" +
 			"\t\t</div>\n");
