@@ -129,8 +129,6 @@ public class QMRFPanel extends JPanel implements IAmbitObjectListener {
 	}
     public void ambitObjectChanged(AmbitObjectChanged event) {
         if (event.getObject() instanceof QMRFObject) {
-            //System.out.println(event.toString());
-            //validate();
             if (!((QMRFObject) event.getObject()).isModified())
                 setQmrf((QMRFObject) event.getObject());
         }    

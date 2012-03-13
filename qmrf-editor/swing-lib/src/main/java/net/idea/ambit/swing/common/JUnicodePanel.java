@@ -200,13 +200,7 @@ class UnicodeTable extends AbstractTableModel {
 			return chars[0]+chars[1];
 			*/
 	}
-	/*
-	public void setPage(int page) {
-		System.out.println(page);
-		this.page = page;
-		setBase((char)(page * 0x100));
-	}
-	*/
+
 	public void setBase(char base) { 
 		this.base = base;
 		start = base;// & 0xFFF0; 		

@@ -213,7 +213,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	}
 	public void readDefaultCatalogs(Catalogs external) {
 		try {
-			//System.out.println("Reading default catalogs");
+			
 			external.clear();
 	        String filename = "ambit2/qmrfeditor/catalogs.xml";
 	        try {
@@ -394,14 +394,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
                 e_catalogs.appendChild(cc.toXML(document));
             }
         }
-        /*
-		Iterator<Catalog> c = catalogs.values().iterator();
-		while (c.hasNext()) {
-			Catalog cc = c.next();
-			System.out.println(cc);
-			
-		}	
-        */
+     
 		return top;
 	}
     /**
@@ -707,7 +700,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     public void setParameters(String[] args) {
         try {
         	if (args == null) return;
-        	for (int i=0; i < args.length;i++)      	System.out.println(args[i]);        	
+    	
             Options options = createOptions();
             CommandLineParser parser = new PosixParser();
             CommandLine line = parser.parse( options, args,false );
@@ -727,9 +720,9 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     
     protected void setOptions(CommandLine line) {
         String url ;
-        //System.out.println("CommandLine line");
+
         Option[] o = line.getOptions();
-        if (o != null) for (int i=0; i < o.length; i++) System.out.println(o[i]);
+
         if( line.hasOption( "d" ) ) {
             url = line.getOptionValue( "d" );
             try {
@@ -802,7 +795,6 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     			HttpResponse response = cli.execute(httpGet);
     			HttpEntity entity  = response.getEntity();
     			in = entity.getContent();
-    			System.out.println(response.getStatusLine());
     			if (response.getStatusLine().getStatusCode()== HttpStatus.SC_OK) {
     				read(new InputStreamReader(in,"UTF-8"));
     	        	System.out.println(String.format("Reading %s completed.", remoteFile));
@@ -934,7 +926,7 @@ class SimpleDeclHandler implements org.xml.sax.ext.DeclHandler {
                               java.lang.String valueDefault,
                               java.lang.String value)
     {
-    
+    /*
        System.out.println("ATTRIBUTE: ");
        System.out.println("Element Name: " + elementName);
        System.out.println("Attribute Name: " + attributeName);
@@ -942,16 +934,18 @@ class SimpleDeclHandler implements org.xml.sax.ext.DeclHandler {
        System.out.println("Default Value: " + valueDefault);
        System.out.println("Value: " + value);
        System.out.println();
+       */
     }
     
     public void elementDecl(java.lang.String name,
                             java.lang.String model)
     {
-    
+    /*
        System.out.println("ELEMENT: ");
        System.out.println("Name: " + name);
        System.out.println("Model: " + model);
        System.out.println();
+       */
     }
     
     public void externalEntityDecl(java.lang.String name,
@@ -964,10 +958,11 @@ class SimpleDeclHandler implements org.xml.sax.ext.DeclHandler {
     public void internalEntityDecl(java.lang.String name,
                                   java.lang.String value)
     {
-      
+      /*
       if (name.startsWith("help")) {
           System.out.println("INTERNAL ENTITY HELP: " + name + value);
       } else System.out.println("INTERNAL ENTITY: " + name + value);
+      */
     }
 
 }

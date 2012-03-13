@@ -79,7 +79,6 @@ public class AmbitList<T extends AmbitObject> extends AmbitObject  {
 	}	
 	public AmbitObject getSelectedItem() {
 		if ((selectedIndex < 0) || (selectedIndex >= size()))  {
-			//System.err.println("getselectedDataSet\tnone" );
 			return null;
 		}
 		else return getItem(selectedIndex);

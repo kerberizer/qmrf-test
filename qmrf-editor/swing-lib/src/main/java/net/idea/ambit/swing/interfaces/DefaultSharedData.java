@@ -69,7 +69,6 @@ public abstract class DefaultSharedData<OBJECT,LIST>   extends Observable implem
 	                FileInputStream in = new FileInputStream(file);
 	                defaultData = new DefaultData();
 	                defaultData.readXML(in);
-	                System.out.println(defaultData);
 	                in.close();
 					return;
 		        } catch (IOException x) {

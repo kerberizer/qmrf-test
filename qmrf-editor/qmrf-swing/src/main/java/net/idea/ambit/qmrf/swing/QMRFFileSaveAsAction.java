@@ -105,7 +105,6 @@ public class QMRFFileSaveAsAction extends QMRFAction {
             	
             	  StringWriter w = new StringWriter();	
             	  getQMRFData().getQmrf().write(w);
-//            	  System.out.println(w.toString());
             	  x.xml2pdf(w.toString(),out);
             	  
             } else if (filename.endsWith("xls")) {

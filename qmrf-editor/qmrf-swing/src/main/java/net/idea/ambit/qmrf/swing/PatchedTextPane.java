@@ -70,7 +70,7 @@ public class PatchedTextPane extends JTextPane
 							if ( flavors[i].equals(df_unicode) || flavors[i].equals(df_utf8)
 									 ) {  
 								myFlavorList.add(flavor);
-								System.out.println(flavor);								
+													
 							} 
 						} catch (Exception x) {
 							x.printStackTrace();
