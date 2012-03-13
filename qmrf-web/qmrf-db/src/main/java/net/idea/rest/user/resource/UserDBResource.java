@@ -80,11 +80,11 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 						return TOXBANK.URI;
 					}					
 				};
-		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML))
+		} else //html
 				return new OutputWriterConvertor(
 						createHTMLReporter(headless),
 						MediaType.TEXT_HTML);
-		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
+
 	}
 	
 	@Override

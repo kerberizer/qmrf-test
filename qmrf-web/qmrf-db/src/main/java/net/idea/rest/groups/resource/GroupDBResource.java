@@ -70,10 +70,9 @@ public abstract class GroupDBResource<G extends IDBGroup>	extends QMRFQueryResou
 						return TOXBANK.URI;
 					}					
 				};
-		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML))
+		} else //if (variant.getMediaType().equals(MediaType.TEXT_HTML))
 				return new OutputWriterConvertor(
 						createHTMLReporter(headless),MediaType.TEXT_HTML);
-		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
 	}
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
