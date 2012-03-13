@@ -118,7 +118,9 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
 			return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);				
 		} else if (singleItem && (structure==null)) {
-			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType()),variant.getMediaType());		
+			Object fileNamePrefix = getRequest().getAttributes().get(FileResource.resourceKey);
+			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType()),
+					variant.getMediaType(),filenamePrefix);		
 		} else return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);		
 	}
 	

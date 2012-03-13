@@ -19,7 +19,7 @@ import org.xml.sax.InputSource;
 
 public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryReporter<DBProtocol,Q,OutputStream> {
 	protected MediaType media;
-	
+	protected String fileExtension= null;
 	
 	public MediaType getMedia() {
 		return media;
@@ -27,10 +27,13 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 
 	public void setMedia(MediaType media)  throws ResourceException {
 		this.media = media;
-		if (MediaType.APPLICATION_XML.equals(media) ||
-			MediaType.APPLICATION_PDF.equals(media) ||
-			MediaType.APPLICATION_EXCEL.equals(media))
-			this.media = media;
+		if (MediaType.APPLICATION_XML.equals(media)) {
+			this.media = media; fileExtension = "xml";
+		} else if (MediaType.APPLICATION_PDF.equals(media)) {
+			this.media = media; fileExtension = "pdf";
+		} else if (MediaType.APPLICATION_EXCEL.equals(media)) {
+			this.media = media; fileExtension = "xls";
+		}
 		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE,media.toString());
 	}
 
@@ -51,8 +54,10 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 	@Override
 	public Object processItem(DBProtocol item) throws AmbitException {
 		try {
+
 			String xml = item.getAbstract();
 			if (MediaType.APPLICATION_XML.equals(media)) {
+				
 				getOutput().write(xml.getBytes());
 			} else if (MediaType.APPLICATION_PDF.equals(media)) {
 				 QMRF_xml2pdf qpdf = new QMRF_xml2pdf(null);
@@ -69,5 +74,11 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 			return item;
 		}
 	}
+	
+	@Override
+	public String getFileExtension() {
+		return fileExtension;
+	}
+	
 
 }
