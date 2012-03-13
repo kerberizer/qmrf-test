@@ -160,36 +160,28 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			w.write(String.format("<div id='wrap'><div id='header'>%s</div>\n",header));
 			//menu
-			w.write(String.format(		
-				"<div id='inner-wrap'>\n" +
-				"\t<div id='left'>\n" +
-				"\t\t<div id='menu'>\n" +
-				"\t\t\t<ul id='navmenu'>\n" +
-				"\t\t\t\t<li><a class='%s' href='%s/protocol?pagesize=10'>Documents</a></li>\n" +
-				"\t\t\t\t<li><a class='%s' href='%s/structure?pagesize=10'>Structures</a></li>\n" +
-				"\t\t\t\t<li><a class='%s' href='%s/endpoint'>Endpoints</a></li>\n" +
-				"\t\t\t\t<li><a class='%s' href='%s/organisation?pagesize=10'>Organisations</a></li>\n" +
-				"\t\t\t\t<li><a class='%s' href='%s/user?pagesize=10'>Users</a></li>\n" +
-				"\t\t\t\t<li><a class='%s' href='%s/%s'>%s</a></li>\n" +
-				"\t\t\t\t<li id='/help'><a class='selectable' href='http://qmrf.sf.net'>Help</a></li>\n" +
-				"\t\t\t</ul>\n" +
-				"\t\t</div>\n",				  
-				getSearchURI().equals(Resources.protocol)?"selected":"selectable",
-				baseReference,
-				getSearchURI().equals(Resources.structure)?"selected":"selectable",
-				baseReference,
-				getSearchURI().equals(Resources.endpoint)?"selected":"selectable",
-				baseReference,
-				getSearchURI().equals(Resources.organisation)?"selected":"selectable",
-				baseReference,
-				getSearchURI().equals(Resources.user)?"selected":"selectable",
-				baseReference,
-				getSearchURI().equals(Resources.login)||getSearchURI().equals(Resources.myaccount)?"selected":"selectable",
-				baseReference,
-				request.getClientInfo().getUser()==null?"login":"myaccount",
-				request.getClientInfo().getUser()==null?"Login":"My account"
-			));
-
+			String[][] menu = {
+					{Resources.protocol,"Documents"},
+					{Resources.structure,"Structures"},
+					{Resources.endpoint,"Endpoints"},
+					{Resources.user,"Users"},
+					{request.getClientInfo().getUser()==null?Resources.login:Resources.myaccount,request.getClientInfo().getUser()==null?"Login":"My account"}
+			};
+			w.write(
+					"<div id='inner-wrap'>\n" +
+					"\t<div id='left'>\n" +
+					"\t\t<div id='menu'>\n" +
+					"\t\t\t<ul id='navmenu'>\n");
+			for (String[] menuItem: menu) {
+				w.write(String.format("\t\t\t\t<li><a class='%s' href='%s%s?pagesize=10'>%s</a></li>\n",
+						getSearchURI().equals(menuItem[0])?"selected":"selectable",
+						baseReference,menuItem[0],menuItem[1]));
+			}
+			w.write("\t\t\t\t<li id='/help'><a class='selectable' target='_help' href='http://qmrf.sf.net'>Help</a></li>\n");
+			w.write(
+			"\t\t\t</ul>\n" +
+			"\t\t</div>\n");
+		
 			/*
 			This script creates a blinking effect for the menu option that is currently being mouseovered.
 			The effect is achieved via the .animate() jQuery UI extended method, using window.setInterval().
