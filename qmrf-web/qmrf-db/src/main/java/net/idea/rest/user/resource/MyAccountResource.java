@@ -1,6 +1,11 @@
 package net.idea.rest.user.resource;
 
+import net.idea.modbcum.i.IQueryRetrieval;
+import net.idea.qmrf.client.Resources;
+import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
+import net.idea.restnet.c.html.HTMLBeauty;
+import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -43,4 +48,32 @@ public class MyAccountResource<T> extends UserDBResource<T> {
 					);
 		}
 	} 
+	
+	@Override
+	protected QueryHTMLReporter createHTMLReporter(boolean headless)
+			throws ResourceException {
+		UserHTMLReporter rep = new UserHTMLReporter(getRequest(),!singleItem,editable,(UserHTMLBeauty)getHTMLBeauty()) {
+			@Override
+			public String getTitle() {
+				return null;
+			}
+			@Override
+			protected void printPageNavigator(IQueryRetrieval<DBUser> query)
+					throws Exception {
+			}
+		};
+		
+		rep.setHeadless(headless);
+		return rep;
+	}
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		return new UserHTMLBeauty() {
+			@Override
+			public String getSearchURI() {
+				return Resources.myaccount;
+			}
+		};
+	}
+	
 }

@@ -6,10 +6,10 @@ import net.idea.modbcum.i.config.Preferences;
 import net.idea.qmrf.aa.QMRFLoginFormResource;
 import net.idea.qmrf.aa.QMRFLoginPOSTResource;
 import net.idea.qmrf.aa.QMRFLogoutPOSTResource;
+import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
-import net.idea.qmrf.task.QMRFAdminResource;
 import net.idea.qmrf.task.QMRFAdminRouter;
-import net.idea.qmrf.task.QMRFTaskResource;
+import net.idea.qmrf.task.QMRFEditorRouter;
 import net.idea.qmrf.task.QMRFTaskRouter;
 import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
@@ -97,10 +97,15 @@ public class QMRFApplication extends TaskApplication<String> {
 	public Restlet createInboundRoot() {
 
 		Router router = new MyRouter(this.getContext());
+		//here we check if the cookie contains auth token, if not just consider the user notlogged in
+		Filter auth = createCookieAuthenticator(true);
+		Router setCookieUserRouter = new MyRouter(getContext());
+		auth.setNext(setCookieUserRouter);
 
-		/** /task */
-		router.attach(QMRFTaskResource.resource, new QMRFTaskRouter(
-				getContext()));
+		setCookieUserRouter.attach(Resources.login,QMRFLoginFormResource.class);
+		setCookieUserRouter.attach(Resources.myaccount,MyAccountResource.class);
+		
+				
 		/** QMRF documents **/
 		ProtocolRouter protocols = new ProtocolRouter(getContext());
 		OrganisationRouter org_router = new OrganisationRouter(getContext());
@@ -109,32 +114,29 @@ public class QMRFApplication extends TaskApplication<String> {
 
 		protocolRouter = protocols; // createProtectedResource(protocols,"protocol",new
 									// ProtocolAuthorizer());
-		router.attach(Resources.protocol, protocolRouter);
-		router.attach(Resources.project, projectRouter);
-		router.attach(Resources.organisation, org_router);
-		router.attach(Resources.user, new UserRouter(getContext(), protocols,
+		setCookieUserRouter.attach(Resources.protocol, protocolRouter);
+		setCookieUserRouter.attach(Resources.project, projectRouter);
+		setCookieUserRouter.attach(Resources.organisation, org_router);
+		setCookieUserRouter.attach(Resources.user, new UserRouter(getContext(), protocols,
 				org_router, projectRouter));
 
 		
-		router.attach("/", protocolRouter);
-		router.attach("", protocolRouter);
+		setCookieUserRouter.attach("/", protocolRouter);
+		setCookieUserRouter.attach("", protocolRouter);
 
-		router.attach(Resources.endpoint, ProtocolsByEndpointResource.class);
-		router.attach(Resources.structure, StructureResource.class);
-
+		setCookieUserRouter.attach(Resources.endpoint, ProtocolsByEndpointResource.class);
+		setCookieUserRouter.attach(Resources.structure, StructureResource.class);
+		setCookieUserRouter.attach(Resources.admin, createAdminRouter());
+		setCookieUserRouter.attach(Resources.editor, createEditorRouter());
+		/** /task */
+		router.attach(Resources.task,new QMRFTaskRouter(getContext()));
+		router.attach(auth);
 		/**
 		 * Images, styles, favicons, applets
 		 */
 		attachStaticResources(router);
 
-		Filter auth = createCookieAuthenticator(true);
-		auth.setNext(QMRFLoginFormResource.class);
-
-		router.attach(String.format("/%s", QMRFLoginFormResource.resource),auth);
-		auth = createCookieAuthenticator(true);
-		auth.setNext(MyAccountResource.class);
-		router.attach("/myaccount",auth);
-		
+	
 		Router protectedRouter = new MyRouter(getContext());
 		protectedRouter.attach("/roles", QMRFLoginFormResource.class);
 		protectedRouter.attach(String.format("/%s", UserLoginPOSTResource.resource),QMRFLoginPOSTResource.class);
@@ -143,8 +145,7 @@ public class QMRFApplication extends TaskApplication<String> {
 		auth = createCookieAuthenticator(false);
 		auth.setNext(protectedRouter);
 		router.attach("/protected", auth);
-		router.attach(String.format("/%s", QMRFAdminResource.resource),
-				createAdminRouter());
+
 	
 		router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
 		router.setRoutingMode(Router.MODE_BEST_MATCH);
@@ -167,6 +168,7 @@ public class QMRFApplication extends TaskApplication<String> {
 		CookieAuthenticator cookieAuth 	= new CookieAuthenticator(getContext(),
 				"tomcat_users", "encryptSecretKey".getBytes());
 		
+		String config = "conf/qmrf-db.pref";
 		if (!optional) {
 			//cookieAuth.setCookieName("subjectId");
 			cookieAuth.setLoginFormPath("/login");
@@ -174,9 +176,9 @@ public class QMRFApplication extends TaskApplication<String> {
 			cookieAuth.setLogoutPath("/signout");			
 
 			cookieAuth.setVerifier(new DBVerifier(getContext(),
-					"config/qmrf.properties", "tomcat_users"));
+					config, "tomcat_users"));
 			cookieAuth.setEnroler(new DbEnroller(getContext(),
-					"config/qmrf.properties", "tomcat_users"));
+					config, "tomcat_users"));
 			return cookieAuth;
 		} else {
 			cookieAuth.setVerifier(new SecretVerifier() {
@@ -202,7 +204,7 @@ public class QMRFApplication extends TaskApplication<String> {
 			
 			});
 			cookieAuth.setEnroler(new DbEnroller(getContext(),
-					"config/qmrf.properties", "tomcat_users"));
+					config, "tomcat_users"));
 		}
 		return cookieAuth;
 	}
@@ -246,9 +248,20 @@ public class QMRFApplication extends TaskApplication<String> {
 	 * @return
 	 */
 	protected Restlet createAdminRouter() {
-		return new QMRFAdminRouter(getContext());
+		Authorizer authz = new SimpleRoleAndMethodAuthorizer(new DBRole(QMRFRoles.qmrf_admin.name(),QMRFRoles.qmrf_admin.toString()));
+		authz.setNext(new QMRFAdminRouter(getContext()));
+		return authz;
 	}
-
+	/**
+	 * Resource /editor
+	 * 
+	 * @return
+	 */
+	protected Restlet createEditorRouter() {
+		Authorizer authz = new SimpleRoleAndMethodAuthorizer(new DBRole(QMRFRoles.qmrf_editor.name(),QMRFRoles.qmrf_editor.toString()));
+		authz.setNext(new QMRFEditorRouter(getContext()));
+		return authz;		
+	}
 	/**
 	 * Images, styles, icons Works if packaged as war only!
 	 * 
@@ -315,8 +328,11 @@ class SimpleRoleAndMethodAuthorizer extends RoleAuthorizer {
 
 	@Override
 	public boolean authorize(Request request, Response response) {
-		if (Method.GET.equals(request.getMethod()))
-			return true;
+		if ((request.getClientInfo()==null) || 
+			(request.getClientInfo().getUser()==null) ||
+			(request.getClientInfo().getUser().getIdentifier()==null)) return false;
+		//if (Method.GET.equals(request.getMethod()))
+		//	return true;
 		return super.authorize(request, response);
 	}
 

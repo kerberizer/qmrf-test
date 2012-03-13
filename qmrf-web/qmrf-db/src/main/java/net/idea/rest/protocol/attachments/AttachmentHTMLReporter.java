@@ -35,10 +35,10 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 			
 			((AttachmentURIReporter)uriReporter).setPrefix(String.format("%s/%s",Resources.protocol,qmrf));
 			setTitle(String.format("<a href='%s%s/%s'>%s</a> attachment",request.getRootRef(),Resources.protocol,qmrf,qmrf));
-			uploadUI = String.format("<a href='%s%s%s/%s' target='upload'>%s</a>",request.getRootRef(),Resources.admin,"/new",qmrf,"Add attachment(s)");
+			uploadUI = String.format("<a href='%s%s/%s' target='upload'>%s</a>",request.getRootRef(),Resources.editor,qmrf,"Add attachment(s)");
 		} else {
 			setTitle("Attachment");
-			uploadUI = String.format("<a href='%s%s%s'  target='upload'>%s</a>",request.getRootRef(),Resources.admin,"/new","Add new QMRF");
+			uploadUI = String.format("<a href='%s%s'  target='upload'>%s</a>",request.getRootRef(),Resources.editor,"Add new QMRF");
 		}
 	}
 	@Override

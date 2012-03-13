@@ -167,6 +167,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			"<div class='tabs'>\n",item.getIdentifier(),hidden?"none":""));
 			
 			output.write(String.format("<ul>\n"+
+			"<li><a href='#tabs-2'>General</a></li>"+
 			"<li><a href='#tabs-3'>Endpoint</a></li>"+
 			"<li><a href='#tabs-4'>Algorithm</a></li>"+
 			"<li><a href='#tabs-5'>App. domain</a></li>"+
@@ -180,7 +181,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	
 			qhtml.xml2summary(getDOMSource(item),output);
 		
-			output.write(String.format("<div id='Attachments'><span class='summary'>%s</span></div>","N/A"));
+			String uploadUI = String.format("<a href='%s%s/%s' target='upload'>%s</a>",
+					uriReporter.getBaseReference(),Resources.editor,item.getIdentifier(),"Add attachment(s)");
+			output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
 			
 			output.write("\n</div>\n");//tabs , protocol
 		} catch (Exception x) {

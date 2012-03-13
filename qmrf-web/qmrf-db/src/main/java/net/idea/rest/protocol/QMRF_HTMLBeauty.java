@@ -3,6 +3,7 @@ package net.idea.rest.protocol;
 import java.io.IOException;
 import java.io.Writer;
 
+import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
@@ -14,6 +15,7 @@ import org.restlet.Request;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
+import org.restlet.security.Role;
 
 public class QMRF_HTMLBeauty extends HTMLBeauty {
 	protected String searchURI = Resources.protocol;
@@ -159,24 +161,44 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			
 			w.write(String.format("<div id='wrap'><div id='header'>%s</div>\n",header));
-			//menu
-			String[][] menu = {
-					{Resources.protocol,"Documents"},
-					{Resources.structure,"Structures"},
-					{Resources.endpoint,"Endpoints"},
-					{Resources.user,"Users"},
-					{request.getClientInfo().getUser()==null?Resources.login:Resources.myaccount,request.getClientInfo().getUser()==null?"Login":"My account"}
-			};
 			w.write(
 					"<div id='inner-wrap'>\n" +
-					"\t<div id='left'>\n" +
+					"\t<div id='left'>\n");
+			
+			//menu
+			String[][] menu = {
+					{Resources.protocol,"Documents","10","All publshed QMRF documents"},
+					{Resources.structure,"Structures","10","Chemical structures search"},
+					{Resources.endpoint,"Endpoints",null,"QMRF documents by endpoints"},
+			};
+
+			w.write(
 					"\t\t<div id='menu'>\n" +
 					"\t\t\t<ul id='navmenu'>\n");
+						
 			for (String[] menuItem: menu) {
-				w.write(String.format("\t\t\t\t<li><a class='%s' href='%s%s?pagesize=10'>%s</a></li>\n",
-						getSearchURI().equals(menuItem[0])?"selected":"selectable",
-						baseReference,menuItem[0],menuItem[1]));
+				w.write(printMenuItem(menuItem[0], menuItem[1], baseReference.toString(), menuItem[2],menuItem[3]));
 			}
+			if (request.getClientInfo().getUser()!=null)  {
+				w.write(printMenuItem(Resources.myaccount, "My profile", baseReference.toString(),null,
+						String.format("%s profile and documents.",request.getClientInfo().getUser())));
+			}
+			for (Role role: request.getClientInfo().getRoles())  try {
+					QMRFRoles qmrfrole = QMRFRoles.valueOf(role.getName());
+					if (qmrfrole.getURI()!=null)
+						w.write(printMenuItem(qmrfrole.getURI(), qmrfrole.toString(), baseReference.toString(),null,qmrfrole.getHint()));
+					switch (qmrfrole) {
+					case qmrf_manager: {
+						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),"10","All registered users."));
+						w.write(printMenuItem(Resources.organisation, "Organisations", baseReference.toString(),"10","All registered user affiliations."));	
+					}
+					}
+				} catch (Exception x) {/*unknown role */}
+
+			w.write(printMenuItem(Resources.login, 
+					request.getClientInfo().getUser()==null?"Login":"Logout", 
+					baseReference.toString(),null,
+					request.getClientInfo().getUser()==null?"Login is only required for editors(to submit new documents)":String.format("%s logout",request.getClientInfo().getUser())));
 			w.write("\t\t\t\t<li id='/help'><a class='selectable' target='_help' href='http://qmrf.sf.net'>Help</a></li>\n");
 			w.write(
 			"\t\t\t</ul>\n" +
@@ -216,7 +238,18 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			*/
 
 		}
-
+		protected String printMenuItem(String relativeURI,String title,String baseReference,String pagesize) {
+			return this.printMenuItem(relativeURI, title, baseReference, pagesize,"");
+		}
+		protected String printMenuItem(String relativeURI,String title,String baseReference,String pagesize,String hint) {
+			return String.format("\t\t\t\t<li><a class='%s' title='%s' href='%s%s%s%s'>%s</a></li>\n",
+					getSearchURI().equals(relativeURI)?"selected":"selectable",
+					hint==null?title:hint,
+					baseReference,relativeURI,
+					pagesize==null?"":"?pagesize=",
+					pagesize==null?"":pagesize,
+					title);
+		}
 		
 		@Override
 		public void writeHTMLFooter(Writer output,String title,Request request) throws IOException {
@@ -420,8 +453,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				content.append("<div  class='ui-widget-header ui-corner-bottom'><p><input type='submit' enabled='false' value='Submit'></p></div>");
 //				content.append("<input type='submit' enabled='false' value='Submit'>");
 				content.append("</form>");
-
-				
 
 				return printWidget(
 							attachments?String.format("Add attachment(s) to <a href='%s' target='_blank'>%s</a>",protocol.getResourceURL(),protocol.getIdentifier()):
