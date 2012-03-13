@@ -200,7 +200,9 @@ public class QMRFApplication extends TaskApplication<String> {
 				return true;
 			}
 			
-		});
+			});
+			cookieAuth.setEnroler(new DbEnroller(getContext(),
+					"config/qmrf.properties", "tomcat_users"));
 		}
 		return cookieAuth;
 	}
