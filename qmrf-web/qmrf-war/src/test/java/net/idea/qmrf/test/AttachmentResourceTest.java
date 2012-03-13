@@ -77,7 +77,9 @@ public class AttachmentResourceTest extends ResourceTest {
 	}
 	
 	public String createEntryFromMultipartWeb(Reference uri) throws Exception {
+
 		URL url = getClass().getClassLoader().getResource("net/idea/qmrf/protocol-sample.pdf");
+		Assert.assertNotNull(url);
 		File file = new File(url.getFile());
 		
 		String[] names = new String[0];
