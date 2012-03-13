@@ -4,6 +4,8 @@ import java.io.StringWriter;
 
 import net.idea.modbcum.i.config.Preferences;
 import net.idea.qmrf.aa.QMRFLoginFormResource;
+import net.idea.qmrf.aa.QMRFLoginPOSTResource;
+import net.idea.qmrf.aa.QMRFLogoutPOSTResource;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.task.QMRFAdminResource;
 import net.idea.qmrf.task.QMRFAdminRouter;
@@ -135,8 +137,8 @@ public class QMRFApplication extends TaskApplication<String> {
 		
 		Router protectedRouter = new MyRouter(getContext());
 		protectedRouter.attach("/roles", QMRFLoginFormResource.class);
-		protectedRouter.attach(String.format("/%s", UserLoginPOSTResource.resource),UserLoginPOSTResource.class);
-		protectedRouter.attach(String.format("/%s", UserLogoutPOSTResource.resource),UserLogoutPOSTResource.class);
+		protectedRouter.attach(String.format("/%s", UserLoginPOSTResource.resource),QMRFLoginPOSTResource.class);
+		protectedRouter.attach(String.format("/%s", UserLogoutPOSTResource.resource),QMRFLogoutPOSTResource.class);
 
 		auth = createCookieAuthenticator(false);
 		auth.setNext(protectedRouter);
