@@ -87,9 +87,11 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		}
 		
 	}	
+
 	protected void printPageNavigator(Q query) throws Exception {
-		getOutput().write(((QMRF_HTMLBeauty)htmlBeauty).getPaging(query.getPage(),0,2,query.getPageSize()));
+		getOutput().write(((QMRF_HTMLBeauty)htmlBeauty).getPaging(query.getPage(), query.getPage()-4, query.getPage()+4, query.getPageSize()));
 	}
+
 	protected boolean printAsTable() {
 		return collapsed;
 	}
