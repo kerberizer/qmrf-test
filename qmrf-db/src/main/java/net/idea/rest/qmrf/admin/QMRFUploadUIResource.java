@@ -32,7 +32,6 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 	 */
 	private static final long serialVersionUID = 1658864353613787327L;
 	protected List<DBProtocol> items = new ArrayList<DBProtocol>();
-	public static final String resource = "new";
 	protected DBProtocol protocol = null;
 	
 	public QMRFUploadUIResource() {

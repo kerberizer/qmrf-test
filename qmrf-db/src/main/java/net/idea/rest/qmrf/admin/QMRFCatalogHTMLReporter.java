@@ -90,7 +90,7 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 		}
 	}
 	public String renderItemTitle(T item) {
-		return String.format("%d.",record);
+		return String.format("%d.",record+1);
 	}
 	public String renderItem(T item) {
 		String uri = super.getURI(item).trim();

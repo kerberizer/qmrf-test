@@ -1,5 +1,9 @@
 package net.idea.qmrf.client;
 
+import net.idea.restnet.aa.local.UserLoginFormResource;
+import net.idea.restnet.aa.resource.AdminResource;
+import net.idea.restnet.c.resource.TaskResource;
+
 public class Resources {
 	public static final String protocol = "/protocol";
 	public static final String structure = "/structure";
@@ -12,9 +16,11 @@ public class Resources {
 	public static final String authors = "/authors";
 	public static final String document = "/document";
 	public static final String attachment = "/attachment";
-	public static final String login = "/login";
+	public static final String editor = "/editor";
+	public static final String login = String.format("/%s",UserLoginFormResource.resource);
 	public static final String myaccount = "/myaccount";
-	public static final String admin = "/admin";
+	public static final String admin = String.format("/%s",AdminResource.resource);
+	public static final String task = TaskResource.resource;
 
 	/*
 	public static final String data_training = "/data_training";
