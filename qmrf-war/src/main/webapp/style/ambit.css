@@ -158,6 +158,11 @@ ul#navmenu {
 	height: 30px;
 }
 
+a.tbldivxpander {
+	padding: 5px 10px;
+	background-color: transparent;
+}
+
 A:link {
 	FONT-SIZE: 10pt;
 	COLOR: #109DFF;
