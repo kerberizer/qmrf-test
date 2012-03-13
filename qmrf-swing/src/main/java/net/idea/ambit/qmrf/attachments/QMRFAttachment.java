@@ -155,7 +155,6 @@ public class QMRFAttachment  implements InterfaceQMRF {
 
     public InputStream getContentAsStream() throws Exception {
     	if (getEmbedded() && (content != null)) {
-    		System.out.println("content!=null");
     		return new ByteArrayInputStream(content.toString().getBytes(UTF8charset));
     	} else {
     		
@@ -192,7 +191,6 @@ public class QMRFAttachment  implements InterfaceQMRF {
         		if (content == null) {
         			content = retrieveContent();
         		}
-        		System.out.println("encoding");
         		byte[] encoded = Base64.encodeBase64(content.toString().getBytes(UTF8charset));
         		
 

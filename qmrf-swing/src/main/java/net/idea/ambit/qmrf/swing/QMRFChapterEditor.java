@@ -254,7 +254,6 @@ public class QMRFChapterEditor extends AbstractQMRFChapterEditor {
         scrollPane =  new JScrollPane(centerPanel,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setPreferredSize(new Dimension(400,400));
         if (first != null) {
-        //	System.out.println(first + " request focus");
         	first.requestFocus();
         	//first.scrollRectToVisible(first.getBounds());
         	//centerPanel.scrollRectToVisible(new Rectangle(0,0,10,10));
@@ -268,7 +267,6 @@ public class QMRFChapterEditor extends AbstractQMRFChapterEditor {
     }
     private void componentFocusGained(java.awt.event.FocusEvent evt) {        
     	java.awt.Component focusedComponent = evt.getComponent();
-    	//System.out.println(focusedComponent.toString());
     	scrollRectToVisible(focusedComponent.getBounds(null));        
     	repaint();    
     }    

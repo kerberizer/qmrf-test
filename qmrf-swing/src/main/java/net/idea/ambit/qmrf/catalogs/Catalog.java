@@ -116,7 +116,6 @@ public class Catalog extends AmbitList<CatalogEntry> implements InterfaceQMRF, I
     	NodeList children = xml.getChildNodes();
         for (int i=0; i < children.getLength();i++) 
             if (Node.ELEMENT_NODE==children.item(i).getNodeType()) {
-                //System.out.println(nodes.item(i).getLocalName());
             	String name = children.item(i).getLocalName();
             	if (catalog_names[itemIndex][2].equals(name)) {
 	            	CatalogEntry entry = new CatalogEntry(name,attribute_names[itemIndex]) ;
@@ -227,7 +226,6 @@ public class Catalog extends AmbitList<CatalogEntry> implements InterfaceQMRF, I
 	
 	public int addCatalog(Catalog external) throws Exception {
         if (external != null) { //add`
-        	//System.out.println("Adding catalog "+ external.getName());
     		if (!external.getName().equals(getName())) throw new Exception("Uncompatible catalog types "+getName() + " and " + external.getName());
 
     		int count = 0;

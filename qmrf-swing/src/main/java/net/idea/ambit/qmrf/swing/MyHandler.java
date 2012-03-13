@@ -52,7 +52,7 @@ public class MyHandler extends SAXmyHandler {
 	
 	@Override
 	public void handleStartingTags(String name, Properties attributes) {
-		System.out.println(name);
+		
         if (Image.isTag(name)) {
             try {
 //                Image img = Image.getInstance(attributes);
