@@ -352,23 +352,31 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("<div id='content'>\n");
 		}
 		
-		public String getPaging(int page,int start, int last, long pageSize) {
+		// Paging
+		public String getPaging(int page, int start, int last, long pageSize) {
+
+			// Input normalization
+			start = start<0?0:start; // don't go beyond first page
+			// last = ... // some day we may do the same for the last
+
 			String search = searchQuery==null?"":Reference.encode(searchQuery);
 			String cond = condition==null?"":Reference.encode(condition);
 			String url = "<li><a href='?page=%d&pagesize=%d&search=%s&option=%s&condition=%s'>%s</a></li>";
-		    StringBuilder b = new StringBuilder(); 
-		    b.append("<div><ul id='hnavlist'>");
-		    b.append(String.format("<li><a href='#'>Pages:</a></li>"));
-		    b.append(String.format(url,0,pageSize,search,option==null?"":option.name(),cond,"<<"));
-		    b.append(String.format(url,page==0?page:page-1,pageSize,search,option==null?"":option.name(),cond,"Prev"));
-		    for (int i=start; i<= last; i++)
-		    	b.append(String.format(url,i,pageSize,//zero numbered pages
-		    			search,option==null?"":option.name(),cond,
-		    			i+1
-		    			)); 
-		    b.append(String.format(url,page+1,pageSize,search,option==null?"":option.name(),cond,"Next"));
-		    b.append("</ul></div><br>");
-		    return b.toString();
+
+			StringBuilder b = new StringBuilder(); 
+			b.append("<div><ul id='hnavlist'>");
+			b.append(String.format("<li><a href='#'>Pages:</a></li>"));
+			// Don't display "First" for the first page
+			if (page != 0) b.append(String.format(url, 0, pageSize, search, option==null?"":option.name(), cond, "<<"));
+			// Careful if we are on the second page
+			b.append(String.format(url, page==0?page:page-1, pageSize, search, option==null?"":option.name(), cond, "<"));
+			// Display links to pages. Pages are counted from zero! Hence why we display "i+1".
+			for (int i=start; i<= last; i++)
+				b.append(String.format(url, i, pageSize, search, option==null?"":option.name(), cond, i+1)); 
+			b.append(String.format(url, page+1, pageSize, search, option==null?"":option.name(), cond, ">"));
+			b.append("</ul></div><br>");
+
+			return b.toString();
 		}
 		/*
 		
