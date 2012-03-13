@@ -204,7 +204,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 				}
 			};
 			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getConfigFile());
-			conn = dbc.getConnection(getRequest());
+			conn = dbc.getConnection();
 
 			String dir = dbc.getDir();
 			if ("".equals(dir)) dir = null;
