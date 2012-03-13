@@ -140,7 +140,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n");
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jme/jme.js\"></script>\n",baseReference));
 			w.write("<script>$(function() {$( \".accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
-			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\"});});</script>");
+			w.write("<script>$(function() {$(\"#submit\").button();});</script>");
 			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true, ajaxOptions: {error: function( xhr, status, index, anchor ) {$( anchor.hash ).html(status );}}});});</script>");
 			w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
 			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
