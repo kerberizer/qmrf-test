@@ -119,8 +119,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);				
 		} else if (singleItem && (structure==null)) {
 			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType()),variant.getMediaType());		
-		}
-		throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);
+		} else return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);		
 	}
 	
 	@Override

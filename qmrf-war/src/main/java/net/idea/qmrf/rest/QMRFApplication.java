@@ -149,11 +149,11 @@ public class QMRFApplication extends TaskApplication<String> {
 	
 		router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
 		router.setRoutingMode(Router.MODE_BEST_MATCH);
-
+		/*
 		StringWriter w = new StringWriter();
 		QMRFApplication.printRoutes(router, ">", w);
 		System.out.println(w.toString());
-
+		*/
 		return router;
 	}
 
