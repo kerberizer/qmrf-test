@@ -11,6 +11,7 @@ import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
 import net.idea.qmrf.converters.QMRFConverter;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
+import net.idea.rest.protocol.CallableProtocolUpload.UpdateMode;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.db.ReadProtocol;
@@ -20,7 +21,6 @@ import net.toxbank.client.resource.Organisation;
 import net.toxbank.client.resource.Project;
 import net.toxbank.client.resource.Protocol;
 import net.toxbank.client.resource.Protocol.STATUS;
-import net.toxbank.client.resource.Template;
 import net.toxbank.client.resource.User;
 
 import org.apache.commons.fileupload.FileItem;
@@ -29,7 +29,12 @@ import org.restlet.resource.ResourceException;
 
 public class ProtocolFactory {
 	protected static final String utf8= "UTF-8";
-	public static DBProtocol getProtocol(DBProtocol protocol,List<FileItem> items, long maxSize, File dir, AccessRights accessRights) throws ResourceException {
+	public static DBProtocol getProtocol(DBProtocol protocol,
+				List<FileItem> items, 
+				long maxSize,
+				File dir, 
+				AccessRights accessRights,
+				UpdateMode updateMode) throws ResourceException {
 		
 		if (protocol==null) protocol = new DBProtocol();
 		for (final Iterator<FileItem> it = items.iterator(); it.hasNext();) {
@@ -74,7 +79,17 @@ public class ProtocolFactory {
 						protocol.setAbstract(fi.getString(utf8));
 						//protocol.setDocument(new Document(new URL(fi.getString(utf8))));
 					} else {	
-						if (fi.getSize()==0)  throw new ResourceException(new Status(Status.CLIENT_ERROR_BAD_REQUEST,"Empty file!"));
+						if (fi.getSize()==0)  {
+							switch (updateMode) {
+							case create:
+								throw new ResourceException(new Status(Status.CLIENT_ERROR_BAD_REQUEST,"Empty file!"));								
+							case createversion:
+								throw new ResourceException(new Status(Status.CLIENT_ERROR_BAD_REQUEST,"Empty file!"));								
+							default: {
+								continue; //ignore, not mandatory
+							}
+							}	
+						}
 						File file = null;
 				        if (fi.getName()==null)
 				           	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"File name can't be empty!");
@@ -111,7 +126,7 @@ public class ProtocolFactory {
 					if (attachment!=null) protocol.getAttachments().add(attachment);
 					break;
 				}
-				case attachment :{
+				case document :{
 					DBAttachment attachment = createAttachment(fi,protocol,attachment_type.document,dir);
 					if (attachment!=null) protocol.getAttachments().add(attachment);
 					break;
@@ -241,7 +256,7 @@ public class ProtocolFactory {
 			if (fi.isFormField()) {
 //				protocol.setDataTemplate(new Template(new URL(fi.getString(utf8))));
 			} else {	
-				if (fi.getSize()==0)  throw new ResourceException(new Status(Status.CLIENT_ERROR_BAD_REQUEST,"Empty file!"));
+				if (fi.getSize()==0) return null;
 				File file = null;
 		        if (fi.getName()==null)
 		           	throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"File name can't be empty!");
