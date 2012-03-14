@@ -26,6 +26,7 @@ import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.PageParams;
 import net.idea.restnet.c.RepresentationConvertor;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.c.task.TaskCreator;
@@ -128,6 +129,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
 		ProtocolQueryHTMLReporter rep = new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null,details);
 		rep.setHeadless(headless);
+		rep.setDtdresolver(((TaskApplication)getApplication()).getResolver());
 		return rep;
 	}
 	protected boolean isEditable() {

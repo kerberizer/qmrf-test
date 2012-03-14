@@ -30,6 +30,7 @@ import org.restlet.Request;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 import org.w3c.dom.Document;
+import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
 
@@ -46,10 +47,17 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected DocumentBuilder builder;
 	protected DocumentBuilderFactory factory;
 	protected QMRF_xml2html qhtml;
-	
+	protected EntityResolver dtdresolver;
+	public EntityResolver getDtdresolver() {
+		return dtdresolver;
+	}
+	public void setDtdresolver(EntityResolver dtdresolver) {
+		this.dtdresolver = dtdresolver;
+	}
 	public ProtocolQueryHTMLReporter() {
 		this(null,true,false,true,false);
 	}
+	final String dtdSchema = "http://ambit.sourceforge.net/qmrf/qmrf.dtd";
 	public ProtocolQueryHTMLReporter(Request request, boolean collapsed,boolean editable,boolean paging, boolean details) {
 		super(request,collapsed,null,null);
 		setTitle(!collapsed?null:"QMRF document");
@@ -57,6 +65,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		userReporter = new UserURIReporter<IQueryRetrieval<DBUser>>(request);
 		this.paging = !collapsed?false:paging;
 		this.details = !collapsed?true:details;
+
 
 	}	
 	@Override
@@ -115,20 +124,18 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	}
 	protected DOMSource getDOMSource(DBProtocol item) throws Exception {
 		  String xml = item.getAbstract();
-		  /*
-		  .replace("&lt;html&gt;","").replace("&lt;/html&gt;","")
-   		.replace("&lt;body&gt;","").replace("&lt;/body&gt;","")
-   		.replace("&lt;head&gt;","").replace("&lt;/head&gt;","").replace("&#13;","\n");
-		  /*
-   		.replace("&lt;p style=\"margin-top: 0\"&gt;","").replace("&lt;/p&gt;","<br/>");
-   		*/
 		  if (factory==null) {
 			    factory = DocumentBuilderFactory.newInstance();
-		        factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-		        factory.setValidating(false);
+		       // factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+		        factory.setValidating(true);
 		  }
-		   if (builder==null) builder = factory.newDocumentBuilder();
+		   if (builder==null) {
+			   builder = factory.newDocumentBuilder();
+
+			   builder.setEntityResolver(dtdresolver);
+		   }
 		   Document xmlDocument = builder.parse( new InputSource(new StringReader(xml)));
+		   
 		   return new DOMSource(xmlDocument);
 	}
 	protected void printHTML(Writer output, String uri, DBProtocol item, boolean hidden) throws Exception {
@@ -167,6 +174,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			"<div class='tabs'>\n",item.getIdentifier(),hidden?"none":""));
 			
 			output.write(String.format("<ul>\n"+
+			"<li><a href='#tabs-1'>Identifier</a></li>"+
 			"<li><a href='#tabs-2'>General</a></li>"+
 			"<li><a href='#tabs-3'>Endpoint</a></li>"+
 			"<li><a href='#tabs-4'>Algorithm</a></li>"+
