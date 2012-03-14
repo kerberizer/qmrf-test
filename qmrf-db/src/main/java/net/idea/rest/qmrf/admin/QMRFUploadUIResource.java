@@ -63,7 +63,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 			public void header(Writer w, Iterator<DBProtocol> query) {
 				super.header(w, query);
 				String uri = protocol==null?String.format("%s%s",getRequest().getRootRef().toString(), Resources.protocol):
-					String.format("%s/%s",protocol.getResourceURL(),Resources.attachment);
+					String.format("%s%s",protocol.getResourceURL(),Resources.attachment);
 				boolean attachments = true;
 				try {
 					if (protocol==null) {
