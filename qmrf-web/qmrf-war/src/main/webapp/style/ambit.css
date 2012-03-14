@@ -151,6 +151,12 @@ ul#navmenu {
 	font-weight: 900;
 }
 
+#navmenu li a.hovered {
+	color: #107FEB;
+	background-color: #FFF47A;
+	display: block;
+}
+
 #navmenu li input, #navmenu li form, #navmenu li#createbutton {
 	width: 100%;
 	padding: 0;
@@ -248,6 +254,12 @@ ul#hnavlist li a.current {
 	text-align: center;
 	text-decoration: none;
 	border-right: 1px solid white;
+}
+
+ul#hnavlist li a.phovered {
+	color: #107FEB;
+	background-color: #FFF47A;
+	display: block;
 }
 
 ul#hnavlist li.inactive {

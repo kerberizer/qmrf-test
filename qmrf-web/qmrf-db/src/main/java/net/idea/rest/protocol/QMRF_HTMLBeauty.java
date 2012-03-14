@@ -205,21 +205,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"\t\t\t</ul>\n" +
 			"\t\t</div>\n");
 		
-			/*
-			This script creates a blinking effect for the menu option that is currently being mouseovered.
-			The effect is achieved via the .animate() jQuery UI extended method, using window.setInterval().
-			A custom CSS class (not necessary to be defined in a .css) is used to mark the 'hovered' option.
-			*/
+			// Apply style for the hovered buttons sans (!) the currently selected one.
+			// There are better ways to do it, but this should be okay for now.
 			w.write(String.format(
 				"<script>\n" +
 
-				"menuBlinkTimer = self.setInterval('blinker()', 1000);\n" +
-				"function blinker() {" +
-					"$('a.hovered')." +
-						"animate( { color: '#ffffff', backgroundColor: '#109dff' }, 200 )." +
-						"delay(200)." +
-						"animate( { color: '#107feb', backgroundColor: '#d9ecf9' }, 500 );" +
-				"};\n" +
 				"$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );\n" +
 				"$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );\n" +
 
@@ -378,8 +368,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			// Display "first" and "previous" for the first page as inactive.
 			if (page > 0) {
-				b.append(String.format(url, "selectable", 0, pageSize, search, option==null?"":option.name(), cond, "&lt;&lt;"));
-				b.append(String.format(url, "selectable", page-1, pageSize, search, option==null?"":option.name(), cond, "&lt;"));
+				b.append(String.format(url, "pselectable", 0, pageSize, search, option==null?"":option.name(), cond, "&lt;&lt;"));
+				b.append(String.format(url, "pselectable", page-1, pageSize, search, option==null?"":option.name(), cond, "&lt;"));
 			} else {
 				b.append(String.format("<li class='inactive'>&lt;&lt;</li>"));
 				b.append(String.format("<li class='inactive'>&lt;</li>"));
@@ -387,12 +377,24 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			// Display links to pages. Pages are counted from zero! Hence why we display "i+1".
 			for (int i=start; i<= last; i++)
-				b.append(String.format(url, i==page?"current":"selectable", i, pageSize, search, option==null?"":option.name(), cond, i+1)); 
-			b.append(String.format(url, "selectable", page+1, pageSize, search, option==null?"":option.name(), cond, "&gt;"));
+				b.append(String.format(url, i==page?"current":"pselectable", i, pageSize, search, option==null?"":option.name(), cond, i+1)); 
+			b.append(String.format(url, "pselectable", page+1, pageSize, search, option==null?"":option.name(), cond, "&gt;"));
 			b.append("</ul></div><br>");
+
+			// Apply style for the hovered buttons sans (!) the currently selected one.
+			// There are better ways to do it, but this should be okay for now.
+			b.append(String.format(
+				"<script>\n" +
+
+				"$('a.pselectable').mouseover(function () { $(this).addClass('phovered');    } );\n" +
+				"$('a.pselectable').mouseout(function  () { $(this).removeClass('phovered'); } );\n" +
+
+				"</script>\n"
+			));
 
 			return b.toString();
 		}
+
 		/*
 		
 		public String getPaging(int page,int start, int last, long pageSize) {
