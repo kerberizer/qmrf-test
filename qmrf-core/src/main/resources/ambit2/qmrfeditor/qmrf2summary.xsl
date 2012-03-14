@@ -309,13 +309,17 @@
 <xsl:template match="algorithm_explicit">
   <strong><xsl:value-of select="@name" /></strong>
   <xsl:value-of select="." disable-output-escaping="yes"/>	
+  <table width='100%'>
   <xsl:apply-templates select="algorithm_ref"/>
+  </table>
 </xsl:template>
 
 <xsl:template match="algorithms_descriptors">
   <strong><xsl:value-of select="@name" /></strong>
-  <xsl:value-of select="." disable-output-escaping="yes"/>	
+  <xsl:value-of select="." disable-output-escaping="yes"/>
+  <table width='100%'>	
   <xsl:apply-templates select="descriptor_ref"/>
+  </table>
 </xsl:template>
 
 <xsl:template match="descriptors_generation_software">
@@ -331,6 +335,12 @@
 
 </xsl:template>
 
+
+<xsl:template match="descriptors_selection">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+
+</xsl:template>
 <xsl:template match="descriptors_generation">
   <strong><xsl:value-of select="@name" /></strong>
   <xsl:value-of select="." disable-output-escaping="yes"/>	
@@ -653,9 +663,11 @@
 </xsl:template>
 
 <xsl:template match="algorithm_ref"> 
+  <tr><td>
 	<xsl:value-of select="id(@idref)/@definition" disable-output-escaping="yes"/>
-	<br/>	
+  </td><td>
 	<xsl:value-of select="id(@idref)/@description" disable-output-escaping="yes"/>	
+  </td></tr>	
 </xsl:template>
 
 
@@ -688,6 +700,18 @@ crashes if using id(@idref)/@version  - apparently in some xml files the version
 		 -->	
 </xsl:template>
 
+<xsl:template match="descriptor_ref"> 
+<tr>
+<td>
+	<xsl:value-of select="id(@idref)/@name"/>,
+</td><td>	
+	<xsl:value-of select="id(@idref)/@units"/>
+</td><td>
+	<xsl:value-of select="id(@idref)/@description"/>	
+</td>
+</tr>
+</xsl:template>
+
 <xsl:template name="print_href">
  <xsl:choose>
     <xsl:when test="id(@idref)/@url != ''">
@@ -703,6 +727,7 @@ crashes if using id(@idref)/@version  - apparently in some xml files the version
   </xsl:choose>
 
  </xsl:template>
+
 
 <!-- end xslt -->
  </xsl:stylesheet>
