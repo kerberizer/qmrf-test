@@ -256,6 +256,7 @@ public class ProtocolFactory {
 			if (fi.isFormField()) {
 //				protocol.setDataTemplate(new Template(new URL(fi.getString(utf8))));
 			} else {	
+				String description = "";
 				if (fi.getSize()==0) return null;
 				File file = null;
 		        if (fi.getName()==null)
@@ -268,14 +269,15 @@ public class ProtocolFactory {
 		        		dir = new File(dir==null?new File(System.getProperty("java.io.tmpdir")):dir,type.name());
 		        		if ((dir!=null) && !dir.exists())  dir.mkdir();
 		        	} catch (Exception x) {dir = null; }
+		        	description = fi.getName();
 		          	file = new File(
 		            		String.format("%s/%s",
 		            				dir==null?System.getProperty("java.io.tmpdir"):dir,
-		            				fi.getName()));
+		            				protocol.getID()>0?String.format("qmrf%d_%s", protocol.getID(),fi.getName()):fi.getName()));
 		        }
 		        fi.write(file);
 		       
-		        return DBAttachment.file2attachment(file, file.getName(), type);
+		        return DBAttachment.file2attachment(file, description, type);
 		        
 			}
 			return null;

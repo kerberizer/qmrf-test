@@ -5,6 +5,7 @@ import java.io.Writer;
 
 import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
 import net.idea.restnet.c.AbstractResource;
@@ -425,50 +426,71 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 				StringBuilder content = new StringBuilder();
 
+				content.append(printWidgetHeader(
+						attachments?String.format("Add attachment(s) to <a href='%s' target='_blank'>%s</a>",protocol.getResourceURL(),protocol.getIdentifier()):
+					String.format("Add new %s %s","QMRF document",uri.toString().contains("versions")?"version":"")));
+				content.append(printWidgetContentHeader(""));
 				content.append(String.format("<form method='POST' action=\"%s\" ENCTYPE=\"multipart/form-data\">",action));
-
-				content.append("<div class='ui-widget-content'><p><strong>QMRF XML file</strong> (1 file) </p></div>");
-				content.append(String.format("<p><input type=\"file\" class='multi max-1 accept-xml' name=\"%s\" title='%s' size=\"60\"></p>",
-						ReadProtocol.fields.filename.name(),
-						"QMRF XML")); 	
-				try {
-				content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
-						ReadProtocol.fields.user_uri.name(),"Owner",protocol==null?"":protocol.getOwner()==null?"":protocol.getOwner().getResourceURL()));
-				content.append(String.format(
-						"<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
-						ReadProtocol.fields.organisation_uri.name(),"Organisation",protocol==null?"":protocol.getOrganisation()==null?"":protocol.getOrganisation().getResourceURL()));
-				content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
-						ReadProtocol.fields.project_uri.name(),"Project",protocol==null?"":protocol.getProject()==null?"":protocol.getProject().getResourceURL()));
-				} catch (Exception x) {x.printStackTrace(); /*ok, no defaults if anything goes wrong */ }		
-				if (attachments) {
-				content.append("<div class='ui-widget-content'><p>Attachments: Training dataset(s) - SDF, MOL, CSV, XLS formats, 3 files max</p></div>");
-				content.append(String.format("<p><input type=\"file\"  class='multi' maxlength='3' accept='sdf|mol|csv|xls' name=\"%s\" title='%s' size=\"60\"></p>",
-						"data_training",
-						"Training dataset(s) - SDF, MOL, CSV, XLS formats")); 		
-				content.append("<div class='ui-widget-content'><p>Attachments: Test dataset(s) - SDF, MOL, CSV, XLS formats, 3 files max</p></div>");
-				content.append(String.format("<p><input type=\"file\"  class='multi' maxlength='3' accept='sdf|mol|csv|xls' name=\"%s\" title='%s' size=\"60\"></p>",
-						"data_validation",
-						"Test dataset(s) - SDF, MOL, CSV, XLS formats")); 			
-				content.append("<div class='ui-widget-content'><p>Attachments: Related document(s) - PDF,3 files max</p></div>");
-				content.append(String.format("<p><input type=\"file\"  class='multi' maxlength='3' accept='pdf|doc|xls' name=\"%s\" title='%s' size=\"60\"></p>",
-						"document",
-						"Related documents - PDF"));
-				}
-				content.append("<div class='ui-widget-content'><p>Options</p></div>");
-				content.append(String.format("<p><strong>%s</strong>%s</p>",
-						"Publish immediately",
-						ReadProtocol.fields.published.getHTMLField(protocol)
-						));					
+				content.append("<table>");
+				content.append("<tr>");
 				
-				content.append("<div  class='ui-widget-header ui-corner-bottom'><p><input type='submit' enabled='false' value='Submit'></p></div>");
+				try {
+					content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
+							ReadProtocol.fields.user_uri.name(),"Owner",protocol==null?"":protocol.getOwner()==null?"":protocol.getOwner().getResourceURL()));
+					content.append(String.format(
+							"<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
+							ReadProtocol.fields.organisation_uri.name(),"Organisation",protocol==null?"":protocol.getOrganisation()==null?"":protocol.getOrganisation().getResourceURL()));
+					content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
+							ReadProtocol.fields.project_uri.name(),"Project",protocol==null?"":protocol.getProject()==null?"":protocol.getProject().getResourceURL()));
+					} catch (Exception x) {x.printStackTrace(); /*ok, no defaults if anything goes wrong */ }	
+				//The XMLf
+				
+				if (attachments) {
+					
+				
+					for (attachment_type atype: attachment_type.values()) {
+						if (atype.ordinal() % 2 ==0) {
+							content.append("</tr><tr>");
+						}
+						String title= String.format("Attachments: %s(s) - %s, %s files max", atype.toString(),atype.getDescription(),atype.maxFiles());
+						content.append("<td>");
+						content.append(printWidget(title,
+								String.format("<p><input type=\"file\"  class='multi' maxlength='%d' accept='%s' name=\"%s\" title='%s' size=\"60\"></p>",
+										atype.maxFiles(),
+										atype.acceptFormats(),
+										atype.name(),
+										title),"box"
+								));
+						content.append("</td>");
+					}
+			
+				
+				} else {
+					content.append("<td>");
+					content.append(printWidget("QMRF XML file", 
+						String.format("<p><input type=\"file\" class='multi max-1 accept-xml' name=\"%s\" title='%s' size=\"60\"></p>",
+								ReadProtocol.fields.filename.name(),
+								"QMRF XML"),"box"
+						));
+				
+					content.append("</td>");					
+				}
+				content.append("<td>");	
+				content.append(printWidget("Options",
+						String.format("<strong>%s</strong>%s",
+						"Publish immediately",	ReadProtocol.fields.published.getHTMLField(protocol)),"box"
+						));	
+				content.append("</td>");					
+				content.append("</tr>");
+				content.append("<tr><td colspan='2' align='center'><input type='submit' id='submit' enabled='false' value='Submit'></td>");
 //				content.append("<input type='submit' enabled='false' value='Submit'>");
-				content.append("</form>");
 
-				return printWidget(
-							attachments?String.format("Add attachment(s) to <a href='%s' target='_blank'>%s</a>",protocol.getResourceURL(),protocol.getIdentifier()):
-							String.format("Add new %s %s","QMRF document",uri.toString().contains("versions")?"version":""),
-							content.toString(),
-							"");
+				content.append("</tr>");
+				content.append("</table>");
+				content.append("</form>");
+				content.append(printWidgetContentFooter());
+				content.append(printWidgetFooter());
+				return	content.toString();
 
 		}	
 		

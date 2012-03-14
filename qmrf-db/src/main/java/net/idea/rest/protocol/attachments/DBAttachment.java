@@ -18,19 +18,35 @@ public class DBAttachment extends Document {
 			public String toString() {
 				return "Training dataset";
 			}
+			@Override
+			public String getDescription() {
+				return "SDF, MOL, CSV, XLS formats";
+			}
 		},
 		data_validation {
 			@Override
 			public String toString() {
 				return "Validation dataset";
 			}
+			@Override
+			public String getDescription() {
+				return "SDF, MOL, CSV, XLS formats";
+			}			
 		},
 		document {
 			@Override
 			public String toString() {
 				return "Document";
 			}
+			@Override
+			public String getDescription() {
+				return "PDF";
+			}	
+			public String acceptFormats() { return "pdf|doc|xls"; };
 		};
+		public String getDescription() { return toString();}
+		public int maxFiles() { return 3;}
+		public String acceptFormats() { return "sdf|mol|csv|xls"; };
 		
 	}
 	protected attachment_type type;
