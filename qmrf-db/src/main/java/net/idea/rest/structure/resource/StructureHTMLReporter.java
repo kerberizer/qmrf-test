@@ -249,21 +249,60 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   );
 	}
 	@Override
-	public String getPaging(int page,int start, int last, long pageSize) {
-		String url = "<li><a href='?page=%d&pagesize=%d&search=%s&option=%s&threshold=%s'>%s</a></li>";
-	    StringBuilder b = new StringBuilder(); 
-	    b.append("<div><ul id='hnavlist'>");
-	    b.append(String.format("<li><a href='#'>Pages:</a></li>"));
-	    b.append(String.format(url,0,pageSize,searchQuery==null?"":searchQuery,option==null?"":option.name(),threshold==null?"":threshold,"<<"));
-	    b.append(String.format(url,page==0?page:page-1,pageSize,searchQuery==null?"":searchQuery,option==null?"":option.name(),threshold==null?"":threshold,"Prev"));
-	    for (int i=start; i<= last; i++)
-	    	b.append(String.format(url,i,pageSize,//zero numbered pages
-	    			searchQuery==null?"":searchQuery,option==null?"":option.name(),threshold==null?"":threshold,
-	    			i+1
-	    			)); 
-	    b.append(String.format(url,page+1,pageSize,searchQuery==null?"":searchQuery,option==null?"":option.name(),threshold==null?"":threshold,"Next"));
-	   // b.append(String.format("<li><label name='pageSize' value='%d' size='4' title='Page size'></li>",pageSize));
-	    b.append("</ul></div><br>");
-	    return b.toString();
-	}
+	public String getPaging(int page, int start, int last, long pageSize) {
+
+		// Having a constant number of pages display on top is convenient for the users and provides more consistent
+		// overall look. But this would require the function to define different input parameters. In order to not
+		// break it, implement a workaround, by calculating how many pages the caller (likely) intended to be shown.
+		int total = last - start;
+
+		// Normalization
+		start = start<0?0:start; // don't go beyond first page
+		last = start + total;
+
+		String url = "<li><a class='%s' href='?page=%d&pagesize=%d&search=%s&option=%s&threshold=%s'>%s</a></li>";
+
+		StringBuilder b = new StringBuilder(); 
+		b.append("<div><ul id='hnavlist'>");
+
+		// Disable this for the time being as it seems to not fit well into the overall look.
+		//b.append(String.format("<li><a href='#'>Pages:</a></li>"));
+
+		// Display "first" and "previous" for the first page as inactive.
+		if (page > 0) {
+			b.append(String.format(url, "pselectable", 0, pageSize,
+					searchQuery==null?"":searchQuery, option==null?"":option.name(),
+					threshold==null?"":threshold, "&lt;&lt;"));
+			b.append(String.format(url, "pselectable", page-1, pageSize,
+					searchQuery==null?"":searchQuery, option==null?"":option.name(),
+					threshold==null?"":threshold, "&lt;"));
+		} else {
+			b.append(String.format("<li class='inactive'>&lt;&lt;</li>"));
+			b.append(String.format("<li class='inactive'>&lt;</li>"));
+		}
+
+		// Display links to pages. Pages are counted from zero! Hence why we display "i+1".
+		for (int i=start; i<= last; i++)
+			b.append(String.format(url, i==page?"current":"pselectable", i, pageSize,
+					searchQuery==null?"":searchQuery, option==null?"":option.name(), threshold==null?"":threshold, i+1)); 
+		b.append(String.format(url, "pselectable", page+1, pageSize,
+					searchQuery==null?"":searchQuery, option==null?"":option.name(), threshold==null?"":threshold,"&gt;"));
+		// b.append(String.format("<li><label name='pageSize' value='%d' size='4' title='Page size'></li>",pageSize));
+		b.append("</ul></div><br>");
+
+		// Apply style for the hovered buttons sans (!) the currently selected one.
+		// There are better ways to do it, but this should be okay for now.
+		b.append(String.format(
+			"<script>\n" +
+
+			"$('a.pselectable').mouseover(function () { $(this).addClass('phovered');    } );\n" +
+			"$('a.pselectable').mouseout(function  () { $(this).removeClass('phovered'); } );\n" +
+
+			"</script>\n"
+		));
+
+		return b.toString();
+
+	} // getPaging()
+
 }
