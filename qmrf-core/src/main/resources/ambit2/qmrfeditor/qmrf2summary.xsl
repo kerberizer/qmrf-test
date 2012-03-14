@@ -192,7 +192,7 @@
 
 <xsl:template match="info_availability">
   <strong><xsl:value-of select="@name" /></strong>
-  <xsl:value-of select="."  disable-output-escaping="yes"/>		
+  <xsl:value-of select="info_availability/@answer"/>		
 </xsl:template>
 
 
@@ -387,6 +387,9 @@
 
 <xsl:template match="QSAR_Robustness">
   <h2><xsl:value-of select="@name" /></h2>
+    <div class='summary'><p>
+  <xsl:apply-templates select="training_set_data"/>
+   </p></div>
   <div class='summary'><p>
   <xsl:apply-templates select="goodness_of_fit"/>
   </p></div>
@@ -411,9 +414,7 @@
   <div class='summary'><p>
   <xsl:apply-templates select="preprocessing"/>
   </p></div>
-  <div class='summary'><p>
-  <xsl:apply-templates select="training_set_data"/>
-   </p></div>
+
 </xsl:template>
 
 
@@ -524,7 +525,7 @@
 
 <xsl:template match="validation_dependent_var_availability">
   <strong><xsl:value-of select="@name" /></strong>
-  <xsl:value-of select="." disable-output-escaping="yes"/>	
+   <xsl:value-of select="validation_dependent_var_availability/@answer"/>	
 </xsl:template>
 
 
@@ -589,9 +590,13 @@
 
 <!--  -->
 
-<xsl:template match="training_set_data"> 
-    <strong><xsl:value-of select="training_set_availability/@name"/></strong>
+<xsl:template match="training_set_availability">
+    <strong><xsl:value-of select="@name" /></strong>
     <xsl:value-of select="training_set_availability/@answer"/>
+</xsl:template>
+
+
+<xsl:template match="training_set_data"> 
 	<strong><xsl:value-of select="@name" /></strong>
 	<ul>
 	<li><b>Chemname:</b><xsl:text> </xsl:text> <xsl:value-of select="@chemname"/></li>				
@@ -605,7 +610,7 @@
 
 <xsl:template match="validation_set_availability/@name">
     <strong><xsl:value-of select="@name" /></strong>
-  <xsl:value-of select="." disable-output-escaping="yes"/>	
+   <xsl:value-of select="validation_set_availability/@answer"/>	
 </xsl:template>
 
 <xsl:template match="validation_set_data"> 
@@ -682,6 +687,8 @@ crashes if using id(@idref)/@version  - apparently in some xml files the version
 </xsl:template>
 
 <xsl:template name="print_href">
+ <xsl:choose>
+    <xsl:when test="id(@idref)/@url != ''">
 	 		<a>
 			<xsl:attribute name="href">
 			<xsl:value-of select="id(@idref)/@url" disable-output-escaping="yes"/>
@@ -689,6 +696,10 @@ crashes if using id(@idref)/@version  - apparently in some xml files the version
 			<xsl:attribute name="target">_blank</xsl:attribute>
 			<xsl:value-of select="id(@idref)/@url" disable-output-escaping="yes"/>
 			</a> 
+    </xsl:when>
+    <xsl:otherwise></xsl:otherwise> <!-- default value -->
+  </xsl:choose>
+
  </xsl:template>
 
 <!-- end xslt -->
