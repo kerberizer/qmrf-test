@@ -357,9 +357,14 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		// Paging
 		public String getPaging(int page, int start, int last, long pageSize) {
 
-			// Input normalization
+			// Having a constant number of pages display on top is convenient for the users and provides more consistent
+			// overall look. But this would require the function to define different input parameters. In order to not
+			// break it, implement a workaround, by calculating how many pages the caller (likely) intended to be shown.
+			int total = last - start;
+
+			// Normalization
 			start = start<0?0:start; // don't go beyond first page
-			// last = ... // some day we may do the same for the last
+			last = start + total;
 
 			String search = searchQuery==null?"":Reference.encode(searchQuery);
 			String cond = condition==null?"":Reference.encode(condition);
@@ -367,16 +372,23 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			StringBuilder b = new StringBuilder(); 
 			b.append("<div><ul id='hnavlist'>");
-			b.append(String.format("<li id='pagerPages'>Pages</li>"));
-			// Don't display "first" and "previous" for the first page
+
+			// Disable this for the time being as it seems to not fit well into the overall look.
+			//b.append(String.format("<li id='pagerPages'>Pages</li>"));
+
+			// Display "first" and "previous" for the first page as inactive.
 			if (page > 0) {
-				b.append(String.format(url, 0, pageSize, search, option==null?"":option.name(), cond, "<<"));
-				b.append(String.format(url, page-1, pageSize, search, option==null?"":option.name(), cond, "<"));
+				b.append(String.format(url, 0, pageSize, search, option==null?"":option.name(), cond, "&lt;&lt;"));
+				b.append(String.format(url, page-1, pageSize, search, option==null?"":option.name(), cond, "&lt;"));
+			} else {
+				b.append(String.format("<li class='inactive'>&lt;&lt;</li>"));
+				b.append(String.format("<li class='inactive'>&lt;</li>"));
 			}
+
 			// Display links to pages. Pages are counted from zero! Hence why we display "i+1".
 			for (int i=start; i<= last; i++)
 				b.append(String.format(url, i, pageSize, search, option==null?"":option.name(), cond, i+1)); 
-			b.append(String.format(url, page+1, pageSize, search, option==null?"":option.name(), cond, ">"));
+			b.append(String.format(url, page+1, pageSize, search, option==null?"":option.name(), cond, "&gt;"));
 			b.append("</ul></div><br>");
 
 			return b.toString();

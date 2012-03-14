@@ -215,16 +215,6 @@ A:hover {
 	border: 0;
 }
 
-li#pagerPages {
-	color: white;
-	background-color: #109DFF;
-	float: left;
-	padding: 0.2em 0.5em;
-	height: 19px;
-	text-decoration: none;
-	border-right: 1px solid white;
-}
-
 ul#hnavlist {
 	list-style-type: none;
 	padding: 0;
@@ -239,11 +229,25 @@ ul#hnavlist li {
 ul#hnavlist li a {
 	float: left;
 	color: #107FEB;
-	padding: 0.2em 0.5em;
+	padding: 0.4em 0.5em 0;
 	height: 19px;
+	width: 2.5em;
+	text-align: center;
 	text-decoration: none;
 	border-right: 1px solid white;
 	background-color: #d9ecf9;
+}
+
+ul#hnavlist li.inactive {
+	float: left;
+	background-color: #f0f0f0;
+	color: gray;
+	padding: 0.4em 0.5em 0;
+	height: 19px;
+	width: 2.5em;
+	text-align: center;
+	text-decoration: none;
+	border-right: 1px solid white;
 }
 
 /*
