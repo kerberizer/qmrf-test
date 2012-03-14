@@ -165,8 +165,7 @@ ul#navmenu {
 }
 
 a.tbldivxpander {
-	padding: 5px 10px;
-	background-color: transparent;
+	text-decoration: none;
 }
 
 A:link {
