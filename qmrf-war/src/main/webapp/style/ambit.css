@@ -229,13 +229,25 @@ ul#hnavlist li {
 ul#hnavlist li a {
 	float: left;
 	color: #107FEB;
+	background-color: #d9ecf9;
 	padding: 0.4em 0.5em 0;
 	height: 19px;
 	width: 2.5em;
 	text-align: center;
 	text-decoration: none;
 	border-right: 1px solid white;
-	background-color: #d9ecf9;
+}
+
+ul#hnavlist li a.current {
+	float: left;
+	color: white;
+	background-color: #109DFF;
+	padding: 0.4em 0.5em 0;
+	height: 19px;
+	width: 2.5em;
+	text-align: center;
+	text-decoration: none;
+	border-right: 1px solid white;
 }
 
 ul#hnavlist li.inactive {
