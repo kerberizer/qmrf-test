@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
                  xmlns="http://www.w3.org/1999/xhtml">
 <!-- start xslt -->
@@ -11,7 +12,13 @@
 </xsl:template>
 
 <xsl:template match="QMRF_chapters">
-    
+ 
+    <div id='tabs-1'>
+    <div  class='summary'>
+    	<xsl:apply-templates select="QSAR_identifier"/>	
+    </div>
+    </div>
+  
     <div id='tabs-2'>
     <div  class='summary'>
     	<xsl:apply-templates select="QSAR_General_information"/>	
@@ -64,14 +71,39 @@
 </xsl:template>
 
 <xsl:template match="QSAR_identifier">
-  <xsl:apply-templates select="QSAR_title"/>	
+  <h2><xsl:value-of select="@name" /></h2>
+   <div class='summary'><p>
+  <xsl:apply-templates select="QSAR_title"/>
+  </p></div>
+
+     <div class='summary'><p>
+  <xsl:apply-templates select="QSAR_models"/>
+  </p></div>
+       <div class='summary'><p>
+  <xsl:apply-templates select="QSAR_software"/>
+
+  </p></div>
+
 </xsl:template>
 
-<xsl:template match="QSAR_title">
-  
-  <xsl:value-of select="." disable-output-escaping="yes"/>
-  		
+ <xsl:template match="QSAR_title">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
 </xsl:template>
+
+ <xsl:template match="QSAR_models">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
+</xsl:template>
+
+
+<xsl:template match="QSAR_software">
+  <strong><xsl:value-of select="@name" /></strong>
+<div class='summary'><p>
+   <xsl:apply-templates select="software_ref"/>
+   </p></div>
+</xsl:template>
+
 
 <!-- 2.General  -->
 <!-- 2. General information  -->
@@ -118,24 +150,27 @@
 
 <xsl:template match="qmrf_authors">
   <strong><xsl:value-of select="@name" /></strong>
-    <!-- 
+   <table width='100%'>
+  <tr><th width='20%'>Name</th><th width='20%'>Affiliation</th><th width='20%'>Contact</th><th width='20%'>e-mail</th><th>WWW</th></tr>
    <xsl:apply-templates select="author_ref"/>
-     -->
+   </table>
 </xsl:template>
 
 <xsl:template match="model_authors">
+
   <strong><xsl:value-of select="@name" /></strong>
-   <!--
+   <table width='100%'>
+   <tr><th width='20%'>Name</th><th width='20%'>Affiliation</th><th width='20%'>Contact</th><th width='20%'>e-mail</th><th>WWW</th></tr>
    <xsl:apply-templates select="author_ref"/>
-     -->
+    </table>
 </xsl:template>
 
 
 <xsl:template match="references">
   <strong><xsl:value-of select="@name" /></strong>
-  <!-- 
+   <table width='100%'>
    <xsl:apply-templates select="publication_ref"/>
-    -->
+   </table>
 </xsl:template>
 
 
@@ -200,6 +235,7 @@
 
 <xsl:template match="model_endpoint">
   <strong><xsl:value-of select="@name" /></strong>
+   <xsl:text> </xsl:text>
    <xsl:apply-templates select="endpoint_ref"/>
 </xsl:template>
 
@@ -240,14 +276,58 @@
   <div class='summary'><p>
   <xsl:apply-templates select="algorithm_type"/>
   </p></div>
-  <div class='summary'><p>
+   <div class='summary'><p>
+     <xsl:apply-templates select="algorithm_explicit"/>
+   </p></div>
+     <div class='summary'><p>
+  <xsl:apply-templates select="equation"/>
+  </p></div> 
+    <div class='summary'><p>
+  <xsl:apply-templates select="algorithms_descriptors"/>
+  </p></div> 
+    <div class='summary'><p>
+  <xsl:apply-templates select="descriptors_selection"/>
+  </p></div> 
+      <div class='summary'><p>
   <xsl:apply-templates select="descriptors_generation"/>
   </p></div> 
+    <div class='summary'><p>
+  <xsl:apply-templates select="descriptors_generation_software"/>
+  </p></div> 
+  <div class='summary'><p>
+  <xsl:apply-templates select="descriptors_chemicals_ratio"/>
+  </p></div> 
 </xsl:template>
+
 
 <xsl:template match="algorithm_type">
   <strong><xsl:value-of select="@name" /></strong>
   <xsl:value-of select="." disable-output-escaping="yes"/>		
+
+</xsl:template>
+
+<xsl:template match="algorithm_explicit">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+  <xsl:apply-templates select="algorithm_ref"/>
+</xsl:template>
+
+<xsl:template match="algorithms_descriptors">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+  <xsl:apply-templates select="descriptor_ref"/>
+</xsl:template>
+
+<xsl:template match="descriptors_generation_software">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+  <xsl:apply-templates select="software_ref"/>
+</xsl:template>
+
+
+<xsl:template match="equation">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
 
 </xsl:template>
 
@@ -256,6 +336,13 @@
   <xsl:value-of select="." disable-output-escaping="yes"/>	
 
 </xsl:template>
+
+<xsl:template match="descriptors_chemicals_ratio">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+
+</xsl:template>
+
 
 <!-- 5. App domain -->
 <xsl:template match="QSAR_Applicability_domain">
@@ -266,6 +353,13 @@
   <div class='summary'><p>
   <xsl:apply-templates select="app_domain_method"/>
    </p></div>
+     <div class='summary'><p>
+  <xsl:apply-templates select="app_domain_software"/>
+   </p></div>
+    <div class='summary'><p>
+  <xsl:apply-templates select="applicability_limits"/>
+   </p></div>
+   
 </xsl:template>
 
 <xsl:template match="app_domain_method">
@@ -274,6 +368,17 @@
 </xsl:template>
  
 <xsl:template match="app_domain_description">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
+<xsl:template match="app_domain_software">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+  <xsl:apply-templates select="software_ref"/>
+</xsl:template>
+
+<xsl:template match="applicability_limits">
   <strong><xsl:value-of select="@name" /></strong>
   <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
@@ -352,6 +457,22 @@
 
 <xsl:template match="QSAR_Predictivity ">
   <h2><xsl:value-of select="@name" /></h2>
+  
+    <div class='summary'><p>
+  <xsl:apply-templates select="validation_set_availability"/>
+    </p></div>
+    <div class='summary'><p>
+  <xsl:apply-templates select="validation_set_data"/>
+    </p></div>
+        <div class='summary'><p>
+  <xsl:apply-templates select="validation_set_descriptors"/>
+    </p></div>
+  <div class='summary'><p>
+  <xsl:apply-templates select="validation_dependent_var_availability"/>
+    </p></div>
+      <div class='summary'><p>
+  <xsl:apply-templates select="validation_other_info"/>
+    </p></div>
   <div class='summary'><p>
   <xsl:apply-templates select="experimental_design"/>
     </p></div>
@@ -364,12 +485,8 @@
   <div class='summary'><p>
   <xsl:apply-templates select="validation_comments"/>
     </p></div>
-  <div class='summary'><p>
-  <xsl:apply-templates select="validation_other_info"/>
-    </p></div>
-  <div class='summary'><p>
-  <xsl:apply-templates select="validation_set_data"/>
-    </p></div>
+
+
 </xsl:template>
 
 <xsl:template match="validation_predictivity">
@@ -398,12 +515,31 @@
   <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
+
+<xsl:template match="validation_set_descriptors">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
+
+<xsl:template match="validation_dependent_var_availability">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
+
 <!-- 8. Interpretation -->
 
 <xsl:template match="QSAR_Interpretation">
   <h2><xsl:value-of select="@name" /></h2>
   <div class='summary'><p>
   <xsl:apply-templates select="mechanistic_basis"/>
+     </p></div>
+  <div class='summary'><p>
+  <xsl:apply-templates select="mechanistic_basis_comments"/>
+     </p></div>
+            <div class='summary'><p>
+  <xsl:apply-templates select="mechanistic_basis_info"/>
      </p></div>
 </xsl:template>
 
@@ -412,14 +548,15 @@
   <xsl:value-of select="." disable-output-escaping="yes"/>	
 </xsl:template>
 
- <xsl:template name="print_href">
-	 		<a>
-			<xsl:attribute name="href">
-			<xsl:value-of select="@url" />
-			</xsl:attribute>
-			<xsl:value-of select="@url"/>
-			</a> 
- </xsl:template>
+<xsl:template match="mechanistic_basis_comments">
+    <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
+<xsl:template match="mechanistic_basis_info">
+    <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
  
 <xsl:template match="endpoint_ref"> 
 	<xsl:value-of select="id(@idref)/@name"/>
@@ -432,12 +569,22 @@
   <div class='summary'><p>
   <xsl:apply-templates select="comments"/>
      </p></div>  
-
+  <div class='summary'><p>
+  <xsl:apply-templates select="bibliography"/>
+     </p></div>  
 </xsl:template>
 
 <xsl:template match="comments">
     <strong><xsl:value-of select="@name" /></strong>
   <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
+
+<xsl:template match="bibliography">
+  <strong><xsl:value-of select="@name" /></strong>
+   <table width='100%'>
+   <xsl:apply-templates select="publication_ref"/>
+   </table>
 </xsl:template>
 
 <!--  -->
@@ -456,10 +603,13 @@
 	</ul>
 </xsl:template> 	
 
+<xsl:template match="validation_set_availability/@name">
+    <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
 <xsl:template match="validation_set_data"> 
-    <strong><xsl:value-of select="validation_set_availability/@name"/></strong>
-    <xsl:value-of select="validation_set_availability/@answer"/>
-	 <label><xsl:value-of select="@name" /></label>
+    <strong><xsl:value-of select="@name"/></strong>
 	<ul>
 	<li><b>Chemname:</b><xsl:text> </xsl:text><xsl:value-of select="@chemname"/>	</li>			
 	<li><b>SMILES:</b><xsl:text> </xsl:text><xsl:value-of select="@smiles"/>	</li>				
@@ -468,8 +618,80 @@
 	<li><b>MOL file:</b><xsl:text> </xsl:text><xsl:value-of select="@mol"/>	</li>
 	<li><b>Formula:</b><xsl:text> </xsl:text><xsl:value-of select="@formula"/>	</li>
 	</ul>
-</xsl:template> 	
-<!-- start xslt -->
+</xsl:template> 
+
+<xsl:template match="author_ref"> 
+  
+   <tr><th>
+	<xsl:value-of select="id(@idref)/@name" disable-output-escaping="yes"/>
+	</th><td>
+	<xsl:value-of select="id(@idref)/@affiliation" disable-output-escaping="yes"/>	
+	</td><td>
+	<xsl:value-of select="id(@idref)/@contact" disable-output-escaping="yes"/>		
+	</td><td>
+	<xsl:value-of select="id(@idref)/@email" disable-output-escaping="yes"/>		
+	</td><td>
+	<xsl:call-template name="print_href"/>
+	</td>
+	</tr>
+</xsl:template>	
+
+<xsl:template match="publication_ref"> 
+  <tr><th>
+	<xsl:value-of select="id(@idref)/@title" disable-output-escaping="yes"/>
+	</th><td width='20%'>
+	<xsl:call-template name="print_href"/>
+	</td>
+	</tr>	
+</xsl:template>
+
+<xsl:template match="algorithm_ref"> 
+	<xsl:value-of select="id(@idref)/@definition" disable-output-escaping="yes"/>
+	<br/>	
+	<xsl:value-of select="id(@idref)/@description" disable-output-escaping="yes"/>	
+</xsl:template>
+
+
+<xsl:template match="software_ref"> 
+	<xsl:text>Name: </xsl:text>
+	<xsl:value-of select="id(@idref)/@name" disable-output-escaping="yes"/>
+	<xsl:text> Description: </xsl:text>
+	<xsl:value-of select="id(@idref)/@description" disable-output-escaping="yes"/>
+	<xsl:text> Contact: </xsl:text>
+	<xsl:value-of select="id(@idref)/@contact" disable-output-escaping="yes"/>
+	<xsl:text> </xsl:text>
+    <xsl:call-template name="print_href"/>
+    <br/>
+	<!-- 
+	crashes if using these 
+		<td> 
+		<xsl:value-of select="id(@idref)/@contact" disable-output-escaping="yes"/>
+	</td>	
+	<td> 
+		<xsl:value-of select="id(@idref)/@description" disable-output-escaping="yes"/>
+	</td>
+	<td> 
+		<xsl:value-of select="id(@idref)/@contact" disable-output-escaping="yes"/>
+	</td>	
+	
+	<td>
+	<xsl:call-template name="print_href"/>
+	</td>	
+crashes if using id(@idref)/@version  - apparently in some xml files the version field is not used at all
+		 -->	
+</xsl:template>
+
+<xsl:template name="print_href">
+	 		<a>
+			<xsl:attribute name="href">
+			<xsl:value-of select="id(@idref)/@url" disable-output-escaping="yes"/>
+			</xsl:attribute>
+			<xsl:attribute name="target">_blank</xsl:attribute>
+			<xsl:value-of select="id(@idref)/@url" disable-output-escaping="yes"/>
+			</a> 
+ </xsl:template>
+
+<!-- end xslt -->
  </xsl:stylesheet>
 
 
