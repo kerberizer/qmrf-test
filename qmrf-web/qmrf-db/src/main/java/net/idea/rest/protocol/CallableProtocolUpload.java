@@ -161,36 +161,38 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		//now write
 		switch (updateMode) {
 		case dataTemplateOnly:  {
-			try {
-				if ((protocol.getAttachments()!=null) && protocol.getAttachments().size()>0) {
-					connection.setAutoCommit(false);
-					//protocol.setOwner(user);
-					exec = new UpdateExecutor<IQueryUpdate>();
-					exec.setConnection(connection);
-					AddAttachment k = new AddAttachment(protocol,null);
-					for (DBAttachment attachment : protocol.getAttachments()) {
-						//.getResourceURL().toString().startsWith("file:")
-						k.setObject(attachment);
-						exec.process(k);
-					}
-					connection.commit();
-					String uri = String.format("%s%s",reporter.getURI(protocol),net.idea.qmrf.client.Resources.attachment);
-					return new TaskResult(uri,false);
-				} else throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"No attachments found!");
-			} catch (ProcessorException x) {
-				try {connection.rollback();} catch (Exception xx) {}
-				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,x);
-			} catch (ResourceException x) {
-				try {connection.rollback();} catch (Exception xx) {}
-				throw x;
-			} catch (Exception x) {
-				try {connection.rollback();} catch (Exception xx) {}
-				throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
-			} finally {
-				try {exec.close();} catch (Exception x) {}
-				try {connection.setAutoCommit(true);} catch (Exception x) {}
-				try {connection.close();} catch (Exception x) {}
-			}
+			if ((protocol.getAttachments()!=null) && protocol.getAttachments().size()>0) 
+				try {
+					
+						connection.setAutoCommit(false);
+						//protocol.setOwner(user);
+						exec = new UpdateExecutor<IQueryUpdate>();
+						exec.setConnection(connection);
+						AddAttachment k = new AddAttachment(protocol,null);
+						for (DBAttachment attachment : protocol.getAttachments()) {
+							//.getResourceURL().toString().startsWith("file:")
+							k.setObject(attachment);
+							exec.process(k);
+						}
+						connection.commit();
+						String uri = String.format("%s%s",reporter.getURI(protocol),net.idea.qmrf.client.Resources.attachment);
+						return new TaskResult(uri,false);
+					
+				} catch (ProcessorException x) {
+					try {connection.rollback();} catch (Exception xx) {}
+					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,x);
+				} catch (ResourceException x) {
+					try {connection.rollback();} catch (Exception xx) {}
+					throw x;
+				} catch (Exception x) {
+					try {connection.rollback();} catch (Exception xx) {}
+					throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
+				} finally {
+					try {exec.close();} catch (Exception x) {}
+					try {connection.setAutoCommit(true);} catch (Exception x) {}
+					try {connection.close();} catch (Exception x) {}
+				}
+			else throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"No attachments found!");
 //			break;
 		}
 		default: {
