@@ -627,9 +627,9 @@
 
 <xsl:template match="author_ref"> 
   
-   <tr><th>
+   <tr><td>
 	<xsl:value-of select="id(@idref)/@name" disable-output-escaping="yes"/>
-	</th><td>
+	</td><td>
 	<xsl:value-of select="id(@idref)/@affiliation" disable-output-escaping="yes"/>	
 	</td><td>
 	<xsl:value-of select="id(@idref)/@contact" disable-output-escaping="yes"/>		
@@ -642,9 +642,9 @@
 </xsl:template>	
 
 <xsl:template match="publication_ref"> 
-  <tr><th>
+  <tr><td>
 	<xsl:value-of select="id(@idref)/@title" disable-output-escaping="yes"/>
-	</th><td width='20%'>
+	</td><td width='20%'>
 	<xsl:call-template name="print_href"/>
 	</td>
 	</tr>	
