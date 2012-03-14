@@ -1,5 +1,8 @@
 package net.idea.qmrf.rest;
 
+import java.net.URL;
+
+import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
 import net.idea.modbcum.i.config.Preferences;
 import net.idea.qmrf.aa.QMRFLoginFormResource;
 import net.idea.qmrf.aa.QMRFLoginPOSTResource;
@@ -88,21 +91,32 @@ public class QMRFApplication extends TaskApplication<String> {
 		if (isInsecure())
 			insecureConfig();
 
+		// to enable QMRF XML  DTD validation and XSLT stylesheets with idref
+		try {
+			URL uri = this.getClass().getClassLoader().getResource("ambit2/qmrfeditor/qmrf.dtd");
+			resolver = new QMRFSchemaResolver(uri==null?null:uri.getFile(), null);
+			((QMRFSchemaResolver) resolver).setIgnoreSystemID(true);
+		} catch (Exception x) {
+			x.printStackTrace();
+		}
+
 	}
 
 	@Override
 	public Restlet createInboundRoot() {
 
 		Router router = new MyRouter(this.getContext());
-		//here we check if the cookie contains auth token, if not just consider the user notlogged in
+		// here we check if the cookie contains auth token, if not just consider
+		// the user notlogged in
 		Filter auth = createCookieAuthenticator(true);
 		Router setCookieUserRouter = new MyRouter(getContext());
 		auth.setNext(setCookieUserRouter);
 
-		setCookieUserRouter.attach(Resources.login,QMRFLoginFormResource.class);
-		setCookieUserRouter.attach(Resources.myaccount,MyAccountResource.class);
-		
-				
+		setCookieUserRouter
+				.attach(Resources.login, QMRFLoginFormResource.class);
+		setCookieUserRouter
+				.attach(Resources.myaccount, MyAccountResource.class);
+
 		/** QMRF documents **/
 		ProtocolRouter protocols = new ProtocolRouter(getContext());
 		OrganisationRouter org_router = new OrganisationRouter(getContext());
@@ -114,18 +128,20 @@ public class QMRFApplication extends TaskApplication<String> {
 		setCookieUserRouter.attach(Resources.protocol, protocolRouter);
 		setCookieUserRouter.attach(Resources.project, projectRouter);
 		setCookieUserRouter.attach(Resources.organisation, org_router);
-		setCookieUserRouter.attach(Resources.user, new UserRouter(getContext(), protocols,
-				org_router, projectRouter));
+		setCookieUserRouter.attach(Resources.user, new UserRouter(getContext(),
+				protocols, org_router, projectRouter));
 
-		
 		setCookieUserRouter.attach("/", protocolRouter);
 		setCookieUserRouter.attach("", protocolRouter);
 
-		setCookieUserRouter.attach(Resources.endpoint, ProtocolsByEndpointResource.class);
-		setCookieUserRouter.attach(Resources.structure, StructureResource.class);
+		setCookieUserRouter.attach(Resources.endpoint,
+				ProtocolsByEndpointResource.class);
+		setCookieUserRouter
+				.attach(Resources.structure, StructureResource.class);
 		setCookieUserRouter.attach(Resources.admin, createAdminRouter());
 		setCookieUserRouter.attach(Resources.editor, createEditorRouter());
-		setCookieUserRouter.attach(Resources.task, new QMRFTaskRouter(getContext()));
+		setCookieUserRouter.attach(Resources.task, new QMRFTaskRouter(
+				getContext()));
 
 		router.attach(auth);
 		/**
@@ -133,24 +149,26 @@ public class QMRFApplication extends TaskApplication<String> {
 		 */
 		attachStaticResources(router);
 
-	
 		Router protectedRouter = new MyRouter(getContext());
 		protectedRouter.attach("/roles", QMRFLoginFormResource.class);
-		protectedRouter.attach(String.format("/%s", UserLoginPOSTResource.resource),QMRFLoginPOSTResource.class);
-		protectedRouter.attach(String.format("/%s", UserLogoutPOSTResource.resource),QMRFLogoutPOSTResource.class);
+		protectedRouter.attach(
+				String.format("/%s", UserLoginPOSTResource.resource),
+				QMRFLoginPOSTResource.class);
+		protectedRouter.attach(
+				String.format("/%s", UserLogoutPOSTResource.resource),
+				QMRFLogoutPOSTResource.class);
 
 		auth = createCookieAuthenticator(false);
 		auth.setNext(protectedRouter);
 		router.attach("/protected", auth);
 
-	
 		router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
 		router.setRoutingMode(Router.MODE_BEST_MATCH);
 		/*
-		StringWriter w = new StringWriter();
-		QMRFApplication.printRoutes(router, ">", w);
-		System.out.println(w.toString());
-		*/
+		 * StringWriter w = new StringWriter();
+		 * QMRFApplication.printRoutes(router, ">", w);
+		 * System.out.println(w.toString());
+		 */
 		return router;
 	}
 
@@ -162,57 +180,58 @@ public class QMRFApplication extends TaskApplication<String> {
 	 * ,"tomcat_users"); userAuthn.setNext(clazz); return userAuthn; }
 	 */
 	protected Filter createCookieAuthenticator(boolean optional) {
-		CookieAuthenticator cookieAuth 	= new CookieAuthenticator(getContext(),
+		CookieAuthenticator cookieAuth = new CookieAuthenticator(getContext(),
 				"tomcat_users", "encryptSecretKey".getBytes());
-		
+
 		String config = "conf/qmrf-db.pref";
 		if (!optional) {
-			//cookieAuth.setCookieName("subjectId");
+			// cookieAuth.setCookieName("subjectId");
 			cookieAuth.setLoginFormPath("/login");
 			cookieAuth.setLoginPath("/signin");
-			cookieAuth.setLogoutPath("/signout");			
+			cookieAuth.setLogoutPath("/signout");
 
-			cookieAuth.setVerifier(new DBVerifier(getContext(),
-					config, "tomcat_users"));
-			cookieAuth.setEnroler(new DbEnroller(getContext(),
-					config, "tomcat_users"));
+			cookieAuth.setVerifier(new DBVerifier(getContext(), config,
+					"tomcat_users"));
+			cookieAuth.setEnroler(new DbEnroller(getContext(), config,
+					"tomcat_users"));
 			return cookieAuth;
 		} else {
 			cookieAuth.setVerifier(new SecretVerifier() {
-		
-			
-			@Override
-		    public int verify(Request request, Response response) {
-		        int result = RESULT_VALID;
-		         
-		        if (request.getChallengeResponse() != null) {
-		            String identifier = getIdentifier(request, response);
-		            char[] secret = getSecret(request, response);
-		            if (verify(identifier, secret)) {
-		                request.getClientInfo().setUser(new User(identifier));
-		            }
-		        }
-		        return result;
-		    }	
-			@Override
-			public boolean verify(String identifier, char[] secret) {
-				return true;
-			}
-			
+
+				@Override
+				public int verify(Request request, Response response) {
+					int result = RESULT_VALID;
+
+					if (request.getChallengeResponse() != null) {
+						String identifier = getIdentifier(request, response);
+						char[] secret = getSecret(request, response);
+						if (verify(identifier, secret)) {
+							request.getClientInfo().setUser(
+									new User(identifier));
+						}
+					}
+					return result;
+				}
+
+				@Override
+				public boolean verify(String identifier, char[] secret) {
+					return true;
+				}
+
 			});
-			cookieAuth.setEnroler(new DbEnroller(getContext(),
-					config, "tomcat_users"));
+			cookieAuth.setEnroler(new DbEnroller(getContext(), config,
+					"tomcat_users"));
 		}
 		return cookieAuth;
 	}
 
-		/*
-		MethodAuthorizer methodAuthorizer = new MethodAuthorizer();
-			methodAuthorizer.getAnonymousMethods().add(Method.GET);
-			methodAuthorizer.getAnonymousMethods().add(Method.POST);
-			methodAuthorizer.getAnonymousMethods().add(Method.PUT);
-			methodAuthorizer.getAnonymousMethods().add(Method.DELETE);
-		 */
+	/*
+	 * MethodAuthorizer methodAuthorizer = new MethodAuthorizer();
+	 * methodAuthorizer.getAnonymousMethods().add(Method.GET);
+	 * methodAuthorizer.getAnonymousMethods().add(Method.POST);
+	 * methodAuthorizer.getAnonymousMethods().add(Method.PUT);
+	 * methodAuthorizer.getAnonymousMethods().add(Method.DELETE);
+	 */
 	protected Restlet createProtected(Restlet router, String prefix,
 			Authorizer authz) {
 		return router;
@@ -245,20 +264,24 @@ public class QMRFApplication extends TaskApplication<String> {
 	 * @return
 	 */
 	protected Restlet createAdminRouter() {
-		Authorizer authz = new SimpleRoleAndMethodAuthorizer(new DBRole(QMRFRoles.qmrf_admin.name(),QMRFRoles.qmrf_admin.toString()));
+		Authorizer authz = new SimpleRoleAndMethodAuthorizer(new DBRole(
+				QMRFRoles.qmrf_admin.name(), QMRFRoles.qmrf_admin.toString()));
 		authz.setNext(new QMRFAdminRouter(getContext()));
 		return authz;
 	}
+
 	/**
 	 * Resource /editor
 	 * 
 	 * @return
 	 */
 	protected Restlet createEditorRouter() {
-		Authorizer authz = new SimpleRoleAndMethodAuthorizer(new DBRole(QMRFRoles.qmrf_editor.name(),QMRFRoles.qmrf_editor.toString()));
+		Authorizer authz = new SimpleRoleAndMethodAuthorizer(new DBRole(
+				QMRFRoles.qmrf_editor.name(), QMRFRoles.qmrf_editor.toString()));
 		authz.setNext(new QMRFEditorRouter(getContext()));
-		return authz;		
+		return authz;
 	}
+
 	/**
 	 * Images, styles, icons Works if packaged as war only!
 	 * 
@@ -325,11 +348,12 @@ class SimpleRoleAndMethodAuthorizer extends RoleAuthorizer {
 
 	@Override
 	public boolean authorize(Request request, Response response) {
-		if ((request.getClientInfo()==null) || 
-			(request.getClientInfo().getUser()==null) ||
-			(request.getClientInfo().getUser().getIdentifier()==null)) return false;
-		//if (Method.GET.equals(request.getMethod()))
-		//	return true;
+		if ((request.getClientInfo() == null)
+				|| (request.getClientInfo().getUser() == null)
+				|| (request.getClientInfo().getUser().getIdentifier() == null))
+			return false;
+		// if (Method.GET.equals(request.getMethod()))
+		// return true;
 		return super.authorize(request, response);
 	}
 

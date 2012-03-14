@@ -439,18 +439,18 @@ div.structureright img {
 	FONT-SIZE: 8pt;
 }
 
+.summary A:link {
+	COLOR: #109DFF;
+}
+
 .summary A:active {
 	COLOR: #109DFF;
 	FONT-WEIGHT: bolder;
-	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
-	FONT-SIZE: 8pt;
 }
 
 .summary  A:hover {
-	COLOR: # #730FFF;
+	COLOR: #516373;;
 	FONT-WEIGHT: bolder;
-	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
-	FONT-SIZE: 8pt;
 }
 .summary h3 {
 	font-weight: bold;
