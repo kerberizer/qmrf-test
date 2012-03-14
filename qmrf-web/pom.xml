@@ -425,7 +425,7 @@
 			<!-- Default project for submitting new documents --> 
 			<qmrf_default_organisation>/organisation/G2</qmrf_default_organisation>
 			<!-- Default owner for submitting new documents --> 
-			<qmrf_default_owner>/user/U45</qmrf_default_owner>		
+			<qmrf_default_owner>/user/U66</qmrf_default_owner>		
 			<!-- Used in surefire tests only-->
 			<!-- Database for tests -->
 			<qmrf.db.test>qmrf-test</qmrf.db.test>
