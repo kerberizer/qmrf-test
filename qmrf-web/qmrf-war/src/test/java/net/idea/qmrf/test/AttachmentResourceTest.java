@@ -10,6 +10,7 @@ import java.net.URL;
 import junit.framework.Assert;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
 
 import org.dbunit.database.IDatabaseConnection;
@@ -84,7 +85,7 @@ public class AttachmentResourceTest extends ResourceTest {
 		
 		String[] names = new String[0];
 		String[] values = new String[0];
-		Representation rep = getMultipartWebFormRepresentation(names,values,"attachment",file,MediaType.APPLICATION_PDF.toString());
+		Representation rep = getMultipartWebFormRepresentation(names,values,attachment_type.document.name(),file,MediaType.APPLICATION_PDF.toString());
 		
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM protocol");

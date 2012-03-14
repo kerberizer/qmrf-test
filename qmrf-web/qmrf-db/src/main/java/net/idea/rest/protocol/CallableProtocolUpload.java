@@ -152,7 +152,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		boolean existing = protocol!=null&&protocol.getID()>0;
 		AccessRights policy = new AccessRights(null);
 		try {
-			protocol = ProtocolFactory.getProtocol(protocol,input, 10000000,dir,policy);
+			protocol = ProtocolFactory.getProtocol(protocol,input, 10000000,dir,policy,updateMode);
 		} catch (ResourceException x) {
 			throw x;
 		} catch (Exception x) {
@@ -176,7 +176,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					connection.commit();
 					String uri = String.format("%s%s",reporter.getURI(protocol),net.idea.qmrf.client.Resources.attachment);
 					return new TaskResult(uri,false);
-				} else throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Data template");
+				} else throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"No attachments found!");
 			} catch (ProcessorException x) {
 				try {connection.rollback();} catch (Exception xx) {}
 				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,x);
@@ -307,7 +307,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		AccessRights policy = new AccessRights(null);
 		try {
 			//get only fields from the web form
-			DBProtocol newProtocol = ProtocolFactory.getProtocol(null,input, 10000000,dir,policy);
+			DBProtocol newProtocol = ProtocolFactory.getProtocol(null,input, 10000000,dir,policy,updateMode);
 			newProtocol.setID(protocol.getID());
 			newProtocol.setVersion(protocol.getVersion());
 			newProtocol.setIdentifier(null);
