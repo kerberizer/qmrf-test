@@ -214,10 +214,6 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "<table width='100%%'>\n"+
 		   "<tr><td colspan='2' align='center'><input type='button' class='draw' tabindex='0' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor(\"%s\");'></td></tr>\n"+
 		   "<tr><td colspan='2' align='center'><input type='text' name='search' size='20' value='%s' tabindex='1' title='%s'></td></tr>\n"+
-		   "<tr><td colspan='2' align='center'><input tabindex='2' id='submit' type='submit' value='Search'/></td></tr>\n"+
-		   //"<tr><td colspan='2' align='center'><a href=\"javascript:toggleDiv('advanced');\">Advanced</a></td></tr>\n"+
-		   //"</table>\n"+
-		   //"<table id='advanced' style='display:none' width='100%%'>\n"+
 		   "<tr><td colspan='2'><input %s type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>\n"+
 		   "<tr><td><input %s type='radio' name='option' value='similarity' title='Enter SMILES or draw structure'>Similarity</td>\n"+
 		   "<td align='left'>\n"+
@@ -225,6 +221,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "</td></tr>\n"+
 		   "<tr><td colspan='2'><input %s type='radio' name='option' value='smarts' title='Enter or draw a SMARTS query' size='20'>Substructure</td></tr>\n"+
 		   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
+		   "<tr><td colspan='2' align='center'><input tabindex='2' id='submit' type='submit' value='Search'/></td></tr>\n"+		   
 		   "</div>\n"+
 		   "</table>\n"+
 		   "</form> \n"+

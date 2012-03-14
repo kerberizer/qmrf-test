@@ -496,7 +496,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						));	
 				content.append("</td>");					
 				content.append("</tr>");
-				content.append("<tr><td colspan='2' align='center'><input type='submit' id='submit' enabled='false' value='Submit'></td>");
+				content.append("<tr><td colspan='2' align='center'><input type='submit' id='submit' enabled='false' value='Upload'></td>");
 //				content.append("<input type='submit' enabled='false' value='Submit'>");
 
 				content.append("</tr>");
