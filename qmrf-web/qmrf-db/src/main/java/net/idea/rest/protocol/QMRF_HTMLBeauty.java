@@ -368,7 +368,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			String search = searchQuery==null?"":Reference.encode(searchQuery);
 			String cond = condition==null?"":Reference.encode(condition);
-			String url = "<li><a href='?page=%d&pagesize=%d&search=%s&option=%s&condition=%s'>%s</a></li>";
+			String url = "<li><a class='%s' href='?page=%d&pagesize=%d&search=%s&option=%s&condition=%s'>%s</a></li>";
 
 			StringBuilder b = new StringBuilder(); 
 			b.append("<div><ul id='hnavlist'>");
@@ -378,8 +378,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			// Display "first" and "previous" for the first page as inactive.
 			if (page > 0) {
-				b.append(String.format(url, 0, pageSize, search, option==null?"":option.name(), cond, "&lt;&lt;"));
-				b.append(String.format(url, page-1, pageSize, search, option==null?"":option.name(), cond, "&lt;"));
+				b.append(String.format(url, "selectable", 0, pageSize, search, option==null?"":option.name(), cond, "&lt;&lt;"));
+				b.append(String.format(url, "selectable", page-1, pageSize, search, option==null?"":option.name(), cond, "&lt;"));
 			} else {
 				b.append(String.format("<li class='inactive'>&lt;&lt;</li>"));
 				b.append(String.format("<li class='inactive'>&lt;</li>"));
@@ -387,8 +387,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			// Display links to pages. Pages are counted from zero! Hence why we display "i+1".
 			for (int i=start; i<= last; i++)
-				b.append(String.format(url, i, pageSize, search, option==null?"":option.name(), cond, i+1)); 
-			b.append(String.format(url, page+1, pageSize, search, option==null?"":option.name(), cond, "&gt;"));
+				b.append(String.format(url, i==page?"current":"selectable", i, pageSize, search, option==null?"":option.name(), cond, i+1)); 
+			b.append(String.format(url, "selectable", page+1, pageSize, search, option==null?"":option.name(), cond, "&gt;"));
 			b.append("</ul></div><br>");
 
 			return b.toString();
