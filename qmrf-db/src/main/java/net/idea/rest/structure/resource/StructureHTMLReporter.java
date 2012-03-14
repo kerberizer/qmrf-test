@@ -25,7 +25,7 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 	
 	public StructureHTMLReporter(Request request, ResourceDoc doc,
 			HTMLBeauty htmlbeauty) {
-		super(request, doc, htmlbeauty,"Structure");
+		super(request, doc, htmlbeauty,null);
 	}
 
 	protected boolean printAsTable() {
