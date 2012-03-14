@@ -560,6 +560,8 @@
 </xsl:template>
  
 <xsl:template match="endpoint_ref"> 
+	<xsl:value-of select="id(@idref)/@group"/><xsl:text> </xsl:text>
+	<xsl:value-of select="id(@idref)/@subgroup"/><xsl:text> </xsl:text>
 	<xsl:value-of select="id(@idref)/@name"/>
 </xsl:template>
 
