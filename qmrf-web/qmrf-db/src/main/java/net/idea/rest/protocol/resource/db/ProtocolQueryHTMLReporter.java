@@ -108,7 +108,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected void printTableHeader(Writer w) throws Exception {
 		w.write("<table width='100%'>\n");
 		if (collapsed)
-			w.write("<tr><th width='5%'>#</th><th width='15%'>QMRF number</th><th colspan='2'>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
+			w.write("<tr><th width='2%'></th><th width='15%'>QMRF number</th><th>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
 		else
 			w.write("<tr><th width='15%'></th><th colspan='2'></th><th width='10%'></th><th width='10%'></th></tr>");
 		
@@ -237,14 +237,12 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected void printTable(Writer output, String uri, DBProtocol item) {
 		try {
 			output.write("<tr>\n");	
-			if (collapsed)
-				output.write(String.format("<td>%d.</td>",record+1 ));
-			output.write(String.format("<td width='15em'><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
-			output.write(String.format("<td>%s</td>",item.getTitle()));
 			if (details)
-				output.write(String.format("<td>&nbsp;<a class=\"tbldivxpander\" href=\"javascript:toggleDiv('%s');\">More</a></td>",item.getIdentifier()));
+				output.write(String.format("<td>&nbsp;<a class=\"tbldivxpander\" href=\"javascript:toggleDiv('%s');\">+</a></td>",item.getIdentifier()));
 			else 
 				output.write("<td></td>");
+			output.write(String.format("<td width='15em'><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
+			output.write(String.format("<td>%s</td>",item.getTitle()));
 			output.write(String.format("<td width='8em'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td width='50px'>%s</td>",printDownloadLinks(uri)));
 			output.write("</tr>\n");
