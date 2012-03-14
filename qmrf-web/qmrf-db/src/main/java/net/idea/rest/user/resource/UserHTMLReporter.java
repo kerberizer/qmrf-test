@@ -177,21 +177,22 @@ class UserHTMLBeauty extends QMRF_HTMLBeauty {
 			searchQuery = "";
 			pageSize = "10";
 		}
+		String hint = "Search for users by first or last name or by user account name.";
 			return
 		   String.format(		
 		   "<div class='search ui-widget'>\n"+
-		   "<p>%s</p>\n"+
+		   "<p title='%s'>%s</p>\n"+
 		   "<form method='GET' action='%s%s?pagesize=10'>\n"+
 		   "<table width='200px'>\n"+
 		   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Search by first or last name'></td></tr>\n"+
 		   "<tr><td colspan='2'><input type='text' name='username' size='20' value='%s' tabindex='0' title='Search by user name'></td></tr>\n"+
 		   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
-		   "<tr><td></td><td align='left'><input type='submit' tabindex='4'  value='Search'/></td></tr>\n"+
+		   "<tr><td colspan='2' align='center'><input id='submit' type='submit' tabindex='4'  value='Search'/></td></tr>\n"+
 		   "</table>\n"+			   
 		   "</form> \n"+
 		   "&nbsp;\n"+
 		   "</div>\n",
-
+		   hint,
 		   getSearchTitle(),
 		   baseReference,
 		   getSearchURI(),
