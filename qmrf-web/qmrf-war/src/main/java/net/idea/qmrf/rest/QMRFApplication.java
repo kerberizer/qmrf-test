@@ -1,7 +1,5 @@
 package net.idea.qmrf.rest;
 
-import java.io.StringWriter;
-
 import net.idea.modbcum.i.config.Preferences;
 import net.idea.qmrf.aa.QMRFLoginFormResource;
 import net.idea.qmrf.aa.QMRFLoginPOSTResource;
@@ -34,7 +32,6 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.Server;
-import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Filter;
@@ -128,8 +125,8 @@ public class QMRFApplication extends TaskApplication<String> {
 		setCookieUserRouter.attach(Resources.structure, StructureResource.class);
 		setCookieUserRouter.attach(Resources.admin, createAdminRouter());
 		setCookieUserRouter.attach(Resources.editor, createEditorRouter());
-		/** /task */
-		router.attach(Resources.task,new QMRFTaskRouter(getContext()));
+		setCookieUserRouter.attach(Resources.task, new QMRFTaskRouter(getContext()));
+
 		router.attach(auth);
 		/**
 		 * Images, styles, favicons, applets
