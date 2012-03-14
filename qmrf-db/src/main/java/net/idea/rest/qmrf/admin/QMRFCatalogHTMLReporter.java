@@ -75,7 +75,9 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	}		
 	
 	protected String printPageNavigator() {
-		return ((QMRF_HTMLBeauty)htmlBeauty).getPaging(0,2);
+		int page = ((QMRF_HTMLBeauty)htmlBeauty).getPage();
+		long pageSize = ((QMRF_HTMLBeauty)htmlBeauty).getPageSize();
+		return (((QMRF_HTMLBeauty)htmlBeauty).getPaging(page,page-4, page+5, pageSize));
 	}
 	
 	@Override
