@@ -197,6 +197,8 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		} catch (Exception x) {
 			option = SearchMode.auto;
 		}
+		String hint = "Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.";
+		
 		String imgURI = searchQuery==null?"":
 				String.format("<img title='%s' alt='%s' border='1' width='150' height='150' src='%s/depict/cdk?search=%s&media=%s&w=150&h=150' onError=\"hideDiv('querypic')\">",
 						getSearchQuery(),getSearchQuery(),
@@ -204,18 +206,18 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 			return
 		   String.format(		
 		   "<div class='search ui-widget'>\n"+
-		   "<p>%s</p>\n"+
+		   "<p title='%s'>%s</p>\n"+
 		   "<form method='GET' name='form' action='%s%s'>\n"+
 		   "\n"+
 		   "<input type='hidden' name='page' value='%s'>\n"+
 		   "<input type='hidden' name='type' value='smiles'>\n"+
 		   "<table width='100%%'>\n"+
 		   "<tr><td colspan='2' align='center'><input type='button' class='draw' tabindex='0' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor(\"%s\");'></td></tr>\n"+
-		   "<tr><td colspan='2' align='center'><input type='text' name='search' size='20' value='%s' tabindex='1' title='Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.'></td></tr>\n"+
+		   "<tr><td colspan='2' align='center'><input type='text' name='search' size='20' value='%s' tabindex='1' title='%s'></td></tr>\n"+
 		   "<tr><td colspan='2' align='center'><input tabindex='2' id='submit' type='submit' value='Search'/></td></tr>\n"+
-		   "<tr><td colspan='2' align='center'><a href=\"javascript:toggleDiv('advanced');\">Advanced</a></td></tr>\n"+
-		   "</table>\n"+
-		   "<table id='advanced' style='display:none' width='100%%'>\n"+
+		   //"<tr><td colspan='2' align='center'><a href=\"javascript:toggleDiv('advanced');\">Advanced</a></td></tr>\n"+
+		   //"</table>\n"+
+		   //"<table id='advanced' style='display:none' width='100%%'>\n"+
 		   "<tr><td colspan='2'><input %s type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>\n"+
 		   "<tr><td><input %s type='radio' name='option' value='similarity' title='Enter SMILES or draw structure'>Similarity</td>\n"+
 		   "<td align='left'>\n"+
@@ -229,6 +231,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "&nbsp;\n"+
 		   "<div id='querypic' class='structureright'>%s</div>"+
 		   "</div>\n",	
+		   hint,
 		   getSearchTitle(),
 		   baseReference,
 		   getSearchURI(),
@@ -237,6 +240,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   baseReference,		   
 		   //search
 		   searchQuery==null?"":searchQuery,
+		   hint,
 		   SearchMode.auto.equals(option)?"checked":"",
 		   SearchMode.similarity.equals(option)?"checked":"",
 		   SearchMode.smarts.equals(option)?"checked":"",

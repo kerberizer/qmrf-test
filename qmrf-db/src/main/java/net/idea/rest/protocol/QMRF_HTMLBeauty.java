@@ -306,7 +306,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				condition = form.getFirstValue("condition").toLowerCase();
 			} catch (Exception x) {
 				condition = "";
-			}			
+			}
+			String hint = "";
 			String imgURI = (structure==null) || !structure.startsWith("http")?"":
 				String.format("<img border='0' title='Showing QMRF documents for this chemical' width='150' height='150' src='%s?media=%s&w=150&h=150'><br>Showing QMRF documents\n",
 						structure,Reference.encode("image/png"));
@@ -314,7 +315,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				return
 			   String.format(		
 			   "<div class='search ui-widget'>\n"+
-			   "<p>%s</p>\n"+
+			   "<p title='%s'>%s</p>\n"+
 			   "<form method='GET' action='%s%s?pagesize=10'>\n"+
 			   "<table width='200px'>\n"+
 			   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter search query'></td></tr>\n"+
@@ -324,13 +325,13 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "<tr><td><input %s type='radio' tabindex='4' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF number</td>\n"+
 			   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
 			   "<input type='hidden' name='structure' value='%s'>\n"+
-			   "<tr><td></td><td align='left'><input type='submit' tabindex='4'  value='Search'/></td></tr>\n"+
+			   "<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='4'  value='Search'/></td></tr>\n"+
 			   "</table>\n"+			   
 			   "</form> \n"+
 			   "&nbsp;\n"+
 			   "<div class='structureright'>%s</div>"+
 			   "</div>\n",
-
+			   hint,
 			   getSearchTitle(),
 			   baseReference,
 			   getSearchURI(),
