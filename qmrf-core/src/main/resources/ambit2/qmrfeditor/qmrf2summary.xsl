@@ -12,6 +12,12 @@
 
 <xsl:template match="QMRF_chapters">
     
+    <div id='tabs-2'>
+    <div  class='summary'>
+    	<xsl:apply-templates select="QSAR_General_information"/>	
+    </div>
+    </div>
+        
     <div id='tabs-3'>
     <div  class='summary'>
     	<xsl:apply-templates select="QSAR_Endpoint"/>	
@@ -66,6 +72,101 @@
   <xsl:value-of select="." disable-output-escaping="yes"/>
   		
 </xsl:template>
+
+<!-- 2.General  -->
+<!-- 2. General information  -->
+<xsl:template match="QSAR_General_information">
+  <h2><xsl:value-of select="@name" /></h2>
+   <div class='summary'><p>
+  <xsl:apply-templates select="qmrf_date"/>
+  </p></div>
+  
+
+   <div class='summary'><p>
+  <xsl:apply-templates select="qmrf_authors"/>
+     </p></div>
+     
+   <div class='summary'><p>
+  <xsl:apply-templates select="qmrf_date_revision"/>
+    </p> </div>
+    <div class='summary'><p>
+  <xsl:apply-templates select="qmrf_revision"/>
+   </p>  </div>
+   <div>		<p>
+  <xsl:apply-templates select="model_authors"/>
+    </p></div>
+    <div class='summary'><p>
+  <xsl:apply-templates select="model_date"/>
+    </p> </div>
+     <div class='summary'><p>
+  <xsl:apply-templates select="references"/>
+   </p> </div>		
+     <div class='summary'><p>
+  <xsl:apply-templates select="info_availability"/>
+   </p> </div>	   
+    <div class='summary'><p>
+  <xsl:apply-templates select="related_models"/>
+   </p> </div>	    
+
+ </xsl:template> 
+ 
+ <xsl:template match="qmrf_date">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
+</xsl:template>
+
+
+<xsl:template match="qmrf_authors">
+  <strong><xsl:value-of select="@name" /></strong>
+    <!-- 
+   <xsl:apply-templates select="author_ref"/>
+     -->
+</xsl:template>
+
+<xsl:template match="model_authors">
+  <strong><xsl:value-of select="@name" /></strong>
+   <!--
+   <xsl:apply-templates select="author_ref"/>
+     -->
+</xsl:template>
+
+
+<xsl:template match="references">
+  <strong><xsl:value-of select="@name" /></strong>
+  <!-- 
+   <xsl:apply-templates select="publication_ref"/>
+    -->
+</xsl:template>
+
+
+<xsl:template match="qmrf_date_revision">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
+</xsl:template>
+
+
+<xsl:template match="qmrf_revision">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
+</xsl:template>
+
+<xsl:template match="model_date">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="." disable-output-escaping="yes"/>		
+</xsl:template>
+
+<xsl:template match="info_availability">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="."  disable-output-escaping="yes"/>		
+</xsl:template>
+
+
+
+<xsl:template match="related_models">
+  <strong><xsl:value-of select="@name" /></strong>
+  <xsl:value-of select="."  disable-output-escaping="yes"/>		
+</xsl:template>
+
 <!-- 3. Endpoint  -->
 <xsl:template match="QSAR_Endpoint">
   <h2><xsl:value-of select="@name" /></h2>
