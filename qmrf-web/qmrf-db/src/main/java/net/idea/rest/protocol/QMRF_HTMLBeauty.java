@@ -482,7 +482,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				} else {
 					content.append("<td>");
 					content.append(printWidget("QMRF XML file", 
-						String.format("<p><input type=\"file\" class='multi max-1 accept-xml' name=\"%s\" title='%s' size=\"60\"></p>",
+						String.format("<p><input type=\"file\" class='max-1' accept='xml' name=\"%s\" title='%s' size=\"60\"></p>",
 								ReadProtocol.fields.filename.name(),
 								"QMRF XML"),"box"
 						));
