@@ -39,6 +39,14 @@
   	    	<scope>compile</scope>
   	    </dependency>
   	    <dependency>
+  	    	<groupId>net.ideaconsult.restnet</groupId>
+  	    	<artifactId>restnet-cli</artifactId>
+  	    	<version>${restnet.version}</version>
+  	    	<type>jar</type>
+  	    	<scope>compile</scope>
+  	    </dependency>
+  	    
+  	    <dependency>
   	    	<groupId>net.idea</groupId>
   	    	<artifactId>qmrf-beans</artifactId>
   	    	<version>${project.version}</version>

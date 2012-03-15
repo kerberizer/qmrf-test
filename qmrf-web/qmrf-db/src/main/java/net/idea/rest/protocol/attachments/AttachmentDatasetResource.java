@@ -96,7 +96,7 @@ public class AttachmentDatasetResource extends ProtocolAttachmentResource {
 			AttachmentURIReporter r = new AttachmentURIReporter(getRequest(),String.format("%s/%s",Resources.protocol,key.toString()));
 			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 			conn = dbc.getConnection();
-			return new CallableAttachmentImporter(method,getRequest().getRootRef(), r,item, form,conn,getToken());
+			return new CallableAttachmentImporter(method,getRequest().getRootRef(), r,item, form,getQueryService(), conn,getToken());
 		} catch (Exception x) {
 			try { conn.close(); } catch (Exception xx) {}
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
