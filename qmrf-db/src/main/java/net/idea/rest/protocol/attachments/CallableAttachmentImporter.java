@@ -1,14 +1,36 @@
 package net.idea.rest.protocol.attachments;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.sql.Connection;
 
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.rest.protocol.attachments.db.UpdateAttachment;
+import net.idea.restnet.cli.task.RemoteTask;
 import net.idea.restnet.db.update.CallableDBUpdateTask;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpException;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HttpContext;
+import org.opentox.dsl.task.FibonacciSequence;
 import org.restlet.data.Form;
+import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
+import org.restlet.data.Status;
+import org.restlet.representation.FileRepresentation;
+import org.restlet.resource.ResourceException;
 
 /**
  * Imports structure files into the remote ambit service via OpenTox API
@@ -18,20 +40,24 @@ import org.restlet.data.Reference;
 public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachment,Form,String> {
 	protected AttachmentURIReporter reporter;
 	protected DBAttachment attachment;
+	protected String queryService;
 	public CallableAttachmentImporter(Method method, Reference baseReference,
 			AttachmentURIReporter reporter,
 			DBAttachment attachment,
-			Form input,Connection connection, String token) {
+			Form input,
+			String queryService,
+			Connection connection, String token) {
 		super(method, input, connection, token);
 		this.reporter = reporter;
 		this.attachment = attachment;
+		this.queryService= queryService;
 	}
 
 	@Override
 	protected DBAttachment getTarget(Form input) throws Exception {
 		try {
-			boolean result = remoteImport(attachment);
-			attachment.setImported(result);
+			RemoteTask task = remoteImport(attachment);
+			attachment.setImported(true);
 			return attachment;
 		} catch (Exception x) {
 			throw x;
@@ -54,12 +80,49 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 		return false;
 	}
 
-	protected boolean remoteImport(DBAttachment target) throws Exception {
-		//TODO
-		System.out.println(target.getTitle());
-		return false;
-	}
+	protected RemoteTask remoteImport(DBAttachment target) throws Exception {
+
+		HttpClient client = createHTTPClient();
+		RemoteTask task = new RemoteTask(client, 
+					new URL(String.format("%s/dataset",queryService)), 
+					"text/uri-list", createPOSTEntity(attachment), HttpPost.METHOD_NAME);
 	
+		wait(task, System.currentTimeMillis());
+		
+		
+		return task;
+	}
+	protected long pollInterval = 1500;
+	protected long pollTimeout = 10000L*60L*5L; //50 min
+	protected RemoteTask wait(RemoteTask task, long now) throws Exception {
+		if (task.getError()!=null) throw task.getError();
+		if (task.getResult()==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,String.format("%s returns empty contend instead of URI"));
+		String result = task.getResult().toString();
+		FibonacciSequence sequence = new FibonacciSequence();
+		while (!task.poll()) {
+			if (task.getError()!=null) throw task.getError();
+			Thread.sleep(sequence.sleepInterval(pollInterval,true,1000 * 60 * 5)); 				
+			Thread.yield();
+			if ((System.currentTimeMillis()-now) > pollTimeout) 
+				throw new ResourceException(Status.SERVER_ERROR_GATEWAY_TIMEOUT,
+						String.format("%s %s ms > %s ms",result==null?task.getUrl():result,System.currentTimeMillis()-now,pollTimeout));
+		}
+		
+		if (task.getError()!=null) 
+			if(task.getError() instanceof ResourceException)
+				throw new ResourceException(Status.SERVER_ERROR_BAD_GATEWAY,
+						String.format("%s %d %s",result==null?task.getUrl():result,
+						((ResourceException)task.getError()).getStatus().getCode(),
+						task.getError().getMessage()),
+						task.getError());
+			else
+				throw new ResourceException(Status.SERVER_ERROR_BAD_GATEWAY,
+						String.format("%s %s",result==null?task.getUrl():result,task.getError().getMessage()),
+						task.getError());
+		
+	
+		return task;
+	}	 
 	@Override
 	public String toString() {
 		if (Method.POST.equals(method)) {
@@ -70,5 +133,30 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 			return String.format("Delete dataset");
 		}
 		return "Read dataset";
+	}
+	
+
+	protected HttpEntity createPOSTEntity(DBAttachment attachment) throws Exception {
+		Charset utf8 = Charset.forName("UTF-8");
+		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,null,utf8);
+		entity.addPart("title", new StringBody(attachment.getTitle(),utf8));
+		entity.addPart("seeAlso", new StringBody(attachment.getDescription(),utf8));
+		entity.addPart("license", new StringBody("QMRF",utf8));
+		entity.addPart("file", new FileBody(new File(attachment.getResourceURL().toURI())));
+//match, seeAlso, license
+		return entity;
+	}
+	
+	protected HttpClient createHTTPClient() {
+		HttpClient cli = new DefaultHttpClient();
+		((DefaultHttpClient)cli).addRequestInterceptor(new HttpRequestInterceptor() {
+			@Override
+			public void process(HttpRequest request, HttpContext context)
+					throws HttpException, IOException {
+				//if (ssoToken != null)
+					//request.addHeader("subjectid",ssoToken.getToken());
+			}
+		});
+		return cli;
 	}
 }
