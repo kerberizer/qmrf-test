@@ -10,6 +10,7 @@ import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.attachments.db.AddAttachment;
 import net.idea.rest.protocol.attachments.db.DeleteAttachment;
+import net.idea.rest.protocol.attachments.db.UpdateAttachment;
 import net.idea.rest.protocol.db.test.CRUDTest;
 
 import org.dbunit.database.IDatabaseConnection;
@@ -64,12 +65,9 @@ public class DBAttachments_crud_test  extends CRUDTest<DBProtocol,DBAttachment> 
 	}
 
 	@Override
-	public void testUpdate() throws Exception {
-	}
-	@Override
 	protected IQueryUpdate<DBProtocol, DBAttachment> updateQuery()
 			throws Exception {
-		return null;
+		return new UpdateAttachment(null,new DBAttachment(180));
 	}
 
 	@Override
@@ -90,7 +88,10 @@ public class DBAttachments_crud_test  extends CRUDTest<DBProtocol,DBAttachment> 
 	@Override
 	protected void updateVerify(IQueryUpdate<DBProtocol, DBAttachment> query)
 			throws Exception {
-		
+        IDatabaseConnection c = getConnection();	
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT idattachment,imported from attachments where idattachment=180");
+		Assert.assertEquals(1,table.getRowCount());
+		c.close();		
 	}
 
 	@Override
