@@ -61,9 +61,16 @@ public class ProtocolFactory {
 				}
 				case published: {
 					String s = fi.getString(utf8);
+					if (s==null)  {protocol.setPublished(false); break;}
+					s = s.toLowerCase();
 					try {
-						protocol.setPublished(Boolean.parseBoolean(s));
-					} catch (Exception x) { protocol.setPublished(true);}
+						if ("on".equals(s)) {protocol.setPublished(true); break;}
+						else if ("".equals(s)) {protocol.setPublished(false); break;}
+						else if ("true".equals(s)) {protocol.setPublished(true); break;}
+						else if ("false".equals(s)) {protocol.setPublished(false); break;}
+					} catch (Exception x) { 
+						protocol.setPublished(false);
+					}
 					break;
 				}
 				/*

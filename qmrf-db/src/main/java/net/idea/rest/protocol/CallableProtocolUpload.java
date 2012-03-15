@@ -50,7 +50,33 @@ import org.restlet.resource.ResourceException;
 
 
 public class CallableProtocolUpload extends CallableProtectedTask<String> {
-	public enum UpdateMode {create,update,dataTemplateOnly,createversion}
+	public enum UpdateMode {
+		create {
+			@Override
+			public String getDescription() {
+				return "New document";
+			}
+		},
+		update {
+			@Override
+			public String getDescription() {
+				return "Update";
+			}
+		},
+		dataTemplateOnly {
+			@Override
+			public String getDescription() {
+				return "Upload attachment(s)";
+			}			
+		},
+		createversion {
+			@Override
+			public String getDescription() {
+				return "New document version";
+			}				
+		};
+		public String getDescription() {return name();}
+		}
 	protected List<FileItem> input;
 	protected ProtocolQueryURIReporter reporter;
 	protected Connection connection;
@@ -61,7 +87,6 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 	protected DBProtocol protocol;
 	protected Method method;
 	protected UpdateMode updateMode = UpdateMode.create;
-	
 	
 	public UpdateMode getUpdateMode() {
 		return updateMode;
@@ -113,6 +138,14 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		else if (Method.DELETE.equals(method)) return delete();
 		throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED,method.toString());
 	}	
+	
+	
+	@Override
+	public String toString() {
+		if (Method.DELETE.equals(method)) return "Remove document";
+		if (Method.PUT.equals(method)) return "Update document";
+		else return updateMode.getDescription();
+	}
 	
 	public TaskResult delete() throws ResourceException {
 		try {
@@ -491,5 +524,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 			throw new ResourceException(Status.SERVER_ERROR_BAD_GATEWAY,String.format("Error deleting policies for %s",url),x);
 		}
 	}
+
+
 }
 
