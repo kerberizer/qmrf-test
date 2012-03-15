@@ -122,7 +122,7 @@ public class QMRFTunnelFilter extends Filter {
                     // Load the accept.properties file.
                     final URL userAgentPropertiesUrl = Engine.getClassLoader()
                             .getResource(
-                                    "org/restlet/service/accept.properties");
+                                    "net/idea/rest/org/restlet/service/accept.properties");
                     if (userAgentPropertiesUrl != null) {
                         BufferedReader reader;
                         try {
