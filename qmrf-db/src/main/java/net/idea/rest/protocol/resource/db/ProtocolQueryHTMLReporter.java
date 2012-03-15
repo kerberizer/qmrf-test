@@ -299,6 +299,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				output.write("<td></td>");
 			output.write(String.format("<td><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
 			output.write(String.format("<td>%s</td>",item.getTitle()));
+			output.write(String.format("<td>%s</td>",item.isPublished()?
+					"":
+					String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\"><input  type='hidden' name='published' value='true'/><input  title='This document is NOT published' class='draw' type='submit' value='Publish'></form>",uri)));
 			output.write(String.format("<td>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td>%s</td>",printDownloadLinks(uri)));
 			//output.write(String.format("<td><g:plusone size='small' href='%s/protocol/%s'></g:plusone></td>", getUriReporter().getBaseReference().toString(), item.getIdentifier()));
