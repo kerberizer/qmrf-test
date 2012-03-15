@@ -200,7 +200,7 @@ public class ProtocolFactory {
 					} catch (Exception x) { protocol.setStatus(STATUS.RESEARCH);}
 					break;					
 				}
-				case keywords: {
+				case xmlkeywords: {
 					try {
 						if ((fi.getString()!=null) && !"".equals(fi.getString(utf8)))
 							protocol.addKeyword(fi.getString().trim());
