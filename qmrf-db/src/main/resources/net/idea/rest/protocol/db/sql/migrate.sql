@@ -43,13 +43,29 @@ SELECT ifnull(idqmrf_origin,idqmrf),version, id_author FROM
  qmrf_documents.doc_authors join qmrf_documents.documents using(idqmrf);
  
  
--- keywords
--- SELECT idprotocol,version,abstract,
--- extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@id'),
--- extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name'),
--- extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group'),
--- extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@subgroup')
--- FROM protocol p;
+-- keywords 
+insert into keywords select idprotocol,version,
+trim(
+replace(
+replace(
+replace(
+replace(		
+replace(
+replace(
+replace(
+replace(
+replace(
+extractvalue(abstract,'//@text()'),
+'&lt;html&gt;',''),
+'&lt;head&gt;',''),
+'&lt;/head&gt;',''),
+'&lt;body&gt;',''),
+'&lt;/body&gt;',''),
+'&lt;/html&gt;',''),
+'&lt;p style=\"margin-top: 0\"&gt',''),
+'&lt;/p&gt;',''),
+'&#13;',''))
+from protocol on duplicate key update keywords=values(keywords);
 
 -- authors
 -- SELECT idprotocol,version,abstract,
