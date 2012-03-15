@@ -13,13 +13,10 @@
 
 <xsl:template match="QMRF_chapters">
  
-    <div id='tabs-1'>
+    <div id='tabs-2'>
     <div  class='summary'>
     	<xsl:apply-templates select="QSAR_identifier"/>	
     </div>
-    </div>
-  
-    <div id='tabs-2'>
     <div  class='summary'>
     	<xsl:apply-templates select="QSAR_General_information"/>	
     </div>
