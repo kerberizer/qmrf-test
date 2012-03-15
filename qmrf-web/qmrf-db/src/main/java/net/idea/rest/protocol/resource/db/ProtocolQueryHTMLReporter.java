@@ -39,6 +39,17 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	 * 
 	 */
 	private static final long serialVersionUID = -7959033048710547839L;
+	protected final static String[][] chapters = {
+			{"QSAR identifier","Identifier"},
+			{"General information","General"},
+			{"Defining the endpoint - OECD Principle 1","Endpoint"},
+			{"Defining the algorithm - OECD Principle 2","Algorithm"},
+			{"Defining the applicability domain - OECD Principle 3","App. domain"},
+			{"Internal validation - OECD Principle 4","Robustness"},
+			{"External validation - OECD Principle 4","Predictivity"},
+			{"Providing a mechanistic interpretation - OECD Principle 5","Interpretation"},
+			{"Miscellaneous information","Misc"},
+	};	
 	protected boolean paging = true;
 	protected boolean details = true;
 	protected GroupQueryURIReporter<IQueryRetrieval<IDBGroup>> groupReporter;
@@ -173,8 +184,28 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			"<div id='%s' style='display: %s;'>\n"+					
 			"<div class='tabs'>\n",item.getIdentifier(),hidden?"none":""));
 			
+			String baseRef = uriReporter.getBaseReference().toString();
+
+			String imgstyle = "style='float:left; margin-left:5px; margin-top:5px; margin-right:0px;'";
+			output.write("<ul>\n");
+			for (int i=0; i < chapters.length; i++) {
+				output.write(String.format(
+				"<li><img src='%s/images/qmrf/chapter%d.png' %s><a style='margin-left:0px;' href='#tabs-%d' title='%d.%s'>%s</a></li>",
+				baseRef,
+				(i+1),
+				imgstyle,
+				(i+1),
+				(i+1),
+				chapters[i][0],
+				chapters[i][1]
+				));
+			}
+			output.write(String.format("<li><img src='%s/images/qmrf/attachments.png' %s> %s<span></span></li>",
+					baseRef,imgstyle,attachmentURI));
+			output.write("</ul>\n");
+			/*
 			output.write(String.format("<ul>\n"+
-			"<li><a href='#tabs-1' title='1.QSAR identifier'>Identifier</a></li>"+
+			"<li><img src='%s/images/qmrf/chapter1.png' style='float:left; margin-left:5px; margin-top:5px'><a href='#tabs-1' title='1.QSAR identifier'>Identifier</a></li>"+
 			"<li><a href='#tabs-2' title='2.General information'>General</a></li>"+
 			"<li><a href='#tabs-3' title='3.Defining the endpoint - OECD Principle 1'>Endpoint</a></li>"+
 			"<li><a href='#tabs-4' title='4.Defining the algorithm - OECD Principle 2'>Algorithm</a></li>"+
@@ -185,7 +216,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			"<li><a href='#tabs-9' title='9.Miscellaneous information'>Misc</a></li>"+
 			//"<li><a href='#tabs-dataset'>Attachments</a></li>"+
 			"<li>%s<span></span></li>"+
-			"</ul>",attachmentURI));
+			"</ul>",
+			baseRef,
+			attachmentURI));
+			*/
 	
 			qhtml.xml2summary(getDOMSource(item),output);
 		
