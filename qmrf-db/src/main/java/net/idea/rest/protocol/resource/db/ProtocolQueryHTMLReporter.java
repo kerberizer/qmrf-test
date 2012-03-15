@@ -133,7 +133,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		if (collapsed)
 			w.write("<tr><th width='2%'></th><th width='15%'>QMRF number</th><th>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
 		else
-			w.write("<tr><th width='15%'></th><th colspan='2'></th><th width='10%'></th><th width='10%'></th></tr>");
+			w.write("<tr><th></th><th width='15%'></th><th colspan='2'></th><th width='10%'></th><th width='10%'></th></tr>");
 		
 	}
 	protected DOMSource getDOMSource(DBProtocol item) throws Exception {
@@ -221,23 +221,6 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<li><img src='%s/images/qmrf/attachments.png' %s> %s<span></span></li>",
 					baseRef,imgstyle,attachmentURI));
 			output.write("</ul>\n");
-			/*
-			output.write(String.format("<ul>\n"+
-			"<li><img src='%s/images/qmrf/chapter1.png' style='float:left; margin-left:5px; margin-top:5px'><a href='#tabs-1' title='1.QSAR identifier'>Identifier</a></li>"+
-			"<li><a href='#tabs-2' title='2.General information'>General</a></li>"+
-			"<li><a href='#tabs-3' title='3.Defining the endpoint - OECD Principle 1'>Endpoint</a></li>"+
-			"<li><a href='#tabs-4' title='4.Defining the algorithm - OECD Principle 2'>Algorithm</a></li>"+
-			"<li><a href='#tabs-5' title='5.Defining the applicability domain - OECD Principle 3'>App. domain</a></li>"+
-			"<li><a href='#tabs-6' title='6.Internal validation - OECD Principle 4'>Robustness</a></li>"+
-			"<li><a href='#tabs-7' title='7.External validation - OECD Principle 4'>Predictivity</a></li>"+
-			"<li><a href='#tabs-8' title='8.Providing a mechanistic interpretation - OECD Principle 5'>Interpretation</a></li>"+
-			"<li><a href='#tabs-9' title='9.Miscellaneous information'>Misc</a></li>"+
-			//"<li><a href='#tabs-dataset'>Attachments</a></li>"+
-			"<li>%s<span></span></li>"+
-			"</ul>",
-			baseRef,
-			attachmentURI));
-			*/
 			try {
 				qhtml.xml2summary(getDOMSource(item),output);
 			} catch (Exception x) {
