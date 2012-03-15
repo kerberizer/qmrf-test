@@ -31,7 +31,10 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 
 public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQueryRetrieval<DBProtocol>> {
@@ -40,7 +43,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	 */
 	private static final long serialVersionUID = -7959033048710547839L;
 	protected final static String[][] chapters = {
-			{"QSAR identifier","Identifier"},
+		//	{"QSAR identifier","Identifier"},
 			{"General information","General"},
 			{"Defining the endpoint - OECD Principle 1","Endpoint"},
 			{"Defining the algorithm - OECD Principle 2","Algorithm"},
@@ -68,7 +71,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	public ProtocolQueryHTMLReporter() {
 		this(null,true,false,true,false);
 	}
-	final String dtdSchema = "http://ambit.sourceforge.net/qmrf/qmrf.dtd";
+
 	public ProtocolQueryHTMLReporter(Request request, boolean collapsed,boolean editable,boolean paging, boolean details) {
 		super(request,collapsed,null,null);
 		setTitle(!collapsed?null:"QMRF document");
@@ -142,7 +145,22 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		  }
 		   if (builder==null) {
 			   builder = factory.newDocumentBuilder();
-
+			   builder.setErrorHandler(new ErrorHandler() {
+				@Override
+				public void warning(SAXParseException exception) throws SAXException {
+					exception.printStackTrace();
+				}
+				
+				@Override
+				public void fatalError(SAXParseException exception) throws SAXException {
+					exception.printStackTrace();
+				}
+				
+				@Override
+				public void error(SAXParseException exception) throws SAXException {
+					exception.printStackTrace();
+				}
+			});
 			   builder.setEntityResolver(dtdresolver);
 		   }
 		   Document xmlDocument = builder.parse( new InputSource(new StringReader(xml)));
@@ -192,10 +210,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				output.write(String.format(
 				"<li><img src='%s/images/qmrf/chapter%d.png' %s><a style='margin-left:0px;' href='#tabs-%d' title='%d.%s'>%s</a></li>",
 				baseRef,
-				(i+1),
+				(i+2),
 				imgstyle,
-				(i+1),
-				(i+1),
+				(i+2),
+				(i+2),
 				chapters[i][0],
 				chapters[i][1]
 				));
@@ -220,9 +238,11 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			baseRef,
 			attachmentURI));
 			*/
-	
-			qhtml.xml2summary(getDOMSource(item),output);
-		
+			try {
+				qhtml.xml2summary(getDOMSource(item),output);
+			} catch (Exception x) {
+				x.printStackTrace();
+			}
 			String uploadUI = String.format("<a href='%s%s/%s' target='upload' title='Upload training and test datasets and related documents''>%s</a>",
 					uriReporter.getBaseReference(),Resources.editor,item.getIdentifier(),"Add attachment(s)");
 			output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
@@ -230,7 +250,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write("\n</div>\n");//tabs , protocol
 		} catch (Exception x) {
 			x.printStackTrace();
-		} 
+		} finally {
+			
+		}
 	
 	}
 	
