@@ -49,6 +49,7 @@ public class DBAttachment extends Document {
 		public String acceptFormats() { return "sdf|mol|csv|xls"; };
 		
 	}
+
 	protected attachment_type type;
 	protected String description;
 	protected String format;

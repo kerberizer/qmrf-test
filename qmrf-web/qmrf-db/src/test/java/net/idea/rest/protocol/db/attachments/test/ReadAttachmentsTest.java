@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
+import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.rest.protocol.db.test.QueryTest;
 
@@ -39,6 +40,9 @@ public class ReadAttachmentsTest  extends QueryTest<ReadAttachment> {
 			Assert.assertNotNull(attachment.getResourceURL());
 			URL expected = 
 			new URL(String.format("file://%s",System.getProperty("java.io.tmpdir")).replace("\\","/"));
+			
+			if (attachment_type.document.equals(attachment.getType())) Assert.assertFalse(attachment.isImported());
+			else Assert.assertTrue(attachment.isImported());
 			System.out.println(attachment.getResourceURL().toExternalForm());
 			System.out.println(expected.toExternalForm());
 
