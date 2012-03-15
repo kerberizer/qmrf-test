@@ -293,7 +293,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected void printTable(Writer output, String uri, DBProtocol item) {
 		try {
 			output.write("<tr>\n");	
-			if (details)
+			if (details & collapsed)
 				output.write(String.format("<td>&nbsp;<a class=\"tbldivxpander\" href=\"javascript:toggleDiv('%s');\">+</a></td>",item.getIdentifier()));
 			else 
 				output.write("<td></td>");
@@ -305,7 +305,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write("</tr>\n");
 
 			if (details) {
-				output.write("<tr><td colspan='6'>\n");
+				output.write("<tr><td colspan='5'>\n");
 				//printHTML(output, uri, item, true);
 				printForm(output,uri,item,collapsed);
 				output.write("</td></tr>\n");
