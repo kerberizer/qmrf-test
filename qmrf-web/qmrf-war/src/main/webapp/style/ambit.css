@@ -14,7 +14,8 @@ body {
 
 #wrap {
 	min-height: 100%;
-	position: relative;
+	min-width: 100%;
+	position: absolute;
 }
 
 * html #wrap {
@@ -208,7 +209,7 @@ A:hover {
 }
 
 .logo_header {
-	position: relative;
+	position: absolute;
 	top: -55px;
 	width: 100%;
 }
