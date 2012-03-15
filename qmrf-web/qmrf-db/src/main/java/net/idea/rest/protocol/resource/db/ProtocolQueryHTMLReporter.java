@@ -292,6 +292,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<td>%s</td>",item.getTitle()));
 			output.write(String.format("<td width='8em'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td width='50px'>%s</td>",printDownloadLinks(uri)));
+			//output.write(String.format("<td width='40px'><g:plusone size='small' href='%s/protocol/%s'></g:plusone></td>", getUriReporter().getBaseReference().toString(), item.getIdentifier()));
 			output.write("</tr>\n");
 
 			if (details) {

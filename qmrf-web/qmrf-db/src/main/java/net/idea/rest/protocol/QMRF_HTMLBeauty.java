@@ -130,6 +130,16 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery-ui-1.8.18.custom.min.js\"></script>\n",baseReference));
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.MultiFile.pack.js\"></script>\n",baseReference));
 			
+			// Google +1 button rendering code (the button is placed elsewhere)
+			w.write(String.format("<script type='text/javascript'>" +
+					"(function() {" +
+					"var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;" +
+					"po.src = 'https://apis.google.com/js/plusone.js';" +
+					"var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);" +
+					"})();" +
+					"</script>"
+			));
+
 			//w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.tablesorter.min.js\"></script>\n",baseReference));
 			w.write(meta);
 					
