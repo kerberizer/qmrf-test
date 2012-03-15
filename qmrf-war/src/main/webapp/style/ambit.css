@@ -208,7 +208,7 @@ A:hover {
 }
 
 .logo_header {
-	position: absolute;
+	position: relative;
 	top: -55px;
 	width: 100%;
 }
