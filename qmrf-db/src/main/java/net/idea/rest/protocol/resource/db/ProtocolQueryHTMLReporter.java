@@ -127,15 +127,24 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		}
 		return null;
 	}
+
 	@Override
 	protected void printTableHeader(Writer w) throws Exception {
 		w.write("<table width='100%'>\n");
-		if (collapsed)
-			w.write("<tr><th width='2%'></th><th width='15%'>QMRF number</th><th>Title</th><th width='10%'>Published</th><th width='10%'>Download</th></tr>");			
-		else
-			w.write("<tr><th></th><th width='15%'></th><th colspan='2'></th><th width='10%'></th><th width='10%'></th></tr>");
-		
+		w.write(String.format("<tr>\n" +
+				"<th></th>\n" +
+				"<th>%s</th>\n" +
+				"<th>%s</th>\n" +
+				"<th>%s</th>\n" +
+				"<th>%s</th>\n" +
+				"</tr>\n",
+				collapsed?"QMRF number":"",
+				collapsed?"Title":"",
+				collapsed?"Published":"",
+				collapsed?"Download":""
+		));
 	}
+
 	protected DOMSource getDOMSource(DBProtocol item) throws Exception {
 		  String xml = item.getAbstract();
 		  if (factory==null) {
@@ -288,11 +297,11 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				output.write(String.format("<td>&nbsp;<a class=\"tbldivxpander\" href=\"javascript:toggleDiv('%s');\">+</a></td>",item.getIdentifier()));
 			else 
 				output.write("<td></td>");
-			output.write(String.format("<td width='15em'><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
+			output.write(String.format("<td><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
 			output.write(String.format("<td>%s</td>",item.getTitle()));
-			output.write(String.format("<td width='8em'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
-			output.write(String.format("<td width='50px'>%s</td>",printDownloadLinks(uri)));
-			//output.write(String.format("<td width='40px'><g:plusone size='small' href='%s/protocol/%s'></g:plusone></td>", getUriReporter().getBaseReference().toString(), item.getIdentifier()));
+			output.write(String.format("<td>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
+			output.write(String.format("<td>%s</td>",printDownloadLinks(uri)));
+			//output.write(String.format("<td><g:plusone size='small' href='%s/protocol/%s'></g:plusone></td>", getUriReporter().getBaseReference().toString(), item.getIdentifier()));
 			output.write("</tr>\n");
 
 			if (details) {
