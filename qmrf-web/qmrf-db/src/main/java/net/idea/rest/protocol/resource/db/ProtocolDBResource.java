@@ -19,6 +19,7 @@ import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.ReadProtocolByAuthor;
 import net.idea.rest.protocol.db.ReadProtocolByEndpoint;
 import net.idea.rest.protocol.db.ReadProtocolByStructure;
+import net.idea.rest.protocol.db.ReadProtocolByTextSearch;
 import net.idea.rest.structure.resource.Structure;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
@@ -61,9 +62,12 @@ import org.restlet.resource.ResourceException;
  */
 public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends QMRFQueryResource<Q,DBProtocol> {
 	public enum SearchMode {
+		title,
 		text,
 		endpoint,
 		author,
+		software,
+		descriptor,
 		qmrfnumber
 	}
 	
@@ -271,6 +275,14 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					singleItem = false;				
 					return (Q)query;
 				}
+				case text: {
+					IQueryRetrieval<DBProtocol> query = new ReadProtocolByTextSearch();
+					
+					((ReadProtocolByTextSearch)query).setFieldname(search.toString().trim());
+					editable = showCreateLink;
+					singleItem = false;				
+					return (Q)query;
+				}				
 				case endpoint: {
 					IQueryRetrieval<DBProtocol> query = new ReadProtocolByEndpoint();
 					

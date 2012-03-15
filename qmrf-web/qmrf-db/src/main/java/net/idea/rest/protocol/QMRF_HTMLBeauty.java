@@ -310,6 +310,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   "<form method='GET' action='%s%s?pagesize=10'>\n"+
 			   "<table width='200px'>\n"+
 			   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter search query'></td></tr>\n"+
+			   "<tr><td colspan='2'><input %s tabindex='1' type='radio' value='title' name='option' title='Title' size='20'>Title</td></tr>\n"+
 			   "<tr><td colspan='2'><input %s tabindex='1' type='radio' value='text' name='option' title='Free text search' size='20'>Free text</td></tr>\n"+
 			   "<tr><td><input %s type='radio' tabindex='2' name='option' value='endpoint' title='Search by endpoint'>Endpoint</td>\n"+
 			   "<tr><td colspan='2'><input %s tabindex='3' type='radio' value='author' name='option' title='Search by author' size='20'>Author</td></tr>\n"+
@@ -327,6 +328,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			   baseReference,
 			   getSearchURI(),
 			   searchQuery==null?"":searchQuery,
+			   SearchMode.title.equals(option)?"checked":"",
 			   SearchMode.text.equals(option)?"checked":"",
 			   SearchMode.endpoint.equals(option)?"checked":"",
 			   SearchMode.author.equals(option)?"checked":"",

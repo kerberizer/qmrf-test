@@ -19,12 +19,12 @@ public class ReadProtocolVersions extends ReadProtocol {
 		if (getValue()!=null) {
 			if (getValue().getID()>0) 
 				if (getValue().getVersion()>0)
-					return String.format(sql,"where",
+					return String.format(sql_nokeywords,"where",
 							String.format("%s and %s",fields.idprotocol.getCondition(),fields.version.getCondition()));
 				else
-					return String.format(sql,"where",fields.idprotocol.getCondition());
+					return String.format(sql_nokeywords,"where",fields.idprotocol.getCondition());
 		}
-		return String.format(sql,"","");
+		return String.format(sql_nokeywords,"","");
 	}
 	
 	public List<QueryParam> getParameters() throws AmbitException {

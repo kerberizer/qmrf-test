@@ -27,15 +27,23 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 	}
 
 	
-	protected static String sql = 
+	protected static String sql_withkeywords =  //for text search
 		"select idprotocol,version,protocol.title,abstract as anabstract,iduser,summarySearchable," +
 		"idproject,project.name as project,project.ldapgroup as pgroupname," +
 		"idorganisation,organisation.name as organisation,organisation.ldapgroup as ogroupname," +
-		"filename,keywords,updated,status,`created`,published\n" +
+		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
 		"from protocol join organisation using(idorganisation)\n" +
 		"join project using(idproject)\n" +
-		"left join keywords using(idprotocol,version) %s %s order by idprotocol,version desc";
+		"left join keywords using(idprotocol,version) %s %s";
 
+	protected static String sql_nokeywords = 
+		"select idprotocol,version,protocol.title,abstract as anabstract,iduser,summarySearchable," +
+		"idproject,project.name as project,project.ldapgroup as pgroupname," +
+		"idorganisation,organisation.name as organisation,organisation.ldapgroup as ogroupname," +
+		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
+		"from protocol join organisation using(idorganisation)\n" +
+		"join project using(idproject)\n" +
+		" %s %s order by idprotocol,version desc";	
 	
 	public ReadProtocolAbstract(Integer id) {
 		this(id,null);

@@ -6,24 +6,26 @@ import java.util.List;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 
-public class ReadProtocolByAuthor extends ReadProtocolByEndpoint {
+/**
+ * Free text search, as supported byMySQL full text search. Relies on table keywords to be populated.
+ * @author nina
+ *
+ */
+public class ReadProtocolByTextSearch extends ReadProtocolByEndpoint {
+
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 308150917300833831L;
-	/**
-	 * 
-	 */
-
-	protected static String sql = String.format(ReadProtocol.sql_nokeywords,
-		"where ","published=true and extractvalue(abstract,'/QMRF/Catalogs/authors_catalog/author/@name') regexp ?");
+	private static final long serialVersionUID = -5128395204960444566L;
+	protected static String sql = String.format(ReadProtocol.sql_withkeywords,
+					"where ","published=true and match (keywords) against (?)");
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();
 		if (getFieldname()!=null) 
 			params.add(new QueryParam<String>(String.class, getFieldname()));
-		else throw new AmbitException("No author name!");
+		else throw new AmbitException("No search query name!");
 		return params;
 	}
 
@@ -31,5 +33,5 @@ public class ReadProtocolByAuthor extends ReadProtocolByEndpoint {
 		return sql;
 
 	}
-	
+
 }

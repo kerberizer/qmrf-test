@@ -23,6 +23,7 @@ import net.idea.rest.protocol.attachments.db.AddAttachment;
 import net.idea.rest.protocol.db.CreateProtocol;
 import net.idea.rest.protocol.db.CreateProtocolVersion;
 import net.idea.rest.protocol.db.DeleteProtocol;
+import net.idea.rest.protocol.db.UpdateFreeTextIndex;
 import net.idea.rest.protocol.db.UpdateKeywords;
 import net.idea.rest.protocol.db.UpdateProtocol;
 import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
@@ -251,9 +252,16 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					exec.process(q);
 				}
 				
+				try {
+					UpdateFreeTextIndex q = new UpdateFreeTextIndex(protocol);
+					exec.process(q);
+				} catch (Exception x) {
+					x.printStackTrace();
+					//free text index failed, but ignore so far
+				}
 				String uri = reporter.getURI(protocol);
 				
-				if (protocol.getKeywords().size()>0) {
+				if ((protocol.getKeywords()!=null) && (protocol.getKeywords().size()>0)) {
 					UpdateKeywords k = new UpdateKeywords(protocol);
 					exec.process(k);
 				}
@@ -345,13 +353,22 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 				UpdateProtocol q = new UpdateProtocol(protocol);
 				exec.process(q);
 				
+				
 				String uri = reporter.getURI(protocol);
 				
-				if (protocol.getKeywords().size()>0) {
+				if ((protocol.getKeywords()!=null) && (protocol.getKeywords().size()>0)) {
 					UpdateKeywords k = new UpdateKeywords(protocol);
 					exec.process(k);
 				}
 				
+				
+				try {
+					UpdateFreeTextIndex x = new UpdateFreeTextIndex(protocol);
+					exec.process(x);
+				} catch (Exception x) {
+					x.printStackTrace();
+					//free text index failed, but ignore so far
+				}
 				if (protocol.getAuthors()!=null) {
 					DeleteAuthor da = new DeleteAuthor(protocol, null);
 					exec.process(da);

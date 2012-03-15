@@ -6,6 +6,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -55,7 +57,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			fields.anabstract,
 			fields.author_uri,
 			fields.status,
-			fields.keywords,
+			fields.xmlkeywords,
 			fields.summarySearchable,
 			//ReadProtocol.fields.status
 			fields.idproject,
@@ -86,12 +88,15 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 				return "URI";
 			}
 		},
-		keywords {
+		xmlkeywords {
 			@Override
 			public void setParam(DBProtocol protocol, ResultSet rs) throws SQLException {
 				try {
 					String kw = rs.getString(name());
+					
 					if (kw==null) return;
+					kw = kw.replace("&lt;html&gt;","").replace("&lt;head&gt;","").replace("&lt;/head&gt;","").
+							replace("&lt;body&gt;","").replace("&lt;/body&gt;","").replace("&lt;/html&gt;","");
 					String[] keywords = kw.split(";");
 					for (String keyword:keywords)
 						if (!protocol.getKeywords().contains(keyword))
@@ -709,15 +714,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 					name.substring(1).toLowerCase());
 		}
 	}
-	
-	protected static String sql = 
-		"select idprotocol,version,protocol.title,abstract as anabstract,iduser,summarySearchable," +
-		"idproject,project.name as project,project.ldapgroup as pgroupname," +
-		"idorganisation,organisation.name as organisation,organisation.ldapgroup as ogroupname," +
-		"filename,keywords,updated,status,`created`,published\n" +
-		"from protocol join organisation using(idorganisation)\n" +
-		"join project using(idproject)\n" +
-		"left join keywords using(idprotocol,version) %s %s order by updated desc";
+
 
 	public static final ReadProtocol.fields[] sqlFields = new ReadProtocol.fields[] {
 		fields.idprotocol,
@@ -731,7 +728,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		fields.idorganisation,
 		fields.organisation,
 		fields.filename,
-		fields.keywords,
+		fields.xmlkeywords,
 		fields.status,
 		fields.published
 		
@@ -781,7 +778,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		if (getValue()!=null) {
 			if (getValue().getID()>0) {
 				if (getValue().getVersion()>0)
-					return String.format(sql,"where",
+					return String.format(sql_nokeywords,"where",
 							String.format("%s and %s %s %s %s",
 									fields.idprotocol.getCondition(),
 									fields.version.getCondition(),
@@ -792,14 +789,14 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 					throw new AmbitException("Protocol version not set!");
 			} else 
 				if (getValue().getTitle()!=null)
-					return String.format(sql,"where",
+					return String.format(sql_nokeywords,"where",
 										String.format("%s %s %s %s",
 												fields.title.getCondition(),
 												byUser==null?"":" and ",
 												byUser==null?"":byUser,
 												publishedOnly));
 				else if (getValue().getTimeModified()!=null)
-					return String.format(sql,"where",
+					return String.format(sql_nokeywords,"where",
 									String.format("%s %s %s %s",
 											fields.updated.getCondition(),
 											byUser==null?"":" and ",
@@ -807,8 +804,8 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 											publishedOnly));			
 		} 
 		return getShowUnpublished()?
-				String.format(sql,"where",byUser==null?"":byUser):
-				String.format(sql,"where",byUser==null?"published=1":String.format("%s %s",byUser,publishedOnly)); //published only
+				String.format(sql_nokeywords,"where",byUser==null?"":byUser):
+				String.format(sql_nokeywords,"where",byUser==null?"published=1":String.format("%s %s",byUser,publishedOnly)); //published only
 
 	}
 
@@ -846,4 +843,35 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		return getValue()==null?"All protocols":String.format("Protocol id=P%s",getValue().getID());
 	}
 
+}
+
+class Helper {
+	protected static Pattern HTML_tags = Pattern.compile("(<html>|</html>|<head>|</head>|<title>|</title>|<body>|</body>|<b>|</b>|<i>|</i>|\t)");
+	protected static Pattern ptag = Pattern.compile("(<p>|<p style=\"margin-top: 0\">|</p>)");
+	protected static Pattern CRLF = Pattern.compile("(\n|\r)");
+	
+	public static String replaceTags(String text) {
+	
+		if (text == null) return text;
+	
+		Matcher m = HTML_tags.matcher(text);
+		String  newText = "";
+		if (m.find()) {
+			newText = m.replaceAll("");
+		}
+		else{
+			newText = text;
+		}
+		m = CRLF.matcher(newText);
+		if (m.find()) {
+			newText = m.replaceAll("");
+		}
+		m = ptag.matcher(newText);
+		if (m.find()) {
+			newText = m.replaceAll("\n");
+		}
+	
+		return newText.trim();
+	
+	}
 }
