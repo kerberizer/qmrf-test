@@ -7,7 +7,6 @@ import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.db.ReadGroup;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
-import net.idea.rest.protocol.attachments.AttachmentHTMLReporter;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.RepresentationConvertor;

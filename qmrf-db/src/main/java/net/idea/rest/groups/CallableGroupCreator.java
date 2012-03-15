@@ -115,12 +115,12 @@ public class CallableGroupCreator extends CallableDBUpdateTask<IDBGroup,Form,Str
 	@Override
 	public String toString() {
 		if (Method.POST.equals(method)) {
-			return String.format("Create %s",item.getGroupType().name());
+			return String.format("Create %s",item==null?"":item.getGroupType().name());
 		} else if (Method.PUT.equals(method)) {
-			return String.format("Update %s",item.getGroupType().name());
+			return String.format("Update %s",item==null?"":item.getGroupType().name());
 		} else if (Method.DELETE.equals(method)) {
-			return String.format("Delete %s",item.getGroupType().name());
+			return String.format("Delete %s",item==null?"":item.getGroupType().name());
 		}
-		return item.getGroupType().name();
+		return item==null?"Read":item.getGroupType().name();
 	}
 }
