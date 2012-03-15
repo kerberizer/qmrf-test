@@ -151,6 +151,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 		return ext;
 	}
 
+	@Override
 	protected TaskCreator getTaskCreator(Form form, final Method method, boolean async, final Reference reference) throws Exception {
 		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Not multipart web form!");
 	}	

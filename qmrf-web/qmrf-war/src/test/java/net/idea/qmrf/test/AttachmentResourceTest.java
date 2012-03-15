@@ -17,6 +17,7 @@ import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.junit.Test;
 import org.opentox.dsl.task.RemoteTask;
+import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
@@ -118,5 +119,40 @@ public class AttachmentResourceTest extends ResourceTest {
 
 		return o;
 	}
+	
+	
+	@Test
+	public void testImportAttachment() throws Exception {
+		Reference uri = new Reference(String.format("http://localhost:%d/protocol/QMRF-2009-83-1/attachment/A108/dataset",port));
+
+		IDatabaseConnection c = getConnection();	
+		ITable  table = 	c.createQueryTable("EXPECTED","SELECT idattachment,imported,name FROM attachments where idattachment=108");
+		Assert.assertEquals(Boolean.FALSE,table.getValue(0,"imported"));
+		c.close();
+		
+		Form form = new Form();
+		form.add("import", "true");
+		
+		RemoteTask task = testAsyncPoll(
+				uri,
+				MediaType.TEXT_URI_LIST, form.getWebRepresentation(),
+				Method.POST);
+		//wait to complete
+		while (!task.isDone()) {
+			task.poll();
+			Thread.sleep(100);
+			Thread.yield();
+		}
+		if (!task.isCompletedOK())
+			System.out.println(task.getError());
+		Assert.assertEquals(uri.toString(),task.getResult().toString());
+
+		c = getConnection();	
+		 table = 	c.createQueryTable("EXPECTED","SELECT idattachment,imported,name FROM attachments where idattachment=108");
+		Assert.assertEquals(Boolean.TRUE,table.getValue(0,"imported"));
+		c.close();
+
+	}
+	
 	
 }
