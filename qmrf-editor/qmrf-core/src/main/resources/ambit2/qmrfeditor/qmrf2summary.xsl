@@ -553,20 +553,21 @@
 
 <xsl:template match="validation_set_descriptors">
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
-  <xsl:value-of select="." disable-output-escaping="yes"/>	
+    <xsl:text> </xsl:text>
+   <xsl:value-of select="@answer"/>	
 </xsl:template>
 
 
 <xsl:template match="validation_dependent_var_availability">
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
   <xsl:text> </xsl:text>
-   <xsl:value-of select="validation_dependent_var_availability/@answer"/>	
+   <xsl:value-of select="@answer"/>	
 </xsl:template>
 
 <xsl:template match="dependent_var_availability">
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
   <xsl:text> </xsl:text>
-   <xsl:value-of select="dependent_var_availability/@answer"/>	
+   <xsl:value-of select="@answer"/>	
 </xsl:template>
 
 
@@ -652,8 +653,9 @@
 	</ul>
 </xsl:template> 	
 
-<xsl:template match="validation_set_availability/@name">
+<xsl:template match="validation_set_availability">
     <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
+    <xsl:text> </xsl:text>
    <xsl:value-of select="@answer"/>	
 </xsl:template>
 
