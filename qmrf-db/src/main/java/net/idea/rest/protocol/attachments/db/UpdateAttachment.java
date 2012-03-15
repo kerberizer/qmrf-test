@@ -4,26 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.update.AbstractUpdate;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
 
-public class UpdateAttachment extends AbstractUpdate<DBProtocol,DBAttachment>{
+public class UpdateAttachment<PROTOCOL extends Object> extends AbstractUpdate<PROTOCOL,DBAttachment> {
 	public static final String[] create_sql = {
 		"update attachments set imported =? where idattachment=?"
 	};
 
 	public UpdateAttachment(DBProtocol protocol,DBAttachment attachment) {
 		super(attachment);
-		setGroup(protocol);
+		//this.group = protocol;
 	}
 	
 	public List<QueryParam> getParameters(int index) throws AmbitException {
 		List<QueryParam> params = new ArrayList<QueryParam>();
-		params.add(AttachmentFields.imported.getParam(this));
-		if (!AttachmentFields.idattachment.isValid(this)) throw new AmbitException("Empty attachment id");
-		params.add(AttachmentFields.idattachment.getParam(this));
+		IQueryUpdate<DBProtocol,DBAttachment> q = (IQueryUpdate<DBProtocol,DBAttachment>) this; 
+		params.add(new QueryParam<Boolean>(Boolean.class, getObject().isImported()));
+		if (!(getObject()!=null) && (getObject().getID()>0)) throw new AmbitException("Empty attachment id");
+		params.add(new QueryParam<Integer>(Integer.class, getObject().getID()));
 		return params;
 	}
 

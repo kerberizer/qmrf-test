@@ -57,6 +57,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 		return true;
 	}
 	public String printTable(DBAttachment attachment) {
+		String uri = uriReporter.getURI(attachment);
 		StringBuilder datasets = new StringBuilder();
 		datasets.append("<tr>");
 		
@@ -64,9 +65,9 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 					attachment.getDescription())
 					);
 		
-		datasets.append(String.format("<td align='left' width='15%%'>%s</td>", attachment.getType()));
+		datasets.append(String.format("<td align='left'>%s</td>", attachment.getType()));
 		datasets.append(String.format("<td align='left'><a href='%s?media=%s' target='_attachment' title='%s %s'>Download</a></td>",
-				uriReporter.getURI(attachment),
+				uri,
 				Reference.encode(attachment.getMediaType()),
 				attachment.getTitle(),attachment.getMediaType()
 				)
@@ -74,12 +75,17 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	
 		switch (attachment.getType()) {
 		case document: {
-			datasets.append("<td width='15%%'></td>");
+			datasets.append("<td></td>");
 			break;
 		}
 		default: {
-			datasets.append(String.format("<td align='left' width='15%%'><a href='%s%s?option=dataset&search=%s' target='_structure'>Browse structures</a></td>",
+			if (attachment.imported)
+			datasets.append(String.format("<td align='left' ><a href='%s%s?option=dataset&search=%s' target='_structure'>Browse structures</a></td>",
 						uriReporter.getBaseReference(),Resources.structure,Reference.encode(attachment.getTitle().trim())));
+			else {
+				String form = String.format("<form method='POST' title='This dataset is not yet browsable and searchable' action='%s/dataset'><input type='submit' class='Draw' value='Make searchable'></form>",uri);
+				datasets.append(String.format("<td align='left'>%s</td>",form));
+			}
 			break;
 		}
 		}
