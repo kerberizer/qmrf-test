@@ -24,8 +24,16 @@ public class ReadAttachment extends AbstractQuery<DBProtocol, DBAttachment, EQCo
 	 */
 	private static final long serialVersionUID = 6228939989116141217L;
 	protected String dir = null;
+	private enum _fields {
+		idattachment,
+		type,
+		name,
+		format,
+		description,
+		imported
+	}
 	protected static String sql = 
-		"SELECT idprotocol,version,idattachment,type,a.name,`format`,description FROM attachments a where %s";
+		"SELECT idprotocol,version,idattachment,type,a.name,`format`,description,imported FROM attachments a where %s";
 	protected static String where_protocol = "idprotocol=? and version=?";
 	protected static String where_attachment = "idattachment=?";
 	
@@ -89,9 +97,9 @@ and idchemical=282
 	public DBAttachment getObject(ResultSet rs) throws AmbitException {
 		String url = "";
 		try {
-				String format = rs.getString("format");
-				String name = rs.getString("name");
-				String type = rs.getString("type");
+				String format = rs.getString(_fields.format.name());
+				String name = rs.getString(_fields.name.name());
+				String type = rs.getString(_fields.type.name());
 				url = String.format("file://%s/%s/%s.%s",dir,type,name.replace(" ","%20"),format);
 				DBAttachment attachment = new DBAttachment(new URL(url));
 				if ("pdf".equals(format)) attachment.setMediaType(MediaType.APPLICATION_PDF.toString());
@@ -103,10 +111,11 @@ and idchemical=282
 				else if ("doc".equals(format)) attachment.setMediaType(MediaType.APPLICATION_WORD.toString());
 				else if ("docx".equals(format)) attachment.setMediaType(MediaType.APPLICATION_MSOFFICE_DOCX.toString());
 				else attachment.setMediaType(MediaType.APPLICATION_ALL.toString());
-				attachment.setID(rs.getInt("idattachment"));
+				attachment.setID(rs.getInt(_fields.idattachment.name()));
 				attachment.setTitle(name);
 				attachment.setType(DBAttachment.attachment_type.valueOf(type));
-				attachment.setDescription(rs.getString("description"));
+				attachment.setDescription(rs.getString(_fields.description.name()));
+				attachment.setImported(rs.getBoolean(_fields.imported.name()));
 				return attachment;
 
 		} catch (Exception x) {
