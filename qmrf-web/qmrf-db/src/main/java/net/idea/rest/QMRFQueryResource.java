@@ -10,10 +10,13 @@ import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.db.QueryResource;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
+import net.idea.restnet.i.task.ICallableTask;
 import net.idea.restnet.i.task.ITaskStorage;
+import net.idea.restnet.i.task.Task;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
 import org.restlet.data.Form;
+import org.restlet.data.Reference;
 import org.restlet.resource.ResourceException;
 
 public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends Serializable> extends QueryResource<Q,T>{
@@ -73,4 +76,23 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 	}
 	
 	protected abstract QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException;
+	
+	@Override
+	protected Task<Reference, Object> addTask(
+			ICallableTask callable,
+			T item,
+			Reference reference) throws ResourceException {
+
+			return ((TaskApplication)getApplication()).addTask(
+				String.format("%s %s %s %s",
+						callable.toString(),
+						item==null?"":item.toString(),
+						reference==null?"":" ",reference==null?"":reference),									
+				callable,
+				getRequest().getRootRef(),
+				getToken());		
+		
+	}
+	
+	
 }
