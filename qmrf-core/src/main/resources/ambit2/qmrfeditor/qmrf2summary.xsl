@@ -31,6 +31,7 @@
     </div>
     </div>
    
+ 
     <div id='tabs-4'>
     <div  class='summary'>
     	<xsl:apply-templates select="QSAR_Algorithm"/>	
@@ -278,27 +279,31 @@
   <div class='summary'><p>
   <xsl:apply-templates select="algorithm_type"/>
   </p></div>
+   
    <div class='summary'><p>
      <xsl:apply-templates select="algorithm_explicit"/>
    </p></div>
-     <div class='summary'><p>
-  <xsl:apply-templates select="equation"/>
-  </p></div> 
+
     <div class='summary'><p>
   <xsl:apply-templates select="algorithms_descriptors"/>
   </p></div> 
+  
     <div class='summary'><p>
   <xsl:apply-templates select="descriptors_selection"/>
   </p></div> 
+
       <div class='summary'><p>
   <xsl:apply-templates select="descriptors_generation"/>
   </p></div> 
+
     <div class='summary'><p>
   <xsl:apply-templates select="descriptors_generation_software"/>
   </p></div> 
+
   <div class='summary'><p>
   <xsl:apply-templates select="descriptors_chemicals_ratio"/>
   </p></div> 
+  
 </xsl:template>
 
 
@@ -310,16 +315,22 @@
 
 <xsl:template match="algorithm_explicit">
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
-  <xsl:value-of select="." disable-output-escaping="yes"/>	
-  <table width='100%'>
+  <table width='100%'><caption> </caption>
 			<xsl:apply-templates select="algorithm_ref"/>
   </table>
+  <strong>Equation</strong>
+  <div class='summary'><p>
+   <xsl:value-of select="equation" disable-output-escaping="yes"/>
+  </p></div>
+
 </xsl:template>
 
 <xsl:template match="algorithms_descriptors">
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
   <xsl:value-of select="." disable-output-escaping="yes"/>
-  <table width='100%'>	
+  <xsl:text> </xsl:text>
+  <table width='100%'>
+  <tr><th> </th> <th> </th></tr>	
 	<xsl:apply-templates select="descriptor_ref"/>
   </table>
 </xsl:template>
@@ -328,13 +339,6 @@
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
   <xsl:value-of select="." disable-output-escaping="yes"/>	
 	<xsl:apply-templates select="software_ref"/>
-</xsl:template>
-
-
-<xsl:template match="equation">
-  <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
-  <xsl:value-of select="." disable-output-escaping="yes"/>	
-
 </xsl:template>
 
 
@@ -387,8 +391,9 @@
 <xsl:template match="app_domain_software">
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
   <xsl:value-of select="." disable-output-escaping="yes"/>	
-   <br>
+   <br><!-- 
 		<xsl:apply-templates select="software_ref"/>
+		 -->
    </br>    
 </xsl:template>
 
@@ -688,11 +693,18 @@
 </xsl:template>
 
 <xsl:template match="algorithm_ref"> 
-  <tr><td>
-	<xsl:value-of select="id(@idref)/@definition" disable-output-escaping="yes"/>
-  </td><td>
-	<xsl:value-of select="id(@idref)/@description" disable-output-escaping="yes"/>	
-  </td></tr>	
+ <xsl:choose>
+    <xsl:when test="id(@idref) != ''">
+		  <tr><td>
+			<xsl:value-of select="id(@idref)/@definition" disable-output-escaping="yes"/>
+		  </td><td>
+			<xsl:value-of select="id(@idref)/@description" disable-output-escaping="yes"/>	
+		  </td></tr>	
+    </xsl:when>
+    <xsl:otherwise></xsl:otherwise>
+  </xsl:choose>	
+
+
 </xsl:template>
 
 
@@ -726,8 +738,12 @@ crashes if using id(@idref)/@version  - apparently in some xml files the version
 </xsl:template>
 
 <xsl:template match="descriptor_ref"> 
-<tr>
-<td>
+Descriptor: 
+ <xsl:choose>
+    <xsl:when test="@idref != ''">
+  	<!-- now the rendering itself  -->	
+  		<tr>
+     <td>
 	<xsl:value-of select="id(@idref)/@name" disable-output-escaping="yes"/>
  <xsl:choose>
     <xsl:when test="id(@idref)/@units != ''">
@@ -743,6 +759,13 @@ crashes if using id(@idref)/@version  - apparently in some xml files the version
 	<xsl:value-of select="id(@idref)/@description" disable-output-escaping="yes"/>	
 </td>
 </tr>
+  	<!-- end  -->	
+  			
+    </xsl:when>
+    <xsl:otherwise></xsl:otherwise>
+  </xsl:choose>	
+  
+
 </xsl:template>
 
 <xsl:template name="print_href">
