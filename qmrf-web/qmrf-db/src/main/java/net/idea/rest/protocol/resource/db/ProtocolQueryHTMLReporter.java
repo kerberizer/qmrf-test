@@ -48,7 +48,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			{"Internal validation - OECD Principle 4","Robustness"},
 			{"External validation - OECD Principle 4","Predictivity"},
 			{"Providing a mechanistic interpretation - OECD Principle 5","Interpretation"},
-			{"Miscellaneous information","Misc"},
+			{"Miscellaneous information (comments, bibliography)","Bibliography"},
 	};	
 	protected boolean paging = true;
 	protected boolean details = true;
@@ -246,20 +246,20 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		StringBuilder b = new StringBuilder();
 		MediaType[] mimes = {
 				MediaType.APPLICATION_PDF,
-				MediaType.APPLICATION_XML,
-				MediaType.APPLICATION_EXCEL
+				MediaType.APPLICATION_EXCEL,
+				MediaType.APPLICATION_XML
 				};
 		
 		String[] image = {
 				"pdf.png",
-				"xml.png",
-				"excel.png"
+				"excel.png",
+				"xml.png"
 		};	
 		
 		String[] description = {
 				"PDF",
-				"QMRF XML",
-				"MS Excel"
+				"MS Excel",
+				"QMRF XML"
 		};			
 		for (int i=0;i<mimes.length;i++) {
 			MediaType mime = mimes[i];
