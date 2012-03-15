@@ -98,4 +98,15 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 		return result;
 	}
 
+	@Override
+	public String toString() {
+		if (Method.POST.equals(method)) {
+			return String.format("Create user");
+		} else if (Method.PUT.equals(method)) {
+			return String.format("Update user");
+		} else if (Method.DELETE.equals(method)) {
+			return String.format("Delete user");
+		}
+		return "Read user";
+	}
 }
