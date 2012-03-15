@@ -137,10 +137,12 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				"<th>%s</th>\n" +
 				"<th>%s</th>\n" +
 				"<th>%s</th>\n" +
+				"<th>%s</th>\n" +
 				"</tr>\n",
 				collapsed?"QMRF number":"",
 				collapsed?"Title":"",
 				collapsed?"Published":"",
+				collapsed?"Last updated":"",
 				collapsed?"Download":""
 		));
 	}
@@ -308,7 +310,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write("</tr>\n");
 
 			if (details) {
-				output.write("<tr><td colspan='5'>\n");
+				output.write("<tr><td colspan='6'>\n");
 				//printHTML(output, uri, item, true);
 				printForm(output,uri,item,collapsed);
 				output.write("</td></tr>\n");
