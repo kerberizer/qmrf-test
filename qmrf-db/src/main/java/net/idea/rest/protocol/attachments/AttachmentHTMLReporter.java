@@ -83,7 +83,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 			datasets.append(String.format("<td align='left' ><a href='%s%s?option=dataset&search=%s' target='_structure'>Browse structures</a></td>",
 						uriReporter.getBaseReference(),Resources.structure,Reference.encode(attachment.getTitle().trim())));
 			else {
-				String form = String.format("<form method='POST' title='This dataset is not yet browsable and searchable' action='%s/dataset'><input type='submit' class='Draw' value='Make searchable'></form>",uri);
+				String form = String.format("<form method='POST' title='This dataset is not yet browsable and searchable' action='%s/dataset'><input type='hidden' value='true' name='import'><input type='submit' class='Draw' value='Make searchable'></form>",uri);
 				datasets.append(String.format("<td align='left'>%s</td>",form));
 			}
 			break;
@@ -93,6 +93,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 		datasets.append("</tr>");
 		return datasets.toString();
 	}
+	
 
 	@Override
 	public void footer(Writer output, IQueryRetrieval<DBAttachment> query) {
