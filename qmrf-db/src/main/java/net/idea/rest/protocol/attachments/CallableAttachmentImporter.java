@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.rest.protocol.attachments.db.UpdateAttachment;
@@ -15,21 +17,22 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
 import org.opentox.dsl.task.FibonacciSequence;
 import org.restlet.data.Form;
-import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
-import org.restlet.representation.FileRepresentation;
 import org.restlet.resource.ResourceException;
 
 /**
@@ -41,6 +44,9 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 	protected AttachmentURIReporter reporter;
 	protected DBAttachment attachment;
 	protected String queryService;
+	protected String[] algorithms = new String[] {
+			"/algorithm/fingerprints","/algorithm/struckeys","/algorithm/smartsprop","/algorithm/inchi"};
+
 	public CallableAttachmentImporter(Method method, Reference baseReference,
 			AttachmentURIReporter reporter,
 			DBAttachment attachment,
@@ -87,9 +93,34 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 					new URL(String.format("%s/dataset",queryService)), 
 					"text/uri-list", createPOSTEntity(attachment), HttpPost.METHOD_NAME);
 	
-		wait(task, System.currentTimeMillis());
-		
-		
+		try {
+			task = wait(task, System.currentTimeMillis());
+			String dataset_uri = "dataset_uri";
+			URL dataset = task.getResult();
+			if (task.isCompletedOK()) {
+				Form form = new Form();
+				form.add(dataset_uri, dataset.toURI().toString());
+				for (String algorithm: algorithms) { //just launch tasks and don't wait
+					List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+					formparams.add(new BasicNameValuePair(dataset_uri, dataset.toURI().toString()));
+					HttpEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
+					HttpClient newclient = createHTTPClient();
+					try {
+						new RemoteTask(newclient, 
+									new URL(String.format("%s%s",queryService,algorithm)), 
+									"text/uri-list", entity, HttpPost.METHOD_NAME);
+
+					} catch (Exception x) { } finally { 
+						try {newclient.getConnectionManager().shutdown();} catch (Exception x) {}
+					}
+				}
+			}
+			
+		} catch (Exception x)  {
+			task.setError(x);
+		} finally {
+			try {client.getConnectionManager().shutdown();} catch (Exception x) {}
+		}
 		return task;
 	}
 	protected long pollInterval = 1500;
