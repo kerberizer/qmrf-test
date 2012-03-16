@@ -84,10 +84,10 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 			Reference reference) throws ResourceException {
 
 			return ((TaskApplication)getApplication()).addTask(
-				String.format("%s %s %s %s",
+				String.format("%s %s %s",
 						callable.toString(),
 						item==null?"":item.toString(),
-						reference==null?"":" ",reference==null?"":reference),									
+						reference==null?"":" "),									
 				callable,
 				getRequest().getRootRef(),
 				getToken());		

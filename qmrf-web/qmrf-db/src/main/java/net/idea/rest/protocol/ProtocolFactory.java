@@ -280,7 +280,7 @@ public class ProtocolFactory {
 		          	file = new File(
 		            		String.format("%s/%s",
 		            				dir==null?System.getProperty("java.io.tmpdir"):dir,
-		            				protocol.getID()>0?String.format("qmrf%d_%s", protocol.getID(),fi.getName()):fi.getName()));
+		            				protocol.getID()>0?String.format("qmrf%d_%s_%s", protocol.getID(),type.name(),fi.getName()):fi.getName()));
 		        }
 		        fi.write(file);
 		       

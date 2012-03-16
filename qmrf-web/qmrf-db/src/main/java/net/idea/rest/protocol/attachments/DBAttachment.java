@@ -112,7 +112,7 @@ public class DBAttachment extends Document {
 	}
 	@Override
 	public String toString() {
-		return getResourceURL().toExternalForm();
+		return String.format("%s %s",getType().getDescription(),getTitle()==null?"":getTitle());
 	}
 	
 	public static DBAttachment file2attachment(File file, String description, attachment_type type) {
@@ -131,4 +131,6 @@ public class DBAttachment extends Document {
 		attachment.setImported(false);
 		return attachment;
 	}
+	
+
 }
