@@ -9,7 +9,9 @@ import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.reporters.CatalogHTMLReporter;
 
 import org.restlet.Request;
+import org.restlet.data.Form;
 import org.restlet.data.Reference;
+import org.restlet.resource.ResourceException;
 
 public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 
@@ -19,7 +21,14 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	private static final long serialVersionUID = 3212894867577087481L;
 	protected String title;
 	protected long record = 0;
+	protected boolean singleItem = false;
 	
+	public boolean isSingleItem() {
+		return singleItem;
+	}
+	public void setSingleItem(boolean singleItem) {
+		this.singleItem = singleItem;
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -34,9 +43,12 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	
 	public QMRFCatalogHTMLReporter(Request request, ResourceDoc doc,
 			HTMLBeauty htmlbeauty,String title) {
-		super(request, doc, htmlbeauty);
+		super(request, doc, htmlbeauty, false);
 		setTitle(title);
+		record = 0;
 	}
+	
+	
 	@Override
 	public HTMLBeauty getHtmlBeauty() {
 		return new QMRF_HTMLBeauty();
@@ -47,8 +59,8 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	}
 	@Override
 	public void header(Writer w, Iterator<T> query) {
-		super.header(w, query);
 		record = 0;
+		super.header(w, query);
 		
 		Reference uri = getRequest().getResourceRef().clone();
 		uri.setQuery(null);
@@ -75,6 +87,7 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	}		
 	
 	protected String printPageNavigator() {
+		if (singleItem || headless) return "";
 		int page = ((QMRF_HTMLBeauty)htmlBeauty).getPage();
 		long pageSize = ((QMRF_HTMLBeauty)htmlBeauty).getPageSize();
 		return (((QMRF_HTMLBeauty)htmlBeauty).getPaging(page,page-4, page+5, pageSize));

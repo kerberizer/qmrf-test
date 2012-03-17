@@ -1,17 +1,18 @@
 package net.idea.rest.structure.resource;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import net.toxbank.client.resource.AbstractToxBankResource;
+import net.idea.restnet.cli.IAbstractResource;
 import net.toxbank.client.resource.Protocol;
 
 import org.opentox.rdf.OpenTox;
 import org.restlet.data.Reference;
 
-public class Structure extends AbstractToxBankResource implements Serializable {
+public class Structure implements IAbstractResource, Serializable {
 	/**
 	 * 
 	 */
@@ -19,6 +20,16 @@ public class Structure extends AbstractToxBankResource implements Serializable {
 	protected int idchemical;
 	protected int idstructure;
 	protected Hashtable<String, String> properties; 
+	
+	public Structure(URL resourceURL) {
+		setResourceURL(resourceURL);
+	}
+
+	public Structure() {
+		this(null);
+	}
+
+	
 	public Hashtable<String, String> getProperties() {
 		if (properties==null) properties = new Hashtable<String, String>();
 		return properties;
@@ -108,5 +119,23 @@ public class Structure extends AbstractToxBankResource implements Serializable {
 	public Object[] parseURI(Reference baseReference)  {
 		return OpenTox.URI.conformer.getIds(getResourceURL().toString(),baseReference);
 
+	}
+	
+	private URL resourceURL;
+	private String title;
+	
+	
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public void setResourceURL(URL resourceURL) {
+		this.resourceURL = resourceURL;
+	}
+
+	public URL getResourceURL() {
+		return resourceURL;
 	}
 }

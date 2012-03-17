@@ -28,6 +28,7 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 		super(request, doc, htmlbeauty,null);
 	}
 
+	
 	protected boolean printAsTable() {
 		return false;
 	}
@@ -53,6 +54,8 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 
 			}
 		} catch (Exception x) {}
+		
+
 		String query = ((StructureHTMLBeauty)htmlBeauty).getSearchQuery();
 		String smartsOption = ((StructureHTMLBeauty)htmlBeauty).getSmartsOption();
 		//TODO smarts highlight
@@ -68,56 +71,25 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 				"<a href=\"%s%s?structure=%s&headless=true&details=false&media=text/html\" title=\"QMRF documents\">QMRF documents</a>",
 				getRequest().getRootRef(),Resources.protocol,Reference.encode(item.getResourceURL().toString()));
 		
-		StringBuilder rendering = new StringBuilder();
-			//tab headers
-			rendering.append(String.format(
-			"<div class='protocol'>\n"+					
-			"<div class='tabs'>\n"+
-			"<ul>"+
-			"<li><a href='#tabs-id'>Molecule</a></li>"+
-			"%s"+
-			"<li>%s<span></span></li>"+
-			//"%s"+
-			"</ul>",
-			properties==null?"":"<li><a href='#tabs-prop'>Properties</a></li>",
-			protocolURI
-			//protocols==null?"":"<li><a href='#tabs-qmrf'>QMRF</a></li>"
-			
-			));
-			//identifiers
-			rendering.append(String.format(
-			"<div id='tabs-id'>"+
-			"%s\n"+ //structure
-			"<span class='summary'><table>\n"+ 
-			"<tr><th width='10%%'>CAS</th><td>%s</td></tr>"+
-			"<tr><th>Name</th><td>%s</td></tr>"+
-			"<tr><th>SMILES</th><td>%s</td></tr>"+
-			"<tr><th>InChI</th><td>%s</td></tr>"+
-			"<tr><th>InChI Key</th><td>%s</td></tr>"+
-			"<tr><th></th><td>%s</td></tr>"+
-			"</table></span>"+
-			"</div>",
-			structure,
-			item.cas==null?"":item.cas,
-			item.name==null?"":item.name,
-			item.SMILES==null?"":item.SMILES,
-			item.InChI==null?"":item.InChI,
-			item.InChIKey==null?"":item.InChIKey,
-			item.getSimilarity()==null?"":item.getSimilarity()
-			));
-			
-			if (properties!=null)
-				rendering.append(String.format(
-				"<div id='tabs-prop'>"+
-				"%s<span class='summary'><table>%s</table></span>\n"+
-				"</div>",structure,properties));			
-				
-			rendering.append(String.format("<div id='QMRF_documents'>%s</div>",protocolURI));
-
-			rendering.append("</div>\n</div>\n");//tabs , protocol
-
-			return rendering.toString();
+		String moleculeURI = String.format(
+				"<a href=\"%s%s/%d?headless=true&details=false&media=text/html\" title=\"Moelcule\">Molecule</a>",
+				getRequest().getRootRef(),Resources.chemical,item.getIdchemical());
 		
+		StringBuilder rendering = new StringBuilder();
+		rendering.append(String.format(
+				"<div class='protocol'>\n"+					
+				"<div class='tabs'>\n<ul>" +
+				"<li>%s<span></span></li>\n" +
+				"<li>%s<span></span></li>\n" +
+			//	"<li>%s<span></span></li>\n" +
+			    "</ul>",
+			    moleculeURI,protocolURI
+				));
+		
+		
+		rendering.append("</div>\n</div>\n");//tabs , protocol
+
+		return rendering.toString();		
 
 	}
 	@Override
@@ -169,7 +141,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	public StructureHTMLBeauty(String queryService) {
 		super();
 		this.queryService = queryService;
-		setSearchURI(Resources.structure);
+		setSearchURI(Resources.chemical);
 	}
 
 	@Override

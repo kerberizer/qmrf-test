@@ -57,7 +57,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 		
 		return items.iterator();
 	}
-	protected Reporter createHTMLReporter() {
+	protected Reporter createHTMLReporter(boolean headles) {
 		return new QMRFCatalogHTMLReporter<DBProtocol>(getRequest(),getDocumentation(),getHTMLBeauty(),null) {
 			@Override
 			public void header(Writer w, Iterator<DBProtocol> query) {

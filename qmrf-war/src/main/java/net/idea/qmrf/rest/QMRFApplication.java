@@ -16,7 +16,7 @@ import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
 import net.idea.rest.protocol.facet.ProtocolsByEndpointResource;
-import net.idea.rest.structure.resource.StructureResource;
+import net.idea.rest.structure.resource.StructureRouter;
 import net.idea.rest.user.UserRouter;
 import net.idea.rest.user.resource.MyAccountResource;
 import net.idea.restnet.aa.cookie.CookieAuthenticator;
@@ -136,8 +136,7 @@ public class QMRFApplication extends TaskApplication<String> {
 
 		setCookieUserRouter.attach(Resources.endpoint,
 				ProtocolsByEndpointResource.class);
-		setCookieUserRouter
-				.attach(Resources.structure, StructureResource.class);
+		setCookieUserRouter.attach(Resources.chemical, new StructureRouter(getContext()));
 		setCookieUserRouter.attach(Resources.admin, createAdminRouter());
 		setCookieUserRouter.attach(Resources.editor, createEditorRouter());
 		setCookieUserRouter.attach(Resources.task, new QMRFTaskRouter(

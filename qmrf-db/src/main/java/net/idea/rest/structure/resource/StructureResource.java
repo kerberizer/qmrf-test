@@ -29,7 +29,8 @@ import org.restlet.resource.ResourceException;
 
 public class StructureResource extends CatalogResource<Structure>{
 	protected String queryService;
-	
+	protected boolean singleItem = false;
+
 	public StructureResource() {
 		super();
 		queryService = ((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name());
@@ -81,63 +82,18 @@ public class StructureResource extends CatalogResource<Structure>{
 			if (search!=null)
 				ref.addQueryParameter(QueryResource.search_param,search);
 			
-			
+			Reference queryURI = new Reference(queryService);
 			List<Structure> records = new ArrayList<Structure>();
 			try {
-				CSVFeatureValuesIterator<Structure> i = new CSVFeatureValuesIterator<Structure>(ref.toString()) {
-					@Override
-					public Structure transformRawValues(List header, List values) {
-						Structure r = new Structure();
-						String value = null;
-						for (int i=0; i < header.size();i++)  try {
-							value = values.get(i)==null?"":values.get(i).toString().trim();
-							if ("null".equals(value)) value="";
-							if ("metric".equals(header.get(i))) {
-								r.setSimilarity(value);
-								continue;
-							} 
-							OTCompound._titles title = 	OTCompound._titles.valueOf(header.get(i).toString().replace("http://www.opentox.org/api/1.1#",""));
-							//String[] v = value.split("|");
-							switch (title) {
-							case Compound: {
-								r.setResourceURL(new URL(value)); break;
-							}
-							case CASRN: {
-								r.setCas(value); break;
-							}
-							case ChemicalName: {
-								r.setName(value.replace("|","<br>")); break;
-							}
-							case EINECS: {
-								r.setEinecs(value); break;
-							}
-							case SMILES: {
-								r.setSMILES(value); break;
-							}
-							case InChI_std: {
-								r.setInChI(value); break;
-							}
-							case InChIKey_std: {
-								r.setInChIKey(value); break;
-							}
-							}
-						} catch (Exception x) {
-							if (header.get(i).toString().toUpperCase().startsWith("CAS")) r.setCas(value);
-							else if ("NAME".equals(header.get(i).toString().toUpperCase())) r.setName(value);
-							else try {
-								NumberFormat nf = java.text.DecimalFormat.getNumberInstance(Locale.ENGLISH);
-								r.getProperties().put(header.get(i).toString(),nf.format(Double.parseDouble(value)));
-							} catch (Exception e) {
-								r.getProperties().put(header.get(i).toString(),value);
-							}
-						}
-	
-						return r;
-					}
-				};
+				PropertiesIterator i = new PropertiesIterator(ref.toString());
 				try {
 					while (i.hasNext()) {
 						Structure struc = i.next();
+						try {
+							Object[] ids = struc.parseURI(queryURI);
+							if (ids[0]!=null) struc.setIdchemical((Integer) ids[0]);
+							if (ids[1]!=null) struc.setIdstructure((Integer) ids[1]);
+						} catch (Exception x) {}
 						records.add(struc);
 					}
 				} catch (Throwable x) {
@@ -183,9 +139,11 @@ public class StructureResource extends CatalogResource<Structure>{
 				x);	
 	}
 	@Override
-	protected Reporter createHTMLReporter() {
-		return new StructureHTMLReporter(getRequest(), null, new StructureHTMLBeauty(queryService)); 
-
+	protected Reporter createHTMLReporter(boolean headles) {
+		StructureHTMLReporter reporter = new StructureHTMLReporter(getRequest(), null, new StructureHTMLBeauty(queryService));
+		reporter.setSingleItem(singleItem);
+		reporter.setHeadless(headless);
+		return reporter;
 	}
 
 	@Override
@@ -200,3 +158,70 @@ public class StructureResource extends CatalogResource<Structure>{
 		return new StructureHTMLBeauty(queryService);
 	}
 }
+
+
+class PropertiesIterator extends CSVFeatureValuesIterator<Structure> {
+	protected Structure structure=null;
+	public Structure getStructure() {
+		return structure;
+	}
+
+	public void setStructure(Structure structure) {
+		this.structure = structure;
+	}
+
+	public PropertiesIterator(String url) throws Exception {
+		super(url);
+	}
+
+	@Override
+	public Structure transformRawValues(List header, List values) {
+		Structure r = structure==null?new Structure():structure;
+		String value = null;
+		for (int i=0; i < header.size();i++)  try {
+			value = values.get(i)==null?"":values.get(i).toString().trim();
+			if ("null".equals(value)) value="";
+			if ("metric".equals(header.get(i))) {
+				r.setSimilarity(value);
+				continue;
+			} 
+			OTCompound._titles title = 	OTCompound._titles.valueOf(header.get(i).toString().replace("http://www.opentox.org/api/1.1#",""));
+			//String[] v = value.split("|");
+			switch (title) {
+			case Compound: {
+				r.setResourceURL(new URL(value));
+				break;
+			}
+			case CASRN: {
+				r.setCas(value); break;
+			}
+			case ChemicalName: {
+				r.setName(value.replace("|","<br>")); break;
+			}
+			case EINECS: {
+				r.setEinecs(value); break;
+			}
+			case SMILES: {
+				r.setSMILES(value); break;
+			}
+			case InChI_std: {
+				r.setInChI(value); break;
+			}
+			case InChIKey_std: {
+				r.setInChIKey(value); break;
+			}
+			}
+		} catch (Exception x) {
+			if (header.get(i).toString().toUpperCase().startsWith("CAS")) r.setCas(value);
+			else if ("NAME".equals(header.get(i).toString().toUpperCase())) r.setName(value);
+			else try {
+				NumberFormat nf = java.text.DecimalFormat.getNumberInstance(Locale.ENGLISH);
+				r.getProperties().put(header.get(i).toString(),nf.format(Double.parseDouble(value)));
+			} catch (Exception e) {
+				r.getProperties().put(header.get(i).toString(),value);
+			}
+		}
+
+		return r;
+	}
+};
