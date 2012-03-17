@@ -2,6 +2,7 @@ package net.idea.rest.protocol.attachments.db;
 
 import java.net.URL;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import net.idea.modbcum.q.conditions.EQCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
+import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.ReadProtocol.fields;
 import net.idea.restnet.c.ChemicalMediaType;
 
@@ -34,10 +36,13 @@ public class ReadAttachment extends AbstractQuery<DBProtocol, DBAttachment, EQCo
 		id_srcdataset
 	}
 	protected static String sql = 
-		"SELECT idprotocol,version,idattachment,type,a.name,`format`,description,a1.name is not null as imported,id_srcdataset FROM attachments a " +
+		"SELECT idprotocol,version,protocol.created,idattachment,type,a.name,`format`,description,a1.name is not null as imported,id_srcdataset FROM protocol\n" +
+		"join attachments a using(idprotocol,version)\n" +
 		"left join `ambit2-qmrf`.src_dataset a1 using(name) where %s ";
 	protected static String where_protocol = "idprotocol=? and version=?";
 	protected static String where_attachment = "idattachment=?";
+	protected static String where_datasetname = "a.name=?";
+	protected static String where_datasetid = "a1.idsrcdatset=?";
 	
 	/**
 	 * get datasets by structure
@@ -121,6 +126,20 @@ and idchemical=282
 				try {
 					if (attachment.isImported()) attachment.setIdquerydatabase(rs.getInt(_fields.id_srcdataset.name()));
 				} catch (Exception x) { attachment.setIdquerydatabase(-1);}
+				//protocol
+				DBProtocol protocol = new DBProtocol();
+				try {
+					protocol.setID(rs.getInt(ReadProtocol.fields.idprotocol.name()));
+					protocol.setVersion(rs.getInt(ReadProtocol.fields.version.name()));
+					Timestamp ts = rs.getTimestamp(ReadProtocol.fields.created.name());
+					protocol.setSubmissionDate(ts.getTime());
+					attachment.setProtocol(ReadProtocol.generateIdentifier(protocol));
+				} catch (Exception x) {
+					x.printStackTrace();
+					
+				}
+				
+				
 				return attachment;
 
 		} catch (Exception x) {

@@ -40,33 +40,38 @@ public class StructureResource extends CatalogResource<Structure> {
 	public enum SearchMode {
 		auto, similarity, smarts
 	}
-
-	@Override
-	protected Iterator<Structure> createQuery(Context context, Request request,
-			Response response) throws ResourceException {
+	protected void parseParameters(Context context, Request request,Response response) throws ResourceException {
 		Form form = request.getResourceRef().getQueryAsForm();
-		((StructureHTMLBeauty)getHTMLBeauty()).setDatasets(form.getValuesArray("dataset"));
+		
+		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
+		parameters.setDatasets(form.getValuesArray("dataset"));
 		String search = form.getFirstValue(QueryResource.search_param) == null ? ""
 				: form.getFirstValue(QueryResource.search_param);
-		if ((search == null) || "".equals(search))
-			return Collections.EMPTY_LIST.iterator();
+		
+		if ((search == null) || "".equals(search))	search="benzene"; //let's have a default
+		
 		String pagesize = form.getFirstValue("pagesize");
 		String page = form.getFirstValue("page");
 		try {
 			int psize = Integer.parseInt(pagesize);
-			if (psize > 100)
-				pagesize = "10";
+			if (psize > 100)parameters.setPageSize(psize);
+			else parameters.setPageSize(psize);
 		} catch (Exception x) {
-			pagesize = "10";
+			parameters.setPageSize(10);
 		}
 		try {
 			int p = Integer.parseInt(page);
-			if ((p < 0) || (p > 100))
-				page = "0";
+			if ((p < 0) || (p > 100))	parameters.setPage(0);
+			else 			parameters.setPage(p);
 		} catch (Exception x) {
-			page = "0";
+			parameters.setPage(0);
 		}
 		String threshold = form.getFirstValue("threshold");
+		try {
+			parameters.setThreshold(Double.parseDouble(threshold));
+		}catch (Exception x) {
+			parameters.setThreshold(null);
+		}
 		SearchMode option = SearchMode.auto;
 		try {
 			option = SearchMode.valueOf(form.getFirstValue("option")
@@ -74,17 +79,27 @@ public class StructureResource extends CatalogResource<Structure> {
 		} catch (Exception x) {
 			option = SearchMode.auto;
 		}
-		Reference ref = null;
+		parameters.setOption(option);
+		
 		if (search != null)
 			search = search.replace("<", "").replace(">", "");
+		parameters.setSearchQuery(search);
+	}
+
+	@Override
+	protected Iterator<Structure> createQuery(Context context, Request request,
+			Response response) throws ResourceException {
+		parseParameters(context,request,response);
+		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
+		Reference ref = null;
 		try {
 			ref = new Reference(String.format("%s/query/compound/search/all",
 					queryService));
-			switch (option) {
+			switch (parameters.option) {
 			case similarity: {
 				ref = new Reference(String.format(
-						"%s/query/similarity?threshold=%s", queryService,
-						threshold));
+						"%s/query/similarity?threshold=%3.2f", queryService,
+						parameters.threshold));
 				break;
 			}
 			case smarts: {
@@ -93,24 +108,24 @@ public class StructureResource extends CatalogResource<Structure> {
 				break;
 			}
 			}
-			ref.addQueryParameter("pagesize", pagesize);
-			ref.addQueryParameter("page", page);
-			if (search != null)
-				ref.addQueryParameter(QueryResource.search_param, search);
+			ref.addQueryParameter("pagesize", Long.toString(parameters.getPageSize()));
+			ref.addQueryParameter("page", Integer.toString(page));
+			if (parameters.getSearchQuery() != null)
+				ref.addQueryParameter(QueryResource.search_param, parameters.getSearchQuery());
 
 			try {
 				List<Structure> records = Structure.retrieveStructures(
 						queryService, ref.toString());
 				return records.iterator();
 			} catch (Exception x) {
-				throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search,
-						option, ref.toString(), x);
+				throw createException(Status.CLIENT_ERROR_BAD_REQUEST, parameters.getSearchQuery(),
+						parameters.option, ref.toString(), x);
 			}
 		} catch (ResourceException x) {
 			throw x;
 		} catch (Exception x) {
-			throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search,
-					option, ref.toString(), x);
+			throw createException(Status.CLIENT_ERROR_BAD_REQUEST,  parameters.getSearchQuery(),
+					parameters.option, ref.toString(), x);
 		}
 	}
 

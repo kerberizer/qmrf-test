@@ -52,7 +52,13 @@ public class DBAttachment extends Document {
 	}
 	
 	protected int idquerydatabase= -1;
-
+	protected String protocol = null;
+	public String getProtocol() {
+		return protocol;
+	}
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
+	}
 	public int getIdquerydatabase() {
 		return idquerydatabase;
 	}

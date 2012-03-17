@@ -18,9 +18,12 @@ public class ProtocolRouter extends MyRouter {
 		attachDefault(ProtocolDBResource.class);
 		attach(String.format("/{%s}",FileResource.resourceKey), ProtocolDBResource.class);
 		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.attachment), ProtocolAttachmentResource.class);
-		attach(String.format("/{%s}%s/{%s}",FileResource.resourceKey,Resources.attachment,ProtocolAttachmentResource.resourceKey), ProtocolAttachmentResource.class);
-		attach(String.format("/{%s}%s/{%s}%s",FileResource.resourceKey,Resources.attachment,ProtocolAttachmentResource.resourceKey,Resources.dataset), 
-														AttachmentDatasetResource.class);
+		attach(String.format("/{%s}%s/{%s}",FileResource.resourceKey,
+								Resources.attachment,ProtocolAttachmentResource.resourceKey), 
+								ProtocolAttachmentResource.class);
+		attach(String.format("/{%s}%s/{%s}%s",FileResource.resourceKey,Resources.attachment,
+										ProtocolAttachmentResource.resourceKey,Resources.dataset), 
+										AttachmentDatasetResource.class);
 		attach(String.format("/{%s}%s/{%s}%s/{%s}",FileResource.resourceKey,Resources.attachment,
 							ProtocolAttachmentResource.resourceKey,Resources.dataset,DatasetResource.datasetKey), 
 							DatasetResource.class);
