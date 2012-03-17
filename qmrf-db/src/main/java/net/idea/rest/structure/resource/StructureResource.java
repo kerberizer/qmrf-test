@@ -13,8 +13,11 @@ import net.idea.qmrf.client.Resources;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
+import net.idea.restnet.cli.AbstractClient;
 import net.idea.restnet.db.QueryResource;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.opentox.csv.CSVFeatureValuesIterator;
 import org.opentox.dsl.OTCompound;
 import org.restlet.Context;
@@ -83,24 +86,27 @@ public class StructureResource extends CatalogResource<Structure>{
 				ref.addQueryParameter(QueryResource.search_param,search);
 			
 			Reference queryURI = new Reference(queryService);
+			HttpClient httpcli = new DefaultHttpClient();
+			AbstractClient<Structure, String> cli = new AbstractClient<Structure, String>(httpcli);
 			List<Structure> records = new ArrayList<Structure>();
 			try {
-				PropertiesIterator i = new PropertiesIterator(ref.toString());
-				try {
-					while (i.hasNext()) {
-						Structure struc = i.next();
-						try {
-							Object[] ids = struc.parseURI(queryURI);
-							if (ids[0]!=null) struc.setIdchemical((Integer) ids[0]);
-							if (ids[1]!=null) struc.setIdstructure((Integer) ids[1]);
-						} catch (Exception x) {}
-						records.add(struc);
-					}
+				List<URL> urls = cli.listURI(new URL(ref.toString())); //TODO custom client to return List<Structure>
+			
+				for (URL url: urls) {
+					Structure struc = new Structure(url);
+					try {
+						Object[] ids = struc.parseURI(queryURI);
+						if (ids[0]!=null) struc.setIdchemical((Integer) ids[0]);
+						if (ids[1]!=null) struc.setIdstructure((Integer) ids[1]);
+					} catch (Exception x) {}
+					records.add(struc);
+				}
+	
 				} catch (Throwable x) {
 
 					throw createException(Status.SERVER_ERROR_BAD_GATEWAY, search, option, ref.toString(), x);					
 				} finally {
-					i.close();
+					try {httpcli.getConnectionManager().shutdown(); } catch (Exception x) {}
 				}
 				return records.iterator();
 			} catch (ResourceException x) {
@@ -108,9 +114,6 @@ public class StructureResource extends CatalogResource<Structure>{
 			} catch (Exception x) {
 				throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option, ref.toString(), x);				
 			}
-		} catch (Exception x) {
-			throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option, ref.toString(), x);
-		}
 	}
 	
 	protected ResourceException createException(Status status,String search,SearchMode option,String ref, Throwable x) {

@@ -57,9 +57,15 @@ public class MoleculeResource extends StructureResource {
 		try {
 			String query = String.format("%s/query/compound/url/all?search=%s",queryService,Reference.encode(url.toString()));
 			PropertiesIterator i = new PropertiesIterator(query);
+			Reference queryURI = new Reference(queryService);
 			try {
 				while (i.hasNext()) {
 					Structure struc = i.next();
+					try {
+						Object[] ids = struc.parseURI(queryURI);
+						if (ids[0]!=null) struc.setIdchemical((Integer) ids[0]);
+						if (ids[1]!=null) struc.setIdstructure((Integer) ids[1]);
+					} catch (Exception x) {}					
 					records.add(struc);
 				}
 			} catch (Throwable x) {
