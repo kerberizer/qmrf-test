@@ -109,7 +109,7 @@ public class StructureResource extends CatalogResource<Structure> {
 			}
 			}
 			ref.addQueryParameter("pagesize", Long.toString(parameters.getPageSize()));
-			ref.addQueryParameter("page", Integer.toString(page));
+			ref.addQueryParameter("page", Integer.toString(parameters.getPage()));
 			if (parameters.getSearchQuery() != null)
 				ref.addQueryParameter(QueryResource.search_param, parameters.getSearchQuery());
 
