@@ -724,7 +724,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		fields.iduser,
 		fields.summarySearchable,
 		fields.idproject,
-	
+		fields.iduser,
 		fields.idorganisation,
 		fields.filename,
 		fields.xmlkeywords,
@@ -822,10 +822,10 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			} catch (Exception x) {
 				//x.printStackTrace();
 			}
-			DBUser user = new DBUser();
-			p.setOwner(user);
+			DBUser user = (DBUser) p.getOwner();
+
 			try {
-				//user.setUserName(rs.getString("username"));
+				user.setUserName(rs.getString("username"));
 				user.setFirstname(rs.getString("firstname"));
 				user.setLastname(rs.getString("lastname"));
 			} catch (Exception x) {x.printStackTrace();}			
