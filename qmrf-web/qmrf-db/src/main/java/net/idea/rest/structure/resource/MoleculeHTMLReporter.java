@@ -3,6 +3,7 @@ package net.idea.rest.structure.resource;
 import java.io.Writer;
 import java.util.Enumeration;
 
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.qmrf.admin.QMRFCatalogHTMLReporter;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -65,7 +66,15 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 		} catch (Exception x) {}
 		//TODO smarts highlight
 		String structure = 	String.format(
-					"<div class='structureright'><img src='%s?media=%s&w=150&h=150' alt='%s' title='%s' width='150' height='150'><br>%s\n</div>\n",
+					"<div class='structureright'><a href='%s%s%s%s%s%s%s' target='molecule'>" +
+					"<img src='%s?media=%s&w=150&h=150' alt='%s' title='%s' width='150' height='150'></a><br>%s\n</div>\n",
+					baseReference,
+					Resources.chemical,
+					item.idchemical>0?"/":"",
+					item.idchemical>0?Integer.toString(item.idchemical):"",
+					item.idstructure>0?Resources.structure:"",
+					item.idstructure>0?"/":"",
+					item.idstructure>0?Integer.toString(item.idstructure):"",
 					item.getResourceURL(),
 					Reference.encode("image/png"),
 					item.cas==null?"":item.cas,
