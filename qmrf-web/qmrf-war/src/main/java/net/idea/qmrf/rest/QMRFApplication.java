@@ -1,5 +1,6 @@
 package net.idea.qmrf.rest;
 
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.UUID;
 
@@ -17,6 +18,8 @@ import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
 import net.idea.rest.protocol.facet.ProtocolsByEndpointResource;
+import net.idea.rest.protocol.resource.db.UnpublishedProtocolsResource;
+import net.idea.rest.qmrf.admin.QMRFUploadUIResource;
 import net.idea.rest.structure.resource.DatasetResource;
 import net.idea.rest.structure.resource.StructureRouter;
 import net.idea.rest.user.UserRouter;
@@ -24,6 +27,7 @@ import net.idea.rest.user.resource.MyAccountResource;
 import net.idea.restnet.aa.cookie.CookieAuthenticator;
 import net.idea.restnet.aa.local.UserLoginPOSTResource;
 import net.idea.restnet.aa.local.UserLogoutPOSTResource;
+import net.idea.restnet.aa.resource.AdminRouter;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.routers.MyRouter;
@@ -143,6 +147,7 @@ public class QMRFApplication extends TaskApplication<String> {
 		setCookieUserRouter.attach(String.format("%s/{%s}",Resources.dataset,DatasetResource.datasetKey), DatasetResource.class);
 		setCookieUserRouter.attach(Resources.admin, createAdminRouter());
 		setCookieUserRouter.attach(Resources.editor, createEditorRouter());
+		setCookieUserRouter.attach(Resources.unpublished, createUnpublishedRouter());
 		setCookieUserRouter.attach(Resources.task, new QMRFTaskRouter(
 				getContext()));
 
@@ -284,9 +289,24 @@ public class QMRFApplication extends TaskApplication<String> {
 		Authorizer authz = new SimpleRoleAndMethodAuthorizer(new DBRole(
 				QMRFRoles.qmrf_editor.name(), QMRFRoles.qmrf_editor.toString()));
 		authz.setNext(new QMRFEditorRouter(getContext()));
+		
 		return authz;
 	}
-
+	protected Restlet createUnpublishedRouter() {
+		Authorizer authz = new SimpleRoleAndMethodAuthorizer(
+				new DBRole(QMRFRoles.qmrf_editor.name(), QMRFRoles.qmrf_editor.toString()),
+				new DBRole(QMRFRoles.qmrf_admin.name(), QMRFRoles.qmrf_admin.toString())
+				);
+		authz.setNext(new AdminRouter(getContext()) {
+			@Override
+			protected void init() {
+				attachDefault(UnpublishedProtocolsResource.class);
+			}
+		});
+		
+		return authz;
+	}
+	
 	/**
 	 * Images, styles, icons Works if packaged as war only!
 	 * 

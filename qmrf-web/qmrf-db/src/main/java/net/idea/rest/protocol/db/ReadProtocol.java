@@ -724,9 +724,8 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		fields.iduser,
 		fields.summarySearchable,
 		fields.idproject,
-		fields.project,
+	
 		fields.idorganisation,
-		fields.organisation,
 		fields.filename,
 		fields.xmlkeywords,
 		fields.status,
@@ -772,6 +771,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 	public String getSQL() throws AmbitException {
 		
 		String publishedOnly = getShowUnpublished()?"":" and published=1";
+		if (onlyUnpublished) publishedOnly = " and published=0";
 		String byUser = null;
 		if ((getFieldname()!=null) && (getFieldname().getID()>0)) byUser = fields.iduser.getCondition();
 		
@@ -803,10 +803,13 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 											byUser==null?"":byUser,
 											publishedOnly));			
 		} 
-		return getShowUnpublished()?
+		String sql = onlyUnpublished?
+				String.format(sql_nokeywords,"where",byUser==null?"published=0":String.format("%s %s",byUser,publishedOnly))
+				:getShowUnpublished()?
 				String.format(sql_nokeywords,"where",byUser==null?"":byUser):
 				String.format(sql_nokeywords,"where",byUser==null?"published=1":String.format("%s %s",byUser,publishedOnly)); //published only
-
+		System.out.println(sql);
+		return sql;
 	}
 
 	public DBProtocol getObject(ResultSet rs) throws AmbitException {
@@ -817,8 +820,15 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 				field.setParam(p,rs);
 				
 			} catch (Exception x) {
-				x.printStackTrace();
+				//x.printStackTrace();
 			}
+			DBUser user = new DBUser();
+			p.setOwner(user);
+			try {
+				//user.setUserName(rs.getString("username"));
+				user.setFirstname(rs.getString("firstname"));
+				user.setLastname(rs.getString("lastname"));
+			} catch (Exception x) {x.printStackTrace();}			
 			try {
 				Timestamp ts = rs.getTimestamp(fields.updated.name());
 				p.setTimeModified(ts.getTime());

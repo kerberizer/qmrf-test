@@ -71,9 +71,14 @@ public class QMRFStatusService extends StatusService {
 					String.format("<a href=\"javascript:toggleDiv('%s');\" style=\"background-color: #fff; padding: 5px 10px;\">Details</a>\n",
 							"details");
 						
-				String errName = new Status(status.getCode()).getName();
+				String errName = status.getName();
+				String errDescription = status.getDescription();
 				if (Status.CLIENT_ERROR_BAD_REQUEST.equals(status)) errName = "Invalid input";
-				if (Status.CLIENT_ERROR_UNAUTHORIZED.equals(status)) errName = "Invalid user name or password";
+				if (Status.CLIENT_ERROR_UNAUTHORIZED.equals(status)) {
+					errName = "Invalid user name or password";
+					errDescription = "The password you entered is incorrect.";
+					
+				}
 				if (Status.CLIENT_ERROR_FORBIDDEN.equals(status)) errName = "You are not allowed to access this page";
 				
 				w.write(
@@ -88,7 +93,7 @@ public class QMRFStatusService extends StatusService {
 						"</div></div>\n",
 						status.getUri(),
 						errName,
-						status.getDescription(),
+						errDescription,
 						status.getName(),
 						detailsDiv,
 						details==null?"":details
