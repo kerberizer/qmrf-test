@@ -1,6 +1,7 @@
 package net.idea.qmrf.rest;
 
 import java.net.URL;
+import java.util.UUID;
 
 import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
 import net.idea.modbcum.i.config.Preferences;
@@ -182,8 +183,9 @@ public class QMRFApplication extends TaskApplication<String> {
 	 * ,"tomcat_users"); userAuthn.setNext(clazz); return userAuthn; }
 	 */
 	protected Filter createCookieAuthenticator(boolean optional) {
+		String secret = getProperty("secret");
 		CookieAuthenticator cookieAuth = new CookieAuthenticator(getContext(),
-				"tomcat_users", "encryptSecretKey".getBytes());
+				"tomcat_users", (secret==null?UUID.randomUUID().toString():secret).getBytes());
 
 		String config = "conf/qmrf-db.pref";
 		if (!optional) {
@@ -191,6 +193,7 @@ public class QMRFApplication extends TaskApplication<String> {
 			cookieAuth.setLoginFormPath("/login");
 			cookieAuth.setLoginPath("/signin");
 			cookieAuth.setLogoutPath("/signout");
+
 
 			cookieAuth.setVerifier(new DBVerifier(getContext(), config,
 					"tomcat_users"));
