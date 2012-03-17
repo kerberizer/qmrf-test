@@ -5,12 +5,17 @@ import java.sql.Connection;
 import java.util.List;
 
 import net.idea.modbcum.i.IQueryRetrieval;
+import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
+import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
+import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.TaskCreator;
 import net.idea.restnet.c.task.TaskCreatorForm;
 import net.idea.restnet.db.DBConnection;
+import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.i.task.ICallableTask;
 import net.idea.restnet.i.task.Task;
 
@@ -23,6 +28,8 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
+import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 public class AttachmentDatasetResource extends ProtocolAttachmentResource {
@@ -102,4 +109,25 @@ public class AttachmentDatasetResource extends ProtocolAttachmentResource {
 		}
 	};
 
+	
+	@Override
+	public IProcessor<IQueryRetrieval<DBAttachment>, Representation> createConvertor(
+			Variant variant) throws AmbitException, ResourceException {
+		String filenamePrefix = getRequest().getResourceRef().getPath();
+		if (variant.getMediaType().equals(MediaType.TEXT_URI_LIST)) 
+			return new StringConvertor(	//TODO return ambit2 URIs
+					new AttachmentURIReporter<IQueryRetrieval<DBAttachment>>(getRequest(),
+							protocol==null?"":String.format("%s/%s",Resources.protocol ,protocol.getIdentifier()))
+					,MediaType.TEXT_URI_LIST,filenamePrefix);
+		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) 
+			return new StringConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML,filenamePrefix);	
+			else	
+				return new DownloadDocumentConvertor(createFileReporter(),null,filenamePrefix);
+	}
+	
+	@Override
+	protected QueryHTMLReporter createHTMLReporter(boolean headless)
+			throws ResourceException {
+		return super.createHTMLReporter(headless);
+	}
 }

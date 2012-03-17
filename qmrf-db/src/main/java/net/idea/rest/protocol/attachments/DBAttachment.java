@@ -12,6 +12,7 @@ public class DBAttachment extends Document {
 	 * 
 	 */
 	private static final long serialVersionUID = 1141527775736093041L;
+	
 	public enum attachment_type {
 		data_training {
 			@Override
@@ -49,7 +50,15 @@ public class DBAttachment extends Document {
 		public String acceptFormats() { return "sdf|mol|csv|xls"; };
 		
 	}
+	
+	protected int idquerydatabase= -1;
 
+	public int getIdquerydatabase() {
+		return idquerydatabase;
+	}
+	public void setIdquerydatabase(int idquerydatabase) {
+		this.idquerydatabase = idquerydatabase;
+	}
 	protected attachment_type type;
 	protected String description;
 	protected String format;

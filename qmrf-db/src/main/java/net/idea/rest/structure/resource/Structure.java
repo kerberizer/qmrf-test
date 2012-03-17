@@ -6,11 +6,16 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
+import net.idea.restnet.cli.AbstractClient;
 import net.idea.restnet.cli.IAbstractResource;
 import net.toxbank.client.resource.Protocol;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.opentox.rdf.OpenTox;
 import org.restlet.data.Reference;
+import org.restlet.data.Status;
+import org.restlet.resource.ResourceException;
 
 public class Structure implements IAbstractResource, Serializable {
 	/**
@@ -137,5 +142,31 @@ public class Structure implements IAbstractResource, Serializable {
 
 	public URL getResourceURL() {
 		return resourceURL;
+	}
+	
+	public static List<Structure> retrieveStructures(String queryService, String ref)  throws Exception{
+		Reference queryURI = new Reference(queryService);
+		HttpClient httpcli = new DefaultHttpClient();
+		AbstractClient<Structure, String> cli = new AbstractClient<Structure, String>(httpcli);
+		List<Structure> records = new ArrayList<Structure>();
+		try {
+			List<URL> urls = cli.listURI(new URL(ref)); //TODO custom client to return List<Structure>
+		
+			for (URL url: urls) {
+				Structure struc = new Structure(url);
+				try {
+					Object[] ids = struc.parseURI(queryURI);
+					if (ids[0]!=null) struc.setIdchemical((Integer) ids[0]);
+					if (ids[1]!=null) struc.setIdstructure((Integer) ids[1]);
+				} catch (Exception x) {}
+				records.add(struc);
+			}
+			return records;
+		} catch (Exception x) {
+			throw x;
+		} finally {
+			try {httpcli.getConnectionManager().shutdown(); } catch (Exception x) {}
+		}
+
 	}
 }
