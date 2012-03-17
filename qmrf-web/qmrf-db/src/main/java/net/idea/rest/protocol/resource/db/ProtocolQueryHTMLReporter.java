@@ -159,17 +159,17 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			   builder.setErrorHandler(new ErrorHandler() {
 				@Override
 				public void warning(SAXParseException exception) throws SAXException {
-					exception.printStackTrace();
+					
 				}
 				
 				@Override
 				public void fatalError(SAXParseException exception) throws SAXException {
-					exception.printStackTrace();
+					
 				}
 				
 				@Override
 				public void error(SAXParseException exception) throws SAXException {
-					exception.printStackTrace();
+					
 				}
 			});
 			   builder.setEntityResolver(dtdresolver);

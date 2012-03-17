@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.idea.modbcum.i.reporter.Reporter;
+import net.idea.rest.protocol.attachments.DBAttachment;
 
 import org.opentox.rdf.OpenTox;
 import org.restlet.Context;
@@ -24,18 +25,21 @@ import org.restlet.resource.ResourceException;
 public class MoleculeResource extends StructureResource { 
 	protected static String chemicalKey = "idchemical";
 	protected static String structureKey = "idstructure";
-	protected String[] dataset;
+
 	protected String tabID="Molecule";
 	
 	@Override
 	protected Iterator<Structure> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
+		parseParameters(context,request,response);
+		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
+		
 		StringBuilder url = new StringBuilder();
 		url.append(queryService);
 		
 		Form form = request.getResourceRef().getQueryAsForm();
-		dataset = form.getValuesArray("dataset");
-		
+		List<DBAttachment> datasets = parameters.getDatasets();
+
 		Object idchemical = request.getAttributes().get(chemicalKey);
 		if (idchemical==null) return Collections.EMPTY_LIST.iterator();
 		try { 
@@ -57,14 +61,12 @@ public class MoleculeResource extends StructureResource {
 				singleItem = true;
 			} catch (Exception x) { }
 		}
-		String query;
-		if ((dataset!=null) && (dataset.length>0)) {
-			query = String.format("%s?feature_uris[]=%s%s/%s%s",url,
-					queryService,OpenTox.URI.dataset.getURI(),Reference.encode(dataset[0]),OpenTox.URI.feature.getURI());
-			System.out.println(query);
-			tabID = "Properties";
-		} else 
-			query = String.format("%s/query/compound/url/all?search=%s",queryService,Reference.encode(url.toString()));
+		String query = String.format("%s/query/compound/url/all?search=%s",queryService,Reference.encode(url.toString()));
+		if (datasets!=null) 
+			for (DBAttachment attachment: datasets) 
+				query = String.format("%s?feature_uris[]=%s%s/%d%s",url,
+						queryService,OpenTox.URI.dataset.getURI(),attachment.getIdquerydatabase(),OpenTox.URI.feature.getURI());
+
 		List<Structure> records = new ArrayList<Structure>();
 		try {
 			PropertiesIterator i = new PropertiesIterator(query);
@@ -96,7 +98,7 @@ public class MoleculeResource extends StructureResource {
 	
 	@Override
 	protected Reporter createHTMLReporter(boolean headles) {
-		MoleculeHTMLReporter reporter = new MoleculeHTMLReporter(getRequest(), null, new StructureHTMLBeauty(queryService));
+		MoleculeHTMLReporter reporter = new MoleculeHTMLReporter(getRequest(), null, getHTMLBeauty());
 		reporter.setSingleItem(singleItem);
 		reporter.setHeadless(headless);
 		reporter.tabID = tabID;

@@ -1,17 +1,25 @@
 package net.idea.rest.structure.resource;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.text.NumberFormat;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
 import net.idea.modbcum.i.reporter.Reporter;
+import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.attachments.DBAttachment;
+import net.idea.rest.protocol.attachments.db.ReadAttachment;
+import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
+import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryResource;
 
 import org.opentox.csv.CSVFeatureValuesIterator;
@@ -44,7 +52,7 @@ public class StructureResource extends CatalogResource<Structure> {
 		Form form = request.getResourceRef().getQueryAsForm();
 		
 		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
-		parameters.setDatasets(form.getValuesArray("dataset"));
+		//parameters.setDatasets(form.getValuesArray("dataset"));
 		String search = form.getFirstValue(QueryResource.search_param) == null ? ""
 				: form.getFirstValue(QueryResource.search_param);
 		
@@ -84,6 +92,11 @@ public class StructureResource extends CatalogResource<Structure> {
 		if (search != null)
 			search = search.replace("<", "").replace(">", "");
 		parameters.setSearchQuery(search);
+		
+		try {
+			parameters.setDatasets(verifyDataset(form.getValuesArray("dataset")));
+		} catch (Exception x) { parameters.setDatasets(null); x.printStackTrace();}
+		
 	}
 
 	@Override
@@ -169,6 +182,61 @@ public class StructureResource extends CatalogResource<Structure> {
 		if (htmlBeauty == null) htmlBeauty = new StructureHTMLBeauty(queryService);
 		return htmlBeauty;
 	}
+	
+
+	public String getConfigFile() {
+		return "conf/qmrf-db.pref";
+	}
+	
+	protected String getAttachmentDir() {
+		String dir = ((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_attachments_dir.name());
+		return dir==null?System.getProperty("java.io.tmpdir"):dir;
+	}
+	
+	
+	protected List<DBAttachment> verifyDataset(String[] attachmentKey) throws Exception {
+		if (attachmentKey==null || attachmentKey.length==0) return null;
+		List<DBAttachment> results = new ArrayList<DBAttachment>();
+		Connection conn = null;
+		QueryExecutor  exec = new QueryExecutor();
+		try {
+			ReadAttachment query;
+			DBAttachment attachment = new DBAttachment();
+			query = new ReadAttachment(null,getAttachmentDir());
+			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			conn = dbc.getConnection();
+			exec.setConnection(conn);
+			for (String aKey : attachmentKey) {
+				if ((aKey!=null) && aKey.toString().startsWith("A")) {
+					attachment.setID(new Integer(Reference.decode(aKey.toString().substring(1))));
+					query.setFieldname(null);
+					query.setValue(attachment);
+				} else 	if ((aKey!=null) && aKey.toString().startsWith("QMRF")) {
+					int[] ids = ReadProtocol.parseIdentifier(aKey);
+					query.setFieldname(new DBProtocol(ids[0],ids[1],ids[2]));
+					query.setValue(null);
+				} else continue;
+				ResultSet rs = exec.process(query);
+				while (rs.next()) {
+					DBAttachment a = query.getObject(rs);
+					if (a.isImported()) 
+						results.add(a);
+				}
+				rs.close();
+
+			}
+			return results;
+		} catch (NumberFormatException x) {
+			return null;
+		} catch (Exception x) {
+			try { if (exec!=null) exec.close(); } catch (Exception xx) {}
+			try { if (conn!=null) conn.close(); } catch (Exception xx) {}
+			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
+		}
+		
+	}
+	
+	
 }
 
 class PropertiesIterator extends CSVFeatureValuesIterator<Structure> {
@@ -252,4 +320,6 @@ class PropertiesIterator extends CSVFeatureValuesIterator<Structure> {
 
 		return r;
 	}
+	
+	
 };
