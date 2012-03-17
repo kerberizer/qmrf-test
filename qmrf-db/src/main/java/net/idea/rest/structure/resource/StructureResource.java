@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.Resources;
@@ -34,11 +35,13 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
+import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
+
 public class StructureResource extends CatalogResource<Structure> {
 	protected String queryService;
 	protected boolean singleItem = false;
 	protected HTMLBeauty htmlBeauty = null;
-
+	protected NameToStructure nameToStructure;
 	public StructureResource() {
 		super();
 		queryService = ((TaskApplication) getApplication())
@@ -99,6 +102,14 @@ public class StructureResource extends CatalogResource<Structure> {
 		
 	}
 
+	protected String name2Structure(String name) {
+		try {
+			if (nameToStructure == null) nameToStructure = NameToStructure.getInstance();
+			return nameToStructure.parseToSmiles(name);
+		} catch (Exception x) {
+			return null;
+		}
+	}
 	@Override
 	protected Iterator<Structure> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
@@ -110,12 +121,16 @@ public class StructureResource extends CatalogResource<Structure> {
 					queryService));
 			switch (parameters.option) {
 			case similarity: {
+				String smiles = name2Structure(parameters.getSearchQuery());
+				if (smiles!=null) parameters.setSearchQuery(smiles);
 				ref = new Reference(String.format(
 						"%s/query/similarity?threshold=%3.2f", queryService,
 						parameters.threshold));
 				break;
 			}
 			case smarts: {
+				String smiles = name2Structure(parameters.getSearchQuery());
+				if (smiles!=null) parameters.setSearchQuery(smiles);
 				ref = new Reference(String.format("%s/query/smarts",
 						queryService));
 				break;
