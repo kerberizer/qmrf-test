@@ -11,7 +11,6 @@ import net.idea.rest.qmrf.admin.QMRFCatalogHTMLReporter;
 import net.idea.rest.structure.resource.StructureResource.SearchMode;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.db.QueryResource;
 
 import org.restlet.Request;
 import org.restlet.data.Form;
@@ -91,8 +90,8 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			if ((attachment!=null) && (attachment.getTitle()!=null)) {
 				String datasetURI = String.format("%s%s/%d?dataset=%s&headless=true&details=false&media=text/html", getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),attachment.getTitle());
 				String uri = String.format(
-						"<a href=\"%s\" title=\"%s\">%s</a>",
-						datasetURI,attachment.getTitle(),attachment.getTitle());
+						"<a href=\"%s\" title=\"%s\">%s&nbsp;%s</a>",
+						datasetURI,attachment.getDescription(),attachment.getProtocol(),attachment.getType().toString());
 				rendering.append(String.format("<li>%s<span></span></li>\n",uri));
 			}
 			String[] datasets = ((StructureHTMLBeauty)htmlBeauty).datasets;
@@ -178,8 +177,23 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	public void setDatasets(String[] datasets) {
 		this.datasets = datasets;
 	}
-	protected String threshold; 
+	protected Double threshold; 
+	public Double getThreshold() {
+		return threshold;
+	}
+
+	public void setThreshold(Double threshold) {
+		this.threshold = threshold;
+	}
 	protected SearchMode option;
+
+	public SearchMode getOption() {
+		return option;
+	}
+
+	public void setOption(SearchMode option) {
+		this.option = option;
+	}
 
 	public StructureHTMLBeauty(String queryService) {
 		super();
@@ -190,6 +204,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	@Override
 	public String getSearchTitle() {
 		return "Structure search";
+		
 	}
 	
 	public String getSmartsOption() {
@@ -199,8 +214,15 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 
 	@Override
 	protected String searchMenu(Reference baseReference, Form form) {
-		searchQuery = form.getFirstValue(QueryResource.search_param);
 		
+		
+		searchTitle = attachment==null?getSearchTitle():
+				String.format("<a href='%s%s/%s' title='QMRF document'>%s</a>&nbsp;<a href='%s%s/%s%s/A%d' title='%s'>%s</a>",
+							baseReference,Resources.protocol,attachment.getProtocol(),attachment.getProtocol(),
+							baseReference,Resources.protocol,attachment.getProtocol(),Resources.attachment,attachment.getID(),
+							attachment.getDescription(),attachment.getType().toString());
+		/*already set by the resource
+		searchQuery = form.getFirstValue(QueryResource.search_param);
 		pageSize = 10;
 		try { pageSize = Long.parseLong(form.getFirstValue("pagesize")); if ((pageSize<1) && (pageSize>100)) pageSize=10;} catch (Exception x) { pageSize=10;}
 		page = 0;
@@ -212,6 +234,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		} catch (Exception x) {
 			option = SearchMode.auto;
 		}
+		*/
 		String hint = "Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.";
 		
 		String imgURI = searchQuery==null?"":
@@ -244,7 +267,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "<div id='querypic' class='structureright'>%s</div>"+
 		   "</div>\n",	
 		   hint,
-		   getSearchTitle(),
+		   searchTitle,
 		   baseReference,
 		   getSearchURI(),
 		   page,
@@ -272,7 +295,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		start = start<0?0:start; // don't go beyond first page
 		last = start + total;
 
-		String url = "<li><a class='%s' href='?page=%d&pagesize=%d&search=%s&option=%s&threshold=%s'>%s</a></li>";
+		String url = "<li><a class='%s' href='?page=%d&pagesize=%d&search=%s&option=%s&threshold=%3.2f'>%s</a></li>";
 
 		StringBuilder b = new StringBuilder(); 
 		b.append("<div><ul id='hnavlist'>");

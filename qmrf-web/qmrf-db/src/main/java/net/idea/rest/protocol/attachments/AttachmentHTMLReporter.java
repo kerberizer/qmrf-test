@@ -1,7 +1,6 @@
 package net.idea.rest.protocol.attachments;
 
 import java.io.Writer;
-import java.util.List;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
@@ -9,14 +8,12 @@ import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
-import net.idea.rest.structure.resource.Structure;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
 
 import org.restlet.Request;
 import org.restlet.data.Reference;
-import org.restlet.data.Status;
 
 public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQueryRetrieval<DBAttachment>> {
 
@@ -68,7 +65,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 		return true;
 	}
 	public String printTable(DBAttachment attachment) {
-		String browse = null;
+
 		String uri = uriReporter.getURI(attachment);
 		StringBuilder datasets = new StringBuilder();
 		datasets.append("<tr>");
@@ -92,12 +89,13 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 		}
 		default: {
 			if (attachment.imported) {
-				datasets.append(String.format("<td align='left' ><a href='%s%s/%s' target='_structure'>Browse structures</a></td>",
+				String datasetURI = String.format("%s%s/A%d",
 						uriReporter.getBaseReference(),Resources.dataset,
-						attachment.getIdquerydatabase()>0?Integer.toString(attachment.getIdquerydatabase()):
-						Reference.encode(attachment.getTitle().trim())));
+						attachment.getID());
+						
+				datasets.append(String.format("<td align='left' ><a href='%s' target='_structure'>Browse structures</a></td>",
+						datasetURI));
 
-				//browse = showDataset(attachment);
 			} else {
 				String form = String.format("<form method='POST' title='This dataset is not yet browsable and searchable' action='%s/dataset'><input type='hidden' value='true' name='import'><input type='submit' class='Draw' title='Convert to browsable and searchable dataset' value='Convert to browsable'></form>",uri);
 				datasets.append(String.format("<td align='left'>%s</td>",form));
@@ -105,9 +103,8 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 			break;
 		}
 		}
-		//datasets.append(String.format("<td>%s</td>",attachment.getMediaType()));
 		datasets.append("</tr>");
-		//if (browse!=null) datasets.append(String.format("<tr><td colspan='4'>%s</td></tr>",browse));
+
 		return datasets.toString();
 	}
 	/*
