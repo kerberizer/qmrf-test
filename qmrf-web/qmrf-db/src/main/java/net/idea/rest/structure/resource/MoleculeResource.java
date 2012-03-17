@@ -11,6 +11,7 @@ import org.opentox.rdf.OpenTox;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.Form;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
@@ -23,12 +24,17 @@ import org.restlet.resource.ResourceException;
 public class MoleculeResource extends StructureResource { 
 	protected static String chemicalKey = "idchemical";
 	protected static String structureKey = "idstructure";
+	protected String[] dataset;
+	protected String tabID="Molecule";
 	
 	@Override
 	protected Iterator<Structure> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
 		StringBuilder url = new StringBuilder();
 		url.append(queryService);
+		
+		Form form = request.getResourceRef().getQueryAsForm();
+		dataset = form.getValuesArray("dataset");
 		
 		Object idchemical = request.getAttributes().get(chemicalKey);
 		if (idchemical==null) return Collections.EMPTY_LIST.iterator();
@@ -51,11 +57,16 @@ public class MoleculeResource extends StructureResource {
 				singleItem = true;
 			} catch (Exception x) { }
 		}
-		
-		
+		String query;
+		if ((dataset!=null) && (dataset.length>0)) {
+			query = String.format("%s?feature_uris[]=%s%s/%s%s",url,
+					queryService,OpenTox.URI.dataset.getURI(),Reference.encode(dataset[0]),OpenTox.URI.feature.getURI());
+			System.out.println(query);
+			tabID = "Properties";
+		} else 
+			query = String.format("%s/query/compound/url/all?search=%s",queryService,Reference.encode(url.toString()));
 		List<Structure> records = new ArrayList<Structure>();
 		try {
-			String query = String.format("%s/query/compound/url/all?search=%s",queryService,Reference.encode(url.toString()));
 			PropertiesIterator i = new PropertiesIterator(query);
 			Reference queryURI = new Reference(queryService);
 			try {
@@ -79,6 +90,8 @@ public class MoleculeResource extends StructureResource {
 		} catch (Exception x) {
 			throw createException(Status.CLIENT_ERROR_BAD_REQUEST, "Molecule", SearchMode.auto, url.toString(), x);			
 		}
+		
+		
 	}
 	
 	@Override
@@ -86,6 +99,7 @@ public class MoleculeResource extends StructureResource {
 		MoleculeHTMLReporter reporter = new MoleculeHTMLReporter(getRequest(), null, new StructureHTMLBeauty(queryService));
 		reporter.setSingleItem(singleItem);
 		reporter.setHeadless(headless);
+		reporter.tabID = tabID;
 		return reporter;
 	}
 	
