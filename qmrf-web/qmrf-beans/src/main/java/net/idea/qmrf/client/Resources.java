@@ -39,5 +39,8 @@ public class Resources {
 		google_analytics,
 		logo_left,
 		logo_right,
+		secret,
+		insecure,
+		qmrf_email
 	}
 }
