@@ -30,10 +30,12 @@ public class ReadAttachment extends AbstractQuery<DBProtocol, DBAttachment, EQCo
 		name,
 		format,
 		description,
-		imported
+		imported,
+		id_srcdataset
 	}
 	protected static String sql = 
-		"SELECT idprotocol,version,idattachment,type,a.name,`format`,description,imported FROM attachments a where %s";
+		"SELECT idprotocol,version,idattachment,type,a.name,`format`,description,a1.name is not null as imported,id_srcdataset FROM attachments a " +
+		"left join `ambit2-qmrf`.src_dataset a1 using(name) where %s ";
 	protected static String where_protocol = "idprotocol=? and version=?";
 	protected static String where_attachment = "idattachment=?";
 	
@@ -116,6 +118,9 @@ and idchemical=282
 				attachment.setType(DBAttachment.attachment_type.valueOf(type));
 				attachment.setDescription(rs.getString(_fields.description.name()));
 				attachment.setImported(rs.getBoolean(_fields.imported.name()));
+				try {
+					if (attachment.isImported()) attachment.setIdquerydatabase(rs.getInt(_fields.id_srcdataset.name()));
+				} catch (Exception x) { attachment.setIdquerydatabase(-1);}
 				return attachment;
 
 		} catch (Exception x) {

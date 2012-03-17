@@ -8,7 +8,7 @@ import org.restlet.Request;
 
 public class AttachmentURIReporter <Q extends IQueryRetrieval<DBAttachment>> extends QueryURIReporter<DBAttachment, Q> {
 	String prefix = "";
-	
+
 
 	public String getPrefix() {
 		return prefix;

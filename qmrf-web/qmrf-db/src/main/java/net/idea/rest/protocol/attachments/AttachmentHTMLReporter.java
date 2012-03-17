@@ -1,6 +1,7 @@
 package net.idea.rest.protocol.attachments;
 
 import java.io.Writer;
+import java.util.List;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
@@ -8,12 +9,14 @@ import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.rest.structure.resource.Structure;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
 
 import org.restlet.Request;
 import org.restlet.data.Reference;
+import org.restlet.data.Status;
 
 public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQueryRetrieval<DBAttachment>> {
 
@@ -22,6 +25,14 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	 */
 	private static final long serialVersionUID = -5453025922862783009L;
 	protected String uploadUI;
+	protected boolean showDataset= false;
+	
+	public boolean isShowDataset() {
+		return showDataset;
+	}
+	public void setShowDataset(boolean showDataset) {
+		this.showDataset = showDataset;
+	}
 	public AttachmentHTMLReporter(DBProtocol protocol) {
 		this(protocol,null,true,null,null);
 	}
@@ -57,6 +68,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 		return true;
 	}
 	public String printTable(DBAttachment attachment) {
+		String browse = null;
 		String uri = uriReporter.getURI(attachment);
 		StringBuilder datasets = new StringBuilder();
 		datasets.append("<tr>");
@@ -79,10 +91,14 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 			break;
 		}
 		default: {
-			if (attachment.imported)
-			datasets.append(String.format("<td align='left' ><a href='%s%s?option=dataset&search=%s' target='_structure'>Browse structures</a></td>",
-						uriReporter.getBaseReference(),Resources.chemical,Reference.encode(attachment.getTitle().trim())));
-			else {
+			if (attachment.imported) {
+				datasets.append(String.format("<td align='left' ><a href='%s%s/%s' target='_structure'>Browse structures</a></td>",
+						uriReporter.getBaseReference(),Resources.dataset,
+						attachment.getIdquerydatabase()>0?Integer.toString(attachment.getIdquerydatabase()):
+						Reference.encode(attachment.getTitle().trim())));
+
+				//browse = showDataset(attachment);
+			} else {
 				String form = String.format("<form method='POST' title='This dataset is not yet browsable and searchable' action='%s/dataset'><input type='hidden' value='true' name='import'><input type='submit' class='Draw' title='Convert to browsable and searchable dataset' value='Convert to browsable'></form>",uri);
 				datasets.append(String.format("<td align='left'>%s</td>",form));
 			}
@@ -91,10 +107,39 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 		}
 		//datasets.append(String.format("<td>%s</td>",attachment.getMediaType()));
 		datasets.append("</tr>");
+		//if (browse!=null) datasets.append(String.format("<tr><td colspan='4'>%s</td></tr>",browse));
 		return datasets.toString();
 	}
-	
+	/*
+	protected String showDataset(DBAttachment attachment) {
+		
+		try {
+			List<Structure> records = Structure.retrieveStructures(queryService, ref.toString());
+		} catch (Exception x) {
+			throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option, ref.toString(), x);
+		}
+		String datasetURI = String.format(
+				"<a href=\"%s%s?option=dataset&search=%s&headless=true&details=false&media=text/html\" title=\"%s\">%s</a>",
+				uriReporter.getBaseReference(),Resources.chemical,Reference.encode(attachment.getTitle()),
+				attachment.getDescription(),attachment.getDescription());
+		datasetURI = String.format("<li>%s<span></span></li>\n",datasetURI);
 
+		
+		StringBuilder rendering = new StringBuilder();
+		rendering.append(String.format(
+				"<div class='protocol'>\n"+					
+				"<div class='tabs'>\n<ul>" +
+				"<li>%s<span></span></li>\n" +
+			    "</ul></div>\n</div>\n",
+			    datasetURI
+				));
+		
+		
+		rendering.append("</div>\n</div>\n");//tabs , protocol
+
+		return rendering.toString();	
+	}
+	*/
 	@Override
 	public void footer(Writer output, IQueryRetrieval<DBAttachment> query) {
 		try {

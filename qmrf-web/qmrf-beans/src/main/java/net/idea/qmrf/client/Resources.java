@@ -8,6 +8,7 @@ public class Resources {
 	public static final String protocol = "/protocol";
 	public static final String chemical = "/chemical";
 	public static final String structure = "/structure";
+	public static final String dataset = "/dataset";
 	public static final String endpoint = "/endpoint";
 	public static final String project = "/project";
 	public static final String organisation = "/organisation";

@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.qmrf.admin.QMRFCatalogHTMLReporter;
 import net.idea.rest.structure.resource.StructureResource.SearchMode;
 import net.idea.restnet.c.ResourceDoc;
@@ -75,33 +76,50 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 				"<a href=\"%s%s/%d?headless=true&details=false&media=text/html\" title=\"Molecule\">Molecule</a>",
 				getRequest().getRootRef(),Resources.chemical,item.getIdchemical());
 		
-		String datasetURI = "";
-		
-		if ((htmlBeauty instanceof StructureHTMLBeauty) && 
-			(SearchMode.dataset.equals(((StructureHTMLBeauty)htmlBeauty).option))) { //show dataset properties
-			datasetURI = String.format(
-					"<a href=\"%s%s/%d?dataset=%s&headless=true&details=false&media=text/html\" title=\"Properties\">Properties</a>",
-					getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),((StructureHTMLBeauty)htmlBeauty).getSearchQuery());
-			datasetURI = String.format("<li>%s<span></span></li>\n",datasetURI);
-		}
-		
 		StringBuilder rendering = new StringBuilder();
 		rendering.append(String.format(
 				"<div class='protocol'>\n"+					
 				"<div class='tabs'>\n<ul>" +
 				"<li>%s<span></span></li>\n" +
-				"<li>%s<span></span></li>\n" +
-			    "%s</ul>",
-			    moleculeURI,protocolURI,
-			    datasetURI
+				"<li>%s<span></span></li>\n",
+			    moleculeURI,protocolURI
 				));
 		
 		
-		rendering.append("</div>\n</div>\n");//tabs , protocol
+		if (htmlBeauty instanceof StructureHTMLBeauty) {
+			DBAttachment attachment = ((StructureHTMLBeauty)htmlBeauty).getAttachment();
+			if ((attachment!=null) && (attachment.getTitle()!=null)) {
+				String datasetURI = String.format("%s%s/%d?dataset=%s&headless=true&details=false&media=text/html", getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),attachment.getTitle());
+				String uri = String.format(
+						"<a href=\"%s\" title=\"%s\">%s</a>",
+						datasetURI,attachment.getTitle(),attachment.getTitle());
+				rendering.append(String.format("<li>%s<span></span></li>\n",uri));
+			}
+			String[] datasets = ((StructureHTMLBeauty)htmlBeauty).datasets;
+			if (datasets !=null) {
+				//datasetURI = new ArrayList<String>();
+			
+				for (String dataset: datasets) {
+					String uri = String.format(
+					"<a href=\"%s%s/%d?dataset=%s&headless=true&details=false&media=text/html\" alt='Other datasets' title=\"%s\">%s</a>",
+					getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),dataset,dataset,dataset);
+					rendering.append(String.format("<li>%s<span></span></li>\n",uri));
+					
+				}
+			}
+				
+		}
+	
+		
+
+		
+		rendering.append("</ul></div>\n</div>\n");//tabs , protocol
 
 		return rendering.toString();		
 
 	}
+	
+
 	@Override
 	public void close() throws Exception {
 		super.close();
@@ -144,7 +162,22 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 
 class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	protected String queryService;
+	protected DBAttachment attachment = null;
+    public DBAttachment getAttachment() {
+		return attachment;
+	}
 
+	public void setAttachment(DBAttachment attachment) {
+		this.attachment = attachment;
+	}
+	protected String[] datasets = null;
+	public String[] getDatasets() {
+		return datasets;
+	}
+
+	public void setDatasets(String[] datasets) {
+		this.datasets = datasets;
+	}
 	protected String threshold; 
 	protected SearchMode option;
 
