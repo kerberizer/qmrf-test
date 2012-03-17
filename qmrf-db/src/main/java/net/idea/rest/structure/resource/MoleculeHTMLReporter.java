@@ -41,9 +41,9 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			if (headless) output.write(renderItem(item));
 			else {
 				output.write(htmlBeauty.printWidget(
-						item.cas!=null?item.cas:
-						item.name!=null?item.name:
-						item.InChIKey!=null?item.InChIKey:"Molecule",
+						item.cas!=null && !"".equals(item.cas)?item.cas:
+						item.name!=null && !"".equals(item.name)?item.name:
+						item.InChIKey!=null && !"".equals(item.InChIKey)?item.InChIKey:"Molecule",
 						renderItem(item)));
 
 			}	
@@ -125,6 +125,8 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 						properties
 						));
 			*/
+			
+		
 				
 			if (!headless) rendering.append("</div>");
 			return rendering.toString();

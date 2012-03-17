@@ -16,18 +16,19 @@ import net.idea.restnet.db.DBConnection;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
-import org.restlet.data.Form;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 
 public class DatasetResource extends StructureResource {
 	public static String datasetKey = "datasetKey";
+	
 	@Override	
 	protected Iterator<Structure> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
-		Form form = request.getResourceRef().getQueryAsForm();
-		((StructureHTMLBeauty)getHTMLBeauty()).setDatasets(form.getValuesArray("dataset"));
+		parseParameters(context,request,response);
+		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
+		
 		Object key = getRequest().getAttributes().get(datasetKey);
 		if ((key == null) || "".equals(key))	return Collections.EMPTY_LIST.iterator();
 		String search = Reference.decode(key.toString());
@@ -38,30 +39,14 @@ public class DatasetResource extends StructureResource {
 		} catch (Exception x) {return Collections.EMPTY_LIST.iterator();}
 		((StructureHTMLBeauty)getHTMLBeauty()).setAttachment(attachment);
 		
-		String pagesize = form.getFirstValue("pagesize");
-		String page = form.getFirstValue("page");
-		try {
-			int psize = Integer.parseInt(pagesize);
-			if (psize > 100)
-				pagesize = "10";
-		} catch (Exception x) {
-			pagesize = "10";
-		}
-		try {
-			int p = Integer.parseInt(page);
-			if ((p < 0) || (p > 100))
-				page = "0";
-		} catch (Exception x) {
-			page = "0";
-		}
 		Reference ref = null;
 		
 		try {
 			ref = new Reference(String.format("%s/dataset/%s",queryService, 
 					attachment.getIdquerydatabase()>0?Integer.toString(attachment.getIdquerydatabase()):
 					Reference.encode(attachment.getTitle())));
-			ref.addQueryParameter("pagesize", pagesize);
-			ref.addQueryParameter("page", page);
+			ref.addQueryParameter("pagesize", Long.toString(parameters.getPageSize()));
+			ref.addQueryParameter("page", Integer.toString(parameters.getPage()));
 
 			try {
 				List<Structure> records = Structure.retrieveStructures(
@@ -112,12 +97,4 @@ public class DatasetResource extends StructureResource {
 	}
 	
 
-	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
-	}
-	
-	protected String getAttachmentDir() {
-		String dir = ((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_attachments_dir.name());
-		return dir==null?System.getProperty("java.io.tmpdir"):dir;
-	}
 }

@@ -3,6 +3,7 @@ package net.idea.rest.structure.resource;
 import java.io.Writer;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
@@ -59,13 +60,7 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 		String query = ((StructureHTMLBeauty)htmlBeauty).getSearchQuery();
 		String smartsOption = ((StructureHTMLBeauty)htmlBeauty).getSmartsOption();
 		//TODO smarts highlight
-		String structure = 	String.format(
-					"<div class='structureright'><img src='%s?media=%s&w=150&h=150' alt='%s' title='%s' width='150' height='150'><br>%s\n</div>\n",
-					item.getResourceURL(),
-					Reference.encode("image/png"),
-					query,query,
-					item.cas==null?"":item.cas
-					);
+
 		
 		String protocolURI = String.format(
 				"<a href=\"%s%s?structure=%s&headless=true&details=false&media=text/html\" title=\"QMRF documents\">QMRF documents</a>",
@@ -79,32 +74,19 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 		rendering.append(String.format(
 				"<div class='protocol'>\n"+					
 				"<div class='tabs'>\n<ul>" +
-				"<li>%s<span></span></li>\n" +
-				"<li>%s<span></span></li>\n",
+				"<li>%s</li>\n" +
+				"<li>%s</li>\n",
 			    moleculeURI,protocolURI
 				));
 		
-		
+
 		if (htmlBeauty instanceof StructureHTMLBeauty) {
-			DBAttachment attachment = ((StructureHTMLBeauty)htmlBeauty).getAttachment();
-			if ((attachment!=null) && (attachment.getTitle()!=null)) {
-				String datasetURI = String.format("%s%s/%d?dataset=%s&headless=true&details=false&media=text/html", getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),attachment.getTitle());
-				String uri = String.format(
-						"<a href=\"%s\" title=\"%s\">%s&nbsp;%s</a>",
-						datasetURI,attachment.getDescription(),attachment.getProtocol(),attachment.getType().toString());
-				rendering.append(String.format("<li>%s<span></span></li>\n",uri));
-			}
-			String[] datasets = ((StructureHTMLBeauty)htmlBeauty).datasets;
-			if (datasets !=null) {
-				//datasetURI = new ArrayList<String>();
+			rendering.append(renderAttachmentTab(item,((StructureHTMLBeauty)htmlBeauty).getAttachment()));
+		
+			if (((StructureHTMLBeauty)htmlBeauty).datasets !=null) {
 			
-				for (String dataset: datasets) {
-					String uri = String.format(
-					"<a href=\"%s%s/%d?dataset=%s&headless=true&details=false&media=text/html\" alt='Other datasets' title=\"%s\">%s</a>",
-					getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),dataset,dataset,dataset);
-					rendering.append(String.format("<li>%s<span></span></li>\n",uri));
-					
-				}
+				for (DBAttachment dataset: ((StructureHTMLBeauty)htmlBeauty).datasets)
+					rendering.append(renderAttachmentTab(item,dataset));
 			}
 				
 		}
@@ -118,7 +100,19 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 
 	}
 	
-
+	protected String renderAttachmentTab(Structure item, DBAttachment attachment) {
+		if ((attachment!=null) && (attachment.getTitle()!=null)) {
+			String datasetURI = String.format("%s%s/%d?dataset=A%d&headless=true&details=false&media=text/html", 
+							getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),attachment.getID());
+			String uri = String.format(
+					"<a href=\"%s\" title=\"%s\">%s&nbsp;%s</a>",
+					datasetURI,attachment.getTitle(),attachment.getProtocol(),attachment.getType().toString());
+			System.out.println(datasetURI);
+			return String.format("<li>%s<span></span></li>\n",uri);
+		} else return "";
+		
+	}
+	
 	@Override
 	public void close() throws Exception {
 		super.close();
@@ -169,12 +163,13 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	public void setAttachment(DBAttachment attachment) {
 		this.attachment = attachment;
 	}
-	protected String[] datasets = null;
-	public String[] getDatasets() {
+	protected List<DBAttachment> datasets = null;
+
+	public List<DBAttachment> getDatasets() {
 		return datasets;
 	}
 
-	public void setDatasets(String[] datasets) {
+	public void setDatasets(List<DBAttachment> datasets) {
 		this.datasets = datasets;
 	}
 	protected Double threshold; 

@@ -107,36 +107,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 
 		return datasets.toString();
 	}
-	/*
-	protected String showDataset(DBAttachment attachment) {
-		
-		try {
-			List<Structure> records = Structure.retrieveStructures(queryService, ref.toString());
-		} catch (Exception x) {
-			throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search, option, ref.toString(), x);
-		}
-		String datasetURI = String.format(
-				"<a href=\"%s%s?option=dataset&search=%s&headless=true&details=false&media=text/html\" title=\"%s\">%s</a>",
-				uriReporter.getBaseReference(),Resources.chemical,Reference.encode(attachment.getTitle()),
-				attachment.getDescription(),attachment.getDescription());
-		datasetURI = String.format("<li>%s<span></span></li>\n",datasetURI);
-
-		
-		StringBuilder rendering = new StringBuilder();
-		rendering.append(String.format(
-				"<div class='protocol'>\n"+					
-				"<div class='tabs'>\n<ul>" +
-				"<li>%s<span></span></li>\n" +
-			    "</ul></div>\n</div>\n",
-			    datasetURI
-				));
-		
-		
-		rendering.append("</div>\n</div>\n");//tabs , protocol
-
-		return rendering.toString();	
-	}
-	*/
+	
 	@Override
 	public void footer(Writer output, IQueryRetrieval<DBAttachment> query) {
 		try {
