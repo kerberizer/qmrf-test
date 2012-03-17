@@ -295,7 +295,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		start = start<0?0:start; // don't go beyond first page
 		last = start + total;
 
-		String url = "<li><a class='%s' href='?page=%d&pagesize=%d&search=%s&option=%s&threshold=%3.2f'>%s</a></li>";
+		String url = "<li><a class='%s' href='?page=%d&pagesize=%d%s%s%s'>%s</a></li>";
 
 		StringBuilder b = new StringBuilder(); 
 		b.append("<div><ul id='hnavlist'>");
@@ -304,13 +304,14 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		//b.append(String.format("<li><a href='#'>Pages:</a></li>"));
 
 		// Display "first" and "previous" for the first page as inactive.
+		String thresholdq = threshold==null?"":String.format("&threshold=%3.2f",threshold);
+		String optionq = option==null?"":String.format("&option=%s",option.name());
+		String searchq = searchQuery==null?"":String.format("&search=%s",searchQuery);
 		if (page > 0) {
 			b.append(String.format(url, "pselectable", 0, pageSize,
-					searchQuery==null?"":searchQuery, option==null?"":option.name(),
-					threshold==null?"":threshold, "&lt;&lt;"));
+					searchq, optionq, thresholdq, "&lt;&lt;"));
 			b.append(String.format(url, "pselectable", page-1, pageSize,
-					searchQuery==null?"":searchQuery, option==null?"":option.name(),
-					threshold==null?"":threshold, "&lt;"));
+					searchq, optionq,	thresholdq, "&lt;"));
 		} else {
 			b.append(String.format("<li class='inactive'>&lt;&lt;</li>"));
 			b.append(String.format("<li class='inactive'>&lt;</li>"));
@@ -319,9 +320,9 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		// Display links to pages. Pages are counted from zero! Hence why we display "i+1".
 		for (int i=start; i<= last; i++)
 			b.append(String.format(url, i==page?"current":"pselectable", i, pageSize,
-					searchQuery==null?"":searchQuery, option==null?"":option.name(), threshold==null?"":threshold, i+1)); 
+					searchq, optionq, thresholdq, i+1)); 
 		b.append(String.format(url, "pselectable", page+1, pageSize,
-					searchQuery==null?"":searchQuery, option==null?"":option.name(), threshold==null?"":threshold,"&gt;"));
+					searchq, optionq, thresholdq,"&gt;"));
 		// b.append(String.format("<li><label name='pageSize' value='%d' size='4' title='Page size'></li>",pageSize));
 		b.append("</ul></div><br>");
 
