@@ -15,7 +15,7 @@ public class QMRFLoginFormResource extends UserLoginFormResource<User> {
 		return new QMRF_HTMLBeauty(Resources.login);
 	}
 	@Override
-	protected Reporter createHTMLReporter() {
+	protected Reporter createHTMLReporter(boolean headles) {
 		return new QMRFLoginFormReporter(getRequest(),getDocumentation(),getHTMLBeauty());
 	}
 }

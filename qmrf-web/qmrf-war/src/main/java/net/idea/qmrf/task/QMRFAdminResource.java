@@ -43,7 +43,7 @@ public class QMRFAdminResource extends CatalogResource<AdminItem> {
 		return new QMRF_HTMLBeauty();
 	}
 	
-	protected Reporter createHTMLReporter() {
+	protected Reporter createHTMLReporter(boolean headles) {
 		return new QMRFCatalogHTMLReporter<AdminItem>(getRequest(),getDocumentation(),getHTMLBeauty(),"QMRF Administration action") {
 			@Override
 			public String renderItemTitle(AdminItem item) {

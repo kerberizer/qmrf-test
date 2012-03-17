@@ -81,7 +81,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 		default: {
 			if (attachment.imported)
 			datasets.append(String.format("<td align='left' ><a href='%s%s?option=dataset&search=%s' target='_structure'>Browse structures</a></td>",
-						uriReporter.getBaseReference(),Resources.structure,Reference.encode(attachment.getTitle().trim())));
+						uriReporter.getBaseReference(),Resources.chemical,Reference.encode(attachment.getTitle().trim())));
 			else {
 				String form = String.format("<form method='POST' title='This dataset is not yet browsable and searchable' action='%s/dataset'><input type='hidden' value='true' name='import'><input type='submit' class='Draw' title='Convert to browsable and searchable dataset' value='Convert to browsable'></form>",uri);
 				datasets.append(String.format("<td align='left'>%s</td>",form));
