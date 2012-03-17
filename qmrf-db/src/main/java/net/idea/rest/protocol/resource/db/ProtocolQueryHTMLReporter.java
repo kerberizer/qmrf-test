@@ -263,21 +263,24 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		MediaType[] mimes = {
 				MediaType.APPLICATION_PDF,
 				MediaType.APPLICATION_EXCEL,
-				MediaType.APPLICATION_XML
+				MediaType.APPLICATION_XML,
+				null
 				};
 		
 		String[] image = {
 				"pdf.png",
 				"excel.png",
-				"xml.png"
+				"xml.png",
+				"qmrf/attachments.png"
 		};	
 		
 		String[] description = {
-				"PDF",
-				"MS Excel",
-				"QMRF XML"
+				"Download as PDF",
+				"Download as MS Excel",
+				"Download as QMRF XML",
+				"Browse attachments"
 		};			
-		for (int i=0;i<mimes.length;i++) {
+		for (int i=0;i<mimes.length-1;i++) {
 			MediaType mime = mimes[i];
 				
 			b.append(String.format(
@@ -287,9 +290,19 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					getUriReporter().getBaseReference().toString(),
 					image[i],
 					mime,
-					String.format("Download as %s", description[i])
+					description[i]
 					));
 		}
+		/*
+		b.append(String.format(
+				"<a href=\"%s%s\"><img src=\"%s/images/%s\" title=\"%s\" border=\"0\"/></a>\n",
+				uri,
+				Resources.attachment,
+				getUriReporter().getBaseReference().toString(),
+				image[3],
+				description[3]
+				));		
+				*/
 		return b.toString();
 	}
 	protected void printTable(Writer output, String uri, DBProtocol item) {
@@ -299,9 +312,18 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				output.write(String.format("<td>&nbsp;<a class=\"tbldivxpander\" href=\"javascript:toggleDiv('%s');\">+</a></td>",item.getIdentifier()));
 			else 
 				output.write("<td></td>");
-			output.write(String.format("<td><a href='%s'>%s</a></td>",uri,ReadProtocol.fields.identifier.getValue(item)));			
+			/*
+			String showProperties = headless?
+					String.format("<form method='GET' action='%s'><input type='hidden' name='dataset' value='%s'><input type='submit' class='draw' value='*'></form>",
+										uriReporter.getRequest().getResourceRef(),item.getIdentifier()):
+					"";
+					*/
+			
+			output.write(String.format("<td><a href='%s'>%s</a>&nbsp;%s</td>",uri,ReadProtocol.fields.identifier.getValue(item),""));			
 			output.write(String.format("<td>%s</td>",item.getTitle()));
-			output.write(String.format("<td>%s</td>",item.isPublished()?
+			String owner = item.isPublished()?"":String.format("%s %s",item.getOwner().getFirstname(),item.getOwner().getLastname());
+			output.write(String.format("<td >%s&nbsp;%s</td>",owner,
+					item.isPublished()?
 					"":
 					String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\"><input  type='hidden' name='published' value='true'/><input  title='This document is NOT published' class='draw' type='submit' value='Publish'></form>",uri)));
 			output.write(String.format("<td>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));

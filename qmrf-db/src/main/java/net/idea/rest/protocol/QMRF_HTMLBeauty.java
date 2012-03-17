@@ -178,7 +178,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			//menu
 			String[][] menu = {
-					{Resources.protocol,"Documents","10","All publshed QMRF documents"},
+					{Resources.protocol,"Documents","10","All published QMRF documents"},
 					{Resources.chemical,"Structures","10","Chemical structures search"},
 					{Resources.endpoint,"Endpoints",null,"QMRF documents by endpoints"},
 			};
@@ -202,6 +202,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					case qmrf_manager: {
 						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),"10","All registered users."));
 						w.write(printMenuItem(Resources.organisation, "Organisations", baseReference.toString(),"10","All registered user affiliations."));	
+					}
+					case qmrf_admin: {
+						w.write(printMenuItem(Resources.unpublished, "Unpublished documents", baseReference.toString(),"10","All unpublished QMRF documents."));
+					}
+					case qmrf_editor: {
+						w.write(printMenuItem(Resources.unpublished, "Unpublished documents", baseReference.toString(),"10","All unpublished QMRF documents."));
 					}
 					}
 				} catch (Exception x) {/*unknown role */}

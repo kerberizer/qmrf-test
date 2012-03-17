@@ -6,6 +6,7 @@ import net.idea.restnet.c.resource.TaskResource;
 
 public class Resources {
 	public static final String protocol = "/protocol";
+	public static final String unpublished = "/unpublished";
 	public static final String chemical = "/chemical";
 	public static final String structure = "/structure";
 	public static final String dataset = "/dataset";

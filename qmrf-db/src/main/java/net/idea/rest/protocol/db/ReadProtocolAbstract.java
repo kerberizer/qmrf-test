@@ -18,7 +18,13 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 	 */
 	private static final long serialVersionUID = 6228939989116141217L;
 	protected Boolean showUnpublished = true;
-	
+	protected Boolean onlyUnpublished = false;
+	public Boolean getOnlyUnpublished() {
+		return onlyUnpublished;
+	}
+	public void setOnlyUnpublished(Boolean onlyUnpublished) {
+		this.onlyUnpublished = onlyUnpublished;
+	}
 	public Boolean getShowUnpublished() {
 		return showUnpublished;
 	}
@@ -29,21 +35,19 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 	
 	protected static String sql_withkeywords =  //for text search
 		"select idprotocol,version,protocol.title,abstract as anabstract,iduser,summarySearchable," +
-		"idproject,project.name as project,project.ldapgroup as pgroupname," +
-		"idorganisation,organisation.name as organisation,organisation.ldapgroup as ogroupname," +
+		"idproject," +
+		"idorganisation,user.username,user.firstname,user.lastname," +
 		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
-		"from protocol join organisation using(idorganisation)\n" +
-		"join project using(idproject)\n" +
+		"from protocol join user using(iduser)\n" +
 		"left join keywords using(idprotocol,version) %s %s";
 
 	protected static String sql_nokeywords = 
 		"select idprotocol,version,protocol.title,abstract as anabstract,iduser,summarySearchable," +
-		"idproject,project.name as project,project.ldapgroup as pgroupname," +
-		"idorganisation,organisation.name as organisation,organisation.ldapgroup as ogroupname," +
+		"idproject," +
+		"idorganisation,user.username,user.firstname,user.lastname," +
 		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
-		"from protocol join organisation using(idorganisation)\n" +
-		"join project using(idproject)\n" +
-		" %s %s order by idprotocol,version desc";	
+		"from protocol join user using(iduser)\n" +
+		" %s %s order by idprotocol desc";	
 	
 	public ReadProtocolAbstract(Integer id) {
 		this(id,null);
