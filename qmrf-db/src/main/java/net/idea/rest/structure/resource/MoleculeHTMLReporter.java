@@ -18,7 +18,7 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 	 * 
 	 */
 	private static final long serialVersionUID = -1154097135680514626L;
-
+	protected String tabID = "Molecule";
 	public MoleculeHTMLReporter(Request request, ResourceDoc doc,
 			HTMLBeauty htmlbeauty) {
 		super(request, doc, htmlbeauty,null);
@@ -60,7 +60,7 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			while (keys.hasMoreElements()) {
 				if (properties==null) properties = new StringBuilder();
 				String key = keys.nextElement();
-				properties.append(String.format("<tr><th align='left' width='60%%'>%s</th><td align='center' width='40%%'>%s</td></tr>",key,item.getProperties().get(key)));
+				properties.append(String.format("<tr><th>%s</th><td>%s</td></tr>",key,item.getProperties().get(key)));
 
 			}
 		} catch (Exception x) {}
@@ -87,31 +87,44 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			if (!headless) rendering.append("<div >");
 			//identifiers
 			rendering.append(String.format(
-			"<div id='Molecule' style='min-height:200px'>"+
+			"<div id='%s' style='min-height:200px'>"+
 			"%s\n"+ //structure
 			"<span class='summary'><table>\n"+ 
-			"<tr><th>CAS</th><td>%s</td></tr>"+
-			"<tr><th>Name</th><td>%s</td></tr>"+
-			"<tr><th>SMILES</th><td>%s</td></tr>"+
-			"<tr><th>InChI</th><td>%s</td></tr>"+
-			"<tr><th>InChI Key</th><td>%s</td></tr>"+
+			"<tr><th>%s</th><td>%s</td></tr>"+
+			"<tr><th>%s</th><td>%s</td></tr>"+
+			"<tr><th>%s</th><td>%s</td></tr>"+
+			"<tr><th>%s</th><td>%s</td></tr>"+
+			"<tr><th>%s</th><td>%s</td></tr>"+
+			"<tr><th></th><td>%s</td></tr>"+
 			"<tr><th></th><td>%s</td></tr>"+
 			"</table></span>"+
 			"</div>",
+			tabID,
 			structure,
+			(item.cas==null)||"".equals(item.cas)?"":"CAS RN",
 			item.cas==null?"":item.cas,
+			(item.name==null)||"".equals(item.name)?"":"Name",
 			item.name==null?"":item.name,
+			(item.SMILES==null)||"".equals(item.SMILES)?"":"SMILES",
 			item.SMILES==null?"":item.SMILES,
+			(item.InChI==null)||"".equals(item.InChI)?"":"InChI",
 			item.InChI==null?"":item.InChI,
+			(item.InChIKey==null)||"".equals(item.InChIKey)?"":"InChI Key",
 			item.InChIKey==null?"":item.InChIKey,
+			properties==null?"":properties,
 			item.getSimilarity()==null?"":item.getSimilarity()
 			));
-			
+			/*
 			if (properties!=null)
 				rendering.append(String.format(
-				"<div id='tabs-prop'>"+
-				"%s<span class='summary'><table>%s</table></span>\n"+
-				"</div>",structure,properties));			
+						"<div id='Properties' style='min-height:200px'>"+
+						"%s\n"+ //structure
+						"<span class='summary'><table>%s</table></span>\n"+
+						"</div>",
+						structure,
+						properties
+						));
+			*/
 				
 			if (!headless) rendering.append("</div>");
 			return rendering.toString();

@@ -72,8 +72,18 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 				getRequest().getRootRef(),Resources.protocol,Reference.encode(item.getResourceURL().toString()));
 		
 		String moleculeURI = String.format(
-				"<a href=\"%s%s/%d?headless=true&details=false&media=text/html\" title=\"Moelcule\">Molecule</a>",
+				"<a href=\"%s%s/%d?headless=true&details=false&media=text/html\" title=\"Molecule\">Molecule</a>",
 				getRequest().getRootRef(),Resources.chemical,item.getIdchemical());
+		
+		String datasetURI = "";
+		
+		if ((htmlBeauty instanceof StructureHTMLBeauty) && 
+			(SearchMode.dataset.equals(((StructureHTMLBeauty)htmlBeauty).option))) { //show dataset properties
+			datasetURI = String.format(
+					"<a href=\"%s%s/%d?dataset=%s&headless=true&details=false&media=text/html\" title=\"Properties\">Properties</a>",
+					getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),((StructureHTMLBeauty)htmlBeauty).getSearchQuery());
+			datasetURI = String.format("<li>%s<span></span></li>\n",datasetURI);
+		}
 		
 		StringBuilder rendering = new StringBuilder();
 		rendering.append(String.format(
@@ -81,9 +91,9 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 				"<div class='tabs'>\n<ul>" +
 				"<li>%s<span></span></li>\n" +
 				"<li>%s<span></span></li>\n" +
-			//	"<li>%s<span></span></li>\n" +
-			    "</ul>",
-			    moleculeURI,protocolURI
+			    "%s</ul>",
+			    moleculeURI,protocolURI,
+			    datasetURI
 				));
 		
 		
