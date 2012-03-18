@@ -231,14 +231,19 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		
 			// Apply style for the hovered buttons sans (!) the currently selected one.
 			// There are better ways to do it, but this should be okay for now.
-			w.write(String.format(
-				"<script>\n" +
+			// However, this breaks MSIE 7. Moreover, this browser gets crazy even if
+			// the change is implemented purely with simple CSS a:hover, and for this
+			// reason, we simply disable the mousever effect for it.
+			if (!isMsie7) {
+				w.write(String.format(
+						"<script>\n" +
 
-				"$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );\n" +
-				"$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );\n" +
+						"$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );\n" +
+						"$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );\n" +
 
-				"</script>\n"
-			));
+						"</script>\n"
+				));
+			}
 				
 			//followed by the search form
 			
