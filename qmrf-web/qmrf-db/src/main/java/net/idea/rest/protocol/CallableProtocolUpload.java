@@ -24,8 +24,6 @@ import net.idea.rest.protocol.db.UpdateKeywords;
 import net.idea.rest.protocol.db.UpdateProtocol;
 import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
 import net.idea.rest.user.DBUser;
-import net.idea.rest.user.author.db.AddAuthors;
-import net.idea.rest.user.author.db.DeleteAuthor;
 import net.idea.rest.user.db.ReadUser;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.i.task.TaskResult;

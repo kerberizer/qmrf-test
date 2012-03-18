@@ -12,6 +12,7 @@ import net.idea.rest.FileResource;
 import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.protocol.QMRF_HTMLBeauty.update_mode;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -33,6 +34,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 	private static final long serialVersionUID = 1658864353613787327L;
 	protected List<DBProtocol> items = new ArrayList<DBProtocol>();
 	protected DBProtocol protocol = null;
+	protected update_mode mode = update_mode.newdocument;
 	
 	public QMRFUploadUIResource() {
 		super();
@@ -40,6 +42,9 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 	@Override
 	protected Iterator<DBProtocol> createQuery(Context context,
 			Request request, Response response) throws ResourceException {
+		try {
+			mode = update_mode.valueOf(request.getResourceRef().getQueryAsForm().getFirstValue("mode").toString());
+		} catch (Exception x) {mode = update_mode.newdocument;}		
 		try { 
 			Object key = request.getAttributes().get(FileResource.resourceKey);
 			if (key!=null)  
@@ -48,13 +53,15 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 				protocol = new DBProtocol(ids[0],ids[1],ids[2]);
 				protocol.setIdentifier(ReadProtocol.generateIdentifier(protocol));
 				protocol.setResourceURL(new URL(String.format("%s%s/%s", getRequest().getRootRef(),Resources.protocol, protocol.getIdentifier())));
+				if (update_mode.newdocument.equals(mode)) mode = update_mode.attachments;
 			} catch (Exception x) {
 				throw new InvalidQMRFNumberException(key.toString());
 			}
-			else protocol=null;
+			else { protocol=null; mode = update_mode.newdocument;}
 			//else //new protocol
 		} catch (Exception x) {}
-		
+
+
 		return items.iterator();
 	}
 	protected Reporter createHTMLReporter(boolean headles) {
@@ -67,7 +74,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 				boolean attachments = true;
 				try {
 					if (protocol==null) {
-						attachments = false;
+
 						protocol= new DBProtocol();
 						protocol.setPublished(true);
 						protocol.setOrganisation(new Organisation(new URL(String.format("%s%s",getRequest().getRootRef(),
@@ -82,7 +89,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 					protocol = null;
 				}
 				try {
-					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,attachments));
+					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,mode));
 				} catch (Exception x) {
 					x.printStackTrace();
 				}
