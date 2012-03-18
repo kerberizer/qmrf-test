@@ -54,7 +54,6 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
-import org.restlet.security.User;
 
 /**
  * Protocol resource
@@ -135,6 +134,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
 		ProtocolQueryHTMLReporter rep = new ProtocolQueryHTMLReporter(getRequest(),!singleItem,isEditable(),structure==null,details);
 		rep.setHeadless(headless);
+		rep.setHtmlBeauty(getHTMLBeauty());
 		rep.setDtdresolver(((TaskApplication)getApplication()).getResolver());
 		return rep;
 	}
