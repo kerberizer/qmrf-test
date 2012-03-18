@@ -70,6 +70,10 @@ h1 {
 	color: #516373;
 	background-color: #ddd;
 	width: 100%;
+	-webkit-border-radius: 10px;
+	-khtml-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 }
 
 div.pusher {
@@ -84,6 +88,8 @@ table.footerTable {
 a.email {
 	font-weight: normal;
 	text-decoration: none;
+	background: url("/qmrf/images/Icon_External_Link_E-Mail.png") no-repeat scroll 0 1px transparent;
+	padding: 0 0 0 20px;
 }
 
 #footer p {
