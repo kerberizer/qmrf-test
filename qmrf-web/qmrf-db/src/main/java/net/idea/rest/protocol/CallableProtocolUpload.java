@@ -119,10 +119,12 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		this.user = user;
 		this.dir = dir;
 		try {
-			retrieveAccountNames(user,connection);
-			if (user.getID()<=0) throw new Exception("Invalid user "+user.getUserName());
+			if (user!=null) {
+				retrieveAccountNames(user,connection);
+				if (user.getID()<=0) user = null; //throw new Exception("Invalid user "+user.getUserName());
+			}
 		} catch (Exception x) {
-			throw x;
+			user = null;
 		}
 	}
 	@Override
@@ -176,6 +178,11 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		try {
 			protocol = ProtocolFactory.getProtocol(protocol,input, 10000000,dir,policy,updateMode);
 			if (user!=null) protocol.setOwner(user);
+			else {
+				user = (DBUser)protocol.getOwner();
+				if ((user!=null) && (user.getID()<=0)&&(user.getResourceURL()!=null)) user.setID(user.parseURI(baseReference));
+					//retrieveAccountNames(user, connection);
+			}
 		} catch (ResourceException x) {
 			throw x;
 		} catch (Exception x) {
@@ -288,12 +295,12 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					UpdateKeywords k = new UpdateKeywords(protocol);
 					exec.process(k);
 				}
-				
+				/*
 				if ((protocol.getAuthors()!=null) && protocol.getAuthors().size()>0) {
 					AddAuthors k = new AddAuthors(protocol);
 					exec.process(k);
 				}
-				
+				*/
 				if ((protocol.getAttachments()!=null) && protocol.getAttachments().size()>0) 
 					for (DBAttachment attachment: protocol.getAttachments()) {
 						AddAttachment k = new AddAttachment(protocol,attachment);
@@ -357,12 +364,13 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 				DBUser p = (DBUser) newProtocol.getOwner();
 				p.setID(p.parseURI(baseReference));
 			}					
+			/*
 			if (newProtocol.getAuthors()!=null)
 				for (User u: newProtocol.getAuthors()) { 
 					DBUser author =u instanceof DBUser?(DBUser)u:new DBUser(u);
 	 			    if (author.getID()<=0) author.setID(author.parseURI(baseReference));
 				}
-			
+			*/
 			protocol = newProtocol;
 		} catch (Exception x) {
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,x);
@@ -393,6 +401,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					x.printStackTrace();
 					//free text index failed, but ignore so far
 				}
+				/*
 				if (protocol.getAuthors()!=null) {
 					DeleteAuthor da = new DeleteAuthor(protocol, null);
 					exec.process(da);
@@ -401,6 +410,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 						exec.process(k);
 					}
 				}
+				*/
 				
 				if ((protocol.getAttachments()!=null) && protocol.getAttachments().size()>0) 
 					for (DBAttachment attachment: protocol.getAttachments()) {
