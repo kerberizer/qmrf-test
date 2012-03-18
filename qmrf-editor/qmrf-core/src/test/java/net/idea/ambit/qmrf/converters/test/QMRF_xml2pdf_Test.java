@@ -20,7 +20,7 @@ public class QMRF_xml2pdf_Test {
     public void testPDF() throws Exception {
     	//URL ttf = getClass().getClassLoader().getResource("ambit2/qmrfeditor/fonts/times.ttf");
     	
-    	QMRF_xml2pdf qpdf = new QMRF_xml2pdf("C:/Windows/Fonts/times.ttf");
+    	QMRF_xml2pdf qpdf = new QMRF_xml2pdf(null);
     	
          File pdf = new File("qmrf_1_2.pdf");
          pdf.deleteOnExit();

@@ -101,23 +101,30 @@ public class QMRF_xml2pdf extends QMRFConverter {
         	  ttffont = url.getFile();
            }
        
+/*
             try {
             	
             	baseFont = BaseFont.createFont(ttffont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             	
             } catch (Exception x) {
+		x.printStackTrace();
             	baseFont = BaseFont.createFont("c:\\windows\\fonts\\times.ttf",
                             BaseFont.IDENTITY_H, BaseFont.EMBEDDED);   
             	ttffont = FontFactory.TIMES;
             }
-          
+  */        
      
-            font = FontFactory.getFont(ttffont, BaseFont.CP1252,true, 11,Font.NORMAL); //FontFactory.getFont(FontFactory.TIMES, "UTF-8",true, 11,Font.NORMAL);
-            bfont = FontFactory.getFont(FontFactory.TIMES, BaseFont.CP1252,true, 11, Font.BOLD);
+            font = FontFactory.getFont(ttffont, FontFactory.defaultEncoding,true, 11,Font.NORMAL); //FontFactory.getFont(FontFactory.TIMES, "UTF-8",true, 11,Font.NORMAL);
+	     if (font==null) font = FontFactory.getFont(FontFactory.TIMES, FontFactory.defaultEncoding,true, 10, Font.NORMAL);
+		System.out.println(font);
+System.out.println(ttffont);
 
-            bi_font =  FontFactory.getFont(FontFactory.TIMES, BaseFont.CP1252,true, 10,Font.BOLDITALIC) ; //new Font(baseFont, header_font_size, Font.BOLDITALIC);
-            i_font =  FontFactory.getFont(FontFactory.TIMES, BaseFont.CP1252,true, 11,Font.BOLD); //new Font(baseFont, header_font_size, Font.ITALIC);
+            bfont = FontFactory.getFont(FontFactory.TIMES, FontFactory.defaultEncoding,true, 11, Font.BOLD);
+
+            bi_font =  FontFactory.getFont(FontFactory.TIMES, FontFactory.defaultEncoding,true, 10,Font.BOLDITALIC) ; //new Font(baseFont, header_font_size, Font.BOLDITALIC);
+            i_font =  FontFactory.getFont(FontFactory.TIMES, FontFactory.defaultEncoding,true, 11,Font.BOLD); //new Font(baseFont, header_font_size, Font.ITALIC);
         } catch (Exception x) {
+		x.printStackTrace();
             docBuilder = null;
         }
 
@@ -153,7 +160,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 				document.addCreationDate();
 				document.addCreator(getClass().getName());
 				document.open();
-				document.add(new Paragraph(new Chunk(x.getMessage())));
+				x.printStackTrace();
 				document.close();
 				return;
 			}
@@ -191,7 +198,9 @@ public class QMRF_xml2pdf extends QMRFConverter {
 			try {
 				headerTable(document,doc);
 			} catch (Exception x) {
-				document.add(new Paragraph(new Chunk(x.getMessage())));
+				x.printStackTrace();
+
+				//document.add(new Paragraph(new Chunk(x.getMessage())));
 				document.close();
 				return;
 			}
@@ -428,13 +437,10 @@ public class QMRF_xml2pdf extends QMRFConverter {
 			try{
 
 					Text = findNodeValue(xml_QMRF_number, xmldoc);
-					Chunk ident_title = new Chunk("QMRF identifier (JRC Inventory):");
-					Chunk ident_text = new Chunk(Text.trim());
+					Chunk ident_title = new Chunk("QMRF identifier (JRC Inventory):",bi_font);
+					Chunk ident_text = new Chunk(Text.trim(),i_font);
 
 
-		            
-					ident_title.setFont(bi_font);
-					ident_text.setFont(i_font);
 					Paragraph p = new Paragraph();
 					p.add(ident_title);
 					p.add(ident_text);
@@ -442,7 +448,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 					cell.setHorizontalAlignment(Element.ALIGN_LEFT);
 					table1.addCell(cell);
 
-					ident_title = new Chunk("QMRF Title:");
+					ident_title = new Chunk("QMRF Title:",font);
                     Phrase textPhrase = new Phrase();
                     createNodePhrase("QSAR_title",xmldoc,textPhrase,i_font);
 					ident_title.setFont(bi_font);
