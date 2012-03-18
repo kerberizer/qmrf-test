@@ -52,7 +52,7 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 	public void footer(OutputStream output, Q query) {};
 
 	@Override
-	public Object processItem(DBProtocol item) throws AmbitException {
+	public Object processItem(DBProtocol item) throws Exception {
 		try {
 
 			String xml = item.getAbstract();

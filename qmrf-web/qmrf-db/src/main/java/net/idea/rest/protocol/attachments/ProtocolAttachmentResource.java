@@ -17,6 +17,7 @@ import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
 import net.idea.rest.protocol.resource.db.FileReporter;
 import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
+import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.task.CallableProtectedTask;
@@ -183,17 +184,25 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 	@Override
 	protected CallableProtectedTask<String> createCallable(Method method,
 			List<FileItem> input, DBAttachment item) throws ResourceException {
-		/*
-		if ((getRequest().getClientInfo().getUser()==null) ||
-				getRequest().getClientInfo().getUser().getIdentifier()==null)
-				throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED);
-			
-		DBUser user = new DBUser();
-		user.setUserName(getRequest().getClientInfo().getUser().getIdentifier());
-		*/
+		DBUser user = null;
+		if ((getRequest().getClientInfo().getUser()==null) || (getRequest().getClientInfo().getUser().getIdentifier()==null)) {
+			user = null;
+			//DELETE is protected by a filter
+			/*
+			throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED.getCode(),
+						"Upload not allowed",
+						"Only logged in users with editor rights may upload new documents",
+						Status.CLIENT_ERROR_UNAUTHORIZED.getUri());
+						*/
+		} else {
+			user = new DBUser();
+			user.setUserName(getRequest().getClientInfo().getUser().getIdentifier());
+		}	
 		if (protocol==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"No protocol id");
+		
 		Connection conn = null;
 		try {
+			
 			ProtocolQueryURIReporter r = new ProtocolQueryURIReporter(getRequest(),"");
 			class TDBConnection extends DBConnection {
 				public TDBConnection(Context context,String configFile) {
@@ -209,7 +218,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 
 			String dir = dbc.getDir();
 			if ("".equals(dir)) dir = null;
-			CallableProtocolUpload callable = new CallableProtocolUpload(method,protocol,null,input,conn,r,getToken(),getRequest().getRootRef().toString(),
+			CallableProtocolUpload callable = new CallableProtocolUpload(method,protocol,user,input,conn,r,getToken(),getRequest().getRootRef().toString(),
 						dir==null?null:new File(dir)
 			);
 			callable.setSetDataTemplateOnly(true);

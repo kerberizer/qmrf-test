@@ -148,6 +148,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 	@Test
 	public void testDelete() throws Exception {
+		/* TODO refactor IBatchStatistics to keep track of exceptions in a batch */
 		IDatabaseConnection c = getConnection();
 		ITable table = c
 				.createQueryTable("EXPECTED",
