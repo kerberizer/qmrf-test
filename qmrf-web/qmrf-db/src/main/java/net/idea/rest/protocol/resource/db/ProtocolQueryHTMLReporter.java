@@ -142,10 +142,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				"</tr>\n",
 				collapsed?"QMRF number":"",
 				collapsed?"Title":"",
-				collapsed?"Owner":"",
-				collapsed?"Published":"",
 				collapsed?"Last updated":"",
-				collapsed?"Download":""
+				collapsed?"Download":"",
+				collapsed?"Owner":"",
+				collapsed?"Manage":""
 		));
 	}
 
@@ -323,6 +323,8 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			
 			output.write(String.format("<td class='contentTable'><a href='%s'>%s</a>&nbsp;%s</td>",uri,ReadProtocol.fields.identifier.getValue(item),""));			
 			output.write(String.format("<td class='contentTable'>%s</td>",item.getTitle()));
+			output.write(String.format("<td class='contentTable'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
+			output.write(String.format("<td class='contentTableLast'>%s</td>",printDownloadLinks(uri)));
 			
 			String owner = item.isPublished()?"":String.format("%s %s",item.getOwner().getFirstname(),item.getOwner().getLastname());
 			
@@ -335,9 +337,6 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 									"<input  title='This document is NOT published' class='draw' type='submit' value='Publish'>\n" +
 									"</form>",uri)));
 			
-			output.write(String.format("<td class='contentTable'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
-			output.write(String.format("<td class='contentTableLast'>%s</td>",printDownloadLinks(uri)));
-			//output.write(String.format("<td><g:plusone size='small' href='%s/protocol/%s'></g:plusone></td>", getUriReporter().getBaseReference().toString(), item.getIdentifier()));
 			output.write("</tr>\n");
 
 			if (details) {
