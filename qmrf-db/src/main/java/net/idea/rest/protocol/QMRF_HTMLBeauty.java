@@ -41,6 +41,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	protected String searchQuery;
 	protected String condition;
 	protected SearchMode option;
+
+	private boolean isMsie7;
 	
 	public String getSearchQuery() {
 		return searchQuery;
@@ -92,7 +94,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			Reference baseReference = request==null?null:request.getRootRef();
 			
 			// Determine if the request is made by Microsoft Internet Explorer 7, as many elements on the page break on it.
-			boolean isMsie7;
 			if (request!=null) {
 				isMsie7 = request.getClientInfo().getAgent().toLowerCase().indexOf("msie 7.")>=0?true:false;
 			} else {
@@ -414,14 +415,19 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			// Apply style for the hovered buttons sans (!) the currently selected one.
 			// There are better ways to do it, but this should be okay for now.
-			b.append(String.format(
-				"<script>\n" +
+			// However, this breaks MSIE 7. Moreover, this browser gets crazy even if
+			// the change is implemented purely with simple CSS a:hover, and for this
+			// reason, we simply disable the mousever effect for it.
+			if (!isMsie7) {
+				b.append(String.format(
+						"<script>\n" +
 
-				"$('a.pselectable').mouseover(function () { $(this).addClass('phovered');    } );\n" +
-				"$('a.pselectable').mouseout(function  () { $(this).removeClass('phovered'); } );\n" +
+						"$('a.pselectable').mouseover(function () { $(this).addClass('phovered');    } );\n" +
+						"$('a.pselectable').mouseout(function  () { $(this).removeClass('phovered'); } );\n" +
 
-				"</script>\n"
-			));
+						"</script>\n"
+				));
+			}
 
 			return b.toString();
 		}
