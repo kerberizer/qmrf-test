@@ -91,9 +91,17 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		public void writeTopHeader(Writer w,String title,Request request,String meta,ResourceDoc doc) throws IOException {
 			Reference baseReference = request==null?null:request.getRootRef();
 			
+			// Determine if the request is made by Microsoft Internet Explorer 7, as many elements on the page break on it.
+			boolean isMsie7;
+			if (request!=null) {
+				isMsie7 = request.getClientInfo().getAgent().toLowerCase().indexOf("msie 7.")>=0?true:false;
+			} else {
+				isMsie7 = false;
+			}
+			
 			w.write(
 					"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n"
-				);
+					);
 			
 			w.write(String.format("<html %s %s %s>",
 					"xmlns=\"http://www.w3.org/1999/xhtml\"",
@@ -104,8 +112,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<head> <meta property=\"dc:creator\" content=\"%s\"/> <meta property=\"dc:title\" content=\"%s\"/>",
 					request.getResourceRef(),
 					title
-					)
-					);
+					));
 			
 			Reference ref = request.getResourceRef().clone();
 			ref.addQueryParameter("media", Reference.encode("application/rdf+xml"));
@@ -151,7 +158,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n");
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jme/jme.js\"></script>\n",baseReference));
 			w.write("<script>$(function() {$( \".accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
-			w.write("<script>$(function() {$(\"#submit\").button();});</script>");
+			// Don't style the submit button with jQ if the browser is MSIE 7.
+			if (!isMsie7) w.write("<script>$(function() {$(\"#submit\").button();});</script>");
 			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true, ajaxOptions: {error: function( xhr, status, index, anchor ) {$( anchor.hash ).html(status );}}});});</script>");
 			w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
 			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
