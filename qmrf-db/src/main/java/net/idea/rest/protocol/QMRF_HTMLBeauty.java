@@ -66,6 +66,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 	private boolean isMsie7;
 	
+	public boolean isMsie7() {
+		return isMsie7;
+	}
+	
 	public String getSearchQuery() {
 		return searchQuery;
 	}

@@ -244,7 +244,11 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					uriReporter.getBaseReference(),Resources.editor,item.getIdentifier(),"Add attachment(s)");
 			output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
 			
-			output.write("\n</div>\n");//tabs , protocol
+			output.write("\n</div>\n"); //tabs
+			//output.write("<div>\n"); // begin social
+			//output.write("<g:plusone></g:plusone>\n");
+			//output.write("</div>\n"); // end social
+			output.write("</div>\n"); // protocol
 		} catch (Exception x) {
 			x.printStackTrace();
 		} finally {
@@ -383,11 +387,12 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 
 	protected String getUpdateString(Reference baseRef, DBProtocol item) {
 		return
-		String.format("<a href='%s%s/%s?mode=%s' target='upload'><img src='%s/images/folder_edit.png' title='%s'></a>",
+		String.format("<a href='%s%s/%s?mode=%s' target='upload'><img %s src='%s/images/folder_edit.png' title='%s'></a>",
 				baseRef,
 				Resources.editor,
 				item.getIdentifier(),
 				update_mode.update.name(),
+				((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"class='ieSux'":"",
 				baseRef,
 				"Update");
 	}		
