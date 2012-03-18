@@ -19,6 +19,13 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 	private static final long serialVersionUID = 6228939989116141217L;
 	protected Boolean showUnpublished = true;
 	protected Boolean onlyUnpublished = false;
+	protected boolean renumber = false;
+	public boolean isRenumber() {
+		return renumber;
+	}
+	public void setRenumber(boolean renumber) {
+		this.renumber = renumber;
+	}
 	public Boolean getOnlyUnpublished() {
 		return onlyUnpublished;
 	}
@@ -31,7 +38,9 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 	public void setShowUnpublished(Boolean showUnpublished) {
 		this.showUnpublished = showUnpublished;
 	}
-
+	//renumbering on the fly <QMRF_number chapter="10.1" help="" name="QMRF number"></QMRF_number>
+	protected static String qmrfNumber = 
+		"updateXML(abstract,\"//QMRF_number\",concat(\" <QMRF_number chapter='10.1' name='QMRF number'>\",'QMRF-',year(created),'-',idprotocol,'-',version,'</QMRF_number> ')) ";
 	
 	protected static String sql_withkeywords =  //for text search
 		"select idprotocol,version,protocol.title,abstract as anabstract,iduser,summarySearchable," +
@@ -41,13 +50,22 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"from protocol join user using(iduser)\n" +
 		"left join keywords using(idprotocol,version) %s %s";
 
+	protected static String sql_nokeywords_renumber = 
+		String.format(
+		"select idprotocol,version,protocol.title,%s as anabstract,iduser,summarySearchable,",qmrfNumber) +
+		"idproject," +
+		"idorganisation,user.username,user.firstname,user.lastname," +
+		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
+		"from protocol join user using(iduser)\n" +
+		" %s %s order by idprotocol desc,version desc";	
+	
 	protected static String sql_nokeywords = 
 		"select idprotocol,version,protocol.title,abstract as anabstract,iduser,summarySearchable," +
 		"idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
 		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
 		"from protocol join user using(iduser)\n" +
-		" %s %s order by idprotocol desc,version desc";	
+		" %s %s order by idprotocol desc,version desc";		
 	
 	public ReadProtocolAbstract(Integer id) {
 		this(id,null);
@@ -71,6 +89,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 
 
 	public DBProtocol getObject(ResultSet rs) throws AmbitException {
+		
 		DBProtocol p = null;
 		try {
 			p =  new DBProtocol();
