@@ -171,7 +171,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			}
 			
 			public String getCondition() {
-				return String.format(" %s regexp ? ",name());
+				return String.format(" protocol.%s regexp ? ",name());
 			}
 		},
 		anabstract {
