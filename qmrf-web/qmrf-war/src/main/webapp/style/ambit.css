@@ -351,6 +351,16 @@ th {
 	text-align: left;
 }
 
+th.contentTable, td.contentTable {
+	text-align: left;
+	padding: 0.1em 0.5em;
+}
+
+th.contentTableLast, td.contentTableLast {
+	text-align: left;
+	padding: 0.1em 0.1em 0.1em 0.5em;
+}
+
 label {
 	COLOR: #516373;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
