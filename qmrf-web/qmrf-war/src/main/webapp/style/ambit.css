@@ -356,6 +356,15 @@ th.contentTable, th.contentTableManage, td.contentTable {
 	padding: 0.1em 0.5em;
 }
 
+td.qmrfNumber {
+	min-width: 8em;
+}
+
+td.qmrfNumber div {
+	width: 130px;
+	height: 0;
+}
+
 td.contentTableManageL {
 	text-align: center;
 	padding: 0.1em 0 0.1em 0.5em;

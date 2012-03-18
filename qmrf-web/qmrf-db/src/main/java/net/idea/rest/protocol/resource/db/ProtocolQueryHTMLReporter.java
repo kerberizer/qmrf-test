@@ -245,9 +245,18 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
 			
 			output.write("\n</div>\n"); //tabs
-			//output.write("<div>\n"); // begin social
-			//output.write("<g:plusone></g:plusone>\n");
-			//output.write("</div>\n"); // end social
+/*
+			output.write("<div>\n"); // begin social
+			output.write("<table><tr><td class='social'>");
+			output.write(String.format("<g:plusone href='%s/%s/%s'></g:plusone>\n",
+					uriReporter.getBaseReference(),
+					Resources.editor,
+					item.getIdentifier()
+			));
+			output.write("</td><td class='social'>");
+			output.write("</td></tr></table>");
+			output.write("</div>\n"); // end social
+*/			
 			output.write("</div>\n"); // protocol
 		} catch (Exception x) {
 			x.printStackTrace();
@@ -326,7 +335,13 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					"";
 					*/
 			
-			output.write(String.format("<td class='contentTable'><a href='%s'>%s</a>&nbsp;%s</td>",uri,ReadProtocol.fields.identifier.getValue(item),""));			
+			output.write(String.format("<td class='contentTable qmrfNumber'><a href='%s'>%s</a>&nbsp;%s%s</td>",
+						uri,
+						ReadProtocol.fields.identifier.getValue(item),
+						"",
+						((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"<div></div>":""
+			));			
+			
 			output.write(String.format("<td class='contentTable'>%s</td>",item.getTitle()));
 			output.write(String.format("<td class='contentTable'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td class='contentTable'>%s</td>",printDownloadLinks(uri)));
