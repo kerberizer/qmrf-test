@@ -90,7 +90,7 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 		if (singleItem || headless) return "";
 		int page = ((QMRF_HTMLBeauty)htmlBeauty).getPage();
 		long pageSize = ((QMRF_HTMLBeauty)htmlBeauty).getPageSize();
-		return (((QMRF_HTMLBeauty)htmlBeauty).getPaging(page,page-4, page+5, pageSize));
+		return (((QMRF_HTMLBeauty)htmlBeauty).getPaging(page, page-5, page, pageSize));
 	}
 	
 	@Override
