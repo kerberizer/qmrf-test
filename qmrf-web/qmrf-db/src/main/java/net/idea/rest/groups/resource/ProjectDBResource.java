@@ -40,11 +40,12 @@ public class ProjectDBResource extends GroupDBResource<DBProject> {
 		return GroupType.PROJECT.toString();
 	}
 
-	
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		return new GroupHTMLBeauty(Resources.project);
+		if (htmlBeauty==null) htmlBeauty =  new GroupHTMLBeauty(Resources.project);
+		return htmlBeauty;
 	}
+
 	@Override
 	protected CallableProtectedTask<String> createCallable(Method method,
 			Form form, DBProject item) throws ResourceException {

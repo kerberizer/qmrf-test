@@ -212,6 +212,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		return new UserHTMLBeauty();
+		if (htmlBeauty==null) htmlBeauty =  new UserHTMLBeauty();
+		return htmlBeauty;
 	}
 }
