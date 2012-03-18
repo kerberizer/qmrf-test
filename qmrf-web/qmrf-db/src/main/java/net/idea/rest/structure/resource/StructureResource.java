@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.Resources;

@@ -808,7 +808,6 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 				:getShowUnpublished()?
 				String.format(sql_nokeywords,"where",byUser==null?"":byUser):
 				String.format(sql_nokeywords,"where",byUser==null?"published=1":String.format("%s %s",byUser,publishedOnly)); //published only
-		System.out.println(sql);
 		return sql;
 	}
 

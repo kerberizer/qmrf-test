@@ -10,6 +10,7 @@ import net.idea.modbcum.p.ProcessorException;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.modbcum.p.UpdateExecutor;
 import net.idea.modbcum.q.conditions.EQCondition;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.db.CreateGroup;
@@ -158,7 +159,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 				connection.commit();
 				
 			}
-			return new TaskResult(null,false);
+			return new TaskResult(String.format("%s%s", baseReference,Resources.protocol),false);
 		} catch (ResourceException x) {
 			try {connection.rollback();} catch (Exception xx) {}
 			throw x;

@@ -332,10 +332,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<td class='contentTable'>%s</td>",
 					item.isPublished()?
 							"":
-							String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\">\n" +
-									"<input  type='hidden' name='published' value='true'/>\n" +
-									"<input  title='This document is NOT published' class='draw' type='submit' value='Publish'>\n" +
-									"</form>",uri)));
+							String.format("%s&nbsp;%s&nbsp;%s",
+											getPublishString(uri),
+											getUpdateString(uriReporter.getRequest().getRootRef(), item),
+											getDeleteString(uri))));
 			
 			output.write("</tr>\n");
 
@@ -351,4 +351,19 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		} 
 	}
 
+
+	protected String getPublishString(String uri) {
+		return
+		String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\"><input  type='hidden' name='published' value='true'/>" +
+				"<input  title='This document is NOT published' class='draw' type='submit' value='Publish'></form>",uri);
+	}
+	protected String getDeleteString(String uri) {
+		return
+		String.format("<form action='%s?method=DELETE' method='POST' ENCTYPE=\"multipart/form-data\"><input  type='hidden' name='published' value='true'/>" +
+				"<input  title='Delete document' class='draw' type='submit' value='Delete'></form>",uri);
+	}	
+	protected String getUpdateString(Reference baseRef, DBProtocol item) {
+		return  String.format("<a href='%s%s/%s' target='upload'><img src='%s/images/import.png' title='%s'></a>",
+						baseRef,Resources.editor,item.getIdentifier(),baseRef,"Update");
+	}		
 }
