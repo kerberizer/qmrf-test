@@ -279,6 +279,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			//div id=content
 			output.write("\n</div>\n"); 
 			//div inner-wrap
+			output.write("\n</div>\n");
+			// Push the footer downwards, so that we don't accidentally step on it.
+			output.write("\n<div class='pusher'></div>");
+			//div id=wrap
 			output.write("\n</div>\n"); 
 			//footer
 			output.write("\n<div id='footer'>\n" +
@@ -292,8 +296,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						"</tr>\n</table>\n" +
 						"</div>\n"
 			);
-			//div id=wrap
-			output.write("\n</div>\n"); 
 			output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
 			output.write("\n</body>");
 			output.write("</html>");
