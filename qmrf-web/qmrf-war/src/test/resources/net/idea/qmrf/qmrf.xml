@@ -7,6 +7,7 @@
   <user iduser="10"  title="" firstname="TestQMRF" lastname="model development team" institute="TestQMRF Ltd " homepage="www.TestQMRF.com" address="Turu 2, Misty Mountains, 51014, Rivendell" email="models@TestQMRF.com" keywords="" reviewer="false"/>
   <user iduser="3"  username="guest" title="" firstname="abcdef" lastname="ABCDEF" institute="Test" homepage="http://qsardb.jrc.it" address="" email="models@example.com" keywords="" reviewer="false"/>
   <user iduser="4"  username="delete" title="" firstname="TO" lastname="DELETE" institute="Test" homepage="" address="" email="models@example.com" keywords="" reviewer="false"/>
+  <user iduser="66"  username="editor" title="" firstname="editor" lastname="editor" institute="editor" homepage="" address="" email="editor@example.com" keywords="" reviewer="false"/>
   <project idproject="1" name="N/A"/>
   <project idproject="3" name="NoName"/>
   <project idproject="2" name="ToDelete"/>
