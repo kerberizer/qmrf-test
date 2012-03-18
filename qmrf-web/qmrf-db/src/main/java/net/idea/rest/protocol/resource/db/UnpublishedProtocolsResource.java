@@ -1,13 +1,18 @@
 package net.idea.rest.protocol.resource.db;
 
 import net.idea.modbcum.i.IQueryRetrieval;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.resource.UserDBResource;
+import net.idea.restnet.c.TaskApplication;
+import net.idea.restnet.c.html.HTMLBeauty;
+import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -81,6 +86,12 @@ public class UnpublishedProtocolsResource<Q extends IQueryRetrieval<DBProtocol>>
 			if (userID>0) query.setFieldname(new DBUser(userID));
 			return (Q)query;
 		}
+	}
+
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		if (htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.unpublished);
+		return htmlBeauty;
 	}
 
 }

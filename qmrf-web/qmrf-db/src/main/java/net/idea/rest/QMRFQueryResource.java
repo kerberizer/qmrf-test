@@ -21,6 +21,7 @@ import org.restlet.resource.ResourceException;
 
 public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends Serializable> extends QueryResource<Q,T>{
 	protected boolean headless = false;
+	protected QMRF_HTMLBeauty htmlBeauty;
 	
 	public QMRFQueryResource() {
 		super();
@@ -57,7 +58,8 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		return new QMRF_HTMLBeauty();
+		if (htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty();
+		return htmlBeauty;
 	}
 	
 	protected boolean getHeadlessParam() {

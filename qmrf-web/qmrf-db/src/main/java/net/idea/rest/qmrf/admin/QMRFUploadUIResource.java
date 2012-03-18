@@ -95,6 +95,6 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 	}
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		return new QMRF_HTMLBeauty();
+		return new QMRF_HTMLBeauty(Resources.editor);
 	}
 }
