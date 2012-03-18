@@ -279,8 +279,16 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			//div inner-wrap
 			output.write("\n</div>\n"); 
 			//footer
-			output.write("\n<div id='footer'>");
-			output.write("Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC"); 
+			output.write("\n<div id='footer'>\n" +
+						"<table class='footerTable'>\n<tr>\n" +
+						"<td>\n" +
+						"<a class='email' href='mailto:%20JRC-IHCP-COMPUTOX@ec.europa.eu'>JRC-IHCP-Computox@ec.europa.eu</a>\n" +
+						"</td>\n" +
+						"<td style='text-align: right;'>\n" +
+						"Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC\n" +
+						"</td>\n" +
+						"</tr>\n</table>\n"
+			); 
 
 			output.write("</div>\n");
 			output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
