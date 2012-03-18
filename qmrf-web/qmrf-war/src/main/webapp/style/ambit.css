@@ -351,14 +351,24 @@ th {
 	text-align: left;
 }
 
-th.contentTable, td.contentTable {
+th.contentTable, th.contentTableManage, td.contentTable {
 	text-align: left;
 	padding: 0.1em 0.5em;
 }
 
-th.contentTableLast, td.contentTableLast {
-	text-align: left;
-	padding: 0.1em 0.1em 0.1em 0.5em;
+td.contentTableManageL {
+	text-align: center;
+	padding: 0.1em 0 0.1em 0.5em;
+}
+
+td.contentTableManageM {
+	text-align: center;
+	padding: 0.1em 0;
+}
+
+td.contentTableManageR {
+	text-align: center;
+	padding: 0.1em 0.5em 0.1em 0;
 }
 
 label {

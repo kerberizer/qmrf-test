@@ -139,7 +139,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				"<th class='contentTable'>%s</th>\n" +
 				"<th class='contentTable'>%s</th>\n" +
 				"<th class='contentTable'>%s</th>\n" +
-				"<th class='contentTableLast'>%s</th>\n" +
+				"<th class='contentTableManage' colspan='3'>%s</th>\n" +
 				"</tr>\n",
 				collapsed?"QMRF number":"",
 				collapsed?"Title":"",
@@ -325,23 +325,31 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<td class='contentTable'><a href='%s'>%s</a>&nbsp;%s</td>",uri,ReadProtocol.fields.identifier.getValue(item),""));			
 			output.write(String.format("<td class='contentTable'>%s</td>",item.getTitle()));
 			output.write(String.format("<td class='contentTable'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
-			output.write(String.format("<td class='contentTableLast'>%s</td>",printDownloadLinks(uri)));
+			output.write(String.format("<td class='contentTable'>%s</td>",printDownloadLinks(uri)));
 			
 			String owner = item.isPublished()?"":String.format("%s %s",item.getOwner().getFirstname(),item.getOwner().getLastname());
 			
 			output.write(String.format("<td class='contentTable'>%s</td>", owner));
-			output.write(String.format("<td class='contentTable'>%s</td>",
-					item.isPublished()?
-							"":
-							String.format("%s&nbsp;%s&nbsp;%s",
-											getPublishString(uri),
-											getUpdateString(uriReporter.getRequest().getRootRef(), item),
-											getDeleteString(uri))));
+			
+			if (!item.isPublished()) {
+				output.write(String.format("<td class='contentTableManageL'>%s</td>" +
+						"<td class='contentTableManageM'>%s</td>" +
+						"<td class='contentTableManageR'>%s</td>",
+						getPublishString(uriReporter.getRequest().getRootRef(), uri),
+						getUpdateString(uriReporter.getRequest().getRootRef(), item),
+						getDeleteString(uriReporter.getRequest().getRootRef(), uri)
+				));
+			} else {
+				output.write(String.format("<td class='contentTableManageL'></td>" +
+						"<td class='contentTableManageM'></td>" +
+						"<td class='contentTableManageR'></td>"
+				));
+			}
 			
 			output.write("</tr>\n");
 
 			if (details) {
-				output.write("<tr><td colspan='7'>\n");
+				output.write("<tr><td colspan='9'>\n");
 				//printHTML(output, uri, item, true);
 				printForm(output,uri,item,collapsed);
 				output.write("</td></tr>\n");
@@ -352,19 +360,35 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		} 
 	}
 
-
-	protected String getPublishString(String uri) {
+	protected String getPublishString(Reference baseRef, String uri) {
 		return
-		String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\"><input  type='hidden' name='published' value='true'/>" +
-				"<input  title='This document is NOT published' class='draw' type='submit' value='Publish'></form>",uri);
+		String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\">" +
+				"<input  type='hidden' name='published' value='true'/>" +
+				"<input  title='This document is NOT published' class='draw' " +
+				"type='image' src='%s/images/folder_add.png' value='Publish'></form>",
+				uri,
+				baseRef
+		);
 	}
-	protected String getDeleteString(String uri) {
+	
+	protected String getDeleteString(Reference baseRef, String uri) {
 		return
-		String.format("<form action='%s?method=DELETE' method='POST' ENCTYPE=\"multipart/form-data\"><input  type='hidden' name='published' value='true'/>" +
-				"<input  title='Delete document' class='draw' type='submit' value='Delete'></form>",uri);
+		String.format("<form action='%s?method=DELETE' method='POST' ENCTYPE=\"multipart/form-data\">" +
+				"<input  type='hidden' name='published' value='true'/>" +
+				"<input  title='Delete document' class='draw'" +
+				"type='image' src='%s/images/folder_delete.png' value='Delete'></form>",
+				uri,
+				baseRef);
 	}	
+
 	protected String getUpdateString(Reference baseRef, DBProtocol item) {
-		return  String.format("<a href='%s%s/%s?mode=%s' target='upload'><img src='%s/images/import.png' title='%s'></a>",
-						baseRef,Resources.editor,item.getIdentifier(),baseRef,update_mode.update.name(),"Update");
+		return
+		String.format("<a href='%s%s/%s?mode=%s' target='upload'><img src='%s/images/folder_edit.png' title='%s'></a>",
+				baseRef,
+				Resources.editor,
+				item.getIdentifier(),
+				update_mode.update.name(),
+				baseRef,
+				"Update");
 	}		
 }
