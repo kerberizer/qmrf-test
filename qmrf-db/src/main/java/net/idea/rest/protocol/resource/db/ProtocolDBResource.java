@@ -51,8 +51,10 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
+import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
+import org.restlet.security.User;
 
 /**
  * Protocol resource
@@ -375,6 +377,21 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		DBUser user = new DBUser();
 		user.setUserName(getRequest().getClientInfo().getUser().getIdentifier());
 		*/
+		DBUser user = null;
+		
+		if ((getRequest().getClientInfo().getUser()==null) || (getRequest().getClientInfo().getUser().getIdentifier()==null)) {
+			user = null;
+			//we have default user and POST is protected by a filter
+			/*
+			throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED.getCode(),
+						"Upload not allowed",
+						"Only logged in users with editor rights may upload new documents",
+						Status.CLIENT_ERROR_UNAUTHORIZED.getUri());
+						*/
+		} else {
+			user = new DBUser();
+			user.setUserName(getRequest().getClientInfo().getUser().getIdentifier());
+		}	
 		Connection conn = null;
 		try {
 			ProtocolQueryURIReporter r = new ProtocolQueryURIReporter(getRequest(),"");
@@ -392,7 +409,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 
 			String dir = dbc.getDir();
 			if ("".equals(dir)) dir = null;
-			return new CallableProtocolUpload(method,item,null,input,conn,r,getToken(),getRequest().getRootRef().toString(),
+			return new CallableProtocolUpload(method,item,user,input,conn,r,getToken(),getRequest().getRootRef().toString(),
 						dir==null?null:new File(dir)
 			);
 		} catch (ResourceException x) {
@@ -428,9 +445,19 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	
 	
 	protected TaskCreator getTaskCreator(Form form, final Method method, boolean async, final Reference reference) throws Exception {
-		if (Method.DELETE.equals(method))
-			return super.getTaskCreator(form, method, async, reference);
-		else
+		if (Method.DELETE.equals(method)) {
+			TaskCreator taskCreator = super.getTaskCreator(form, method, async, reference);
+			taskCreator.getProcessors().setAbortOnError(true);
+			return taskCreator;
+		} else
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Not multipart web form!");
+	}
+	
+	@Override
+	protected TaskCreator getTaskCreator(Representation entity,
+			Variant variant, Method method, boolean async) throws Exception {
+		TaskCreator taskCreator = super.getTaskCreator(entity,variant,method,async);
+		taskCreator.getProcessors().setAbortOnError(true);
+		return taskCreator;
 	}
 }

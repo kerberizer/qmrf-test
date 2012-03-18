@@ -2,7 +2,6 @@ package net.idea.rest.db;
 
 import java.io.Writer;
 
-import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.r.QueryReporter;
 
 public class DBTextReporter extends QueryReporter<DBVersion,DBVersionQuery,Writer> {
@@ -21,7 +20,7 @@ public class DBTextReporter extends QueryReporter<DBVersion,DBVersionQuery,Write
 	public void footer(Writer output, DBVersionQuery query) {
 
 	}
-	public Object processItem(DBVersion item) throws AmbitException {
+	public Object processItem(DBVersion item) throws Exception {
 		try {
 			getOutput().write(String.format("\n%s\nVersion: %d.%d\nCreated: %s\nNote: %s\n\n",
 				item.getDbname(),

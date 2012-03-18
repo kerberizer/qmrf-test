@@ -1,7 +1,6 @@
 package net.idea.rest.protocol;
 
 import java.io.File;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
@@ -10,14 +9,10 @@ import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.modbcum.p.ProcessorException;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.modbcum.p.UpdateExecutor;
+import net.idea.modbcum.q.conditions.EQCondition;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
-import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.db.CreateGroup;
-import net.idea.rest.groups.db.ReadGroup;
-import net.idea.rest.groups.db.ReadOrganisation;
-import net.idea.rest.groups.db.ReadProject;
-import net.idea.rest.policy.SimpleAccessRights;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.AddAttachment;
 import net.idea.rest.protocol.db.CreateProtocol;
@@ -30,20 +25,13 @@ import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.author.db.AddAuthors;
 import net.idea.rest.user.author.db.DeleteAuthor;
-import net.idea.rest.user.db.CreateUser;
 import net.idea.rest.user.db.ReadUser;
-import net.idea.restnet.aa.opensso.OpenSSOServicesConfig;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.i.task.TaskResult;
 import net.toxbank.client.policy.AccessRights;
-import net.toxbank.client.policy.GroupPolicyRule;
-import net.toxbank.client.policy.PolicyRule;
-import net.toxbank.client.policy.UserPolicyRule;
-import net.toxbank.client.resource.Group;
 import net.toxbank.client.resource.User;
 
 import org.apache.commons.fileupload.FileItem;
-import org.opentox.aa.opensso.OpenSSOToken;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
@@ -120,7 +108,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					ProtocolQueryURIReporter r,
 					String token,
 					String baseReference,
-					File dir) {
+					File dir) throws Exception {
 		super(token);
 		this.method = method;
 		this.protocol = protocol;
@@ -130,6 +118,12 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		this.baseReference = baseReference;
 		this.user = user;
 		this.dir = dir;
+		try {
+			retrieveAccountNames(user,connection);
+			if (user.getID()<=0) throw new Exception("Invalid user "+user.getUserName());
+		} catch (Exception x) {
+			throw x;
+		}
 	}
 	@Override
 	public TaskResult doCall() throws Exception {
@@ -162,12 +156,6 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 				connection.commit();
 				
 			}
-			try {
-				deletePolicy(new URL(reporter.getURI(protocol)));
-			} catch (Exception x) {
-				x.printStackTrace();
-				//ok, what do we do here?
-			}
 			return new TaskResult(null,false);
 		} catch (ResourceException x) {
 			try {connection.rollback();} catch (Exception xx) {}
@@ -187,6 +175,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		AccessRights policy = new AccessRights(null);
 		try {
 			protocol = ProtocolFactory.getProtocol(protocol,input, 10000000,dir,policy,updateMode);
+			if (user!=null) protocol.setOwner(user);
 		} catch (ResourceException x) {
 			throw x;
 		} catch (Exception x) {
@@ -235,7 +224,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 				//protocol.setOwner(user);
 				exec = new UpdateExecutor<IQueryUpdate>();
 				exec.setConnection(connection);
-				
+				/*
 				CreateUser quser = new CreateUser(null);
 				//user
 				DBUser user = protocol.getOwner() instanceof DBUser?
@@ -256,6 +245,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 							exec.process(quser);
 						}	
 				}
+				*/
 				//project
 				DBProject p = protocol.getProject() instanceof DBProject?
 							(DBProject)protocol.getProject():
@@ -312,6 +302,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 				
 				connection.commit();
 				TaskResult result = new TaskResult(uri,true);
+				/*
 				try {
 					//adding the owner and the authors
 					addDefaultProtocolRights(policy,protocol.getOwner(),true,true,true,true);
@@ -323,7 +314,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					} else result.setPolicy(null);
 				} 
 				catch (Exception x) { result.setPolicy(null);}
-			
+				*/
 				return result;
 			} catch (ProcessorException x) {
 				try {connection.rollback();} catch (Exception xx) {}
@@ -420,6 +411,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 				
 				connection.commit();
 				TaskResult result = new TaskResult(uri,false);
+				/*
 				try {
 					addDefaultProtocolRights(policy,protocol.getOwner(),true,true,true,true);
 					if ((policy.getRules()!=null) && (policy.getRules().size()>0)) {
@@ -429,7 +421,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					} else result.setPolicy(null);
 				} 
 				catch (Exception x) { result.setPolicy(null);}
-			
+				*/
 			
 				return result;
 			} catch (ProcessorException x) {
@@ -461,7 +453,32 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		//it may be added alreayd, but with different rights. We enforce the owner always having full rights
 		accessRights.addUserRule(owner, get,post,put,delete);
 	}
+	
+	protected void retrieveAccountNames(DBUser user,Connection connection) throws Exception {
+		if ((user==null) || (user.getUserName()==null)) throw new Exception("No owner defined");
+		QueryExecutor qexec = new QueryExecutor();
+		try {
+			qexec.setCloseConnection(false);
+			qexec.setConnection(connection);
+			ReadUser getUser = new ReadUser();
+			getUser.setValue(user);
+			getUser.setCondition(EQCondition.getInstance());
+			qexec.setConnection(connection);
+			ResultSet rs = null;
+			try { 
+					rs = qexec.process(getUser); 
+					while (rs.next()) { 
+						DBUser result = getUser.getObject(rs);
+						user.setID(result.getID());
+					}	
+			} catch (Exception x) { if (rs!=null) rs.close(); }
+			qexec.setConnection(null);
+		}
+		finally { try {qexec.close(); } catch (Exception x) {}}			
 
+	}
+	
+	/*
 	protected void retrieveAccountNames(AccessRights accessRights,Connection connection) throws Exception {
 		QueryExecutor qexec = new QueryExecutor();
 		try {
@@ -505,6 +522,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		}
 		finally { try {qexec.close(); } catch (Exception x) {}}			
 	}
+
 	protected List<String> generatePolicy(DBProtocol protocol, AccessRights policy) throws Exception {
 		OpenSSOServicesConfig config = OpenSSOServicesConfig.getInstance();
 		SimpleAccessRights policyTools = new SimpleAccessRights(config.getPolicyService());
@@ -525,6 +543,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		}
 	}
 
+	*/
 
 }
 
