@@ -138,9 +138,11 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				"<th>%s</th>\n" +
 				"<th>%s</th>\n" +
 				"<th>%s</th>\n" +
+				"<th>%s</th>\n" +
 				"</tr>\n",
 				collapsed?"QMRF number":"",
 				collapsed?"Title":"",
+				collapsed?"Owner":"",
 				collapsed?"Published":"",
 				collapsed?"Last updated":"",
 				collapsed?"Download":""
@@ -322,17 +324,21 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<td><a href='%s'>%s</a>&nbsp;%s</td>",uri,ReadProtocol.fields.identifier.getValue(item),""));			
 			output.write(String.format("<td>%s</td>",item.getTitle()));
 			String owner = item.isPublished()?"":String.format("%s %s",item.getOwner().getFirstname(),item.getOwner().getLastname());
-			output.write(String.format("<td >%s&nbsp;%s</td>",owner,
+			output.write(String.format("<td>%s</td>", owner));
+			output.write(String.format("<td>%s</td>",
 					item.isPublished()?
-					"":
-					String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\"><input  type='hidden' name='published' value='true'/><input  title='This document is NOT published' class='draw' type='submit' value='Publish'></form>",uri)));
+							"":
+							String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\">\n" +
+									"<input  type='hidden' name='published' value='true'/>\n" +
+									"<input  title='This document is NOT published' class='draw' type='submit' value='Publish'>\n" +
+									"</form>",uri)));
 			output.write(String.format("<td>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td>%s</td>",printDownloadLinks(uri)));
 			//output.write(String.format("<td><g:plusone size='small' href='%s/protocol/%s'></g:plusone></td>", getUriReporter().getBaseReference().toString(), item.getIdentifier()));
 			output.write("</tr>\n");
 
 			if (details) {
-				output.write("<tr><td colspan='6'>\n");
+				output.write("<tr><td colspan='7'>\n");
 				//printHTML(output, uri, item, true);
 				printForm(output,uri,item,collapsed);
 				output.write("</td></tr>\n");
