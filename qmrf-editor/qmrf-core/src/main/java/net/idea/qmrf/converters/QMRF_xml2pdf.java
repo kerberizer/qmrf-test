@@ -71,7 +71,9 @@ public class QMRF_xml2pdf extends QMRFConverter {
     protected DocumentBuilder nodeBuilder;
     protected Font font;
     protected Font bfont;
-    protected BaseFont baseFont;
+   // protected BaseFont baseFont;
+    Font bi_font;
+    Font i_font ;  
     protected String ttffont;
     
     public QMRF_xml2pdf(String ttffont) {
@@ -92,24 +94,29 @@ public class QMRF_xml2pdf extends QMRFConverter {
             });
             //PRIndirectReference pri;
             //pri.
+            BaseFont baseFont = null;
            if (ttffont==null)  {
-        	  URL url= getClass().getClassLoader().getResource("ambit2/qmrfeditor/font/times.ttf");
+        	  URL url= getClass().getClassLoader().getResource("ambit2/qmrfeditor/font/calibri.ttf");
         	  System.out.println(url);
         	  ttffont = url.getFile();
            }
+       
             try {
             	
             	baseFont = BaseFont.createFont(ttffont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             	
             } catch (Exception x) {
-            	x.printStackTrace();
             	baseFont = BaseFont.createFont("c:\\windows\\fonts\\times.ttf",
-                            BaseFont.IDENTITY_H, BaseFont.EMBEDDED);            	
-            	System.out.println("Default font c:\\windows\\fonts\\times.ttf");
+                            BaseFont.IDENTITY_H, BaseFont.EMBEDDED);   
+            	ttffont = FontFactory.TIMES;
             }
-            
-            font = new Font(baseFont, 12);
-            bfont = new Font(baseFont, 12, Font.BOLD);
+          
+     
+            font = FontFactory.getFont(ttffont, BaseFont.CP1252,true, 11,Font.NORMAL); //FontFactory.getFont(FontFactory.TIMES, "UTF-8",true, 11,Font.NORMAL);
+            bfont = FontFactory.getFont(FontFactory.TIMES, BaseFont.CP1252,true, 11, Font.BOLD);
+
+            bi_font =  FontFactory.getFont(FontFactory.TIMES, BaseFont.CP1252,true, 10,Font.BOLDITALIC) ; //new Font(baseFont, header_font_size, Font.BOLDITALIC);
+            i_font =  FontFactory.getFont(FontFactory.TIMES, BaseFont.CP1252,true, 11,Font.BOLD); //new Font(baseFont, header_font_size, Font.ITALIC);
         } catch (Exception x) {
             docBuilder = null;
         }
@@ -197,7 +204,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 				try {
                     int align = Paragraph.ALIGN_LEFT;
 					if  (Mode.chapter == (Mode)subchapters[i][2]) {
-						document.add(new Paragraph(new Chunk('\n')));
+						document.add(new Paragraph(new Chunk('\n',font)));
 						PdfPTable table = new PdfPTable(1);
 
 						table.setWidthPercentage(100);
@@ -210,7 +217,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 						String bookmark = b.toString(); 
 						
 						
-						Chunk title = new Chunk(bookmark);
+						Chunk title = new Chunk(bookmark,font);
 						title.setLocalDestination(bookmark);
 						title.setFont(bfont);
 						
@@ -220,6 +227,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 						Paragraph p = new Paragraph(title);
 						
 						PdfPCell cell = new PdfPCell(p);
+
 						cell.setBackgroundColor(chapterColor);
 						table.addCell(cell);
 						document.add(table);
@@ -240,7 +248,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 							String subchapterBookmark = b.toString();
 							b.append(':');
 							
-							Chunk title = new Chunk(b.toString());
+							Chunk title = new Chunk(b.toString(),font);
 							title.setLocalDestination(subchapterBookmark);
 							title.setFont(bfont);
 							phrase.add(title);
@@ -254,7 +262,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 						}
 						case text: {
 							createNodePhrase(subchapters[i][0].toString(),doc,phrase,font);
-                            align = Paragraph.ALIGN_JUSTIFIED;
+                            align = Paragraph.ALIGN_LEFT;
 							break;
 						}
 						case answer: {
@@ -269,25 +277,26 @@ public class QMRF_xml2pdf extends QMRFConverter {
 						case dataset: {
 							StringBuffer b = new StringBuffer();
 							b.append(findDataAvailable(subchapters[i][0].toString(),doc));
-							Chunk dataset = new Chunk(b.toString());
+							Chunk dataset = new Chunk(b.toString(),font);
 							dataset.setFont(font);
 							phrase.add(dataset);
 							break;
 						}
 						case attachments: {
 							PdfPTable table = getAttachmentsAsTable(doc,"attachment_training_data");
+							
 							if (table != null) {
-								phrase.add(new Paragraph("Training set(s)"));
+								phrase.add(new Paragraph("Training set(s)",bfont));
 								phrase.add(table);
 							}
 							table = getAttachmentsAsTable(doc,"attachment_validation_data");
 							if (table != null) {
-								phrase.add(new Paragraph("Test set(s)"));
+								phrase.add(new Paragraph("Test set(s)",bfont));
 								phrase.add(table);
 							}
 							table = getAttachmentsAsTable(doc,"attachment_documents");
 							if (table != null) {
-								phrase.add(new Paragraph("Supporting information"));
+								phrase.add(new Paragraph("Supporting information",bfont));
 								phrase.add(table);
 							}
 							break;
@@ -317,7 +326,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 	
 								Chunk reference = new Chunk(value);
 								reference.setFont(font);
-	                            align = Paragraph.ALIGN_JUSTIFIED;
+	                            align = Paragraph.ALIGN_LEFT;
 								phrase.add(reference);
 							} catch (Exception x) {
 
@@ -367,7 +376,8 @@ public class QMRF_xml2pdf extends QMRFConverter {
 							if (attachment.item(j) instanceof org.w3c.dom.Element) {
 								org.w3c.dom.Element e = ((org.w3c.dom.Element)attachment.item(j));
 								
-								Paragraph p = new Paragraph(org.apache.commons.lang.StringEscapeUtils.unescapeXml(e.getAttribute("description")));
+								Paragraph p = new Paragraph(org.apache.commons.lang.StringEscapeUtils.unescapeXml(e.getAttribute("description")),font);
+
 								PdfPCell cell = new PdfPCell(p);
 								cell.setBackgroundColor(Color.white);
 								table.addCell(cell);
@@ -376,7 +386,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 								
 								PdfAction action = new PdfAction(c);
 								p = new Paragraph();
-								p.add(new Chunk(c).setAction(action));
+								p.add(new Chunk(c,font).setAction(action));
 								cell = new PdfPCell(p);
 								cell.setBackgroundColor(Color.white);
 								table.addCell(cell);								
@@ -419,10 +429,9 @@ public class QMRF_xml2pdf extends QMRFConverter {
 
 					Text = findNodeValue(xml_QMRF_number, xmldoc);
 					Chunk ident_title = new Chunk("QMRF identifier (JRC Inventory):");
-					Chunk ident_text = new Chunk(Text);
+					Chunk ident_text = new Chunk(Text.trim());
 
-		            Font bi_font = new Font(baseFont, header_font_size, Font.BOLDITALIC);
-		            Font i_font = new Font(baseFont, header_font_size, Font.ITALIC);
+
 		            
 					ident_title.setFont(bi_font);
 					ident_text.setFont(i_font);
@@ -618,6 +627,8 @@ public class QMRF_xml2pdf extends QMRFConverter {
         return paragraphs;
     }
 
+    
 }
+
 
 

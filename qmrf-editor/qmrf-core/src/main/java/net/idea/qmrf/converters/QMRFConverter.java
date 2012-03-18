@@ -308,7 +308,7 @@ public abstract class QMRFConverter {
 			newText = m.replaceAll("\n");
 		}
 
-		return newText.trim();
+		return newText.replace("  "," ").trim();
 
 
 	}
@@ -449,7 +449,7 @@ public abstract class QMRFConverter {
 	    StringBuffer b = new StringBuffer();
 	    for (int i=0; i < attr.length;i++) {
 	    	b.append(attr[i][1]);
-	    	b.append(":\t");
+	    	b.append(": ");
 	    	b.append(findAttributeValue(name_node,attr[i][0],source));
 	    	b.append('\n');
 	    }	
@@ -459,17 +459,8 @@ public abstract class QMRFConverter {
         NodeList n = source.getElementsByTagName(name_node);
         if (n.getLength() ==0) return "";
         String v = n.item(0).getTextContent();
-        return org.apache.commons.lang.StringEscapeUtils.unescapeXml(replaceTags(v));
-                //replaceTags(v));        
-        /*
-		NodeList objCatNodes = source.getElementsByTagName(name_node);
-		if(objCatNodes.getLength() == 0) return "";
-		Node objNode=objCatNodes.item(0);
-		NodeList objNodes = objNode.getChildNodes();
-		if(objNodes.getLength() == 0) return "";
+        return org.apache.commons.lang.StringEscapeUtils.unescapeXml(replaceTags(v)).trim();
 
-		return org.apache.commons.lang.StringEscapeUtils.unescapeXml(replaceTags(objNodes.item(0).getNodeValue()).trim());
-        */
 	}
     public static Color Hex2Color(String clr) throws Exception {
         return  new Color(
