@@ -133,12 +133,12 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		w.write("<table width='100%'>\n");
 		w.write(String.format("<tr>\n" +
 				"<th></th>\n" +
-				"<th>%s</th>\n" +
-				"<th>%s</th>\n" +
-				"<th>%s</th>\n" +
-				"<th>%s</th>\n" +
-				"<th>%s</th>\n" +
-				"<th>%s</th>\n" +
+				"<th class='contentTable'>%s</th>\n" +
+				"<th class='contentTable'>%s</th>\n" +
+				"<th class='contentTable'>%s</th>\n" +
+				"<th class='contentTable'>%s</th>\n" +
+				"<th class='contentTable'>%s</th>\n" +
+				"<th class='contentTableLast'>%s</th>\n" +
 				"</tr>\n",
 				collapsed?"QMRF number":"",
 				collapsed?"Title":"",
@@ -313,7 +313,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			if (details & collapsed)
 				output.write(String.format("<td>&nbsp;<a class=\"tbldivxpander\" href=\"javascript:toggleDiv('%s');\">+</a></td>",item.getIdentifier()));
 			else 
-				output.write("<td></td>");
+				output.write("<td class='contentTable'></td>");
 			/*
 			String showProperties = headless?
 					String.format("<form method='GET' action='%s'><input type='hidden' name='dataset' value='%s'><input type='submit' class='draw' value='*'></form>",
@@ -321,19 +321,22 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					"";
 					*/
 			
-			output.write(String.format("<td><a href='%s'>%s</a>&nbsp;%s</td>",uri,ReadProtocol.fields.identifier.getValue(item),""));			
-			output.write(String.format("<td>%s</td>",item.getTitle()));
+			output.write(String.format("<td class='contentTable'><a href='%s'>%s</a>&nbsp;%s</td>",uri,ReadProtocol.fields.identifier.getValue(item),""));			
+			output.write(String.format("<td class='contentTable'>%s</td>",item.getTitle()));
+			
 			String owner = item.isPublished()?"":String.format("%s %s",item.getOwner().getFirstname(),item.getOwner().getLastname());
-			output.write(String.format("<td>%s</td>", owner));
-			output.write(String.format("<td>%s</td>",
+			
+			output.write(String.format("<td class='contentTable'>%s</td>", owner));
+			output.write(String.format("<td class='contentTable'>%s</td>",
 					item.isPublished()?
 							"":
 							String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\">\n" +
 									"<input  type='hidden' name='published' value='true'/>\n" +
 									"<input  title='This document is NOT published' class='draw' type='submit' value='Publish'>\n" +
 									"</form>",uri)));
-			output.write(String.format("<td>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
-			output.write(String.format("<td>%s</td>",printDownloadLinks(uri)));
+			
+			output.write(String.format("<td class='contentTable'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
+			output.write(String.format("<td class='contentTableLast'>%s</td>",printDownloadLinks(uri)));
 			//output.write(String.format("<td><g:plusone size='small' href='%s/protocol/%s'></g:plusone></td>", getUriReporter().getBaseReference().toString(), item.getIdentifier()));
 			output.write("</tr>\n");
 
