@@ -229,24 +229,31 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				w.write(printMenuItem(Resources.myaccount, "My profile", baseReference.toString(),null,
 						String.format("%s profile and documents.",request.getClientInfo().getUser())));
 			}
+			String myProfile=null;
+			String unpublishedDoc = null;
 			for (Role role: request.getClientInfo().getRoles())  try {
 					QMRFRoles qmrfrole = QMRFRoles.valueOf(role.getName());
 					if (qmrfrole.getURI()!=null)
-						w.write(printMenuItem(qmrfrole.getURI(), qmrfrole.toString(), baseReference.toString(),null,qmrfrole.getHint()));
+						myProfile = printMenuItem(qmrfrole.getURI(), qmrfrole.toString(), baseReference.toString(),null,qmrfrole.getHint());
 					switch (qmrfrole) {
 					case qmrf_manager: {
 						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),"10","All registered users."));
-						w.write(printMenuItem(Resources.organisation, "Organisations", baseReference.toString(),"10","All registered user affiliations."));	
+						w.write(printMenuItem(Resources.organisation, "Organisations", baseReference.toString(),"10","All registered user affiliations."));
+						break;
 					}
 					case qmrf_admin: {
-						w.write(printMenuItem(Resources.unpublished, "Unpublished documents", baseReference.toString(),"10","All unpublished QMRF documents."));
+						unpublishedDoc = printMenuItem(Resources.unpublished, "Unpublished documents", baseReference.toString(),"10","All unpublished QMRF documents.");
+						break;
 					}
 					case qmrf_editor: {
-						w.write(printMenuItem(Resources.unpublished, "Unpublished documents", baseReference.toString(),"10","All unpublished QMRF documents."));
+						unpublishedDoc = printMenuItem(Resources.unpublished, "Unpublished documents", baseReference.toString(),"10","All unpublished QMRF documents.");
+						break;
 					}
 					}
 				} catch (Exception x) {/*unknown role */}
-
+				
+			if (myProfile!=null) w.write(myProfile);
+			if (unpublishedDoc!=null) w.write(unpublishedDoc);
 			w.write(printMenuItem(Resources.login, 
 					request.getClientInfo().getUser()==null?"Login":"Logout", 
 					baseReference.toString(),null,
