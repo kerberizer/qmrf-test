@@ -56,7 +56,7 @@ public class UserResourceTest extends ResourceTest {
 			Assert.assertTrue(line.startsWith(String.format("http://localhost:%d%s/U",port,Resources.user)));
 			count++;
 		}
-		return count==4;
+		return count==5;
 	}	
 	
 	
@@ -105,7 +105,7 @@ public class UserResourceTest extends ResourceTest {
 
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
-		Assert.assertEquals(4,table.getRowCount());
+		Assert.assertEquals(5,table.getRowCount());
 		c.close();
 
 		RemoteTask task = testAsyncPoll(new Reference(String.format("http://localhost:%d%s", port,
@@ -122,7 +122,7 @@ public class UserResourceTest extends ResourceTest {
 
         c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
-		Assert.assertEquals(5,table.getRowCount());
+		Assert.assertEquals(6,table.getRowCount());
 		table = 	c.createQueryTable("EXPECTED","SELECT iduser,title from user where iduser>5 and firstName='Alice' and lastName='B.'" );
 		Assert.assertEquals(1,table.getRowCount());
 		c.close();
@@ -144,7 +144,7 @@ public class UserResourceTest extends ResourceTest {
 		form.add("project_uri",String.format("http://localhost:%d%s/G2",port,Resources.project));
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
-		Assert.assertEquals(4,table.getRowCount());
+		Assert.assertEquals(5,table.getRowCount());
 		c.close();
 
 		RemoteTask task = testAsyncPoll(new Reference(String.format("http://localhost:%d%s", port,
@@ -161,7 +161,7 @@ public class UserResourceTest extends ResourceTest {
 
         c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
-		Assert.assertEquals(5,table.getRowCount());
+		Assert.assertEquals(6,table.getRowCount());
 		table = 	c.createQueryTable("EXPECTED","SELECT iduser,title from user where iduser>88 and username='username'");
 		Assert.assertEquals(1,table.getRowCount());
 		table = 	c.createQueryTable("EXPECTED","SELECT iduser,idorganisation from user_organisation where iduser>88 and (idorganisation=1 or idorganisation=2)");

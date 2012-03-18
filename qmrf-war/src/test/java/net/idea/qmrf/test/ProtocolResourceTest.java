@@ -230,14 +230,14 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		table = c
 				.createQueryTable(
 						"EXPECTED",
-						"SELECT abstract,p.idprotocol,p.version,filename,pa.iduser,status,title,abstract from protocol p join protocol_authors pa where pa.idprotocol=p.idprotocol and p.version=pa.version and p.idprotocol>121 order by pa.iduser");
-		Assert.assertEquals(2, table.getRowCount());
-		Assert.assertEquals(new BigInteger("1"), table.getValue(0, "version"));
-		Assert.assertEquals(new BigInteger("3"), table.getValue(0, "iduser"));
-		Assert.assertEquals(new BigInteger("88"), table.getValue(1, "iduser"));
+						"SELECT abstract,p.idprotocol,p.version,filename,p.iduser,status,title,abstract from protocol p where p.idprotocol>121 order by p.iduser");
+		Assert.assertEquals(1, table.getRowCount());
+		//Assert.assertEquals(new BigInteger("1"), table.getValue(0, "version"));
+		//Assert.assertEquals(new BigInteger("3"), table.getValue(0, "iduser"));
+		Assert.assertEquals(new BigInteger("88"), table.getValue(0, "iduser"));
 		Assert.assertEquals(STATUS.RESEARCH.toString(), table.getValue(0, "status"));
 		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(0, "title"));
-		Assert.assertNotNull(table.getValue(1, "abstract"));
+		Assert.assertNotNull(table.getValue(0, "abstract"));
 		c.close();
 	}
 
