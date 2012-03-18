@@ -28,6 +28,7 @@ package net.idea.qmrf.converters;
 import java.awt.Color;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -91,12 +92,14 @@ public class QMRF_xml2pdf extends QMRFConverter {
             });
             //PRIndirectReference pri;
             //pri.
-            if (ttffont!=null)
+           if (ttffont==null)  {
+        	  URL url= getClass().getClassLoader().getResource("ambit2/qmrfeditor/font/times.ttf");
+        	  System.out.println(url);
+        	  ttffont = url.getFile();
+           }
             try {
             	
-            	baseFont = BaseFont.createFont(ttffont,
-            	//"c:\\windows\\fonts\\times.ttf",
-                    BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            	baseFont = BaseFont.createFont(ttffont, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             	
             } catch (Exception x) {
             	x.printStackTrace();
