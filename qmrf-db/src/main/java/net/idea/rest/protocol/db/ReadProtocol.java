@@ -752,9 +752,10 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		if (getValue()!=null) {
 			if (getValue().getID()>0) {
 				params.add(fields.idprotocol.getParam(getValue()));
-				if (getValue().getVersion()>0)
+				if (getValue().getVersion()>0) {
 					params.add(fields.version.getParam(getValue()));
-				else 
+					renumber = true;
+				} else 
 					throw new AmbitException("Protocol version not set!");
 			} else if (getValue().getTitle()!=null) {
 				params.add(fields.title.getParam(getValue()));
@@ -778,7 +779,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		if (getValue()!=null) {
 			if (getValue().getID()>0) {
 				if (getValue().getVersion()>0)
-					return String.format(sql_nokeywords,"where",
+					return String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,"where",
 							String.format("%s and %s %s %s %s",
 									fields.idprotocol.getCondition(),
 									fields.version.getCondition(),
@@ -789,14 +790,14 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 					throw new AmbitException("Protocol version not set!");
 			} else 
 				if (getValue().getTitle()!=null)
-					return String.format(sql_nokeywords,"where",
+					return String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,"where",
 										String.format("%s %s %s %s",
 												fields.title.getCondition(),
 												byUser==null?"":" and ",
 												byUser==null?"":byUser,
 												publishedOnly));
 				else if (getValue().getTimeModified()!=null)
-					return String.format(sql_nokeywords,"where",
+					return String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,"where",
 									String.format("%s %s %s %s",
 											fields.updated.getCondition(),
 											byUser==null?"":" and ",
@@ -804,10 +805,13 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 											publishedOnly));			
 		} 
 		String sql = onlyUnpublished?
-				String.format(sql_nokeywords,"where",byUser==null?"published=0":String.format("%s %s",byUser,publishedOnly))
+				String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,
+						"where",byUser==null?"published=0":String.format("%s %s",byUser,publishedOnly))
 				:getShowUnpublished()?
-				String.format(sql_nokeywords,"where",byUser==null?"":byUser):
-				String.format(sql_nokeywords,"where",byUser==null?"published=1":String.format("%s %s",byUser,publishedOnly)); //published only
+				String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,
+						"where",byUser==null?"":byUser):
+				String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,
+						"where",byUser==null?"published=1":String.format("%s %s",byUser,publishedOnly)); //published only
 		return sql;
 	}
 
