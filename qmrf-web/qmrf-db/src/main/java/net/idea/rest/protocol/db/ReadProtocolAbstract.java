@@ -47,7 +47,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"idorganisation,user.username,user.firstname,user.lastname," +
 		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
 		"from protocol join user using(iduser)\n" +
-		" %s %s order by idprotocol desc";	
+		" %s %s order by idprotocol desc,version desc";	
 	
 	public ReadProtocolAbstract(Integer id) {
 		this(id,null);
