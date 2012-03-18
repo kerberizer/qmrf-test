@@ -371,11 +371,16 @@ td.contentTableManageR {
 	padding: 0.1em 0.5em 0.1em 0;
 }
 
+img.ieSux {
+	border: none;
+	position: relative;
+	bottom: 9px;
+}
+
 label {
 	COLOR: #516373;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
 }
-
 
 .structureright {
 	float: right;
