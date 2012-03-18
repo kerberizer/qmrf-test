@@ -21,6 +21,28 @@ import org.restlet.security.Role;
 public class QMRF_HTMLBeauty extends HTMLBeauty {
 	protected String searchURI = Resources.protocol;
 	protected String searchTitle = "QMRF documents search";
+
+	public enum update_mode {
+		update {
+			@Override
+			public String toString() {
+				return "Update ";
+			}
+		},
+		attachments {
+			@Override
+			public String toString() {
+				return "Add attachment(s)";
+			}
+		},
+		newdocument {
+			@Override
+			public String toString() {
+				return "Upload new ";
+			}	
+		};
+	}
+
 	protected int page;
 	public int getPage() {
 		return page;
@@ -285,6 +307,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			//div id=wrap
 			output.write("\n</div>\n"); 
 			//footer
+			
 			output.write("\n<div id='footer'>\n" +
 						"<table class='footerTable'>\n<tr>\n" +
 						"<td>\n" +
@@ -481,18 +504,38 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			return getPaging(page, start, last, pageSize);
 		}
 		
-		public String printUploadForm(String uri, DBProtocol protocol,boolean attachments) throws Exception {
-			return printUploadForm("",uri, protocol,attachments);
+		public String printUploadForm(String uri, DBProtocol protocol, update_mode mode) throws Exception {
+			return printUploadForm("",uri, protocol,mode);
 		}
-		public String printUploadForm(String action, String uri, DBProtocol protocol,boolean attachments) throws Exception {
+		public String printUploadForm(String action, String uri, DBProtocol protocol,update_mode mode) throws Exception {
 
 				StringBuilder content = new StringBuilder();
-
-				content.append(printWidgetHeader(
-						attachments?String.format("Add attachment(s) to <a href='%s' target='_blank'>%s</a>",protocol.getResourceURL(),protocol.getIdentifier()):
-					String.format("Add new %s %s","QMRF document",uri.toString().contains("versions")?"version":"")));
+				String form = null;
+				String header = null;
+				String hint = "<p>Upload a QMRF XML file, complying to <a href='http://qmrf.sf.net/qmrf.dtd' target='help'>QMRF DTD</a> schema. The QMRF Editor can be downloaded from <a href='http://qmrf.sf.net' target='help'>http://qmrf.sf.net</a>. </p> ";
+				switch (mode) {
+				case attachments: {
+					header = String.format("%s to <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier());
+					form = String.format("<form method='%s' action=\"%s\" ENCTYPE=\"multipart/form-data\">","POST",action);
+					hint = "<p>All files are optional, you could select any combination of attachment type(s) to upload.</p>";
+					break;
+				}
+				case update : {
+					header = String.format("%s QMRF XML file of <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier());
+					form = String.format("<form method='%s' action=\"%s\" ENCTYPE=\"multipart/form-data\">","PUT",protocol.getResourceURL());
+					break;
+				}
+				case newdocument : {
+					
+					form = String.format("<form method='%s' action=\"%s\" ENCTYPE=\"multipart/form-data\">","POST",action);
+					header = String.format("%s %s %s",mode.toString(),"QMRF document",uri.toString().contains("versions")?" version":"");
+					break;
+				}
+				}
+				
+				content.append(printWidgetHeader(header));
 				content.append(printWidgetContentHeader(""));
-				content.append(String.format("<form method='POST' action=\"%s\" ENCTYPE=\"multipart/form-data\">",action));
+				content.append(form);
 				content.append("<table>");
 				content.append("<tr>");
 				
@@ -506,10 +549,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 							ReadProtocol.fields.project_uri.name(),"Project",protocol==null?"":protocol.getProject()==null?"":protocol.getProject().getResourceURL()));
 					} catch (Exception x) {x.printStackTrace(); /*ok, no defaults if anything goes wrong */ }	
 				//The XMLf
+				content.append(hint);
 				
-				if (attachments) {
-					
-				
+				switch (mode) {
+				case attachments: {
 					for (attachment_type atype: attachment_type.values()) {
 						if (atype.ordinal() % 2 ==0) {
 							content.append("</tr><tr>");
@@ -525,24 +568,26 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 								));
 						content.append("</td>");
 					}
-			
 				
-				} else {
+				} default: {
+				
 					content.append("<td>");
-					content.append(printWidget("QMRF XML file", 
-						String.format("<p><input type=\"file\" class='max-1' accept='xml' name=\"%s\" title='%s' size=\"60\"></p>",
+					content.append(printWidget(String.format("%s QMRF XML file ",mode.toString()), 
+						String.format("<p><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"60\"></p>",
 								ReadProtocol.fields.filename.name(),
 								"QMRF XML"),"box"
 						));
 				
 					content.append("</td>");					
 				}
-				content.append("<td>");	
+				}
+				content.append("</tr>");
+				content.append("<tr><td colspan='1'>");	
 				content.append(printWidget("Options",
 						String.format("<strong>%s</strong>%s",
 						"Publish immediately",	ReadProtocol.fields.published.getHTMLField(protocol)),"box"
 						));	
-				content.append("</td>");					
+				content.append("</td></tr>");					
 				content.append("</tr>");
 				content.append("<tr><td colspan='2' align='center'><input type='submit' id='submit' enabled='false' value='Upload'></td>");
 //				content.append("<input type='submit' enabled='false' value='Submit'>");

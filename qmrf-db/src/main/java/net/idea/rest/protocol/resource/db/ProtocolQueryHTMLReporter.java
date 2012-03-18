@@ -20,6 +20,7 @@ import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.protocol.QMRF_HTMLBeauty.update_mode;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserURIReporter;
@@ -255,7 +256,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	@Override
 	protected void printUploadForm(Writer output, String uri, DBProtocol protocol) {
 		try {
-			output.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm("", uri, protocol,true));
+			output.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm("", uri, protocol,update_mode.attachments));
 		} catch (Exception x) {x.printStackTrace();} 
 		
 	}	
@@ -363,7 +364,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				"<input  title='Delete document' class='draw' type='submit' value='Delete'></form>",uri);
 	}	
 	protected String getUpdateString(Reference baseRef, DBProtocol item) {
-		return  String.format("<a href='%s%s/%s' target='upload'><img src='%s/images/import.png' title='%s'></a>",
-						baseRef,Resources.editor,item.getIdentifier(),baseRef,"Update");
+		return  String.format("<a href='%s%s/%s?mode=%s' target='upload'><img src='%s/images/import.png' title='%s'></a>",
+						baseRef,Resources.editor,item.getIdentifier(),baseRef,update_mode.update.name(),"Update");
 	}		
 }
