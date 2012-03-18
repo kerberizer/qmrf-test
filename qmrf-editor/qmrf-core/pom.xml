@@ -54,5 +54,19 @@
 			</plugin>
 	</plugins>			
  </pluginManagement>
+   	<resources>
+	<resource>
+		<directory>src/main/resources</directory>
+		<filtering>false</filtering>
+	</resource>		
+	<resource>
+              <directory>src/main/resources/META-INF</directory>
+		<targetPath>${project.build.OutputDirectory}/META-INF</targetPath>
+                <filtering>true</filtering>
+		<includes>
+			<include>**/*</include>
+		</includes>
+	</resource>
+	</resources>
  </build>
 </project>
