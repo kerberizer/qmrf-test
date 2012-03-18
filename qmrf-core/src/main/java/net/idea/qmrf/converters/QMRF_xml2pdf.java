@@ -114,9 +114,10 @@ public class QMRF_xml2pdf extends QMRFConverter {
             }
   */        
      
-            font = FontFactory.getFont(ttffont, FontFactory.defaultEncoding,true, 11,Font.NORMAL); //FontFactory.getFont(FontFactory.TIMES, "UTF-8",true, 11,Font.NORMAL);
-	     if (font==null) font = FontFactory.getFont(FontFactory.TIMES, FontFactory.defaultEncoding,true, 10, Font.NORMAL);
-		System.out.println(font);
+           // font = FontFactory.getFont(ttffont, FontFactory.defaultEncoding,true, 11,Font.NORMAL); //FontFactory.getFont(FontFactory.TIMES, "UTF-8",true, 11,Font.NORMAL);
+	     //if (font==null) 
+		font = FontFactory.getFont(FontFactory.HELVETICA, FontFactory.defaultEncoding,true, 10, Font.NORMAL);
+		System.out.println(font.getFamilyname());
 System.out.println(ttffont);
 
             bfont = FontFactory.getFont(FontFactory.TIMES, FontFactory.defaultEncoding,true, 11, Font.BOLD);
