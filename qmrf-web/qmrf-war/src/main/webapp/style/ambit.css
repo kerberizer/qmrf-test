@@ -72,7 +72,15 @@ h1 {
 	background-color: #ddd;
 	width: 100%;
 	color: #516373;
-	text-align: right;
+}
+
+table.footerTable {
+	width: 100%;
+}
+
+a.email {
+	font-weight: normal;
+	text-decoration: none;
 }
 
 #footer p {
