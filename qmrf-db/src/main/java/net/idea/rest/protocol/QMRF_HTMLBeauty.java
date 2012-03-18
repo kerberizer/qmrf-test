@@ -228,7 +228,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("\t\t\t\t<li id='/help'><a class='selectable' target='_help' href='http://qmrf.sf.net/'>Help</a></li>\n");
 			w.write(
 			"\t\t\t</ul>\n" +
-			"\t\t</div>\n");
+			"\t\t</div>\n"); // div id='menu'
 		
 			// Apply style for the hovered buttons sans (!) the currently selected one.
 			// There are better ways to do it, but this should be okay for now.
@@ -274,6 +274,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		
 		@Override
 		public void writeHTMLFooter(Writer output,String title,Request request) throws IOException {
+			//div ui-widget
+			output.write("\n</div>\n"); 
 			//div id=content
 			output.write("\n</div>\n"); 
 			//div inner-wrap
@@ -287,13 +289,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						"<td style='text-align: right;'>\n" +
 						"Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC\n" +
 						"</td>\n" +
-						"</tr>\n</table>\n"
-			); 
-
-			output.write("</div>\n");
-			output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
+						"</tr>\n</table>\n" +
+						"</div>\n"
+			);
 			//div id=wrap
 			output.write("\n</div>\n"); 
+			output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
 			output.write("\n</body>");
 			output.write("</html>");
 
