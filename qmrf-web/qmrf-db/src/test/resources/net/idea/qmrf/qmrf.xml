@@ -28,7 +28,7 @@
   <protocol_authors idprotocol="121" version="1" iduser="10"/>
 
 
-  <keywords  idprotocol="83" version="1"  keywords="a;b;c"/>
+  <keywords  idprotocol="83" version="1"  keywords="a; mutagenicity; c"/>
   <keywords  idprotocol="2" version="1"  keywords="x;y;z"/>
   <keywords  idprotocol="2" version="2"  keywords="x;y;z"/>
   <user_organisation iduser="10" idorganisation="5" priority="1"/>
