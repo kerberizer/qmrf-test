@@ -42,7 +42,8 @@ public class OrganisationDBResource extends GroupDBResource<DBOrganisation> {
 	
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		return new GroupHTMLBeauty(Resources.organisation);
+		if (htmlBeauty==null) htmlBeauty =  new GroupHTMLBeauty(Resources.organisation);
+		return htmlBeauty;
 	}
 
 	@Override
