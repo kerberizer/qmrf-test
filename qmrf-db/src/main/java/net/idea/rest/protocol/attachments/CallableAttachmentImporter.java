@@ -15,12 +15,17 @@ import net.idea.restnet.db.update.CallableDBUpdateTask;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.auth.params.AuthPNames;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.AuthPolicy;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
@@ -46,17 +51,18 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 	protected String queryService;
 	protected String[] algorithms = new String[] {
 			"/algorithm/fingerprints","/algorithm/struckeys","/algorithm/smartsprop","/algorithm/inchi"};
-
+	UsernamePasswordCredentials creds = null;
 	public CallableAttachmentImporter(Method method, Reference baseReference,
 			AttachmentURIReporter reporter,
 			DBAttachment attachment,
 			Form input,
 			String queryService,
-			Connection connection, String token) {
-		super(method, input, connection, token);
+			Connection connection, UsernamePasswordCredentials credentials) {
+		super(method, input, connection, null);
 		this.reporter = reporter;
 		this.attachment = attachment;
 		this.queryService= queryService;
+		this.creds = credentials;
 	}
 
 	@Override
@@ -87,8 +93,9 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 	}
 
 	protected RemoteTask remoteImport(DBAttachment target) throws Exception {
-
-		HttpClient client = createHTTPClient();
+		Reference uri = new Reference(queryService);
+		
+		HttpClient client = createHTTPClient(uri.getHostDomain(),uri.getHostPort());
 		RemoteTask task = new RemoteTask(client, 
 					new URL(String.format("%s/dataset",queryService)), 
 					"text/uri-list", createPOSTEntity(attachment), HttpPost.METHOD_NAME);
@@ -104,7 +111,7 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 					List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 					formparams.add(new BasicNameValuePair(dataset_uri, dataset.toURI().toString()));
 					HttpEntity entity = new UrlEncodedFormEntity(formparams, "UTF-8");
-					HttpClient newclient = createHTTPClient();
+					HttpClient newclient = createHTTPClient(uri.getHostDomain(),uri.getHostPort());
 					try {
 						new RemoteTask(newclient, 
 									new URL(String.format("%s%s",queryService,algorithm)), 
@@ -178,8 +185,14 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 		return entity;
 	}
 	
-	protected HttpClient createHTTPClient() {
-		HttpClient cli = new DefaultHttpClient();
+	protected HttpClient createHTTPClient(String hostName,int port) {
+		DefaultHttpClient  cli = new DefaultHttpClient();
+		List<String> authpref = new ArrayList<String>();
+		authpref.add(AuthPolicy.BASIC);
+		cli.getParams().setParameter(AuthPNames.PROXY_AUTH_PREF, authpref);
+		cli.getCredentialsProvider().setCredentials(
+		        new AuthScope(hostName,port), 
+		        creds);		
 		((DefaultHttpClient)cli).addRequestInterceptor(new HttpRequestInterceptor() {
 			@Override
 			public void process(HttpRequest request, HttpContext context)

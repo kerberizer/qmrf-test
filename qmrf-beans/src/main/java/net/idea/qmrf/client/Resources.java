@@ -42,6 +42,9 @@ public class Resources {
 		logo_right,
 		secret,
 		insecure,
-		qmrf_email
+		qmrf_email,
 	}
+	
+	public final static String AMBIT_LOCAL_USER="aa.local.admin.name";
+	public final static String AMBIT_LOCAL_PWD="aa.local.admin.pass";
 }

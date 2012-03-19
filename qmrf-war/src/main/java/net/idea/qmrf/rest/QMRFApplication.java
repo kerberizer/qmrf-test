@@ -1,6 +1,5 @@
 package net.idea.qmrf.rest;
 
-import java.io.StringWriter;
 import java.net.URL;
 import java.util.UUID;
 
@@ -19,7 +18,6 @@ import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
 import net.idea.rest.protocol.facet.ProtocolsByEndpointResource;
 import net.idea.rest.protocol.resource.db.UnpublishedProtocolsResource;
-import net.idea.rest.qmrf.admin.QMRFUploadUIResource;
 import net.idea.rest.structure.resource.DatasetResource;
 import net.idea.rest.structure.resource.StructureRouter;
 import net.idea.rest.user.UserRouter;
