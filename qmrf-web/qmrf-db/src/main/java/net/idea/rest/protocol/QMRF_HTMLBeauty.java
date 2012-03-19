@@ -210,8 +210,18 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true, ajaxOptions: {error: function( xhr, status, index, anchor ) {$( anchor.hash ).html(status );}}});});</script>");
 			w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
 			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
-			w.write("<script type='text/javascript'>function toggleDiv(divId) {$('#'+divId).toggle();}</script>\n");
-			w.write("<script type='text/javascript'>function hideDiv(divId) {$('#'+divId).hide();}</script>\n");
+			w.write("<script type='text/javascript'>function hideDiv(divId) {\n$('#'+divId).hide();}</script>\n");
+			w.write("<script type='text/javascript'>function toggleDiv(divId) {\n" +
+					"$('#'+divId).toggle();\n" +
+					"if ($('#'+divId+'_toggler').hasClass('togglerPlus')) {\n" +
+					"$('#'+divId+'_toggler').removeClass('togglerPlus');\n" +
+					"$('#'+divId+'_toggler').addClass('togglerMinus');\n" +
+					"} else if ($('#'+divId+'_toggler').hasClass('togglerMinus')) {\n" +
+					"$('#'+divId+'_toggler').removeClass('togglerMinus');\n" +
+					"$('#'+divId+'_toggler').addClass('togglerPlus');\n" +
+					"}\n" +
+					"}</script>\n"
+			);
 			w.write("</head>\n");
 			w.write("<body>");
 			w.write(String.format("<link rel=\"stylesheet\" href=\"%s/style/tablesorter.css\" type=\"text/css\" media=\"screen\" title=\"Flora (Default)\">\n",baseReference));
