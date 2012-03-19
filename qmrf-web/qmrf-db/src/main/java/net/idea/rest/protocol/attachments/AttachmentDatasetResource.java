@@ -11,6 +11,7 @@ import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.TaskCreator;
 import net.idea.restnet.c.task.TaskCreatorForm;
@@ -20,6 +21,7 @@ import net.idea.restnet.i.task.ICallableTask;
 import net.idea.restnet.i.task.Task;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -102,7 +104,10 @@ public class AttachmentDatasetResource extends ProtocolAttachmentResource {
 			AttachmentURIReporter r = new AttachmentURIReporter(getRequest(),String.format("%s/%s",Resources.protocol,key.toString()));
 			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 			conn = dbc.getConnection();
-			return new CallableAttachmentImporter(method,getRequest().getRootRef(), r,item, form,getQueryService(), conn,getToken());
+			String ambituser = ((TaskApplication)getApplication()).getProperty(Resources.AMBIT_LOCAL_USER);
+			String ambitpass = ((TaskApplication)getApplication()).getProperty(Resources.AMBIT_LOCAL_PWD);
+			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(ambituser,ambitpass);
+			return new CallableAttachmentImporter(method,getRequest().getRootRef(), r,item, form,getQueryService(), conn,creds);
 		} catch (Exception x) {
 			try { conn.close(); } catch (Exception xx) {}
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);

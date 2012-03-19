@@ -433,6 +433,9 @@
 			<qmrf.db.user.test>guest</qmrf.db.user.test>
 			<!-- DB password for tests -->
 			<qmrf.db.user.password.test>guest</qmrf.db.user.password.test>
+			<!-- attachment uploads related. More in WEB-INF/config/qmrf.properties -->
+			<aa.local.admin.name>admin</aa.local.admin.name>
+            <aa.local.admin.pass>changeit</aa.local.admin.pass>
 			
   	</properties>
 
