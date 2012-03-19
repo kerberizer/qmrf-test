@@ -107,7 +107,6 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			String uri = String.format(
 					"<a href=\"%s\" title=\"%s\">%s&nbsp;%s</a>",
 					datasetURI,attachment.getTitle(),attachment.getProtocol(),attachment.getType().toString());
-			System.out.println(datasetURI);
 			return String.format("<li>%s<span></span></li>\n",uri);
 		} else return "";
 		
