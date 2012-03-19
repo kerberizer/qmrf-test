@@ -165,15 +165,35 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.MultiFile.pack.js\"></script>\n",baseReference));
 			
 			// Google +1 button rendering code (the button is placed elsewhere)
-			w.write(String.format("<script type='text/javascript'>" +
+			w.write("<script type='text/javascript'>" +
 					"(function() {" +
 					"var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;" +
 					"po.src = 'https://apis.google.com/js/plusone.js';" +
 					"var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);" +
 					"})();" +
 					"</script>"
-			));
+			);
 
+			// Facebook JavaScript SDK
+			w.write("<div id=\"fb-root\"></div>\n" +
+					"<script>(function(d, s, id) {\n" +
+					"var js, fjs = d.getElementsByTagName(s)[0];\n" +
+					"if (d.getElementById(id)) return;\n" +
+					"js = d.createElement(s); js.id = id;\n" +
+					"js.src = \"//connect.facebook.net/en_GB/all.js#xfbml=1\";\n" +
+					"fjs.parentNode.insertBefore(js, fjs);\n" +
+					"}(document, 'script', 'facebook-jssdk'));</script>\n"
+			);
+			
+			// Twitter JS
+			w.write("<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id))" +
+					"{js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";" +
+					"fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>\n"
+			);
+
+			// LinkedIn
+			w.write("<script src='http://platform.linkedin.com/in.js' type='text/javascript'></script>\n");
+			
 			//w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.tablesorter.min.js\"></script>\n",baseReference));
 			w.write(meta);
 					
