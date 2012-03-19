@@ -386,6 +386,26 @@ img.ieSux {
 	bottom: 9px;
 }
 
+div.socialPanel {
+	width: 100%;
+}
+
+table.socialTable {
+	width: 100%;
+	margin: 0;
+}
+
+td.socialTool {
+	border: 1px dotted silver;
+	-webkit-border-radius: 5px;
+	-khtml-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	text-align: center;
+	padding: 5px 5px 5px 20px;
+	width: 25%;
+}
+
 label {
 	COLOR: #516373;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;

@@ -213,8 +213,42 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			if (qhtml==null) qhtml = new QMRF_xml2html();
 	        
 			output.write(String.format(
-			"<div id='%s' style='display: %s;'>\n"+					
-			"<div class='tabs'>\n",item.getIdentifier(),hidden?"none":""));
+			"<div id='%s' style='display: %s;'>\n", item.getIdentifier(), hidden?"none":""));
+
+			// The social panel. Don't display on MSIE 7, because it breaks there. No surprise.
+			
+			if (!((QMRF_HTMLBeauty)htmlBeauty).isMsie7()) {
+			
+				output.write("<div class='socialPanel'><table class='socialTable'><tr><td class='socialTool'>\n"); // begin social
+
+				// Google +1
+				output.write(String.format("<g:plusone href='%s'></g:plusone>\n", uri));
+
+				output.write("</td><td class='socialTool'>"); // next cell
+
+				// Facebook
+				output.write(String.format("<div class='fb-like' data-href='%s' data-send='true' data-layout='button_count' " +
+							"data-show-faces='false' data-action='recommend' data-font='tahoma'></div>\n", uri));
+
+				output.write("</td><td class='socialTool'>"); // next cell
+
+				// Twitter
+				output.write(String.format("<a href='https://twitter.com/share' class='twitter-share-button'" +
+							"data-url='%s' data-text='%s' data-hashtags='qmrf' " +
+							"data-related='EC_JRC_IHCPnews'>Tweet</a>\n",
+							uri, item.getIdentifier()
+				));
+			
+				output.write("</td><td class='socialTool'>"); // next cell
+
+				// LinkedIn
+				output.write(String.format("<script type='IN/Share' data-url='%s' data-counter='right' data-showzero='true'></script>\n", uri));
+			
+				output.write("</td></tr></table></div>\n"); // end social
+
+			} // social IE7 if
+								
+			output.write("<div class='tabs'>\n");
 			
 			String baseRef = uriReporter.getBaseReference().toString();
 
@@ -245,18 +279,6 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
 			
 			output.write("\n</div>\n"); //tabs
-/*
-			output.write("<div>\n"); // begin social
-			output.write("<table><tr><td class='social'>");
-			output.write(String.format("<g:plusone href='%s/%s/%s'></g:plusone>\n",
-					uriReporter.getBaseReference(),
-					Resources.editor,
-					item.getIdentifier()
-			));
-			output.write("</td><td class='social'>");
-			output.write("</td></tr></table>");
-			output.write("</div>\n"); // end social
-*/			
 			output.write("</div>\n"); // protocol
 		} catch (Exception x) {
 			x.printStackTrace();
