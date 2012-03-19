@@ -347,7 +347,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		try {
 			output.write("<tr>\n");	
 			if (details & collapsed)
-				output.write(String.format("<td>&nbsp;<a class=\"tbldivxpander\" href=\"javascript:toggleDiv('%s');\">+</a></td>",item.getIdentifier()));
+				output.write(String.format("<td id='%s_toggler' class='togglerPlus' onClick=\"javascript:toggleDiv('%s');\">%s</td>",
+						item.getIdentifier(), item.getIdentifier(),
+						((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"<div>&nbsp;&nbsp;&nbsp;</div>":""));
 			else 
 				output.write("<td class='contentTable'></td>");
 			/*
@@ -406,7 +408,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\">" +
 				"<input  type='hidden' name='published' value='true'/>" +
 				"<input  title='This document is NOT published' class='draw' " +
-				"type='image' src='%s/images/folder_add.png' value='Publish'></form>",
+				"type='image' src='%s/images/script_add.png' value='Publish'></form>",
 				uri,
 				baseRef
 		);
@@ -417,14 +419,14 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		String.format("<form action='%s?method=DELETE' method='POST' ENCTYPE=\"multipart/form-data\">" +
 				"<input  type='hidden' name='published' value='true'/>" +
 				"<input  title='Delete document' class='draw'" +
-				"type='image' src='%s/images/folder_delete.png' value='Delete'></form>",
+				"type='image' src='%s/images/script_delete.png' value='Delete'></form>",
 				uri,
 				baseRef);
 	}	
 
 	protected String getUpdateString(Reference baseRef, DBProtocol item) {
 		return
-		String.format("<a href='%s%s/%s?mode=%s' target='upload'><img %s src='%s/images/folder_edit.png' title='%s'></a>",
+		String.format("<a href='%s%s/%s?mode=%s' target='upload'><img %s src='%s/images/script_edit.png' title='%s'></a>",
 				baseRef,
 				Resources.editor,
 				item.getIdentifier(),

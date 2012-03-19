@@ -192,6 +192,7 @@ A:link {
 	FONT-WEIGHT: bolder;
 	font-weight: bold;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
+	text-decoration: none;
 }
 
 A:visited {
@@ -200,6 +201,7 @@ A:visited {
 	FONT-WEIGHT: bolder;
 	font-weight: bold;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
+	text-decoration: none;
 }
 
 A:active {
@@ -208,6 +210,7 @@ A:active {
 	FONT-WEIGHT: bolder;
 	font-weight: bold;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
+	text-decoration: none;
 }
 
 A:hover {
@@ -216,6 +219,7 @@ A:hover {
 	FONT-WEIGHT: bolder;
 	font-weight: bold;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
+	text-decoration: underline;
 }
 
 .logo_top-left {
@@ -355,6 +359,56 @@ th.contentTable, th.contentTableManage, td.contentTable {
 	text-align: left;
 	padding: 0.1em 0.5em;
 }
+
+/* Plus/minus icons v1 *//*
+
+td.togglerPlus {
+	width: 10px;
+	background: url("/qmrf/images/bullet_toggle_plus.png") no-repeat scroll 0 4px transparent;
+}
+
+td.togglerMinus {
+	width: 10px;
+	background: url("/qmrf/images/bullet_toggle_minus.png") no-repeat scroll 0 4px transparent;
+}
+
+*//* Plus/minus icons v2 */
+
+td.togglerPlus {
+	width: 16px;
+	min-width: 16px;
+	min-height: 16px;
+	background: url("/qmrf/images/zoom_in.png") no-repeat scroll center center transparent;
+	cursor: pointer;
+}
+
+td.togglerMinus {
+	width: 16px;
+	min-width: 16px;
+	min-height: 16px;
+	background: url("/qmrf/images/zoom_out.png") no-repeat scroll center center transparent;
+	cursor: pointer;
+}
+
+/* Override for these icons! */
+th.contentTable, th.contentTableManage, td.contentTable {
+	text-align: left;
+	padding: 0.1em 0.7em 0.1em 0.2em;
+}
+
+/* Plus/minus icons v3 *//*
+
+td.togglerPlus {
+	width: 15px;
+	background: url("/qmrf/images/plus_minus_icons_v2.png") no-repeat scroll -16px 4px transparent;
+}
+
+td.togglerMinus {
+	width: 15px;
+	background: url("/qmrf/images/plus_minus_icons_v2.png") no-repeat scroll 0 4px transparent;
+}
+
+*/
 
 td.qmrfNumber {
 	min-width: 8em;
@@ -558,6 +612,7 @@ div.structureright img {
 	font-weight: bold;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
 	text-decoration:underline;
+	pointer: cursor;
 }
 
 .box {
