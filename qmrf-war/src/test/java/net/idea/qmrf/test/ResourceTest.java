@@ -1,11 +1,11 @@
 package net.idea.qmrf.test;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Serializable;
+import java.net.URL;
+import java.nio.charset.Charset;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,14 +16,21 @@ import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.rest.QMRFRESTComponent;
 import net.idea.rest.protocol.db.test.DbUnitTest;
 import net.idea.restnet.c.ChemicalMediaType;
+import net.idea.restnet.c.task.ClientResourceWrapper;
+import net.idea.restnet.cli.task.RemoteTask;
+import net.idea.restnet.rdf.ns.OT;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.client.HttpClient;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.opentox.aa.opensso.OpenSSOToken;
-import org.opentox.dsl.task.ClientResourceWrapper;
-import org.opentox.dsl.task.RemoteTask;
-import org.opentox.rdf.OT;
 import org.restlet.Client;
 import org.restlet.Component;
 import org.restlet.Context;
@@ -130,26 +137,27 @@ public abstract class ResourceTest extends DbUnitTest {
 		return client.handle(request);
 	}
 	
-	protected RemoteTask testAsyncPoll(Reference ref, MediaType media, Representation rep, Method method) throws Exception {
-		RemoteTask task = new RemoteTask(ref,media,rep,method);
+	protected RemoteTask testAsyncPoll(Reference ref, MediaType media, HttpEntity rep, Method method) throws Exception {
+		HttpClient cli = new DefaultHttpClient();
+		RemoteTask task = new RemoteTask(cli,new URL(ref.toString()),media.toString(),rep,method.toString());
 		while (!task.poll()) {
 			Thread.yield();
 			Thread.sleep(200);
 		}
 		if (task.isERROR()) throw task.getError();
-
-		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
+		cli.getConnectionManager().shutdown();
+		Assert.assertEquals(Status.SUCCESS_OK.getCode(), task.getStatus());
 		return task;
 		
        
 	}
 	
-	public Reference testAsyncTask(String uri,Form form,Status expected, String uriExpected) throws Exception {
-		RemoteTask task = new RemoteTask(
-				new Reference(uri),
-				MediaType.TEXT_URI_LIST,
-				form.getWebRepresentation(),
-				Method.POST);
+	public Reference testAsyncTask(String uri,HttpEntity rep,Status expected, String uriExpected) throws Exception {
+		HttpClient cli = new DefaultHttpClient();
+		RemoteTask task = new RemoteTask(cli,new URL(uri),
+				MediaType.TEXT_URI_LIST.toString(),
+				rep,
+				Method.POST.toString());
 		if (task.isERROR()) throw task.getError();
 		Assert.assertNotNull(task.getResult());
 		while (!task.poll()) {
@@ -157,11 +165,11 @@ public abstract class ResourceTest extends DbUnitTest {
 			Thread.sleep(2000);
 		}
 		Assert.assertEquals(expected, task.getStatus());
-		if (task.getStatus().equals(Status.SUCCESS_OK))
+		if (task.getStatus()==Status.SUCCESS_OK.getCode())
 			Assert.assertEquals(uriExpected, task.getResult().toString());
 		else if (task.getError()!=null)
 			throw task.getError();
-		return task.getResult();
+		return new Reference(task.getResult());
 		
 	}
 	/*
@@ -402,62 +410,21 @@ public abstract class ResourceTest extends DbUnitTest {
 	 * @throws Exception
 	 */
 
-	protected Representation getMultipartWebFormRepresentation(
+	protected MultipartEntity getMultipartWebFormRepresentation(
 				String[] formFields, String[] formValues, 
 				File file, String mediaType) throws Exception {
 		return getMultipartWebFormRepresentation(formFields, formValues, "filename",file, mediaType);
 	}
-	protected Representation getMultipartWebFormRepresentation(
+	protected MultipartEntity getMultipartWebFormRepresentation(
 				String[] formFields, String[] formValues, 
 				String fileFieldName, File file, String mediaType) throws Exception {
-		String docPath = file.getAbsolutePath();
-		StringBuffer str_b = new StringBuffer();
-		final String bndry ="XCVBGFDS";
-		String paramName = fileFieldName;
-		String fileName = file.getName();
-		final MediaType type = new MediaType(String.format("multipart/form-data; boundary=%s",bndry));
-	    file = new File(docPath);
-	    
-	    /**
-	     * WRITE THE fields
-	     */
+		
+		MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE,null,Charset.forName("UTF-8"));
 	    for (int i=0;i< formFields.length;i++ ) {
-		    
-		    String disptn = String.format("--%s\r\nContent-Disposition: form-data; name=\"%s\"\r\n\r\n%s\r\n",
-	    			bndry,formFields[i],formValues[i]);
-		    str_b.append(disptn);
+	    	if (formValues[i]==null) continue;
+	    	entity.addPart(formFields[i], new StringBody(formValues[i],Charset.forName("UTF-8")));
 	    }
-	      
-	    /**
-	     * WRITE THE FIRST/START BOUNDARY
-	     */
-	    String disptn = String.format("--%s\r\nContent-Disposition: form-data; name=\"%s\"; filename=\"%s\"\r\nContent-Type: %s\r\n\r\n",
-	    			bndry,paramName,fileName,mediaType);
-	    str_b.append(disptn);
-	    /**
-	     * WRITE THE FILE CONTENT
-	     */
-	    FileInputStream is;
-	    byte[] buffer = new byte[4096];
-	    int bytes_read;
-	    try {
-	        	is = new FileInputStream(file);
-				while((bytes_read = is.read(buffer)) != -1) {
-				    
-				    str_b.append(new String(buffer, 0, bytes_read));
-				}
-				is.close();
-		} catch (IOException e) {
-			throw e;
-		}
-		/**
-		 * WRITE THE CLOSING BOUNDARY
-		 */
-	    String boundar = String.format("\r\n--%s--",bndry);
-	    str_b.append(boundar); // another 2 new lines
-	    StringRepresentation st_b = new  StringRepresentation(str_b.toString(), type);
-	        //PUT
-	    return st_b;
-	        
+	    entity.addPart(fileFieldName, new FileBody(file));	      
+	    return entity;
 	}	
 }

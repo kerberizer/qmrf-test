@@ -4,20 +4,23 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.groups.DBGroup;
 import net.idea.rest.groups.db.ReadProject;
+import net.idea.restnet.cli.task.RemoteTask;
 import net.toxbank.client.io.rdf.ProjectIO;
 import net.toxbank.client.resource.Project;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.junit.Test;
-import org.opentox.dsl.task.RemoteTask;
-import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
@@ -113,9 +116,9 @@ public class ProjectResourceTest  extends ResourceTest {
 	
 	@Test
 	public void testCreateEntryFromWebForm() throws Exception {
-		Form form = new Form();
-		form.add(DBGroup.fields.name.name(), "project");
-
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair(DBGroup.fields.name.name(),  "project"));
+		
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM organisation");
 		Assert.assertEquals(3,table.getRowCount());
@@ -123,7 +126,7 @@ public class ProjectResourceTest  extends ResourceTest {
 
 		RemoteTask task = testAsyncPoll(new Reference(String.format("http://localhost:%d%s", port,
 				Resources.project)),
-				MediaType.TEXT_URI_LIST, form.getWebRepresentation(),
+				MediaType.TEXT_URI_LIST, new UrlEncodedFormEntity(formparams,"UTF-8"),
 				Method.POST);
 		//wait to complete
 		while (!task.isDone()) {
@@ -155,7 +158,7 @@ public class ProjectResourceTest  extends ResourceTest {
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, null,
 				Method.DELETE);
-		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
+		Assert.assertEquals(Status.SUCCESS_OK.getCode(), task.getStatus());
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT * FROM project where idproject=2");
@@ -174,7 +177,7 @@ public class ProjectResourceTest  extends ResourceTest {
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, null,
 				Method.DELETE);
-		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
+		Assert.assertEquals(Status.SUCCESS_OK.getCode(), task.getStatus());
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED",sql);
@@ -190,14 +193,15 @@ public class ProjectResourceTest  extends ResourceTest {
 		Assert.assertEquals(1,table.getRowCount());
 		c.close();		
 		
-		Form form = new Form();
-		form.add("project_uri",String.format("http://localhost:%d%s/G1",port,Resources.project));
 
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("project_uri",  String.format("http://localhost:%d%s/G1",port,Resources.project)));
+		
 		String org = String.format("http://localhost:%d%s/U3%s", port,Resources.user,Resources.project);
 		RemoteTask task = testAsyncPoll(new Reference(org),
-				MediaType.TEXT_URI_LIST, form.getWebRepresentation(),
+				MediaType.TEXT_URI_LIST, new UrlEncodedFormEntity(formparams, "UTF-8"),
 				Method.POST);
-		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
+		Assert.assertEquals(Status.SUCCESS_OK.getCode(), task.getStatus());
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
 		sql = "SELECT iduser FROM user_project where idproject=1 and iduser=3";
@@ -214,15 +218,16 @@ public class ProjectResourceTest  extends ResourceTest {
 		Assert.assertNull(table.getValue(0,"ldapgroup"));
 		c.close();		
 		
-		Form form = new Form();
-		form.add(DBGroup.fields.name.name(), "QMRF");
-		form.add(DBGroup.fields.ldapgroup.name(), "qmrf");
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair(DBGroup.fields.name.name(), "QMRF"));
+		formparams.add(new BasicNameValuePair(DBGroup.fields.ldapgroup.name(), "qmrf"));
+		
 		
 		String org = String.format("http://localhost:%d%s/G2", port,Resources.project);
 		RemoteTask task = testAsyncPoll(new Reference(org),
-				MediaType.TEXT_URI_LIST,form.getWebRepresentation(),
+				MediaType.TEXT_URI_LIST,new UrlEncodedFormEntity(formparams,"UTF-8"),
 				Method.PUT);
-		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
+		Assert.assertEquals(Status.SUCCESS_OK.getCode(), task.getStatus());
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT name,ldapgroup FROM project where idproject=2");

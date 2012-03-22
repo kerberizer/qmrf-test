@@ -10,12 +10,12 @@ import java.util.List;
 
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.rest.protocol.attachments.db.UpdateAttachment;
+import net.idea.restnet.cli.task.FibonacciSequence;
 import net.idea.restnet.cli.task.RemoteTask;
 import net.idea.restnet.db.update.CallableDBUpdateTask;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpException;
-import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.NameValuePair;
@@ -33,7 +33,6 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HttpContext;
-import org.opentox.dsl.task.FibonacciSequence;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;

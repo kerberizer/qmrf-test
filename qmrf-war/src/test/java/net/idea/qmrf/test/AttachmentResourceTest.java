@@ -6,18 +6,23 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
+import net.idea.restnet.cli.task.RemoteTask;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.message.BasicNameValuePair;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.junit.Test;
-import org.opentox.dsl.task.RemoteTask;
-import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
@@ -86,7 +91,7 @@ public class AttachmentResourceTest extends ResourceTest {
 		
 		String[] names = new String[0];
 		String[] values = new String[0];
-		Representation rep = getMultipartWebFormRepresentation(names,values,attachment_type.document.name(),file,MediaType.APPLICATION_PDF.toString());
+		MultipartEntity rep = getMultipartWebFormRepresentation(names,values,attachment_type.document.name(),file,MediaType.APPLICATION_PDF.toString());
 		
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM protocol");
@@ -130,12 +135,13 @@ public class AttachmentResourceTest extends ResourceTest {
 		Assert.assertEquals(Boolean.FALSE,table.getValue(0,"imported"));
 		c.close();
 		
-		Form form = new Form();
-		form.add("import", "true");
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair("import",  "true"));
+
 		
 		RemoteTask task = testAsyncPoll(
 				uri,
-				MediaType.TEXT_URI_LIST, form.getWebRepresentation(),
+				MediaType.TEXT_URI_LIST, new UrlEncodedFormEntity(formparams,"UTF-8"),
 				Method.POST);
 		//wait to complete
 		while (!task.isDone()) {

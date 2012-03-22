@@ -8,7 +8,6 @@ import java.util.List;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.rest.protocol.attachments.DBAttachment;
 
-import org.opentox.rdf.OpenTox;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;

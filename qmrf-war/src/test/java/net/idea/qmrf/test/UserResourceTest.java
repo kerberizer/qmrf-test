@@ -4,19 +4,22 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.user.db.ReadUser;
+import net.idea.restnet.cli.task.RemoteTask;
 import net.toxbank.client.io.rdf.UserIO;
 import net.toxbank.client.resource.User;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.junit.Test;
-import org.opentox.dsl.task.RemoteTask;
-import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
@@ -99,10 +102,11 @@ public class UserResourceTest extends ResourceTest {
 	
 	@Test
 	public void testCreateUserFromName() throws Exception {
-		Form form = new Form();
-		form.add(ReadUser.fields.firstname.name(),"Alice");
-		form.add(ReadUser.fields.lastname.name(),"B.");
 
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair(ReadUser.fields.firstname.name(),  "Alice"));
+		formparams.add(new BasicNameValuePair(ReadUser.fields.lastname.name(),  "B."));
+		
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
 		Assert.assertEquals(5,table.getRowCount());
@@ -110,7 +114,7 @@ public class UserResourceTest extends ResourceTest {
 
 		RemoteTask task = testAsyncPoll(new Reference(String.format("http://localhost:%d%s", port,
 				Resources.user)),
-				MediaType.TEXT_URI_LIST, form.getWebRepresentation(),
+				MediaType.TEXT_URI_LIST, new UrlEncodedFormEntity(formparams,"UTF-8"),
 				Method.POST);
 		//wait to complete
 		while (!task.isDone()) {
@@ -130,18 +134,22 @@ public class UserResourceTest extends ResourceTest {
 	}		
 	@Test
 	public void testCreateEntryFromWebForm() throws Exception {
-		Form form = new Form();
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair(ReadUser.fields.firstname.name(),  "Alice"));
+		formparams.add(new BasicNameValuePair(ReadUser.fields.lastname.name(),  "B."));
+		
 		for (ReadUser.fields field : ReadUser.fields.values()) {
 			switch (field) {
 			case iduser: continue;
 			default: {
-				form.add(field.name(),field.name());
+				formparams.add(new BasicNameValuePair(field.name(), field.name()));
 			}
 			}
 		}
-		form.add("organisation_uri",String.format("http://localhost:%d%s/G1",port,Resources.organisation));
-		form.add("organisation_uri",String.format("http://localhost:%d%s/G2",port,Resources.organisation));
-		form.add("project_uri",String.format("http://localhost:%d%s/G2",port,Resources.project));
+		formparams.add(new BasicNameValuePair("organisation_uri",  String.format("http://localhost:%d%s/G1",port,Resources.organisation)));
+		formparams.add(new BasicNameValuePair("organisation_uri",  String.format("http://localhost:%d%s/G2",port,Resources.organisation)));
+		formparams.add(new BasicNameValuePair("project_uri",  String.format("http://localhost:%d%s/G2",port,Resources.project)));
+
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
 		Assert.assertEquals(5,table.getRowCount());
@@ -149,7 +157,7 @@ public class UserResourceTest extends ResourceTest {
 
 		RemoteTask task = testAsyncPoll(new Reference(String.format("http://localhost:%d%s", port,
 				Resources.user)),
-				MediaType.TEXT_URI_LIST, form.getWebRepresentation(),
+				MediaType.TEXT_URI_LIST, new UrlEncodedFormEntity(formparams, "UTF-8"),
 				Method.POST);
 		//wait to complete
 		while (!task.isDone()) {
@@ -183,7 +191,7 @@ public class UserResourceTest extends ResourceTest {
 		RemoteTask task = testAsyncPoll(new Reference(org),
 				MediaType.TEXT_URI_LIST, null,
 				Method.DELETE);
-		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
+		Assert.assertEquals(Status.SUCCESS_OK.getCode(), task.getStatus());
 		//Assert.assertNull(task.getResult());
 		c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT * FROM user where iduser=4");
