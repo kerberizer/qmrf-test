@@ -19,8 +19,6 @@ import org.restlet.data.Reference;
 import org.restlet.security.Role;
 
 public class QMRF_HTMLBeauty extends HTMLBeauty {
-	protected String searchURI = Resources.protocol;
-	protected String searchTitle = "QMRF documents search";
 
 	public enum update_mode {
 		update {
@@ -43,33 +41,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		};
 	}
 
-	protected int page;
-	public int getPage() {
-		return page;
-	}
-	public void setPage(int page) {
-		this.page = page;
-	}
-
-	protected long pageSize;
-	
-	public long getPageSize() {
-		return pageSize;
-	}
-	public void setPageSize(long pageSize) {
-		this.pageSize = pageSize;
-	}
-
-	protected String searchQuery;
 	protected String condition;
 	protected SearchMode option;
 
-	private boolean isMsie7;
-	
-	public boolean isMsie7() {
-		return isMsie7;
-	}
-	
 	public String getSearchQuery() {
 		return searchQuery;
 	}
@@ -82,8 +56,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 	};
 	public QMRF_HTMLBeauty(String searchURI) {
-		super();
-		setSearchURI(searchURI);
+		super(searchURI==null?Resources.protocol:searchURI);
+		setSearchTitle("QMRF documents search");
 
 	};
 
@@ -121,9 +95,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			// Determine if the request is made by Microsoft Internet Explorer 7, as many elements on the page break on it.
 			if (request!=null) {
-				isMsie7 = request.getClientInfo().getAgent().toLowerCase().indexOf("msie 7.")>=0?true:false;
+				setMsie7(request.getClientInfo().getAgent().toLowerCase().indexOf("msie 7.")>=0?true:false);
 			} else {
-				isMsie7 = false;
+				setMsie7(false);
 			}
 			
 			w.write(
@@ -206,7 +180,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jme/jme.js\"></script>\n",baseReference));
 			w.write("<script>$(function() {$( \".accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
 			// Don't style the submit button with jQ if the browser is MSIE 7.
-			if (!isMsie7) w.write("<script>$(function() {$(\"#submit\").button();});</script>");
+			if (!isMsie7()) w.write("<script>$(function() {$(\"#submit\").button();});</script>");
 			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true, ajaxOptions: {error: function( xhr, status, index, anchor ) {$( anchor.hash ).html(status );}}});});</script>");
 			w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
 			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
@@ -298,7 +272,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// However, this breaks MSIE 7. Moreover, this browser gets crazy even if
 			// the change is implemented purely with simple CSS a:hover, and for this
 			// reason, we simply disable the mousever effect for it.
-			if (!isMsie7) {
+			if (!isMsie7()) {
 				w.write(String.format(
 						"<script>\n" +
 
@@ -447,7 +421,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		public void writeHTMLHeader(Writer w,String title,Request request,String meta,ResourceDoc doc) throws IOException {
 
 			writeTopHeader(w, title, request, meta,doc);
-			writeSearchForm(w, title, request, meta);
+			writeSearchForm(w, title, request, meta,null);
 			w.write("<div id='content'>\n");
 		}
 		
@@ -493,7 +467,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// However, this breaks MSIE 7. Moreover, this browser gets crazy even if
 			// the change is implemented purely with simple CSS a:hover, and for this
 			// reason, we simply disable the mousever effect for it.
-			if (!isMsie7) {
+			if (!isMsie7()) {
 				b.append(String.format(
 						"<script>\n" +
 

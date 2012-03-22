@@ -22,8 +22,6 @@ import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryResource;
 
-import org.opentox.csv.CSVFeatureValuesIterator;
-import org.opentox.dsl.OTCompound;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -50,6 +48,8 @@ public class StructureResource extends CatalogResource<Structure> {
 	public enum SearchMode {
 		auto, similarity, smarts
 	}
+	
+	
 	protected void parseParameters(Context context, Request request,Response response) throws ResourceException {
 		Form form = request.getResourceRef().getQueryAsForm();
 		
@@ -282,7 +282,7 @@ class PropertiesIterator extends CSVFeatureValuesIterator<Structure> {
 					r.setSimilarity(value);
 					continue;
 				}
-				OTCompound._titles title = OTCompound._titles.valueOf(header
+				Structure._titles title = Structure._titles.valueOf(header
 						.get(i).toString()
 						.replace("http://www.opentox.org/api/1.1#", ""));
 				// String[] v = value.split("|");

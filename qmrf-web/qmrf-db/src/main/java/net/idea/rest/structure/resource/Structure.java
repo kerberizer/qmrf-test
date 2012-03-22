@@ -12,10 +12,7 @@ import net.toxbank.client.resource.Protocol;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.opentox.rdf.OpenTox;
 import org.restlet.data.Reference;
-import org.restlet.data.Status;
-import org.restlet.resource.ResourceException;
 
 public class Structure implements IAbstractResource, Serializable {
 	/**
@@ -25,7 +22,54 @@ public class Structure implements IAbstractResource, Serializable {
 	protected int idchemical;
 	protected int idstructure;
 	protected Hashtable<String, String> properties; 
-	
+	public enum _titles { //from OpenTox.owl
+		Compound,
+		CASRN {
+			@Override
+			public String getTitle() {
+				return "CASRN";
+			}
+		},
+		EINECS,
+		IUPACName {
+			@Override
+			public String getTitle() {
+				return "IUPAC name";
+			}
+		},
+		ChemicalName {
+			@Override
+			public String getTitle() {
+				return "Chemical Name";
+			}
+		},
+		SMILES,
+		InChI_std {
+			@Override
+			public String getTitle() {
+				return "Standard InChI";
+			}
+		},
+		InChIKey_std {
+			@Override
+			public String getTitle() {
+				return "Standard InChI key";
+			}
+		},
+		REACHRegistrationDate {
+			@Override
+			public String getTitle() {
+				return "REACH registration date";
+			}
+		};
+		public String getTitle() {
+			return name();
+		}
+		@Override
+		public String toString() {
+			return getTitle();
+		}
+	}	
 	public Structure(URL resourceURL) {
 		setResourceURL(resourceURL);
 	}

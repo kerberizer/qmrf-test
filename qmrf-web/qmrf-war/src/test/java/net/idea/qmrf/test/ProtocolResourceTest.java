@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
-import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
@@ -13,15 +12,16 @@ import junit.framework.Assert;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.restnet.cli.task.RemoteTask;
 import net.idea.restnet.i.tools.DownloadTool;
 import net.toxbank.client.io.rdf.ProtocolIO;
 import net.toxbank.client.resource.Protocol;
 import net.toxbank.client.resource.Protocol.STATUS;
 
+import org.apache.http.entity.mime.MultipartEntity;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.junit.Test;
-import org.opentox.dsl.task.RemoteTask;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
@@ -158,7 +158,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		String org = String.format("http://localhost:%d%s/%s-2009-2-2", port,
 				Resources.protocol, DBProtocol.prefix);
 		RemoteTask task = testAsyncPoll(new Reference(org),	MediaType.TEXT_URI_LIST, null, Method.DELETE);
-		Assert.assertEquals(Status.SUCCESS_OK, task.getStatus());
+		Assert.assertEquals(Status.SUCCESS_OK.getCode(), task.getStatus());
 		// Assert.assertNull(task.getResult());
 		c = getConnection();
 		table = c.createQueryTable("EXPECTED",
@@ -325,7 +325,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		names[i] = ReadProtocol.fields.author_uri.name();
 		values[i + 1] = null;
 		names[i + 1] = ReadProtocol.fields.author_uri.name();
-		Representation rep = getMultipartWebFormRepresentation(names, values,
+		MultipartEntity rep = getMultipartWebFormRepresentation(names, values,
 				file, MediaType.APPLICATION_PDF.toString());
 
 		IDatabaseConnection c = getConnection();

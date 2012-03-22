@@ -19,23 +19,7 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	 * 
 	 */
 	private static final long serialVersionUID = 3212894867577087481L;
-	protected String title;
-	protected long record = 0;
-	protected boolean singleItem = false;
-	
-	public boolean isSingleItem() {
-		return singleItem;
-	}
-	public void setSingleItem(boolean singleItem) {
-		this.singleItem = singleItem;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}	
-	
+
 	public QMRFCatalogHTMLReporter(Request request, ResourceDoc doc) {
 		this(request, doc, new QMRF_HTMLBeauty(),"QMRF");
 
@@ -57,34 +41,7 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	protected boolean printAsTable() {
 		return false;
 	}
-	@Override
-	public void header(Writer w, Iterator<T> query) {
-		record = 0;
-		super.header(w, query);
-		
-		Reference uri = getRequest().getResourceRef().clone();
-		uri.setQuery(null);
-		
-		try {
-			if (printAsTable()) {
-				if (getTitle()!=null)
-				w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
-				w.write(printPageNavigator());
-				
-			} else {
-				if (getTitle()!=null)
-				w.write(String.format("<div class='ui-widget' style='margin-top:18px'><p><strong>%ss</strong></p></div>",getTitle()));
-				w.write(printPageNavigator());
-			}
-		} catch (Exception x) {
-			x.printStackTrace();
-		} finally {
-			try {
-				w.write("<div class='.ui-widget'>\n");
-			} catch (Exception x) {}
-		}
-		
-	}		
+	
 	
 	protected String printPageNavigator() {
 		if (singleItem || headless) return "";
@@ -111,12 +68,6 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 		String uri = super.getURI(item).trim();
 		return(String.format("<a href='%s'>%s</a>", uri,item));
 	}
-	@Override
-	public void footer(Writer output, Iterator<T> query) {
-		try {
-			output.write("</div");
-		} catch (Exception x) {}
-		super.footer(output, query);
-	}
+
 
 }
