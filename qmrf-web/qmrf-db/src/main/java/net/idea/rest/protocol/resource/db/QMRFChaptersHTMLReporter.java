@@ -119,7 +119,6 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 			boolean editable) {
 
 		try {
-			output.write("<div class='tabs'>\n");
 			if (qhtml==null) qhtml = new QMRF_xml2html();
 			
 			String attachmentURI = String.format(
@@ -155,8 +154,6 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 			String uploadUI = String.format("<a href='%s%s/%s' target='upload' title='Upload training and test datasets and related documents''>%s</a>",
 					uriReporter.getBaseReference(),Resources.editor,item.getIdentifier(),"Add attachment(s)");
 			output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
-			
-			output.write("\n</div>\n"); //tabs		
 			
 		} catch (Exception x) {
 			x.printStackTrace();

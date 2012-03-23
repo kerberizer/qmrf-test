@@ -182,7 +182,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// Don't style the submit button with jQ if the browser is MSIE 7.
 			if (!isMsie7()) w.write("<script>$(function() {$(\"#submit\").button();});</script>");
 			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true, ajaxOptions: {error: function( xhr, status, index, anchor ) {$( anchor.hash ).html(status );}}});});</script>");
-			w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
+			// The next line is commented, because we MUST NOT initialise any div-tabs before they get populated.
+			//w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
 			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
 			w.write("<script type='text/javascript'>function hideDiv(divId) {\n$('#'+divId).hide();}</script>\n");
 			w.write("<script type='text/javascript'>function toggleDiv(divId) {\n" +

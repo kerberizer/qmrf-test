@@ -193,10 +193,12 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			} // social IE7 if
 								
 			//output.write(String.format("<div class='tabs' id='%s_tabs'>\n",item.getIdentifier()));
-			output.write(String.format("<div id='%s_tabs' class='tabs'>\n",item.getIdentifier()));
-			//tabs
+			output.write(String.format("<div id='%s_tabs' class='tabs'>\n",item.getIdentifier())); //tabs
+			
+			// This will get replaced once AJAX kicks in.
+			output.write("<div class='loading'>Please wait while tabs are loading...</div>\n");
+			
 			output.write("\n</div>\n"); //tabs
-			output.write("</div>\n"); // protocol
 		} catch (Exception x) {
 			x.printStackTrace();
 		} finally {
@@ -264,10 +266,18 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		try {
 			output.write("<tr>\n");	
 			if (details & collapsed)
-				output.write(String.format("<td id='%s_toggler' class='togglerPlus' onClick=\"$('#%s_tabs').load('%s/chapters?headless=true&media=text/html');javascript:toggleDiv('%s');\">%s</td>",
+				output.write(String.format("<td id='%s_toggler' class='togglerPlus'>" +
+						"<script>\n" +
+						"$('#%s_toggler').one('click', function() { $('#%s_tabs').load('%s/chapters?headless=true&media=text/html'," +
+						"	function() { $('#%s .tabs').tabs({cache: true}); }); });\n" +
+						"$('#%s_toggler').click( function() { toggleDiv('%s'); });\n" +
+						"</script>%s</td>",
 						item.getIdentifier(), 
-						item.getIdentifier(),
+						item.getIdentifier(), 
+						item.getIdentifier(), 
 						uri,
+						item.getIdentifier(),
+						item.getIdentifier(),
 						item.getIdentifier(),
 						((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"<div>&nbsp;&nbsp;&nbsp;</div>":""));
 			else 
