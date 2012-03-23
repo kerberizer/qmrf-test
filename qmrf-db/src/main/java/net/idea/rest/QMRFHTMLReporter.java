@@ -5,15 +5,19 @@ import java.text.SimpleDateFormat;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.qmrf.client.QMRFRoles;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
+import net.idea.restnet.db.aalocal.DBRole;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
 import org.restlet.Request;
 import org.restlet.data.Reference;
 
 public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends QueryHTMLReporter<T,Q>  {
+	public static final DBRole managerRole = new DBRole(QMRFRoles.qmrf_manager.name(),QMRFRoles.qmrf_manager.toString());
+	public static final DBRole editorRole = new DBRole(QMRFRoles.qmrf_editor.name(),QMRFRoles.qmrf_editor.toString());
 
 	/**
 	 * 
