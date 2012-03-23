@@ -6,7 +6,6 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -15,7 +14,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 public class QMRF_xml2html {
-
+	protected Transformer transformer;
 	public QMRF_xml2html() {
 	
 	}
@@ -26,18 +25,24 @@ public class QMRF_xml2html {
 		return getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf2summary.xsl");
 	}
 	public void xml2summary(Source sourceDocument, Writer html) throws IOException, TransformerException {
-		InputStream xslt = getQMRF2SUMMARY_XSL();
+		InputStream xslt = null;
 		try {
-			transform(sourceDocument, new StreamSource(xslt), new StreamResult(html));
+			if (transformer==null) {
+				xslt = getQMRF2SUMMARY_XSL();
+				transformer = getTransformer(new StreamSource(xslt));
+			}
+			transformer.transform(sourceDocument,  new StreamResult(html));			
 		} finally {
-			try {xslt.close();} catch (Exception x) {}
+			try {if (xslt!=null) xslt.close();} catch (Exception x) {}
 		}
 	}
+	
 	
 	public void xml2html(Source sourceDocument, Writer html) throws IOException, TransformerException {
 		InputStream xslt = getQMRF2HTML_XSL();
 		try {
-			transform(sourceDocument, new StreamSource(xslt), new StreamResult(html));
+			Transformer transformer = getTransformer(new StreamSource(xslt));
+			transformer.transform(sourceDocument,  new StreamResult(html));
 		} finally {
 			try {xslt.close();} catch (Exception x) {}
 		}
@@ -45,21 +50,24 @@ public class QMRF_xml2html {
 	public void xml2html(Source sourceDocument, OutputStream html) throws IOException, TransformerException {
 		InputStream xslt = getQMRF2HTML_XSL();
 		try {
-			transform(sourceDocument, new StreamSource(xslt), new StreamResult(html));
+			Transformer transformer = getTransformer(new StreamSource(xslt));
+			transformer.transform(sourceDocument,  new StreamResult(html));
 		} finally {
 			try {xslt.close();} catch (Exception x) {}
 		}
 	}
 	
 	public void xsltTransform(InputStream xml, InputStream xslt,OutputStream out) throws IOException, TransformerException {
-        transform(new StreamSource(xml), new StreamSource(xslt), new StreamResult(out));
+		Transformer transformer = getTransformer(new StreamSource(xslt));
+		transformer.transform(new StreamSource(xml),  new StreamResult(out));
 	}
 	
-	protected void transform(Source sourceDocument, Source xslt, Result result)   throws IOException, TransformerException {
-			TransformerFactory xfactory = TransformerFactory.newInstance();
-			Transformer transformer = xfactory.newTransformer(xslt);
-			transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "qmrf.dtd");
-			transformer.transform(sourceDocument, result);
-	}	
+	protected Transformer getTransformer(Source xslt)   throws IOException, TransformerException {
+		TransformerFactory xfactory = TransformerFactory.newInstance();
+		Transformer transformer = xfactory.newTransformer(xslt);
+		transformer.setOutputProperty(OutputKeys.DOCTYPE_SYSTEM, "qmrf.dtd");
+		return transformer;
+	}
+
 
 }
