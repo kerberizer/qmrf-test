@@ -11,6 +11,7 @@ import javax.xml.transform.dom.DOMSource;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.converters.QMRF_xml2html;
 import net.idea.rest.QMRFHTMLReporter;
@@ -28,8 +29,10 @@ import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.db.QueryURIReporter;
 
 import org.restlet.Request;
+import org.restlet.data.ClientInfo;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
+import org.restlet.security.Role;
 import org.w3c.dom.Document;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
@@ -129,8 +132,18 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		return null;
 	}
 
+	protected boolean isAdminOrEditor() {
+		ClientInfo clientInfo = uriReporter.getRequest().getClientInfo();
+		if (clientInfo==null) return false;
+		
+		return clientInfo.getRoles().indexOf(managerRole)>=0
+			   || 
+			   clientInfo.getRoles().indexOf(editorRole) >=0;
+
+	}
 	@Override
 	protected void printTableHeader(Writer w) throws Exception {
+		boolean isAdminOrEditor = isAdminOrEditor();
 		w.write("<table width='100%'>\n");
 		w.write(String.format("<tr>\n" +
 				"<th></th>\n" +
@@ -145,8 +158,8 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				collapsed?"Title":"",
 				collapsed?"Last updated":"",
 				collapsed?"Download":"",
-				collapsed?"Owner":"",
-				collapsed?"Manage":""
+				collapsed?isAdminOrEditor?"Owner":"":"",
+				collapsed?isAdminOrEditor?"Manage":"":""
 		));
 	}
 
@@ -190,7 +203,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		output.write("<div class='accordion'>");
 		if (qhtml==null) qhtml = new QMRF_xml2html();
         DOMSource source = getDOMSource(item);
-        qhtml.xml2html(source,output);
+        qhtml.xml2summary(source,output);
 		output.write("</div>");
 
 		output.write("</div>");
@@ -269,11 +282,13 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<li><img src='%s/images/qmrf/attachments.png' %s> %s<span></span></li>",
 					baseRef,imgstyle,attachmentURI));
 			output.write("</ul>\n");
+			long now = System.currentTimeMillis();
 			try {
 				qhtml.xml2summary(getDOMSource(item),output);
 			} catch (Exception x) {
 				x.printStackTrace();
 			}
+			System.err.println(System.currentTimeMillis()-now);
 			String uploadUI = String.format("<a href='%s%s/%s' target='upload' title='Upload training and test datasets and related documents''>%s</a>",
 					uriReporter.getBaseReference(),Resources.editor,item.getIdentifier(),"Add attachment(s)");
 			output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
@@ -370,7 +385,8 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<td class='contentTable'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
 			output.write(String.format("<td class='contentTable'>%s</td>",printDownloadLinks(uri)));
 			
-			String owner = item.isPublished()?"":String.format("%s %s",item.getOwner().getFirstname(),item.getOwner().getLastname());
+			String owner = !item.isPublished() || isAdminOrEditor()?
+							String.format("%s %s",item.getOwner().getFirstname(),item.getOwner().getLastname()):"";
 			
 			output.write(String.format("<td class='contentTable'>%s</td>", owner));
 			
