@@ -4,6 +4,7 @@ import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.protocol.attachments.AttachmentDatasetResource;
 import net.idea.rest.protocol.attachments.ProtocolAttachmentResource;
+import net.idea.rest.protocol.resource.db.ProtocolChaptersResource;
 import net.idea.rest.protocol.resource.db.ProtocolDBResource;
 import net.idea.rest.protocol.resource.db.ProtocolVersionDBResource;
 import net.idea.rest.structure.resource.DatasetResource;
@@ -29,6 +30,7 @@ public class ProtocolRouter extends MyRouter {
 							DatasetResource.class);
 		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.versions), ProtocolVersionDBResource.class);
 		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.authors), ProtocolAuthorsResource.class);
+		attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.chapter), ProtocolChaptersResource.class);
 
 		//	setCookieUserRouter.attach(Resources.dataset, DatasetResource.class);
 		
