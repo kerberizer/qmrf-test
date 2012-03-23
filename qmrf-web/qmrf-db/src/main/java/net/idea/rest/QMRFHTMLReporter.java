@@ -24,7 +24,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	 */
 	private static final long serialVersionUID = 3253360243151440939L;
 	protected long record = 0;
-	protected SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yy");
+	protected SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	protected boolean editable = false;
 	protected String title;
 	protected boolean headless = false;
