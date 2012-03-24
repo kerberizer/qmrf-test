@@ -460,6 +460,12 @@ td.socialTool {
 	width: 25%;
 }
 
+div.loading {
+	font-size: 20px;
+	margin-top: 40px;
+	text-align: center;
+}
+
 label {
 	COLOR: #516373;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;

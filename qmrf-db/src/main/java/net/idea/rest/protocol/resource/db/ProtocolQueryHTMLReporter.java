@@ -1,19 +1,12 @@
 package net.idea.rest.protocol.resource.db;
 
-import java.io.StringReader;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Date;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.dom.DOMSource;
-
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
-import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
-import net.idea.qmrf.converters.QMRF_xml2html;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
@@ -32,13 +25,6 @@ import org.restlet.Request;
 import org.restlet.data.ClientInfo;
 import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
-import org.restlet.security.Role;
-import org.w3c.dom.Document;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
 
 public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQueryRetrieval<DBProtocol>> {
@@ -46,32 +32,12 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	 * 
 	 */
 	private static final long serialVersionUID = -7959033048710547839L;
-	protected final static String[][] chapters = {
-		//	{"QSAR identifier","Identifier"},
-			{"General information","General"},
-			{"Defining the endpoint - OECD Principle 1","Endpoint"},
-			{"Defining the algorithm - OECD Principle 2","Algorithm"},
-			{"Defining the applicability domain - OECD Principle 3","App. domain"},
-			{"Internal validation - OECD Principle 4","Robustness"},
-			{"External validation - OECD Principle 4","Predictivity"},
-			{"Providing a mechanistic interpretation - OECD Principle 5","Interpretation"},
-			{"Miscellaneous information (comments, bibliography)","Bibliography"},
-	};	
+
 	protected boolean paging = true;
 	protected boolean details = true;
 	protected GroupQueryURIReporter<IQueryRetrieval<IDBGroup>> groupReporter;
 	protected UserURIReporter<IQueryRetrieval<DBUser>> userReporter;
 
-	protected DocumentBuilder builder;
-	protected DocumentBuilderFactory factory;
-	protected QMRF_xml2html qhtml;
-	protected EntityResolver dtdresolver;
-	public EntityResolver getDtdresolver() {
-		return dtdresolver;
-	}
-	public void setDtdresolver(EntityResolver dtdresolver) {
-		this.dtdresolver = dtdresolver;
-	}
 	public ProtocolQueryHTMLReporter() {
 		this(null,true,false,true,false);
 	}
@@ -163,37 +129,6 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		));
 	}
 
-	protected DOMSource getDOMSource(DBProtocol item) throws Exception {
-		  String xml = item.getAbstract();
-		  if (factory==null) {
-			    factory = DocumentBuilderFactory.newInstance();
-		       // factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
-		        factory.setValidating(true);
-		  }
-		   if (builder==null) {
-			   builder = factory.newDocumentBuilder();
-			   builder.setErrorHandler(new ErrorHandler() {
-				@Override
-				public void warning(SAXParseException exception) throws SAXException {
-					
-				}
-				
-				@Override
-				public void fatalError(SAXParseException exception) throws SAXException {
-					
-				}
-				
-				@Override
-				public void error(SAXParseException exception) throws SAXException {
-					
-				}
-			});
-			   builder.setEntityResolver(dtdresolver);
-		   }
-		   Document xmlDocument = builder.parse( new InputSource(new StringReader(xml)));
-		   
-		   return new DOMSource(xmlDocument);
-	}
 	protected void printHTML(Writer output, String uri, DBProtocol item, boolean hidden) throws Exception {
 		output.write(String.format("<div id='%s' class='documentheader' style='display: %s;''>",item.getIdentifier(),hidden?"none":""));
 		if (!hidden) {
@@ -201,18 +136,14 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 						uri,ReadProtocol.fields.identifier.getValue(item),item.getTitle(),printDownloadLinks(uri)));
 		}
 		output.write("<div class='accordion'>");
-		if (qhtml==null) qhtml = new QMRF_xml2html();
-        DOMSource source = getDOMSource(item);
-        qhtml.xml2summary(source,output);
+		//tabs
 		output.write("</div>");
 
 		output.write("</div>");
 	}
 	
 	protected void printForm(Writer output, String uri, DBProtocol item, boolean hidden) {
-		String attachmentURI = String.format(
-				"<a href=\"%s%s?headless=true&media=text/html\" title=\"Attachments\">Attachments</a>",
-				uri,Resources.attachment);
+
 		
 		String qmrf_number = "";
 		try {
@@ -223,7 +154,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					printDownloadLinks(uri)
 					);
 			
-			if (qhtml==null) qhtml = new QMRF_xml2html();
+	
 	        
 			output.write(String.format(
 			"<div id='%s' style='display: %s;'>\n", item.getIdentifier(), hidden?"none":""));
@@ -261,40 +192,13 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 
 			} // social IE7 if
 								
-			output.write("<div class='tabs'>\n");
+			//output.write(String.format("<div class='tabs' id='%s_tabs'>\n",item.getIdentifier()));
+			output.write(String.format("<div id='%s_tabs' class='tabs'>\n",item.getIdentifier())); //tabs
 			
-			String baseRef = uriReporter.getBaseReference().toString();
-
-			String imgstyle = "style='float:left; margin-left:5px; margin-top:5px; margin-right:0px;'";
-			output.write("<ul>\n");
-			for (int i=0; i < chapters.length; i++) {
-				output.write(String.format(
-				"<li><img src='%s/images/qmrf/chapter%d.png' %s><a style='margin-left:0px;' href='#tabs-%d' title='%d.%s'>%s</a></li>",
-				baseRef,
-				(i+2),
-				imgstyle,
-				(i+2),
-				(i+2),
-				chapters[i][0],
-				chapters[i][1]
-				));
-			}
-			output.write(String.format("<li><img src='%s/images/qmrf/attachments.png' %s> %s<span></span></li>",
-					baseRef,imgstyle,attachmentURI));
-			output.write("</ul>\n");
-			long now = System.currentTimeMillis();
-			try {
-				qhtml.xml2summary(getDOMSource(item),output);
-			} catch (Exception x) {
-				x.printStackTrace();
-			}
-			System.err.println(System.currentTimeMillis()-now);
-			String uploadUI = String.format("<a href='%s%s/%s' target='upload' title='Upload training and test datasets and related documents''>%s</a>",
-					uriReporter.getBaseReference(),Resources.editor,item.getIdentifier(),"Add attachment(s)");
-			output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
+			// This will get replaced once AJAX kicks in.
+			output.write("<div class='loading'>Please wait while tabs are loading...</div>\n");
 			
 			output.write("\n</div>\n"); //tabs
-			output.write("</div>\n"); // protocol
 		} catch (Exception x) {
 			x.printStackTrace();
 		} finally {
@@ -362,8 +266,19 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		try {
 			output.write("<tr>\n");	
 			if (details & collapsed)
-				output.write(String.format("<td id='%s_toggler' class='togglerPlus' onClick=\"javascript:toggleDiv('%s');\">%s</td>",
-						item.getIdentifier(), item.getIdentifier(),
+				output.write(String.format("<td id='%s_toggler' class='togglerPlus'>" +
+						"<script>\n" +
+						"$('#%s_toggler').one('click', function() { $('#%s_tabs').load('%s/chapters?headless=true&media=text/html'," +
+						"	function() { $('#%s .tabs').tabs({cache: true}); }); });\n" +
+						"$('#%s_toggler').click( function() { toggleDiv('%s'); });\n" +
+						"</script>%s</td>",
+						item.getIdentifier(), 
+						item.getIdentifier(), 
+						item.getIdentifier(), 
+						uri,
+						item.getIdentifier(),
+						item.getIdentifier(),
+						item.getIdentifier(),
 						((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"<div>&nbsp;&nbsp;&nbsp;</div>":""));
 			else 
 				output.write("<td class='contentTable'></td>");
