@@ -122,7 +122,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	}
 	@Override
 	protected HTMLBeauty createHTMLBeauty() {
-		return new QMRF_HTMLBeauty();
+		return htmlBeauty;
 	}
 	
 	abstract protected void printTableHeader(Writer output) throws Exception;

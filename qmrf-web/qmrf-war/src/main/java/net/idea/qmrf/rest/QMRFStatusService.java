@@ -3,6 +3,7 @@ package net.idea.qmrf.rest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.exception.RResourceException;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -51,7 +52,7 @@ public class QMRFStatusService extends StatusService {
 			if (wrapInHTML) {
 				StringWriter w = new StringWriter();
 				
-				if(htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty();
+				if(htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.protocol);
 				htmlBeauty.writeHTMLHeader(w, status.getName(), request,null);
 				
 				StringWriter details = null;
@@ -100,7 +101,7 @@ public class QMRFStatusService extends StatusService {
 						)
 				);
 				
-				if(htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty();
+				if(htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.protocol);
 				htmlBeauty.writeHTMLFooter(w, status.getName(), request);
 				return new StringRepresentation(w.toString(),MediaType.TEXT_HTML);
 			} else {

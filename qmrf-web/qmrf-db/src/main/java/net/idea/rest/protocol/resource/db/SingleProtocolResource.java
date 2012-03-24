@@ -1,7 +1,11 @@
 package net.idea.rest.protocol.resource.db;
 
+
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.restnet.c.html.HTMLBeauty;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -38,5 +42,14 @@ public class SingleProtocolResource  extends ProtocolDBResource<ReadProtocol> {
 					x
 					);
 		}
+	}
+	
+
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		if (htmlBeauty==null) {
+			htmlBeauty = new QMRF_HTMLBeauty(Resources.protocol,true);
+		}
+		return htmlBeauty;
 	}
 }

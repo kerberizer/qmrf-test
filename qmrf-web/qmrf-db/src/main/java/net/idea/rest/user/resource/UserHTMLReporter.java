@@ -159,9 +159,8 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 class UserHTMLBeauty extends QMRF_HTMLBeauty {
 	
 	public UserHTMLBeauty() {
-		super();
+		super(Resources.user);
 		setSearchTitle("Search for users and authors");
-		setSearchURI(Resources.user);
 	}
 	@Override
 	protected String searchMenu(Reference baseReference,Form form)  {

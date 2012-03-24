@@ -116,7 +116,7 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 class GroupHTMLBeauty extends QMRF_HTMLBeauty {
 	
 	public GroupHTMLBeauty(String searchURI) {
-		super();
+		super(searchURI);
 		setSearchTitle("Search for organisations");
 		setSearchURI(searchURI);
 	}

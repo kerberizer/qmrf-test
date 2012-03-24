@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.reporter.Reporter;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -21,7 +22,7 @@ public class QMRFTaskResource extends TaskResource<String> {
 
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		return new QMRF_HTMLBeauty();
+		return new QMRF_HTMLBeauty(Resources.protocol);
 	}
 	
 	@Override

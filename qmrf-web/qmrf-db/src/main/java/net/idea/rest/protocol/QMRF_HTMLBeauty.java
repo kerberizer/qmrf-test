@@ -19,10 +19,8 @@ import org.restlet.data.Reference;
 import org.restlet.security.Role;
 
 public class QMRF_HTMLBeauty extends HTMLBeauty {
-	private boolean loadTabs = false;
-	public boolean isLoadTabs() {
-		return loadTabs;
-	}
+	private boolean loadTabs;
+
 	public enum update_mode {
 		update {
 			@Override
@@ -47,21 +45,27 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	protected String condition;
 	protected SearchMode option;
 
+	protected void setLoadTabs(boolean loadTabs) {
+		this.loadTabs = loadTabs;
+	}
+	public boolean isLoadTabs() {
+		return loadTabs;
+	}
+	
 	public String getSearchQuery() {
 		return searchQuery;
 	}
 	public void setSearchQuery(String searchQuery) {
 		this.searchQuery = searchQuery;
 	}
-	
-	public QMRF_HTMLBeauty() {
-		this(Resources.protocol);
 
-	};
 	public QMRF_HTMLBeauty(String searchURI) {
+		this(searchURI,!Resources.protocol.equals(searchURI));
+	}
+	public QMRF_HTMLBeauty(String searchURI,boolean loadTabs) {
 		super(searchURI==null?Resources.protocol:searchURI);
 		setSearchTitle("QMRF documents search");
-
+		setLoadTabs(loadTabs);
 	};
 
 		@Override
@@ -509,11 +513,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			return searchURI;
 		}
 
+		/*
 		public void setSearchURI(String searchURI) {
 			this.searchURI = searchURI;
-			loadTabs = !Resources.protocol.equals(searchURI);
 		}
-
+		*/
 		
 		public String getSearchTitle() {
 			return searchTitle;

@@ -90,7 +90,7 @@ public class UnpublishedProtocolsResource<Q extends IQueryRetrieval<DBProtocol>>
 
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		if (htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.unpublished);
+		if (htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.unpublished,false);
 		return htmlBeauty;
 	}
 
