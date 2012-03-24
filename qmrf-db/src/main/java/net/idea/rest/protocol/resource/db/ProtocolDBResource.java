@@ -9,12 +9,14 @@ import net.idea.modbcum.i.IQueryObject;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.q.conditions.StringCondition;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.db.exceptions.MethodNotAllowedException;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.ReadProtocolByAuthor;
 import net.idea.rest.protocol.db.ReadProtocolByEndpoint;
@@ -27,6 +29,7 @@ import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.PageParams;
 import net.idea.restnet.c.RepresentationConvertor;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.c.task.TaskCreator;
@@ -136,6 +139,15 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		rep.setHtmlBeauty(getHTMLBeauty());
 		return rep;
 	}
+	
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		if (htmlBeauty==null) {
+			htmlBeauty = new QMRF_HTMLBeauty(Resources.protocol);
+		}
+		return htmlBeauty;
+	}
+	
 	protected boolean isEditable() {
 		return editable
 			   ?version?true:!singleItem	

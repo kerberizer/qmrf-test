@@ -2,6 +2,7 @@ package net.idea.qmrf.aa;
 
 import java.util.Iterator;
 
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.aa.opensso.policy.OpenSSOPoliciesResource;
 import net.idea.restnet.aa.opensso.policy.Policy;
@@ -21,6 +22,6 @@ public class QMRFOpenSSOPoliciesResource extends OpenSSOPoliciesResource {
 	}
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		return new QMRF_HTMLBeauty();
+		return new QMRF_HTMLBeauty(Resources.protocol);
 	}
 }

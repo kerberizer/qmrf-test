@@ -20,10 +20,6 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	 */
 	private static final long serialVersionUID = 3212894867577087481L;
 
-	public QMRFCatalogHTMLReporter(Request request, ResourceDoc doc) {
-		this(request, doc, new QMRF_HTMLBeauty(),"QMRF");
-
-	}
 	
 	public QMRFCatalogHTMLReporter(Request request, ResourceDoc doc,
 			HTMLBeauty htmlbeauty,String title) {
@@ -35,7 +31,7 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 	
 	@Override
 	public HTMLBeauty getHtmlBeauty() {
-		return new QMRF_HTMLBeauty();
+		return htmlBeauty;
 	}
 	
 	protected boolean printAsTable() {

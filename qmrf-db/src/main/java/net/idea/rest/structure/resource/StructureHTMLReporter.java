@@ -190,9 +190,8 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	}
 
 	public StructureHTMLBeauty(String queryService) {
-		super();
+		super(Resources.chemical);
 		this.queryService = queryService;
-		setSearchURI(Resources.chemical);
 	}
 
 	@Override

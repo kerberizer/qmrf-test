@@ -1,5 +1,6 @@
 package net.idea.qmrf.aa;
 
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.aa.local.UserLoginPOSTResource;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -10,6 +11,6 @@ public class QMRFLoginPOSTResource<U extends User> extends UserLoginPOSTResource
 
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		return new QMRF_HTMLBeauty();
+		return new QMRF_HTMLBeauty(Resources.protocol);
 	}
 }

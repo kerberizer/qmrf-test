@@ -40,7 +40,7 @@ public class QMRFAdminResource extends CatalogResource<AdminItem> {
 	}
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		return new QMRF_HTMLBeauty();
+		return new QMRF_HTMLBeauty(Resources.protocol);
 	}
 	
 	protected Reporter createHTMLReporter(boolean headles) {

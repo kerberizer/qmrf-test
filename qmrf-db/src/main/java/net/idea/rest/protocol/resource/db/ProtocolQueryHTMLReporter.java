@@ -144,9 +144,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	
 	protected void printForm(Writer output, String uri, DBProtocol item, boolean hidden) {
 
-		
 		String qmrf_number = "";
 		try {
+			
 			qmrf_number = 	String.format(
 					"<div class='structureright'><a href='%s'>%s</a><br>%s\n</div>\n",
 					uri,
@@ -154,7 +154,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					printDownloadLinks(uri)
 					);
 			
-	
+
 	        
 			output.write(String.format(
 			"<div id='%s' style='display: %s;'>\n", item.getIdentifier(), hidden?"none":""));
@@ -197,8 +197,17 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			
 			// This will get replaced once AJAX kicks in.
 			output.write("<div class='loading'>Please wait while tabs are loading...</div>\n");
-			
+
 			output.write("\n</div>\n"); //tabs
+			
+			if (!hidden) {
+				output.write(String.format(
+						"<script>\n" +
+						"$('#%s_tabs').load('%s/chapters?headless=true&media=text/html'," +
+						"	function() { $('#%s .tabs').tabs({cache: true}); });\n" +				
+						"</script>",item.getIdentifier(),uri,item.getIdentifier(),item.getIdentifier()));
+				
+			}
 		} catch (Exception x) {
 			x.printStackTrace();
 		} finally {
@@ -301,7 +310,8 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<td class='contentTable'>%s</td>",printDownloadLinks(uri)));
 			
 			String owner = !item.isPublished() || isAdminOrEditor()?
-							String.format("%s %s",item.getOwner().getFirstname(),item.getOwner().getLastname()):"";
+							String.format("%s %s",item.getOwner().getFirstname()==null?"":item.getOwner().getFirstname(),
+												  item.getOwner().getLastname()==null?"":item.getOwner().getLastname()):"";
 			
 			output.write(String.format("<td class='contentTable'>%s</td>", owner));
 			
