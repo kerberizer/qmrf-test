@@ -196,8 +196,8 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<div id='%s_tabs' class='tabs'>\n",item.getIdentifier())); //tabs
 			
 			// This will get replaced once AJAX kicks in.
-			output.write("<div class='loading'>Please wait while tabs are loading...</div>\n");
-
+			output.write("<div class='loading'>Please wait while QMRF document chapters are loading...</div>\n");
+			
 			output.write("\n</div>\n"); //tabs
 			
 			if (!hidden) {
