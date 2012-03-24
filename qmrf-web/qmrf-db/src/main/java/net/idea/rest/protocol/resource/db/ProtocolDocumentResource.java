@@ -15,16 +15,10 @@ import org.restlet.data.Status;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
-public class ProtocolDocumentResource extends ProtocolDBResource<ReadProtocol> {
-	protected String suffix = Resources.document;
+public class ProtocolDocumentResource extends SingleProtocolResource {
 	
 	public ProtocolDocumentResource() {
-		this(Resources.document);
-	}
-	public ProtocolDocumentResource(String suffix) {
-		super();
-		this.suffix = suffix;
-		singleItem = true;
+		super(Resources.document);
 	}
 	
 	@Override
@@ -56,26 +50,7 @@ public class ProtocolDocumentResource extends ProtocolDBResource<ReadProtocol> {
 		return new FileReporter();
 	}
 	
-	@Override
-	protected ReadProtocol createQuery(Context context, Request request, Response response)
-			throws ResourceException {
-		final Object key = request.getAttributes().get(FileResource.resourceKey);		
-		try {
-			if (key==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
-			else {
-				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-				return new ReadProtocol(id[0],id[1],id[2]);
-			}
-		} catch (ResourceException x) {
-			throw x;
-		} catch (Exception x) {
-			throw new ResourceException(
-					Status.CLIENT_ERROR_BAD_REQUEST,
-					String.format("Invalid protocol id %d",key),
-					x
-					);
-		}
-	}
+	
 	
 	@Override
 	protected String getExtension(MediaType mediaType) {

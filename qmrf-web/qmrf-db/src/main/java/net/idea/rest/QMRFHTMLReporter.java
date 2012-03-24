@@ -74,7 +74,8 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 			x.printStackTrace();
 		} finally {
 			try {
-				w.write("<div class='ui-widget'>\n");
+				if (!headless)
+					w.write("<div class='ui-widget'>\n");
 				if (printAsTable()) {
 					printTableHeader(w);
 				}
