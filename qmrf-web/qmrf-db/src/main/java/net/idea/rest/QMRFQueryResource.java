@@ -58,7 +58,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		if (htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty();
+		if (htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.protocol);
 		return htmlBeauty;
 	}
 	
