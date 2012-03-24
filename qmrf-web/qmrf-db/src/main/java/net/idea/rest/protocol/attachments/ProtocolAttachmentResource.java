@@ -12,6 +12,7 @@ import net.idea.rest.FileResource;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
@@ -20,6 +21,7 @@ import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
 import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.TaskCreator;
 import net.idea.restnet.db.DBConnection;
@@ -83,7 +85,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 	
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
-		AttachmentHTMLReporter rep = new AttachmentHTMLReporter(protocol,getRequest(),true,null);
+		AttachmentHTMLReporter rep = new AttachmentHTMLReporter(protocol,getRequest(),true,null,getHTMLBeauty());
 		rep.setHeadless(headless);
 		return rep;
 	}
@@ -232,5 +234,9 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 
 	}
 	
-	
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		if (htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.attachment);
+		return htmlBeauty;
+	}
 }
