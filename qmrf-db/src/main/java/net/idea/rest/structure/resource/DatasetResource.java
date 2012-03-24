@@ -48,13 +48,10 @@ public class DatasetResource extends StructureResource {
 			ref.addQueryParameter("pagesize", Long.toString(parameters.getPageSize()));
 			ref.addQueryParameter("page", Integer.toString(parameters.getPage()));
 
-			try {
-				List<Structure> records = Structure.retrieveStructures(
-						queryService, ref.toString());
-				return records.iterator();
-			} catch (Exception x) {
-				throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search,null, ref.toString(), x);
-			}
+			List<Structure> records = Structure.retrieveStructures(
+					queryService, ref.toString());
+			return records.iterator();
+
 		} catch (ResourceException x) {
 			throw x;
 		} catch (Exception x) {
