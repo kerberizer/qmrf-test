@@ -10,9 +10,13 @@ import net.idea.restnet.cli.AbstractClient;
 import net.idea.restnet.cli.IAbstractResource;
 import net.toxbank.client.resource.Protocol;
 
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.restlet.data.Reference;
+import org.restlet.resource.ResourceException;
 
 public class Structure implements IAbstractResource, Serializable {
 	/**
@@ -207,7 +211,10 @@ public class Structure implements IAbstractResource, Serializable {
 			}
 			return records;
 		} catch (Exception x) {
-			throw x;
+			throw new ResourceException(HttpStatus.SC_BAD_GATEWAY, "Failed to retrieve chemical structures", String.format(
+					"Error when contacting chemical structure service at %s",
+					ref),
+					"http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html", x);
 		} finally {
 			try {httpcli.getConnectionManager().shutdown(); } catch (Exception x) {}
 		}
