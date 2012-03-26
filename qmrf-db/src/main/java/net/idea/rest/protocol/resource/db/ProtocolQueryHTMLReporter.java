@@ -229,6 +229,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		MediaType[] mimes = {
 				MediaType.APPLICATION_PDF,
 				MediaType.APPLICATION_EXCEL,
+				MediaType.APPLICATION_WORD,
 				MediaType.APPLICATION_XML,
 				null
 				};
@@ -236,6 +237,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		String[] image = {
 				"pdf.png",
 				"excel.png",
+				"word.png",
 				"xml.png",
 				"qmrf/attachments.png"
 		};	
@@ -243,6 +245,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		String[] description = {
 				"Download as PDF",
 				"Download as MS Excel",
+				"Download as MS Word",
 				"Download as QMRF XML",
 				"Browse attachments"
 		};			

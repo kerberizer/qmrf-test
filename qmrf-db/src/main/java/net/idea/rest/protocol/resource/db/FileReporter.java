@@ -35,14 +35,10 @@ public class FileReporter extends QueryReporter<DBAttachment, IQueryRetrieval<DB
 	@Override
 	public Object processItem(DBAttachment item) throws Exception {
 		try {
-			System.out.println(item.getResourceURL().getFile());
-			System.out.println(item.getResourceURL().toExternalForm());
-			System.out.println(item.getResourceURL().toURI());
 			File file = new File(item.getResourceURL().toURI());
 			setOutput(new FileRepresentation(file, new MediaType(item.getMediaType())));
 			return item;
 		} catch (Exception x) {
-			x.printStackTrace();
 			throw new AmbitException(item.getResourceURL().toExternalForm(),x);
 		}
 	}
