@@ -95,6 +95,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				MediaType.TEXT_RDF_N3,
 				MediaType.APPLICATION_PDF,
 				MediaType.APPLICATION_EXCEL,
+				MediaType.APPLICATION_WORD,
 				MediaType.APPLICATION_JAVA_OBJECT
 		});		
 	}
