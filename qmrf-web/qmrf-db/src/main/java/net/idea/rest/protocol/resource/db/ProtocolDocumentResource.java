@@ -1,16 +1,10 @@
 package net.idea.rest.protocol.resource.db;
 
 import net.idea.qmrf.client.Resources;
-import net.idea.rest.FileResource;
-import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
-import org.restlet.Context;
-import org.restlet.Request;
-import org.restlet.Response;
 import org.restlet.data.MediaType;
-import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;

@@ -2,12 +2,16 @@ package net.idea.rest.protocol.resource.db;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
+
+import javax.xml.transform.stream.StreamSource;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.r.QueryReporter;
 import net.idea.qmrf.converters.QMRF_xml2excel;
+import net.idea.qmrf.converters.QMRF_xml2html;
 import net.idea.qmrf.converters.QMRF_xml2pdf;
 import net.idea.rest.protocol.DBProtocol;
 
@@ -33,6 +37,8 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 			this.media = media; fileExtension = "pdf";
 		} else if (MediaType.APPLICATION_EXCEL.equals(media)) {
 			this.media = media; fileExtension = "xls";
+		} else if (MediaType.APPLICATION_WORD.equals(media)) {
+			this.media = media; fileExtension = "doc";
 		}
 		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE,media.toString());
 	}
@@ -66,6 +72,10 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 				 QMRF_xml2excel qexcel = new QMRF_xml2excel();
 				 qexcel.xml2excel(new InputSource(new StringReader(xml)),getOutput());	      
 		         
+			} else if (MediaType.APPLICATION_WORD.equals(media)) {
+				 QMRF_xml2html qhtml = new QMRF_xml2html();
+				 OutputStreamWriter writer = new OutputStreamWriter(getOutput());
+				 qhtml.xml2summary(new StreamSource(new StringReader(xml)),writer);	  
 			}
 			
 		} catch (IOException x) {
