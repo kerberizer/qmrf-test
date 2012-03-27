@@ -66,6 +66,11 @@
     </div>
     </div>
         
+    <div id='tabs-10'>
+    <div  class='summary'>
+    	<xsl:apply-templates select="QMRF_Summary"/>	
+    </div>
+    </div>        
 </xsl:template>
 
 <xsl:template match="QSAR_identifier">
@@ -615,6 +620,50 @@
   <xsl:apply-templates select="bibliography"/>
      </p></div>  
 </xsl:template>
+
+
+<!-- 10. Summary -->
+
+<xsl:template match="QMRF_Summary">
+  <h2><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></h2>
+  <div class='summary'><p>
+  <xsl:apply-templates select="QMRF_number"/>
+     </p></div>  
+  <div class='summary'><p>
+  <xsl:apply-templates select="date_publication"/>
+     </p></div>  
+  <div class='summary'><p>
+  <xsl:apply-templates select="keywords"/>
+     </p></div>  
+            <div class='summary'><p>
+  <xsl:apply-templates select="summary_comments"/>
+     </p></div>  
+</xsl:template>
+
+<xsl:template match="summary_comments">
+    <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
+    <xsl:text> </xsl:text>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
+<xsl:template match="keywords">
+    <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
+    <xsl:text> </xsl:text>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
+<xsl:template match="date_publication">
+    <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
+    <xsl:text> </xsl:text>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
+<xsl:template match="QMRF_number">
+    <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
+    <xsl:text> </xsl:text>
+  <xsl:value-of select="." disable-output-escaping="yes"/>	
+</xsl:template>
+
 
 <xsl:template match="comments">
     <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
