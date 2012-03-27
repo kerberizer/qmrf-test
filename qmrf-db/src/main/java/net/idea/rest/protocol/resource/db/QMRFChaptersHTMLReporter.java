@@ -35,6 +35,13 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 	protected DocumentBuilderFactory factory;
 	protected QMRF_xml2html qhtml;
 	protected EntityResolver dtdresolver;
+	protected boolean plainHtmlHeader = false;
+	public boolean isPlainHtmlHeader() {
+		return plainHtmlHeader;
+	}
+	public void setPlainHtmlHeader(boolean plainHtmlHeader) {
+		this.plainHtmlHeader = plainHtmlHeader;
+	}
 	public EntityResolver getDtdresolver() {
 		return dtdresolver;
 	}
@@ -51,6 +58,7 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 			{"External validation - OECD Principle 4","Predictivity"},
 			{"Providing a mechanistic interpretation - OECD Principle 5","Interpretation"},
 			{"Miscellaneous information (comments, bibliography)","Bibliography"},
+			{"Summary (JRC QSAR Model Database)","Summary"}
 	};	
 	
 	public QMRFChaptersHTMLReporter(Request request, boolean collapsed,
@@ -127,23 +135,26 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 			
 			String baseRef = uriReporter.getBaseReference().toString();
 	
-			String imgstyle = "style='float:left; margin-left:5px; margin-top:5px; margin-right:0px;'";
-			output.write("<ul>\n");
-			for (int i=0; i < chapters.length; i++) {
-				output.write(String.format(
-				"<li><img src='%s/images/qmrf/chapter%d.png' %s><a style='margin-left:0px;' href='#tabs-%d' title='%d.%s'>%s</a></li>",
-				baseRef,
-				(i+2),
-				imgstyle,
-				(i+2),
-				(i+2),
-				chapters[i][0],
-				chapters[i][1]
-				));
+			if (!plainHtmlHeader) {
+				String imgstyle = "style='float:left; margin-left:5px; margin-top:5px; margin-right:0px;'";
+				output.write("<ul>\n");
+				for (int i=0; i < chapters.length; i++) {
+					output.write(String.format(
+					"<li><img src='%s/images/qmrf/chapter%d.png' %s><a style='margin-left:0px;' href='#tabs-%d' title='%d.%s'>%s</a></li>",
+					baseRef,
+					(i+2),
+					imgstyle,
+					(i+2),
+					(i+2),
+					chapters[i][0],
+					chapters[i][1]
+					));
+				}
+				if (!plainHtmlHeader)
+					output.write(String.format("<li><img src='%s/images/qmrf/attachments.png' %s> %s<span></span></li>",
+							baseRef,imgstyle,attachmentURI));
+				output.write("</ul>\n");
 			}
-			output.write(String.format("<li><img src='%s/images/qmrf/attachments.png' %s> %s<span></span></li>",
-					baseRef,imgstyle,attachmentURI));
-			output.write("</ul>\n");
 			long now = System.currentTimeMillis();
 			try {
 				qhtml.xml2summary(getDOMSource(item),output);
@@ -151,9 +162,11 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 				x.printStackTrace();
 			}
 			System.err.println(System.currentTimeMillis()-now);
-			String uploadUI = String.format("<a href='%s%s/%s' target='upload' title='Upload training and test datasets and related documents''>%s</a>",
-					uriReporter.getBaseReference(),Resources.editor,item.getIdentifier(),"Add attachment(s)");
-			output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
+			if (!plainHtmlHeader) {
+				String uploadUI = String.format("<a href='%s%s/%s' target='upload' title='Upload training and test datasets and related documents''>%s</a>",
+						uriReporter.getBaseReference(),Resources.editor,item.getIdentifier(),"Add attachment(s)");
+				output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
+			}
 			
 		} catch (Exception x) {
 			x.printStackTrace();
@@ -165,4 +178,14 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 		return new ProtocolQueryURIReporter<IQueryRetrieval<DBProtocol>>(request);
 	}
 
+	@Override
+	public void header(Writer w, IQueryRetrieval<DBProtocol> query) {
+		if (plainHtmlHeader) try { w.write("<html><head></head><body>");} catch (Exception x) {}
+		else super.header(w, query);
+	}
+	@Override
+	public void footer(Writer output, IQueryRetrieval<DBProtocol> query) {
+		if (plainHtmlHeader) try {output.write("</body></html>"); } catch (Exception x) {}
+		else super.footer(output, query);
+	}
 }
