@@ -29,6 +29,7 @@ import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.PageParams;
 import net.idea.restnet.c.RepresentationConvertor;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
@@ -125,8 +126,16 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					}					
 				};
 		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
-			return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);				
+			return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);
+		} else if (variant.getMediaType().equals(MediaType.APPLICATION_WORD)) {
+			QMRFChaptersHTMLReporter rep = new QMRFChaptersHTMLReporter(getRequest(),false,false,structure==null,details);
+			rep.setHeadless(true);
+			rep.setHtmlBeauty(getHTMLBeauty());
+			rep.setDtdresolver(((TaskApplication)getApplication()).getResolver());
+			rep.setPlainHtmlHeader(true);
+			return new OutputWriterConvertor(rep,MediaType.APPLICATION_WORD);
 		} else if (singleItem && (structure==null)) {
+			
 			Object fileNamePrefix = getRequest().getAttributes().get(FileResource.resourceKey);
 			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType()),
 					variant.getMediaType(),filenamePrefix);		
