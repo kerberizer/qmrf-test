@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xml-stylesheet type="text/xsl" href="endpoints.xsl"?>
-<endpoints_catalog id="oecd" name="OECD GUIDELINES FOR TESTING OF CHEMICALS-Sep 2009" url="http://www.oecd.org/dataoecd/3/23/44042159.pdf">
+<endpoints_catalog id="OECD" name="OECD GUIDELINES FOR TESTING OF CHEMICALS-Sep 2009" url="http://www.oecd.org/dataoecd/3/23/44042159.pdf">
 <endpoint id="oecdendpoint0"	group="1.Physico-chemical properties" subgroup="UV-VIS Absorption Spectra" name="101.UV-VIS Absorption Spectra" oecdNo="101" />
 	  <endpoint id="oecdendpoint1"	group="1.Physico-chemical properties" subgroup="Melting Point" name="102.Melting Point/Melting Range" oecdNo="102" />
 	  <endpoint id="oecdendpoint2"	group="1.Physico-chemical properties" subgroup="Boiling Point" name="103.Boiling Point" oecdNo="103" />
