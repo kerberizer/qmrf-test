@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xml-stylesheet type="text/xsl" href="endpoints.xsl"?>
+<catalog>
+<acatalog id="EC" name="COUNCIL REGULATION (EC) No 440 2008-30 May 2008" url="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2008:142:0001:0739:EN:PDF">
+<endpoint id="ecendpoint0"	group="1.Physico-chemical properties" subgroup="Melting point" name="1.1.Melting/freezing temperature" echaNo="A.1." />
+	  <endpoint id="ecendpoint1"	group="1.Physico-chemical properties" subgroup="Boiling point" name="1.2.Boiling temperature" echaNo="A.2." />
+	  <endpoint id="ecendpoint2"	group="1.Physico-chemical properties" subgroup="Density" name="1.3.Relative density" echaNo="A.3." />
+	  <endpoint id="ecendpoint3"	group="1.Physico-chemical properties" subgroup="Vapour pressure" name="1.4.Vapour pressure" echaNo="A.4." />
+	  <endpoint id="ecendpoint4"	group="1.Physico-chemical properties" subgroup="Surface tension" name="1.5.Surface tension" echaNo="A.5." />
+	  <endpoint id="ecendpoint5"	group="1.Physico-chemical properties" subgroup="Water solubility" name="1.6.Water solubility" echaNo="A.6." />
+	  <endpoint id="ecendpoint6"	group="1.Physico-chemical properties" subgroup="Partition coefficient" name="1.8.Partition coefficient" echaNo="A.8." />
+	  <endpoint id="ecendpoint7"	group="1.Physico-chemical properties" subgroup="Flash-point" name="1.9.Flash-point" echaNo="A.9." />
+	  <endpoint id="ecendpoint8"	group="1.Physico-chemical properties" subgroup="Flammability" name="1.10.Flammability (solids)" echaNo="A.10." />
+	  <endpoint id="ecendpoint9"	group="1.Physico-chemical properties" subgroup="Flammability" name="1.11.Flammability (gases)" echaNo="A.11." />
+	  <endpoint id="ecendpoint10"	group="1.Physico-chemical properties" subgroup="Flammability" name="1.12.Flammability (contact with water)" echaNo="A.12." />
+	  <endpoint id="ecendpoint11"	group="1.Physico-chemical properties" subgroup="Pyrophoric properties" name="1.13.Pyrophoric properties of solids and liquids" echaNo="A.13." />
+	  <endpoint id="ecendpoint12"	group="1.Physico-chemical properties" subgroup="Explosive properties" name="1.14.Explosive properties" echaNo="A.14." />
+	  <endpoint id="ecendpoint13"	group="1.Physico-chemical properties" subgroup="Auto-ignition temperature" name="1.15.Auto-ignition temperature (liquids and gases)" echaNo="A.15." />
+	  <endpoint id="ecendpoint14"	group="1.Physico-chemical properties" subgroup="Relative self-ignition temperature" name="1.16.Relative self-ignition temperature for solids" echaNo="A.16." />
+	  <endpoint id="ecendpoint15"	group="1.Physico-chemical properties" subgroup="Oxidising properties" name="1.17.Oxidising properties (solids)" echaNo="A.17." />
+	  <endpoint id="ecendpoint16"	group="1.Physico-chemical properties" subgroup="Polymers Molecular Weight" name="1.18.Number - average molecular weight and molecular weight distribution of polymers" echaNo="A.18." />
+	  <endpoint id="ecendpoint17"	group="1.Physico-chemical properties" subgroup="Polymers Molecular Weight" name="1.19.Low molecular weight content of polymers" echaNo="A.19." />
+	  <endpoint id="ecendpoint18"	group="1.Physico-chemical properties" subgroup="Polymers in Water" name="1.20.Solution / extraction behaviour of polymers in water" echaNo="A.20." />
+	  <endpoint id="ecendpoint19"	group="1.Physico-chemical properties" subgroup="Oxidising properties" name="1.21.Oxidising properties (liquids)" echaNo="A.21." />
+	  <endpoint id="ecendpoint20"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Acute oral toxicity" name="2.1.Acute oral toxicity - fixed dose procedure" echaNo="B.1 bis." />
+	  <endpoint id="ecendpoint21"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Acute oral toxicity" name="2.2.Acute oral toxicity - acute toxic class method" echaNo="B.1 tris." />
+	  <endpoint id="ecendpoint22"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Acute toxicity" name="2.3.Acute toxicity (inhalation)" echaNo="B.2." />
+	  <endpoint id="ecendpoint23"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Acute toxicity" name="2.4.Acute toxicity (dermal)" echaNo="B.3." />
+	  <endpoint id="ecendpoint24"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Acute toxicity" name="2.5.Acute toxicity: dermal irritation / corrosion" echaNo="B.4." />
+	  <endpoint id="ecendpoint25"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Acute toxicity" name="2.6.Acute toxicity: eye irritation / corrosion" echaNo="B.5." />
+	  <endpoint id="ecendpoint26"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Skin sensitisation" name="2.7.Skin sensitisation" echaNo="B.6." />
+	  <endpoint id="ecendpoint27"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Repeated dose" name="2.8.Repeated dose (28 days) toxicity (oral)" echaNo="B.7." />
+	  <endpoint id="ecendpoint28"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Repeated dose" name="2.9.Repeated dose (28 days) toxicity (inhalation)" echaNo="B.8." />
+	  <endpoint id="ecendpoint29"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Repeated dose" name="2.10.Repeated dose (28 days) toxicity (dermal)" echaNo="B.9." />
+	  <endpoint id="ecendpoint30"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Mutagenicity" name="2.11.Mutagenicity - in vitro mammalian chromosome abberation test" echaNo="B.10." />
+	  <endpoint id="ecendpoint31"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Mutagenicity" name="2.12.Mutagenicity - in vivo mammalian bone marrow chromosome abberation test" echaNo="B.11." />
+	  <endpoint id="ecendpoint32"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Mutagenicity" name="2.13.Mutagenicity - in vivo mammalian erythrocyte micronucleus test" echaNo="B.12." />
+	  <endpoint id="ecendpoint33"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Mutagenicity" name="2.14.Mutagenicity: reverse mutation test using bacteria" echaNo="B.13/14." />
+	  <endpoint id="ecendpoint34"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Mutagenicity" name="2.15.Mutagenicity testing and screening for carcinogenicity gene mutation - saccharomyces cerevisiae" echaNo="B.15." />
+	  <endpoint id="ecendpoint35"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Mitotic recombination" name="2.16.Mitotic recombination - saccharomyces cerevisiae" echaNo="B.16." />
+	  <endpoint id="ecendpoint36"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Mutagenicity" name="2.17.Mutagenicity - in vitro mammalian cell gene mutation test" echaNo="B.17." />
+	  <endpoint id="ecendpoint37"	group="2.Methods for the determination of toxicity and other health effects" subgroup="DNA damage and repair" name="2.18.DNA damage and repair - unscheduled DNA synthesis - mammalian cells in vitro" echaNo="B.18." />
+	  <endpoint id="ecendpoint38"	group="2.Methods for the determination of toxicity and other health effects" subgroup="" name="2.19.Sister chromatid exchange assay in vitro" echaNo="B.19." />
+	  <endpoint id="ecendpoint39"	group="2.Methods for the determination of toxicity and other health effects" subgroup="" name="2.20.Sex-linked recessive lethal test in drosophila melanogaster" echaNo="B.20." species="drosophila melanogaster"/>
+	  <endpoint id="ecendpoint40"	group="2.Methods for the determination of toxicity and other health effects" subgroup="" name="2.21.In vitro mammalian cell transformation tests" echaNo="B.21." />
+	  <endpoint id="ecendpoint41"	group="2.Methods for the determination of toxicity and other health effects" subgroup="" name="2.22.Rodent dominant lethal test" echaNo="B.22." species="rodents"/>
+	  <endpoint id="ecendpoint42"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Chromosome abberation" name="2.23.Mammalian spermatogonial chromosome abberation test" echaNo="B.23." species="mammals"/>
+	  <endpoint id="ecendpoint43"	group="2.Methods for the determination of toxicity and other health effects" subgroup="" name="2.24.Mouse spot test" echaNo="B.24."  species="mouse"/>
+	  <endpoint id="ecendpoint44"	group="2.Methods for the determination of toxicity and other health effects" subgroup="" name="2.25.Mouse heritable translocation" echaNo="B.25." species="mouse"/>
+	  <endpoint id="ecendpoint45"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Sub-chronic oral toxicity" name="2.26.Sub-chronic oral toxicity test repeated dose 90 - day oral toxicity study in rodents" echaNo="B.26." species="rodents"/>
+	  <endpoint id="ecendpoint46"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Sub-chronic oral toxicity" name="2.27.Sub-chronic oral toxicity test repeated dose 90 - day oral toxicity study in non-rodents" echaNo="B.27." species="not rodents" />
+	  <endpoint id="ecendpoint47"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Sub-chronic dermal toxicity" name="2.28.Sub-chronic dermal toxicity study 90-day repeated dermal dose study using rodent species" echaNo="B.28." species="rodent"/>
+	  <endpoint id="ecendpoint48"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Sub-chronic inhalation toxicity" name="2.29.Sub-chronic inhalation toxicity study 90-day repeated inhalation dose study using rodent species" echaNo="B.29." species="rodents"/>
+	  <endpoint id="ecendpoint49"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Chronic toxicity" name="2.30.Chronic toxicity test" echaNo="B.30." />
+	  <endpoint id="ecendpoint50"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Developmental toxicity" name="2.31.Prenatal developmental toxicity study" echaNo="B.31." />
+	  <endpoint id="ecendpoint51"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Carcinogenicity" name="2.32.Carcinogenicity test" echaNo="B.32." />
+	  <endpoint id="ecendpoint52"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Combined Chronic Toxicity/Carcinogenicity Studies" name="2.33.Combined chronic toxicity / carcinogenicity test" echaNo="B.33." />
+	  <endpoint id="ecendpoint53"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Reproduction toxicity" name="2.34.One-generation reproduction toxicity test" echaNo="B.34." />
+	  <endpoint id="ecendpoint54"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Reproduction toxicity" name="2.35.Two generation reproduction toxicity study" echaNo="B.35." />
+	  <endpoint id="ecendpoint55"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Toxicokinetics" name="2.36.Toxicokinetics" echaNo="B.36." />
+	  <endpoint id="ecendpoint56"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Neurotoxicity" name="2.37.Delayed neurotoxicity of organophosphorus substances following acute exposure" echaNo="B.37." />
+	  <endpoint id="ecendpoint57"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Neurotoxicity" name="2.38.Delayed neurotoxicity of organophosphorus substances 28 day repeated dose study" echaNo="B.38." />
+	  <endpoint id="ecendpoint58"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Unscheduled DNA synthesis (UDS) test" name="2.39.Unscheduled DNA synthesis (UDS) test with mammalian liver cells in vivo" echaNo="B.39." organ="liver" species="mammals"/>
+	  <endpoint id="ecendpoint59"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Skin corrosion" name="2.40.In vitro skin corrosion: Transcutaneous electrical resistance test (TER)" echaNo="B.40." />
+	  <endpoint id="ecendpoint60"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Skin corrosion" name="2.41.In vitro skin corrosion: human skin model test" echaNo="B.40 bis." />
+	  <endpoint id="ecendpoint61"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Phototoxicity" name="2.42.In vitro 3T3 NRU phototoxicity test" echaNo="B.41." />
+	  <endpoint id="ecendpoint62"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Skin sensitisation" name="2.43.Skin sensitisation: local lymph node assay" echaNo="B.42."/>
+	  <endpoint id="ecendpoint63"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Neurotoxicity" name="2.44.Neurotoxicity in rodents" echaNo="B.43." />
+	  <endpoint id="ecendpoint64"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Skin absorption" name="2.45.Skin absorption: in vivo method" echaNo="B.44." />
+	  <endpoint id="ecendpoint65"	group="2.Methods for the determination of toxicity and other health effects" subgroup="Skin absorption" name="2.46.Skin absorption: in vitro method" echaNo="B.45." />
+	  <endpoint id="ecendpoint66"	group="3.Methods for the determination of ecotoxicity" subgroup="Acute toxicity" name="3.1.Acute toxicity for fish" echaNo="C.1." />
+	  <endpoint id="ecendpoint67"	group="3.Methods for the determination of ecotoxicity" subgroup="Accute immobilisation test" name="3.2.Daphnia sp. accute immobilisation test" echaNo="C.2." />
+	  <endpoint id="ecendpoint68"	group="3.Methods for the determination of ecotoxicity" subgroup="Algal inhibition test" name="3.3.Algal inhibition test" echaNo="C.3." />
+	  <endpoint id="ecendpoint69"	group="3.Methods for the determination of ecotoxicity" subgroup="Ready biodegradability" name="3.4.1.DOC die-away test" echaNo="C.4-A." />
+	  <endpoint id="ecendpoint70"	group="3.Methods for the determination of ecotoxicity" subgroup="Ready biodegradability" name="3.4.2.Modified OECD screening test" echaNo="C.4-B." />
+	  <endpoint id="ecendpoint71"	group="3.Methods for the determination of ecotoxicity" subgroup="Ready biodegradability" name="3.4.3.CO2 evolution test" echaNo="C.4-C." />
+	  <endpoint id="ecendpoint72"	group="3.Methods for the determination of ecotoxicity" subgroup="Ready biodegradability" name="3.4.4.Manometric respirometry test" echaNo="C.4-D." />
+	  <endpoint id="ecendpoint73"	group="3.Methods for the determination of ecotoxicity" subgroup="Ready biodegradability" name="3.4.5.Closed bottle test" echaNo="C.4-E." />
+	  <endpoint id="ecendpoint74"	group="3.Methods for the determination of ecotoxicity" subgroup="Ready biodegradability" name="3.4.6.M.I.T.I. test" echaNo="C.4-F." />
+	  <endpoint id="ecendpoint75"	group="3.Methods for the determination of ecotoxicity" subgroup="Degradation" name="3.5.Degradation - biochemical oxygen demand" echaNo="C.5." />
+	  <endpoint id="ecendpoint76"	group="3.Methods for the determination of ecotoxicity" subgroup="Degradation" name="3.6.Degradation - chemical oxygen demand" echaNo="C.6." />
+	  <endpoint id="ecendpoint77"	group="3.Methods for the determination of ecotoxicity" subgroup="Degradation" name="3.7.Degradation - abiotic degradation: hydrolysis as a function of pH" echaNo="C.7." />
+	  <endpoint id="ecendpoint78"	group="3.Methods for the determination of ecotoxicity" subgroup="Toxicity for earthworms" name="3.8.Toxicity for earthworms" echaNo="C.8." />
+	  <endpoint id="ecendpoint79"	group="3.Methods for the determination of ecotoxicity" subgroup="Biodegradation" name="3.9.Biodegradation - Zahn-Wellens test" echaNo="C.9." />
+	  <endpoint id="ecendpoint80"	group="3.Methods for the determination of ecotoxicity" subgroup="Biodegradation" name="3.10.Biodegradation - activated sludge simulation tests" echaNo="C.10." />
+	  <endpoint id="ecendpoint81"	group="3.Methods for the determination of ecotoxicity" subgroup="Biodegradation" name="3.11.Biodegradation - activated sludge respiration inhibition" echaNo="C.11." />
+	  <endpoint id="ecendpoint82"	group="3.Methods for the determination of ecotoxicity" subgroup="Biodegradation" name="3.12.Biodegradation - modified SCAS test" echaNo="C.12." />
+	  <endpoint id="ecendpoint83"	group="3.Methods for the determination of ecotoxicity" subgroup="Bioconcentration" name="3.13.Bioconcentration: flow-through fish test" echaNo="C.13." />
+	  <endpoint id="ecendpoint84"	group="3.Methods for the determination of ecotoxicity" subgroup="Fish juvenile growth test" name="3.14.Fish juvenile growth test" echaNo="C.14." />
+	  <endpoint id="ecendpoint85"	group="3.Methods for the determination of ecotoxicity" subgroup="Short term toxicity" name="3.15.Fish, short term toxicity test on embryo and sac-fry stages" echaNo="C.15." />
+	  <endpoint id="ecendpoint86"	group="3.Methods for the determination of ecotoxicity" subgroup="Acute toxicity" name="3.16.Honeybees - acute oral toxicity test" echaNo="C.16." />
+	  <endpoint id="ecendpoint87"	group="3.Methods for the determination of ecotoxicity" subgroup="Acute toxicity" name="3.17.Honeybees - acute contact toxicity test" echaNo="C.17." />
+	  <endpoint id="ecendpoint88"	group="3.Methods for the determination of ecotoxicity" subgroup="Adsorption/desorption" name="3.18.Adsorption/desorption using a batch equilibrum method" echaNo="C.18." />
+	  <endpoint id="ecendpoint89"	group="3.Methods for the determination of ecotoxicity" subgroup="Adsorption coefficient" name="3.19.Estimation of the adsorption coefficient (Koc) on soil and on sewage sludge using high performance liquid chromatography (HPLC)" echaNo="C.19." />
+	  <endpoint id="ecendpoint90"	group="3.Methods for the determination of ecotoxicity" subgroup="Reproduction test" name="3.20.Daphnia magna reproduction test" echaNo="C.20." />
+	  <endpoint id="ecendpoint91"	group="3.Methods for the determination of ecotoxicity" subgroup="Soil microorganisms" name="3.21.Soil microorganisms: nitrogen transformation test" echaNo="C.21." />
+	  <endpoint id="ecendpoint92"	group="3.Methods for the determination of ecotoxicity" subgroup="Soil microorganisms" name="3.22.Soil microorganisms: carbon transformation test" echaNo="C.22." />
+	  <endpoint id="ecendpoint93"	group="3.Methods for the determination of ecotoxicity" subgroup="Aerobic and anaerobic transformation" name="3.23.Aerobic and anaerobic transformation in soil" echaNo="C.23." />
+	  <endpoint id="ecendpoint94"	group="3.Methods for the determination of ecotoxicity" subgroup="Aerobic and anaerobic transformation" name="3.24.Aerobic and anaerobic transformation in aquatic sediment systems" echaNo="C.24." />
+</acatalog>
+<acatalog id="OECD" name="OECD GUIDELINES FOR TESTING OF CHEMICALS-Sep 2009" url="http://www.oecd.org/dataoecd/3/23/44042159.pdf">
+<endpoint id="oecdendpoint0"	group="1.Physico-chemical properties" subgroup="UV-VIS Absorption Spectra" name="101.UV-VIS Absorption Spectra" oecdNo="101" />
+	  <endpoint id="oecdendpoint1"	group="1.Physico-chemical properties" subgroup="Melting Point" name="102.Melting Point/Melting Range" oecdNo="102" />
+	  <endpoint id="oecdendpoint2"	group="1.Physico-chemical properties" subgroup="Boiling Point" name="103.Boiling Point" oecdNo="103" />
+	  <endpoint id="oecdendpoint3"	group="1.Physico-chemical properties" subgroup="Vapour Pressure" name="104.Vapour Pressure" oecdNo="104" />
+	  <endpoint id="oecdendpoint4"	group="1.Physico-chemical properties" subgroup="Water Solubility" name="105.Water Solubility" oecdNo="105" />
+	  <endpoint id="oecdendpoint5"	group="1.Physico-chemical properties" subgroup="Adsorption/Desorption" name="106.Adsorption/Desorption Using a Batch Equilibrium Method" oecdNo="106" />
+	  <endpoint id="oecdendpoint6"	group="1.Physico-chemical properties" subgroup="Partition Coefficient (n-octanol/water)" name="107.Partition Coefficient (n-octanol/water): Shake Flask Method" oecdNo="107" />
+	  <endpoint id="oecdendpoint7"	group="1.Physico-chemical properties" subgroup="Complex Formation Ability in Water" name="108.Complex Formation Ability in Water" oecdNo="108" />
+	  <endpoint id="oecdendpoint8"	group="1.Physico-chemical properties" subgroup="Density" name="109.Density of Liquids and Solids" oecdNo="109" />
+	  <endpoint id="oecdendpoint9"	group="1.Physico-chemical properties" subgroup="Particle Size Distribution" name="110.Particle Size Distribution/Fibre Length and Diameter Distributions" oecdNo="110" />
+	  <endpoint id="oecdendpoint10"	group="1.Physico-chemical properties" subgroup="Hydrolysis as a function of pH" name="111.Hydrolysis as a function of pH" oecdNo="111" />
+	  <endpoint id="oecdendpoint11"	group="1.Physico-chemical properties" subgroup="Dissociation Constants in Water" name="112.Dissociation Constants in Water" oecdNo="112" />
+	  <endpoint id="oecdendpoint12"	group="1.Physico-chemical properties" subgroup="Thermal Stability and Stability in Air" name="113.Screening Test for Thermal Stability and Stability in Air" oecdNo="113" />
+	  <endpoint id="oecdendpoint13"	group="1.Physico-chemical properties" subgroup="Viscosity" name="114.Viscosity of Liquids" oecdNo="114" />
+	  <endpoint id="oecdendpoint14"	group="1.Physico-chemical properties" subgroup="Surface Tension" name="115.Surface Tension of Aqueous Solutions" oecdNo="115" />
+	  <endpoint id="oecdendpoint15"	group="1.Physico-chemical properties" subgroup="Fat Solubility" name="116.Fat Solubility of Solid and Liquid Substances" oecdNo="116" />
+	  <endpoint id="oecdendpoint16"	group="1.Physico-chemical properties" subgroup="Partition Coefficient (n-octanol/water)" name="117.Partition Coefficient (n-octanol/water), HPLC method" oecdNo="117" />
+	  <endpoint id="oecdendpoint17"	group="1.Physico-chemical properties" subgroup="Polymers Molecular Weight" name="118.Determination of the Number-Average Molecular Weight and the Molecular Weight Distribution of Polymers using Gel Permeation Chromatography" oecdNo="118" />
+	  <endpoint id="oecdendpoint18"	group="1.Physico-chemical properties" subgroup="Polymers Molecular Weight" name="119.Determination of the Low Molecular Weight Content of a Polymer Using Gel Permeation Chromatography" oecdNo="119" />
+	  <endpoint id="oecdendpoint19"	group="1.Physico-chemical properties" subgroup="Polymers in Water" name="120.Solution/Extraction Behaviours of Polymers in Water" oecdNo="120" />
+	  <endpoint id="oecdendpoint20"	group="1.Physico-chemical properties" subgroup="Adsorption Coefficient (Koc)" name="121.Estimation of the Adsorption Coefficient (Koc) on Soil and on Sewage Sludge using High Performance Liquid Chromatography (HPLC)" oecdNo="121" />
+	  <endpoint id="oecdendpoint21"	group="1.Physico-chemical properties" subgroup="Partition Coefficient (1-Octanol / Water)" name="123.Partition Coefficient (1-Octanol / Water): Slow-Stirring Method" oecdNo="123" />
+	  <endpoint id="oecdendpoint22"	group="2.Effects on biotic systems" subgroup=" Growth Inhibition" name="201.Alga, Growth Inhibition Test" oecdNo="201" />
+	  <endpoint id="oecdendpoint23"	group="2.Effects on biotic systems" subgroup="Acute Immobilisation" name="202.Daphnia sp. Acute Immobilisation Test" oecdNo="202" />
+	  <endpoint id="oecdendpoint24"	group="2.Effects on biotic systems" subgroup="Acute Toxicity" name="203.Fish, Acute Toxicity Test" oecdNo="203" />
+	  <endpoint id="oecdendpoint25"	group="2.Effects on biotic systems" subgroup="Prolonged Toxicity" name="204.Fish, Prolonged Toxicity Test: 14-Day Study" oecdNo="204" />
+	  <endpoint id="oecdendpoint26"	group="2.Effects on biotic systems" subgroup="Dietary Toxicity" name="205.Avian Dietary Toxicity Test" oecdNo="205" />
+	  <endpoint id="oecdendpoint27"	group="2.Effects on biotic systems" subgroup="Reproduction Test" name="206.Avian Reproduction Test" oecdNo="206" />
+	  <endpoint id="oecdendpoint28"	group="2.Effects on biotic systems" subgroup="Acute Toxicity" name="207.Earthworm, Acute Toxicity Tests" oecdNo="207" />
+	  <endpoint id="oecdendpoint29"	group="2.Effects on biotic systems" subgroup="Growth Test" name="208.Terrestrial Plants, Growth Test" oecdNo="208" />
+	  <endpoint id="oecdendpoint30"	group="2.Effects on biotic systems" subgroup="Respiration Inhibition Test" name="209.Activated Sludge, Respiration Inhibition Test" oecdNo="209" />
+	  <endpoint id="oecdendpoint31"	group="2.Effects on biotic systems" subgroup="Early-Life Stage Toxicity" name="210.Fish, Early-Life Stage Toxicity Test" oecdNo="210" />
+	  <endpoint id="oecdendpoint32"	group="2.Effects on biotic systems" subgroup="Reproduction Test" name="211.Daphnia magna Reproduction Test" oecdNo="211" />
+	  <endpoint id="oecdendpoint33"	group="2.Effects on biotic systems" subgroup="Short-term Toxicity Test" name="212.Fish, Short-term Toxicity Test on Embryo and Sac-fry Stages" oecdNo="212" />
+	  <endpoint id="oecdendpoint34"	group="2.Effects on biotic systems" subgroup="Acute Oral Toxicity" name="213.Honeybees, Acute Oral Toxicity Test" oecdNo="213" />
+	  <endpoint id="oecdendpoint35"	group="2.Effects on biotic systems" subgroup="Acute Contact Toxicity" name="214.Honeybees, Acute Contact Toxicity Test" oecdNo="214" />
+	  <endpoint id="oecdendpoint36"	group="2.Effects on biotic systems" subgroup="Juvenile Growth Test" name="215.Fish, Juvenile Growth Test" oecdNo="215" />
+	  <endpoint id="oecdendpoint37"	group="2.Effects on biotic systems" subgroup="Soil Microorganisms" name="216.Soil Microorganisms: Nitrogen Transformation Test" oecdNo="216" />
+	  <endpoint id="oecdendpoint38"	group="2.Effects on biotic systems" subgroup="Soil Microorganisms" name="217.Soil Microorganisms:Carbon Transformation Test" oecdNo="217" />
+	  <endpoint id="oecdendpoint39"	group="2.Effects on biotic systems" subgroup="Sediment-Water Toxicity" name="218.Sediment-Water Chironomid Toxicity Using Spiked Sediment" oecdNo="218" />
+	  <endpoint id="oecdendpoint40"	group="2.Effects on biotic systems" subgroup="Sediment-Water Toxicity" name="219.Sediment-Water Chironomid Toxicity Using Spiked Water" oecdNo="219" />
+	  <endpoint id="oecdendpoint41"	group="2.Effects on biotic systems" subgroup="Reproduction Test" name="220.Enchytraeid Reproduction Test" oecdNo="220" />
+	  <endpoint id="oecdendpoint42"	group="2.Effects on biotic systems" subgroup="Growth Inhibition" name="221.Lemna sp. Growth Inhibition Test" oecdNo="221" />
+	  <endpoint id="oecdendpoint43"	group="2.Effects on biotic systems" subgroup="Reproduction Test" name="222.Earthworm Reproduction Test (Eisenia fetida/Eisenia andrei)" oecdNo="222" />
+	  <endpoint id="oecdendpoint44"	group="2.Effects on biotic systems" subgroup="Anaerobic bacteria" name="224.Determination of the activity of anaerobic bacteria - reduction of gas production from anaerobically sewage sludge" oecdNo="224" />
+	  <endpoint id="oecdendpoint45"	group="2.Effects on biotic systems" subgroup="Sediment-Water Toxicity" name="225.Sediment-Water Lumbriculus Toxicity Test Using Spiked Sediment" oecdNo="225" />
+	  <endpoint id="oecdendpoint46"	group="2.Effects on biotic systems" subgroup="Reproduction Test" name="226.Predatory Mite (Hypoaspis (Geolaelaps) Aculeifer) Reproduction Test in Soil" oecdNo="226" />
+	  <endpoint id="oecdendpoint47"	group="2.Effects on biotic systems" subgroup="Terrestrial Plant Test" name="227.Terrestrial Plant Test: Vegetative Vigour Test" oecdNo="227" />
+	  <endpoint id="oecdendpoint48"	group="2.Effects on biotic systems" subgroup="Developmental Toxicity " name="228.Determination of Developmental Toxicity of a Test Chemical to Dipteran Dung Flies (Scathophaga Stercoraria L. (Scathophagidae) and Musca automnalis De Geer (Muscidae))" oecdNo="228" />
+	  <endpoint id="oecdendpoint49"	group="2.Effects on biotic systems" subgroup="Reproduction Assay" name="229.Fish Short Term Reproduction Assay" oecdNo="229" />
+	  <endpoint id="oecdendpoint50"	group="2.Effects on biotic systems" subgroup="Oestrogenic and Androgenic Activity" name="230.21-Day Fish Assay: A Short Term Screening for Oestrogenic and Androgenic Activity, and Aromatase Inhibition" oecdNo="230" />
+	  <endpoint id="oecdendpoint51"	group="2.Effects on biotic systems" subgroup="Amphibian Metamorphosis Assay" name="231.Amphibian Metamorphosis Assay" oecdNo="231" />
+	  <endpoint id="oecdendpoint52"	group="2.Effects on biotic systems" subgroup="Reproduction Test " name="232.Collembolan Reproduction Test in Soil" oecdNo="232" />
+	  <endpoint id="oecdendpoint53"	group="2.Effects on biotic systems" subgroup="Sediment-Water Toxicity" name="233.Sediment-Water Chironomid Life-Cycle Toxicity Test Using Spiked Water or Spiked Sediment" oecdNo="233" />
+	  <endpoint id="oecdendpoint54"	group="2.Effects on biotic systems" subgroup="Fish Sexual Development Test" name="234.Fish Sexual Development Test" oecdNo="234" />
+	  <endpoint id="oecdendpoint55"	group="2.Effects on biotic systems" subgroup="Acute Immobilisation Test" name="235.Chironomus sp., Acute Immobilisation Test" oecdNo="235" />
+	  <endpoint id="oecdendpoint56"	group="3.Degradation and accumulation" subgroup="Ready Biodegradability" name="301A.DOC Die-Away Test" oecdNo="301A" />
+	  <endpoint id="oecdendpoint57"	group="3.Degradation and accumulation" subgroup="Ready Biodegradability" name="301B.CO2 Evolution Test" oecdNo="301B" />
+	  <endpoint id="oecdendpoint58"	group="3.Degradation and accumulation" subgroup="Ready Biodegradability" name="301C.Modified MITI Test (I)" oecdNo="301C" />
+	  <endpoint id="oecdendpoint59"	group="3.Degradation and accumulation" subgroup="Ready Biodegradability" name="301D.Closed Bottle Test" oecdNo="301D" />
+	  <endpoint id="oecdendpoint60"	group="3.Degradation and accumulation" subgroup="Ready Biodegradability" name="301E.Modified OECD Screening Test" oecdNo="301E" />
+	  <endpoint id="oecdendpoint61"	group="3.Degradation and accumulation" subgroup="Ready Biodegradability" name="301F.Manometric Respirometry Test" oecdNo="301F" />
+	  <endpoint id="oecdendpoint62"	group="3.Degradation and accumulation" subgroup="Inherent Biodegradability" name="302A.Modified SCAS Test" oecdNo="302A" />
+	  <endpoint id="oecdendpoint63"	group="3.Degradation and accumulation" subgroup="Inherent Biodegradability" name="302B.Zahn-Wellens/EMPA Test" oecdNo="302B" />
+	  <endpoint id="oecdendpoint64"	group="3.Degradation and accumulation" subgroup="Inherent Biodegradability" name="302C.Modified MITI Test (II)" oecdNo="302C" />
+	  <endpoint id="oecdendpoint65"	group="3.Degradation and accumulation" subgroup="Simulation Test – Aerobic Sewage Treatment" name="303A.Activated Sludge Units" oecdNo="303A" />
+	  <endpoint id="oecdendpoint66"	group="3.Degradation and accumulation" subgroup="Simulation Test – Aerobic Sewage Treatment" name="303B.Biofilms" oecdNo="303B" />
+	  <endpoint id="oecdendpoint67"	group="3.Degradation and accumulation" subgroup="Inherent Biodegradability" name="304A.Inherent Biodegradability in Soil" oecdNo="304A" />
+	  <endpoint id="oecdendpoint68"	group="3.Degradation and accumulation" subgroup="Bioconcentration" name="305.Bioconcentration: Flow-Through Fish Test" oecdNo="305" />
+	  <endpoint id="oecdendpoint69"	group="3.Degradation and accumulation" subgroup="Biodegradability" name="306.Biodegradability in Seawater" oecdNo="306" />
+	  <endpoint id="oecdendpoint70"	group="3.Degradation and accumulation" subgroup="Aerobic and Anaerobic Transformation" name="307.Aerobic and Anaerobic Transformation in Soil" oecdNo="307" />
+	  <endpoint id="oecdendpoint71"	group="3.Degradation and accumulation" subgroup="Aerobic and Anaerobic Transformation" name="308.Aerobic and Anaerobic Transformation in Aquatic Sediment Systems" oecdNo="308" />
+	  <endpoint id="oecdendpoint72"	group="3.Degradation and accumulation" subgroup="Aerobic Mineralisation" name="309.Aerobic Mineralisation in Surface Water – Simulation Biodegradation Test" oecdNo="309" />
+	  <endpoint id="oecdendpoint73"	group="3.Degradation and accumulation" subgroup="Ready Biodegradability" name="310.Ready Biodegradability - CO2 in sealed vessels (Headspace Test)" oecdNo="310" />
+	  <endpoint id="oecdendpoint74"	group="3.Degradation and accumulation" subgroup="Anaerobic Biodegradability" name="311.Anaerobic Biodegradability of Organic Compounds in Digested Sludge: by Measurement of Gas Production" oecdNo="311" />
+	  <endpoint id="oecdendpoint75"	group="3.Degradation and accumulation" subgroup="" name="312.Leaching in Soil Columns" oecdNo="312" />
+	  <endpoint id="oecdendpoint76"	group="3.Degradation and accumulation" subgroup="" name="313.Estimation of Emissions from Preservative - Treated Wood to the Environment: Laboratory Method for Wooden Commodities that are not Covered and are in Contact with Fresh Water or Seawater" oecdNo="313" />
+	  <endpoint id="oecdendpoint77"	group="3.Degradation and accumulation" subgroup="Biodegradability" name="314.Simulation Tests to Assess the Biodegradability of Chemicals Discharged in Wastewater" oecdNo="314" />
+	  <endpoint id="oecdendpoint78"	group="3.Degradation and accumulation" subgroup="Bioaccumulation" name="315.Bioaccumulation in Sediment-dwelling Benthic Oligochaetes" oecdNo="315" />
+	  <endpoint id="oecdendpoint79"	group="3.Degradation and accumulation" subgroup="Phototransformation" name="316.Phototransformation of Chemicals in Water - Direct Photolysis" oecdNo="316" />
+	  <endpoint id="oecdendpoint80"	group="3.Degradation and accumulation" subgroup="Bioaccumulation" name="317.Bioaccumulation in Terrestrial Oligochaetes" oecdNo="317" />
+	  <endpoint id="oecdendpoint81"	group="4.Health effects" subgroup="Acute Oral Toxicity" name="401.Acute Oral Toxicity" oecdNo="401" />
+	  <endpoint id="oecdendpoint82"	group="4.Health effects" subgroup="Acute Toxicity" name="402.Acute Dermal Toxicity" oecdNo="402" />
+	  <endpoint id="oecdendpoint83"	group="4.Health effects" subgroup="Acute Toxicity" name="403.Acute Inhalation Toxicity" oecdNo="403" />
+	  <endpoint id="oecdendpoint84"	group="4.Health effects" subgroup="Acute Toxicity" name="404.Acute Dermal Irritation/Corrosion" oecdNo="404" />
+	  <endpoint id="oecdendpoint85"	group="4.Health effects" subgroup="Acute Toxicity" name="405.Acute Eye Irritation/Corrosion" oecdNo="405" />
+	  <endpoint id="oecdendpoint86"	group="4.Health effects" subgroup="Skin Sensitisation" name="406.Skin Sensitisation" oecdNo="406" />
+	  <endpoint id="oecdendpoint87"	group="4.Health effects" subgroup="Repeated Dose" name="407.Repeated Dose 28-Day Oral Toxicity Study in Rodents" oecdNo="407" />
+	  <endpoint id="oecdendpoint88"	group="4.Health effects" subgroup="Repeated Dose" name="408.Repeated Dose 90-Day Oral Toxicity Study in Rodents" oecdNo="408" />
+	  <endpoint id="oecdendpoint89"	group="4.Health effects" subgroup="Repeated Dose" name="409.Repeated Dose 90-Day Oral Toxicity Study in Non-Rodents" oecdNo="409" />
+	  <endpoint id="oecdendpoint90"	group="4.Health effects" subgroup="Repeated Dose" name="410.Repeated Dose Dermal Toxicity:90-Day" oecdNo="410" />
+	  <endpoint id="oecdendpoint91"	group="4.Health effects" subgroup="Subchronic Inhalation Toxicity" name="411.Subchronic Inhalation Toxicity: 90-Day" oecdNo="411" />
+	  <endpoint id="oecdendpoint92"	group="4.Health effects" subgroup="Subchronic Inhalation Toxicity" name="412.Subacute Inhalation Toxicity: 28-Day Study" oecdNo="412" />
+	  <endpoint id="oecdendpoint93"	group="4.Health effects" subgroup="Subchronic Inhalation Toxicity" name="413.Subchronic Inhalation Toxicity: 90-Day Study" oecdNo="413" />
+	  <endpoint id="oecdendpoint94"	group="4.Health effects" subgroup="Prenatal Developmental Toxicity" name="414.Prenatal Developmental Toxicity Study" oecdNo="414" />
+	  <endpoint id="oecdendpoint95"	group="4.Health effects" subgroup="Reproduction Toxicity" name="415.One-Generation Reproduction Toxicity" oecdNo="415" />
+	  <endpoint id="oecdendpoint96"	group="4.Health effects" subgroup="Reproduction Toxicity" name="416.Two-generation Reproduction Toxicity Study" oecdNo="416" />
+	  <endpoint id="oecdendpoint97"	group="4.Health effects" subgroup="Toxicokinetics" name="417.Toxicokinetics" oecdNo="417" />
+	  <endpoint id="oecdendpoint98"	group="4.Health effects" subgroup="Delayed Neurotoxicity" name="418.Delayed Neurotoxicity of Organophosphorus Substances Following Acute Exposure" oecdNo="418" />
+	  <endpoint id="oecdendpoint99"	group="4.Health effects" subgroup="Delayed Neurotoxicity" name="419.Delayed Neurotoxicity of Organophosphorus Substances: 29-Day Repeated Dose Study" oecdNo="419" />
+	  <endpoint id="oecdendpoint100"	group="4.Health effects" subgroup="Acute Oral toxicity" name="420.Acute Oral toxicity – Fixe Dose Procedure" oecdNo="420" />
+	  <endpoint id="oecdendpoint101"	group="4.Health effects" subgroup="Reproduction/Developmental Toxicity " name="421.Reproduction/Developmental Toxicity Screening Test" oecdNo="421" />
+	  <endpoint id="oecdendpoint102"	group="4.Health effects" subgroup="Combined Repeated Dose and Reproduction/Developmental Toxicity" name="422.Combined Repeated Dose Toxicity Study with the Reproduction/Developmental Toxicity Screening Test" oecdNo="422" />
+	  <endpoint id="oecdendpoint103"	group="4.Health effects" subgroup="Acute Oral Toxicity" name="423.Acute Oral Toxicity – Acute Toxic Class Method" oecdNo="423" />
+	  <endpoint id="oecdendpoint104"	group="4.Health effects" subgroup="Neurotoxicity" name="424.Neurotoxicity Study in Rodents" oecdNo="424" />
+	  <endpoint id="oecdendpoint105"	group="4.Health effects" subgroup="Acute Oral Toxicity" name="425.Acute Oral Toxicity: Up-and-Down Procedure" oecdNo="425" />
+	  <endpoint id="oecdendpoint106"	group="4.Health effects" subgroup="Developmental Neurotoxicity" name="426.Developmental Neurotoxicity Study" oecdNo="426" />
+	  <endpoint id="oecdendpoint107"	group="4.Health effects" subgroup="Skin Absorption" name="427.Skin Absorption: In Vivo Method" oecdNo="427" />
+	  <endpoint id="oecdendpoint108"	group="4.Health effects" subgroup="Skin Absorption" name="428.Skin Absorption: In Vitro Method" oecdNo="428" />
+	  <endpoint id="oecdendpoint109"	group="4.Health effects" subgroup="Skin Sensitisation" name="429.Skin Sensitisation: Local Lymph Node Assay" oecdNo="429" />
+	  <endpoint id="oecdendpoint110"	group="4.Health effects" subgroup="In Vitro Skin Corrosion" name="430.In Vitro Skin Corrosion: Transcutaneous Electrical Resistance Test (TER)" oecdNo="430" />
+	  <endpoint id="oecdendpoint111"	group="4.Health effects" subgroup="In Vitro Skin Corrosion" name="431.In Vitro Skin Corrosion: Human Skin Model Test" oecdNo="431" />
+	  <endpoint id="oecdendpoint112"	group="4.Health effects" subgroup="In Vitro 3T3 NRU Phototoxicity" name="432.In Vitro 3T3 NRU Phototoxicity Test" oecdNo="432" />
+	  <endpoint id="oecdendpoint113"	group="4.Health effects" subgroup="Skin Corrosion" name="435.In Vitro Membrane Barrier Test Method for Skin Corrosion" oecdNo="435" />
+	  <endpoint id="oecdendpoint114"	group="4.Health effects" subgroup="Acute Inhalation Toxicity" name="436.Acute Inhalation Toxicity - Acute Toxic Class Method" oecdNo="436" />
+	  <endpoint id="oecdendpoint115"	group="4.Health effects" subgroup="Eye corrosion/irritation" name="437.Bovine Corneal Opacity and Permeability Test Method for Identifying Ocular Corrosives and Severe Irritants" oecdNo="437" />
+	  <endpoint id="oecdendpoint116"	group="4.Health effects" subgroup="Eye corrosion/irritat" name="438.Isolated Chicken Eye Test Method for Identifying Ocular Corrosives and Severe Irritants" oecdNo="438" />
+	  <endpoint id="oecdendpoint117"	group="4.Health effects" subgroup="Skin Irritation" name="439.In Vitro Skin Irritation" oecdNo="439" />
+	  <endpoint id="oecdendpoint117"	group="4.Health effects" subgroup="Oestrogenic test" name="440.Uterotrophic Bioassay in Rodents: A short-term screening test for oestrogenic properties" oecdNo="440" />
+	  <endpoint id="oecdendpoint118"	group="4.Health effects" subgroup="(Anti)Androgenic test" name="441.Hershberger Bioassay in Rats: A short-term Screening Assay for (Anti)Androgenic Properties" oecdNo="441" />
+	  <endpoint id="oecdendpoint119"	group="4.Health effects" subgroup="Skin sensitisation" name="442A.Local Lymph Node Assay: DA" oecdNo="442A" />
+	  <endpoint id="oecdendpoint120"	group="4.Health effects" subgroup="Skin sensitisation" name="442B.Local Lymph Node Assay: BrdU-ELISA" oecdNo="442B" />
+	  <endpoint id="oecdendpoint121"	group="4.Health effects" subgroup="Reproductive Toxicity" name="443.Extended One-Generation Reproductive Toxicity Study" oecdNo="443" />
+	  <endpoint id="oecdendpoint122"	group="4.Health effects" subgroup="Carcinogenicity" name="451.Carcinogenicity Studies" oecdNo="451" />
+	  <endpoint id="oecdendpoint123"	group="4.Health effects" subgroup="Chronic Toxicity" name="452.Chronic Toxicity Studies" oecdNo="452" />
+	  <endpoint id="oecdendpoint124"	group="4.Health effects" subgroup="Combined Chronic Toxicity/Carcinogenicity Studies" name="453.Combined Chronic Toxicity/Carcinogenicity Studies" oecdNo="453" />
+	  <endpoint id="oecdendpoint125"	group="4.Health effects" subgroup="Estrogen Receptor" name="455.Stably Transfected Human Estrogen Receptor-α Transcriptional Activation Assay for the Detection of Estrogenic Agonist-Activity of Chemicals" oecdNo="455" />
+	  <endpoint id="oecdendpoint126"	group="4.Health effects" subgroup="Steroidogenesis Assay" name="456.H295R Steroidogenesis Assay" oecdNo="456" />
+	  <endpoint id="oecdendpoint127"	group="4.Health effects" subgroup="Bacterial Reverse Mutation" name="471.Bacterial Reverse Mutation Test" oecdNo="471" />
+	  <endpoint id="oecdendpoint128"	group="4.Health effects" subgroup="Chromosome Aberration" name="473.In Vitro Mammalian Chromosome Aberration Test" oecdNo="473" />
+	  <endpoint id="oecdendpoint129"	group="4.Health effects" subgroup="Micronucleus test" name="474.Mammalian Erythrocyte Micronucleus Test" oecdNo="474" />
+	  <endpoint id="oecdendpoint130"	group="4.Health effects" subgroup="Chromosome Aberration" name="475.Mammalian Bone Marrow Chromosome Aberration Test" oecdNo="475" />
+	  <endpoint id="oecdendpoint131"	group="4.Health effects" subgroup="Gene Mutation" name="476.In Vitro Mammalian Cell Gene Mutation Test" oecdNo="476" />
+	  <endpoint id="oecdendpoint132"	group="4.Health effects" subgroup="Genetic Toxicology" name="477.Genetic Toxicology: Sex-Linked Recessive Lethal Test in Drosophilia melanogaster" oecdNo="477" />
+	  <endpoint id="oecdendpoint133"	group="4.Health effects" subgroup="Genetic Toxicology" name="478.Genetic Toxicology: Rodent dominant Lethal Test" oecdNo="478" />
+	  <endpoint id="oecdendpoint134"	group="4.Health effects" subgroup="Genetic Toxicology" name="479.Genetic Toxicology: In Vitro Sister Chromatid Exchange assay in Mammalian Cells" oecdNo="479" />
+	  <endpoint id="oecdendpoint135"	group="4.Health effects" subgroup="Genetic Toxicology" name="480.Genetic Toxicology: Saccharomyces cerevisiae, Gene Mutation Assay" oecdNo="480" />
+	  <endpoint id="oecdendpoint136"	group="4.Health effects" subgroup="Genetic Toxicology" name="481.Genetic Toxicology: Saccharomyces cerevisiae, Mitotic Recombination Assay" oecdNo="481" />
+	  <endpoint id="oecdendpoint137"	group="4.Health effects" subgroup="Genetic Toxicology" name="482.Genetic Toxicology: DNA Damage and Repair, Unscheduled DNA Synthesis in Mammalian Cells In Vitro" oecdNo="482" />
+	  <endpoint id="oecdendpoint138"	group="4.Health effects" subgroup="Chromosome Aberration" name="483.Mammalian Spermatagonial Chromosome Aberration Test" oecdNo="483" />
+	  <endpoint id="oecdendpoint139"	group="4.Health effects" subgroup="Genetic Toxicology" name="484.Genetic Toxicology: Mouse Spot Test" oecdNo="484" />
+	  <endpoint id="oecdendpoint140"	group="4.Health effects" subgroup="Genetic Toxicology" name="485.Genetic Toxicology: Mouse Heritable Translocation Assay" oecdNo="485" />
+	  <endpoint id="oecdendpoint141"	group="4.Health effects" subgroup="Unscheduled DNA Synthesis (UDS) Test" name="486.Unscheduled DNA Synthesis (UDS) Test with Mammalian Liver Cells In Vivo" oecdNo="486" />
+	  <endpoint id="oecdendpoint142"	group="4.Health effects" subgroup="Micronucleus" name="487.In Vitro Mammalian Cell Micronucleus Test" oecdNo="487" />
+	  <endpoint id="oecdendpoint143"	group="4.Health effects" subgroup="Gene Mutation" name="488.Transgenic Rodent Somatic and Germ Cell Gene Mutation Assays" oecdNo="488" />
+	  <endpoint id="oecdendpoint144"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="501.Metabolism in Crops" oecdNo="501" />
+	  <endpoint id="oecdendpoint145"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="502.Metabolism in Rotational Crops" oecdNo="502" />
+	  <endpoint id="oecdendpoint146"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="503.Metabolism in Livestock" oecdNo="503" />
+	  <endpoint id="oecdendpoint147"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="504.Residues in Rotational Crops (Limited Field Studies)" oecdNo="504" />
+	  <endpoint id="oecdendpoint148"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="505.Residues in Livestock" oecdNo="505" />
+	  <endpoint id="oecdendpoint149"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="506.Stability of Pesticide Residues in Stored Commodities" oecdNo="506" />
+	  <endpoint id="oecdendpoint150"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="507.Nature of the Pesticide Residues in Processed Commodities- High Temperature Hydrolysis" oecdNo="507" />
+	  <endpoint id="oecdendpoint151"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="508.Magnitude of Pesticide Residues in Processed Commodities" oecdNo="508" />
+	  <endpoint id="oecdendpoint152"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="509.Crop Field Trial" oecdNo="509" />
+</acatalog>
+<acatalog id="QMRF" name="QMRF Endpoints list" url="http://qsardb.jrc.it/qmrf/download_catalogs.jsp?source=endpoints_xml.jsp">
+<endpoint id="endpoint73"	group="1.Physicochemical effects " subgroup="Melting point" name="1.1.Melting point" />
+	  <endpoint id="endpoint74"	group="1.Physicochemical effects " subgroup="Boiling point" name="1.2.Boiling point" />
+	  <endpoint id="endpoint75"	group="1.Physicochemical effects " subgroup="Water solubility" name="1.3.Water solubility" />
+	  <endpoint id="endpoint76"	group="1.Physicochemical effects " subgroup="Vapour pressure" name="1.4.Vapour pressure" />
+	  <endpoint id="endpoint77"	group="1.Physicochemical effects " subgroup="Surface tension" name="1.5.Surface tension" />
+	  <endpoint id="endpoint78"	group="1.Physicochemical effects " subgroup="Partition coefficient" name="1.6.Octanol-water partition coefficient (Kow)" />
+	  <endpoint id="endpoint79"	group="1.Physicochemical effects " subgroup="Distribution coefficient" name="1.7.Octanol-water distribution coefficient (D)" />
+	  <endpoint id="endpoint80"	group="1.Physicochemical effects " subgroup="Partition coefficient" name="1.8.Octanol-air partition coefficient (Koa)" />
+	  <endpoint id="endpoint81"	group="1.Physicochemical effects " subgroup="Partition coefficient" name="1.9.Air- water partition coefficient (Henry’s law constant, H)" />
+	  <endpoint id="endpoint82"	group="1.Physicochemical effects " subgroup="Dissociation constan" name="1.10.Dissociation constant (pKa)" />
+	  <endpoint id="endpoint83"	group="2.Environmental fate parameters" subgroup="1.Persistence: Abiotic degradation in water" name="2.1.a.Hydrolysis " />
+	  <endpoint id="endpoint84"	group="2.Environmental fate parameters" subgroup="1.Persistence: Abiotic degradation in water" name="2.1.b.Oxidation " />
+	  <endpoint id="endpoint85"	group="2.Environmental fate parameters" subgroup="1.Persistence: Abiotic degradation in water" name="2.1.c.Other " />
+	  <endpoint id="endpoint86"	group="2.Environmental fate parameters" subgroup="2.Persistence: Abiotic degradation in air (Phototransformation)" name="2.2.a.Direct photolysis" />
+	  <endpoint id="endpoint87"	group="2.Environmental fate parameters" subgroup="2.Persistence: Abiotic degradation in air (Phototransformation)" name="2.2.b.Indirect photolysis (OH-radical reaction, ozone-radical reaction, other)" />
+	  <endpoint id="endpoint88"	group="2.Environmental fate parameters" subgroup="3.Persistence: Biodegradation" name="2.3.a.Ready/not ready biodegradability" />
+	  <endpoint id="endpoint89"	group="2.Environmental fate parameters" subgroup="3.Persistence: Biodegradation" name="2.3.b.Biodegradation time frame (primary, ultimate degradation)" />
+	  <endpoint id="endpoint90"	group="2.Environmental fate parameters" subgroup="4.Bioconcentration " name="2.4.a.BCF fish" />
+	  <endpoint id="endpoint91"	group="2.Environmental fate parameters" subgroup="4.Bioconcentration " name="2.4.b.BCF other organisms " />
+	  <endpoint id="endpoint92"	group="2.Environmental fate parameters" subgroup="5.Bioaccumulation" name="2.5.a.BAF fish" />
+	  <endpoint id="endpoint93"	group="2.Environmental fate parameters" subgroup="5.Bioaccumulation" name="2.5.b.BAF other organisms " />
+	  <endpoint id="endpoint94"	group="2.Environmental fate parameters " subgroup="Partition coefficient " name="2.6.Organic carbon-sorption partition coefficient (organic carbon; Koc)" />
+	  <endpoint id="endpoint95"	group="2.Environmental fate parameters " subgroup="Adsorption/Desorption" name="2.7.Adsorption/Desorption in soil " />
+	  <endpoint id="endpoint96"	group="2.Environmental fate parameters " subgroup="Adsorption/Desorption" name="2.8.Adsorption/Desorption in sediment" />
+	  <endpoint id="endpoint97"	group="2.Environmental fate parameters " subgroup="Vegetation-water partition" name="2.9.Vegetation-water partition coefficient" />
+	  <endpoint id="endpoint98"	group="2.Environmental fate parameters " subgroup="Vegetation-air partition" name="2.10.Vegetation-air partition coefficient" />
+	  <endpoint id="endpoint99"	group="2.Environmental fate parameters " subgroup="Vegetation-soil partition" name="2.11.Vegetation-soil partition coefficient" />
+	  <endpoint id="endpoint100"	group="3.Ecotoxic effects" subgroup="Short-term toxicity" name="3.1.Short-term toxicity to Daphnia (immobilisation)" />
+	  <endpoint id="endpoint101"	group="3.Ecotoxic effects" subgroup="Short-term toxicity" name="3.2.Short-term toxicity to algae (inhibition of the exponential growth rate)" />
+	  <endpoint id="endpoint102"	group="3.Ecotoxic effects" subgroup="Acute toxicity" name="3.3.Acute toxicity to fish (lethality)" />
+	  <endpoint id="endpoint103"	group="3.Ecotoxic effects" subgroup="Long-term toxicity" name="3.4.Long-term toxicity to Daphnia (lethality, inhibition of reproduction)" />
+	  <endpoint id="endpoint104"	group="3.Ecotoxic effects" subgroup="Long-term toxicity" name="3.5.Long-term toxicity to fish (egg/sac fry, growth inhibition of juvenile fish, early life stage, full life cycle)" />
+	  <endpoint id="endpoint105"	group="3.Ecotoxic effects" subgroup="Microbial inhibition" name="3.6.Microbial inhibition (activated sludge respiration inhibition, inhibition of nitrification, other)" />
+	  <endpoint id="endpoint106"	group="3.Ecotoxic effects" subgroup="" name="3.7.Toxicity to soil microorganisms (inhibition of C-mineralisation, inhibition of N-mineralisation, other)" />
+	  <endpoint id="endpoint107"	group="3.Ecotoxic effects" subgroup="" name="3.8.Toxicity to earthworms (survival, growth, reproduction)" />
+	  <endpoint id="endpoint108"	group="3.Ecotoxic effects" subgroup="" name="3.9.Toxicity to plants (leaves, seed germination, root elongation)" />
+	  <endpoint id="endpoint109"	group="3.Ecotoxic effects" subgroup="" name="3.10.Toxicity to soil invertebrates (survival, growth, reproduction)" />
+	  <endpoint id="endpoint110"	group="3.Ecotoxic effects" subgroup="" name="3.11.Toxicity to sediment organisms (survival, growth, reproduction)" />
+	  <endpoint id="endpoint111"	group="3.Ecotoxic effects" subgroup="Toxicity to birds" name="3.12.a.Short term toxicity (feeding, gavage, other)" />
+	  <endpoint id="endpoint112"	group="3.Ecotoxic effects" subgroup="Toxicity to birds" name="3.12.b.Long-term toxicity (survival, growth, reproduction)" />
+	  <endpoint id="endpoint113"	group="4.Human health effects" subgroup="Acute toxicity" name="4.1.Acute inhalation toxicity" />
+	  <endpoint id="endpoint114"	group="4.Human health effects" subgroup="Acute toxicity" name="4.2.Acute oral toxicity" />
+	  <endpoint id="endpoint115"	group="4.Human health effects" subgroup="Acute toxicity" name="4.3.Acute dermal toxicity" />
+	  <endpoint id="endpoint116"	group="4.Human health effects" subgroup="Skin irritation /corrosion" name="4.4.Skin irritation /corrosion" />
+	  <endpoint id="endpoint117"	group="4.Human health effects" subgroup="" name="4.5.Acute photoirritation" />
+	  <endpoint id="endpoint118"	group="4.Human health effects" subgroup="" name="4.6.Skin sensitisation" />
+	  <endpoint id="endpoint119"	group="4.Human health effects" subgroup="" name="4.7.Respiratory sensitisation" />
+	  <endpoint id="endpoint120"	group="4.Human health effects" subgroup="" name="4.8.Photosensitisation" />
+	  <endpoint id="endpoint121"	group="4.Human health effects" subgroup="" name="4.9.Eye irritation/corrosion" />
+	  <endpoint id="endpoint122"	group="4.Human health effects" subgroup="" name="4.10.Mutagenicity " />
+	  <endpoint id="endpoint123"	group="4.Human health effects" subgroup="" name="4.11.Photomutagenicity" />
+	  <endpoint id="endpoint124"	group="4.Human health effects" subgroup="" name="4.12.Carcinogenicity" />
+	  <endpoint id="endpoint125"	group="4.Human health effects" subgroup="" name="4.13.Photocarcinogenicity" />
+	  <endpoint id="endpoint126"	group="4.Human health effects" subgroup="" name="4.14.Repeated dose toxicity " />
+	  <endpoint id="endpoint127"	group="4.Human health effects" subgroup="" name="4.15.In vitro reproductive toxicity (e.g. embryotoxic effects in cell culture such as embryo stem cells)  " />
+	  <endpoint id="endpoint128"	group="4.Human health effects" subgroup="" name="4.16.In vivo pre-natal-developmental toxicity" />
+	  <endpoint id="endpoint129"	group="4.Human health effects" subgroup="" name="4.17.In vivo pre-, peri-, post natal development and / or fertility (1 or 2 gen. Study or enhanced 1 gen study) " />
+	  <endpoint id="endpoint130"	group="4.Human health effects" subgroup="Endocrine Activity" name="4.18.a.Receptor-binding (specify receptor)" />
+	  <endpoint id="endpoint131"	group="4.Human health effects" subgroup="Endocrine Activity" name="4.18.b.Receptor binding and gene expression (specify receptor)" />
+	  <endpoint id="endpoint132"	group="4.Human health effects" subgroup="Endocrine Activity" name="4.18.c.Other (e.g. inhibition of specific enzymes involved in hormone synthesis or regulation, specify enzyme(s) and hormone)" />
+	  <endpoint id="endpoint133"	group="5.Toxicokinetics " subgroup="Skin penetration" name="5.1.Skin penetration" />
+	  <endpoint id="endpoint134"	group="5.Toxicokinetics " subgroup="Ocular membrane penetration" name="5.2.Ocular membrane penetration" />
+	  <endpoint id="endpoint135"	group="5.Toxicokinetics " subgroup="Gastrointestinal absorption" name="5.3.Gastrointestinal absorption" />
+	  <endpoint id="endpoint136"	group="5.Toxicokinetics " subgroup="Barrier penetration" name="5.4.Blood-brain barrier penetration" />
+	  <endpoint id="endpoint137"	group="5.Toxicokinetics " subgroup="Barrier penetration" name="5.5.Placental barrier penetration" />
+	  <endpoint id="endpoint138"	group="5.Toxicokinetics " subgroup="Barrier penetration" name="5.6.Blood-testis barrier penetration" />
+	  <endpoint id="endpoint139"	group="5.Toxicokinetics " subgroup="Barrier penetration" name="5.7.Blood-lung barrier penetration" />
+	  <endpoint id="endpoint140"	group="5.Toxicokinetics " subgroup="Metabolism" name="5.8.Metabolism (including metabolic clearance)" />
+	  <endpoint id="endpoint141"	group="5.Toxicokinetics " subgroup="Protein-binding" name="5.9.Protein-binding" />
+	  <endpoint id="endpoint142"	group="5.Toxicokinetics " subgroup="DNA-binding" name="5.10.DNA-binding" />
+	  <endpoint id="endpoint143"	group="6.Other" subgroup="" name="6.6.Other" />
+</acatalog>
+</catalog>

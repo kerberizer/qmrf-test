@@ -24,9 +24,11 @@
 		  <thead> 
 		 	<th width='25%'>Group</th>
 		 	<th width='15%'>Subgroup</th>
-		 	<th width='50%'>Name</th>
-		 	<th width='5%'>OECD No.</th>
-		 	<th width='5%'>ECHA No.</th>
+		 	<th width='51%'>Name</th>
+		 	<th width='3%'></th>
+		 	<th width='3%'>OECD No.</th>
+		 	<th width='3%'>ECHA No.</th>
+
 		   </thead>  
 		   <xsl:text>&#10;</xsl:text>
 		  <tbody> 	
@@ -37,6 +39,54 @@
 		  </table>
 		  <xsl:text>&#10;</xsl:text>
     </p>
+    </div>
+    <xsl:text>&#10;</xsl:text>
+    <br/>
+</xsl:template>
+
+
+<xsl:template match="catalog">
+  <div class="ui-widget-content ui-corner-all"  style="width:90%;align:center">
+	  <xsl:text>&#10;</xsl:text>
+	  <p>
+	  <!--  table -->
+	  		<table>
+			<xsl:attribute name="class">display</xsl:attribute>
+			<xsl:attribute name="class">endpoints</xsl:attribute>
+			<xsl:attribute name="cellpadding">0</xsl:attribute>
+			<xsl:attribute name="border">0</xsl:attribute>
+			<xsl:attribute name="width">100%</xsl:attribute>
+			<xsl:attribute name="cellspacing">0</xsl:attribute>
+
+		  <xsl:text>&#10;</xsl:text>
+		  <caption><h3><xsl:value-of select="@name"/></h3><xsl:call-template name="print_href"/></caption>
+		  <xsl:text>&#10;</xsl:text>
+		  <thead> 
+		 	<th width='25%'>Group</th>
+		 	<th width='15%'>Subgroup</th>
+		 	<th width='51%'>Name</th>
+		 	<th width='3%'></th>
+		 	<th width='3%'>OECD No.</th>
+		 	<th width='3%'>ECHA No.</th>
+		   </thead>  
+		   <xsl:text>&#10;</xsl:text>
+		  <tbody> 	
+		  <xsl:text>&#10;</xsl:text>
+		  <xsl:apply-templates/>
+		  </tbody>
+		  <xsl:text>&#10;</xsl:text>
+		  </table>
+		  <xsl:text>&#10;</xsl:text>
+    </p>
+    </div>
+    <xsl:text>&#10;</xsl:text>
+    <br/>
+</xsl:template>
+
+<xsl:template match="acatalog">
+  <div class="ui-widget-content ui-corner-all"  style="width:90%;align:center">
+	  <xsl:text>&#10;</xsl:text>
+		  <xsl:apply-templates/>
     </div>
     <xsl:text>&#10;</xsl:text>
     <br/>
@@ -92,6 +142,7 @@
  	<td><xsl:value-of select="@group" /></td>
  	<td><i><xsl:value-of select="@subgroup" /></i></td>
  	<td><b><xsl:value-of select="@name" /></b></td>
+ 	<td><xsl:value-of select="../@id" /></td>
  	<td><xsl:value-of select="@oecdNo" /></td>
  	<td><xsl:value-of select="@echaNo" /></td>
  	</tr>
