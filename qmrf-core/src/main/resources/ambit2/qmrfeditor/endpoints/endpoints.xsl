@@ -41,12 +41,12 @@
     </p>
     </div>
     <xsl:text>&#10;</xsl:text>
-    <br/>
+
 </xsl:template>
 
 
 <xsl:template match="catalog">
-  <div class="ui-widget-content ui-corner-all"  style="width:90%;align:center">
+
 	  <xsl:text>&#10;</xsl:text>
 	  <p>
 	  <!--  table -->
@@ -59,13 +59,17 @@
 			<xsl:attribute name="cellspacing">0</xsl:attribute>
 
 		  <xsl:text>&#10;</xsl:text>
-		  <caption><h3><xsl:value-of select="@name"/></h3><xsl:call-template name="print_href"/></caption>
+		  <caption><h3>Endpoints/ Test guideliness list comparison</h3>
+		  <div>COUNCIL REGULATION (EC) No 440 2008-30 May 2008 (<u>EC</u>)</div> 
+		  <div>OECD GUIDELINES FOR TESTING OF CHEMICALS-Sep 2009 (<u>OECD</u>)</div> 
+		  <div>QMRF Endpoints list (<u>QMRF</u>)</div>
+		  </caption>
 		  <xsl:text>&#10;</xsl:text>
 		  <thead> 
 		 	<th width='25%'>Group</th>
 		 	<th width='15%'>Subgroup</th>
 		 	<th width='51%'>Name</th>
-		 	<th width='3%'></th>
+		 	<th width='3%'>List</th>
 		 	<th width='3%'>OECD No.</th>
 		 	<th width='3%'>ECHA No.</th>
 		   </thead>  
@@ -78,18 +82,16 @@
 		  </table>
 		  <xsl:text>&#10;</xsl:text>
     </p>
-    </div>
+
     <xsl:text>&#10;</xsl:text>
-    <br/>
+    
 </xsl:template>
 
 <xsl:template match="acatalog">
-  <div class="ui-widget-content ui-corner-all"  style="width:90%;align:center">
 	  <xsl:text>&#10;</xsl:text>
 		  <xsl:apply-templates/>
-    </div>
     <xsl:text>&#10;</xsl:text>
-    <br/>
+    
 </xsl:template>
         
 <!--catalogs -->
@@ -142,13 +144,29 @@
  	<td><xsl:value-of select="@group" /></td>
  	<td><i><xsl:value-of select="@subgroup" /></i></td>
  	<td><b><xsl:value-of select="@name" /></b></td>
- 	<td><xsl:value-of select="../@id" /></td>
+ 	<td><xsl:call-template name="print_catalog_header"/></td>
  	<td><xsl:value-of select="@oecdNo" /></td>
  	<td><xsl:value-of select="@echaNo" /></td>
  	</tr>
  	<xsl:text>&#10;</xsl:text>
 </xsl:template>
 
+<xsl:template name="print_catalog_header">
+ <xsl:choose>
+    <xsl:when test="../@url != ''">
+	 		<a>
+			<xsl:attribute name="href">
+			<xsl:value-of select="../@url" disable-output-escaping="yes"/></xsl:attribute>
+			<xsl:attribute name="title"><xsl:value-of select="../@name" disable-output-escaping="yes"/></xsl:attribute>
+			<xsl:attribute name="target">_blank</xsl:attribute>
+			<xsl:value-of select="../@id" disable-output-escaping="yes"/>
+			</a> 
+    </xsl:when>
+    <xsl:otherwise></xsl:otherwise> <!-- default value -->
+  </xsl:choose>
+
+ </xsl:template>
+ 
 <xsl:template name="print_href">
  <xsl:choose>
     <xsl:when test="@url != ''">
