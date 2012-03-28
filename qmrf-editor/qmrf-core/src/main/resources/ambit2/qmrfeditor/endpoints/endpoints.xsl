@@ -42,15 +42,16 @@
   </head>
   <xsl:text>&#10;</xsl:text>
   <body>
-	  <div class="ui-widget-content ui-corner-all"  style="width:80%">
+	  <div class="ui-widget-content ui-corner-all"  style="width:90%">
 	  <xsl:text>&#10;</xsl:text>
 	  <p>
 		  <table id='endpoints' cellpadding="0" cellspacing="0" border="0" width='100%' class="display">	
 		  <xsl:text>&#10;</xsl:text>
-		  <caption><h3><xsl:value-of select="@name"/></h3></caption>
+		  <caption><h3><xsl:value-of select="@name"/></h3><xsl:call-template name="print_href"/></caption>
 		  <xsl:text>&#10;</xsl:text>
 		  <thead> 
 		 	<th>Group</th>
+		 	<th>Subgroup</th>
 		 	<th>Name</th>
 		 	<th>OECD No.</th>
 		 	<th>ECHA No.</th>
@@ -72,13 +73,30 @@
 
 <xsl:template match="endpoint">
 	<tr>
- 	<td><b><xsl:value-of select="@group" /></b><xsl:text> </xsl:text><xsl:value-of select="@subgroup" /></td>
- 	<td><xsl:value-of select="@name" /></td>
+ 	<td><xsl:value-of select="@group" /></td>
+ 	<td><i><xsl:value-of select="@subgroup" /></i></td>
+ 	<td><b><xsl:value-of select="@name" /></b></td>
  	<td><xsl:value-of select="@oecdNo" /></td>
  	<td><xsl:value-of select="@echaNo" /></td>
  	</tr>
  	<xsl:text>&#10;</xsl:text>
 </xsl:template>
+
+<xsl:template name="print_href">
+ <xsl:choose>
+    <xsl:when test="@url != ''">
+	 		<a>
+			<xsl:attribute name="href">
+			<xsl:value-of select="@url" disable-output-escaping="yes"/>
+			</xsl:attribute>
+			<xsl:attribute name="target">_blank</xsl:attribute>
+			<xsl:value-of select="@url" disable-output-escaping="yes"/>
+			</a> 
+    </xsl:when>
+    <xsl:otherwise></xsl:otherwise> <!-- default value -->
+  </xsl:choose>
+
+ </xsl:template>
 <!-- end xslt -->
  </xsl:stylesheet>
 
