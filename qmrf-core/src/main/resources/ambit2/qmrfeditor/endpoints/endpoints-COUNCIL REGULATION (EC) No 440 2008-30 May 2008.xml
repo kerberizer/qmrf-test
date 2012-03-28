@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xml-stylesheet type="text/xsl" href="endpoints.xsl"?>
-<endpoints_catalog name="COUNCIL REGULATION (EC) No 440 2008-30 May 2008" url="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2008:142:0001:0739:EN:PDF">
+<endpoints_catalog id="ec" name="COUNCIL REGULATION (EC) No 440 2008-30 May 2008" url="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2008:142:0001:0739:EN:PDF">
 <endpoint id="ecendpoint0"	group="1.Physico-chemical properties" subgroup="Melting point" name="1.1.Melting/freezing temperature" echaNo="A.1." />
 	  <endpoint id="ecendpoint1"	group="1.Physico-chemical properties" subgroup="Boiling point" name="1.2.Boiling temperature" echaNo="A.2." />
 	  <endpoint id="ecendpoint2"	group="1.Physico-chemical properties" subgroup="Density" name="1.3.Relative density" echaNo="A.3." />
