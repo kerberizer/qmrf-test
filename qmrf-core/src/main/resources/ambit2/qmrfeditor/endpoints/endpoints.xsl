@@ -59,8 +59,8 @@
 			<xsl:attribute name="cellspacing">0</xsl:attribute>
 
 		  <xsl:text>&#10;</xsl:text>
-		  <caption><h3>Endpoints/ Test guideliness list comparison</h3>
-		  <div>COUNCIL REGULATION (EC) No 440 2008-30 May 2008 (<u>EC</u>)</div> 
+		  <caption><h3>Endpoints/ Test guidelines list comparison</h3>
+		  <div>COUNCIL REGULATION (EC) No 440/2008-30 May 2008 (<u>EC</u>)</div> 
 		  <div>OECD GUIDELINES FOR TESTING OF CHEMICALS-Sep 2009 (<u>OECD</u>)</div> 
 		  <div>QMRF Endpoints list (<u>QMRF</u>)</div>
 		  </caption>
@@ -108,7 +108,7 @@
 	<!-- jQuery UI -->
 	<script type="text/javascript" charset="utf8" src="http://ajax.microsoft.com/ajax/jquery.ui/1.8.5/jquery-ui.js"></script>
 	<xsl:text>&#10;</xsl:text>
-	<link type="text/css" rel="Stylesheet" href="http://ajax.microsoft.com/ajax/jquery.ui/1.8.5/themes/flick/jquery-ui.css" />
+	<link type="text/css" rel="Stylesheet" href="http://ajax.microsoft.com/ajax/jquery.ui/1.8.5/themes/ui-lightness/jquery-ui.css" />
 	<xsl:text>&#10;</xsl:text>
 	<style type="text/css" media="screen">
 			.dataTables_info { padding-top: 0; }
