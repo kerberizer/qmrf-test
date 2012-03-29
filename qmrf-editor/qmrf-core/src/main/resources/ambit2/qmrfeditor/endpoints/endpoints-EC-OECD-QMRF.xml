@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <?xml-stylesheet type="text/xsl" href="endpoints.xsl"?>
 <catalog>
-<acatalog id="EC" name="COUNCIL REGULATION (EC) No 440 2008-30 May 2008" url="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2008:142:0001:0739:EN:PDF">
+<acatalog id="EC" name="COUNCIL REGULATION (EC) No 440/2008-30 May 2008" url="http://eur-lex.europa.eu/LexUriServ/LexUriServ.do?uri=OJ:L:2008:142:0001:0739:EN:PDF">
 <endpoint id="ecendpoint0"	group="1.Physico-chemical properties" subgroup="Melting point" name="1.1.Melting/freezing temperature" echaNo="A.1." />
 	  <endpoint id="ecendpoint1"	group="1.Physico-chemical properties" subgroup="Boiling point" name="1.2.Boiling temperature" echaNo="A.2." />
 	  <endpoint id="ecendpoint2"	group="1.Physico-chemical properties" subgroup="Density" name="1.3.Relative density" echaNo="A.3." />
@@ -254,7 +254,7 @@
 	  <endpoint id="oecdendpoint151"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="508.Magnitude of Pesticide Residues in Processed Commodities" oecdNo="508" />
 	  <endpoint id="oecdendpoint152"	group="5.Other test guidelines" subgroup="Pesticide residue chemistry" name="509.Crop Field Trial" oecdNo="509" />
 </acatalog>
-<acatalog id="QMRF" name="QMRF Endpoints list" url="http://qsardb.jrc.it/qmrf/download_catalogs.jsp?source=endpoints_xml.jsp">
+<acatalog id="QMRF" name="QMRF Endpoints list" url="http://qsardb.jrc.it/qmrf">
 <endpoint id="endpoint73"	group="1.Physicochemical effects " subgroup="Melting point" name="1.1.Melting point" />
 	  <endpoint id="endpoint74"	group="1.Physicochemical effects " subgroup="Boiling point" name="1.2.Boiling point" />
 	  <endpoint id="endpoint75"	group="1.Physicochemical effects " subgroup="Water solubility" name="1.3.Water solubility" />
