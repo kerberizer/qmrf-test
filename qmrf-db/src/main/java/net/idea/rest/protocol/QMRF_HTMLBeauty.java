@@ -145,7 +145,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery-ui-1.8.18.custom.min.js\"></script>\n",baseReference));
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.MultiFile.pack.js\"></script>\n",baseReference));
 			
-			// Google +1 button rendering code (the button is placed elsewhere)
+			// Initialize Google +1 buttons
 			w.write("<script type='text/javascript'>" +
 					"(function() {" +
 					"var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;" +
@@ -155,7 +155,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"</script>"
 			);
 
-			// Facebook JavaScript SDK
+			// Initialize Facebook JavaScript SDK
 			w.write("<div id=\"fb-root\"></div>\n" +
 					"<script>(function(d, s, id) {\n" +
 					"var js, fjs = d.getElementsByTagName(s)[0];\n" +
@@ -166,13 +166,13 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"}(document, 'script', 'facebook-jssdk'));</script>\n"
 			);
 			
-			// Twitter JS
+			// Initialize Twitter JS
 			w.write("<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id))" +
 					"{js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";" +
 					"fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>\n"
 			);
 
-			// LinkedIn
+			// Initialize LinkedIn
 			w.write("<script src='http://platform.linkedin.com/in.js' type='text/javascript'></script>\n");
 			
 			//w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.tablesorter.min.js\"></script>\n",baseReference));
@@ -274,6 +274,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					baseReference.toString(),null,
 					request.getClientInfo().getUser()==null?"Login is only required for editors (to submit new documents)":String.format("%s logout",request.getClientInfo().getUser())));
 			w.write("\t\t\t\t<li id='/help'><a class='selectable' target='_help' href='http://qmrf.sf.net/'>Help</a></li>\n");
+			w.write("\t\t\t\t<li><a class='selectable' href='http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe'>Get QMRF Editor</a></li>\n");
 			w.write(
 			"\t\t\t</ul>\n" +
 			"\t\t</div>\n"); // div id='menu'
