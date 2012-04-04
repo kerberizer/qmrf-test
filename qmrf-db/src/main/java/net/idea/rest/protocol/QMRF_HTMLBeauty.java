@@ -208,20 +208,27 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"}</script>\n"
 			);
 			w.write("</head>\n");
-			w.write("<body>");
-			w.write(String.format("<link rel=\"stylesheet\" href=\"%s/style/tablesorter.css\" type=\"text/css\" media=\"screen\" title=\"Flora (Default)\">\n",baseReference));
+			
+			// HTML body begins here.
+			w.write("<body>\n");
+			
+			w.write(String.format("<link rel='tylesheet' " +
+					"href='%s/style/tablesorter.css' " +
+					"type='text/css' " +
+					"media='screen' " +
+					"title='Flora (Default)'>\n",
+					baseReference));
+			
 			w.write("\n");
 			
-			StringBuilder header = new StringBuilder();
-			header.append(String.format("<a href='#'><img class='logo_top-left' src='%s/images/IHCP_logo.jpg' alt='IHCP logo'></a>\n",
-					baseReference));
-			header.append(String.format("<div class='logo_header'><img src='%s/images/logo_header-qmrf.png' alt='%s' title='%s'></div>",
-					baseReference,getTitle(),getTitle()));
-			header.append(String.format("<a href='#'><img class='logo_top-right' src='%s/images/JRC_logo.jpg' alt='JRC logo'></a>\n",
+			w.write(String.format("<div id='wrap'>\n" +
+					"<div id='header'>\n" +
+					"<a href='#'>\n" +
+					"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.jpg' alt='JRC IHCP logo'>\n" +
+					"</a>\n" +
+					"</div>\n",
 					baseReference));
 			
-			
-			w.write(String.format("<div id='wrap'><div id='header'>%s</div>\n",header));
 			w.write(
 					"<div id='inner-wrap'>\n" +
 					"\t<div id='left'>\n");

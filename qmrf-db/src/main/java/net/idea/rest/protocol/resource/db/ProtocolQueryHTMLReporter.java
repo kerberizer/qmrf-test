@@ -308,15 +308,15 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 						((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"<div></div>":""
 			));			
 			
-			output.write(String.format("<td class='contentTable'>%s</td>",item.getTitle()));
-			output.write(String.format("<td class='contentTable'>%s</td>",simpleDateFormat.format(new Date(item.getTimeModified()))));
-			output.write(String.format("<td class='contentTable'>%s</td>",printDownloadLinks(uri)));
+			output.write(String.format("<td class='contentTable qmrfTitle'>%s</td>", item.getTitle()));
+			output.write(String.format("<td class='contentTable qmrfDate'>%s</td>", simpleDateFormat.format(new Date(item.getTimeModified()))));
+			output.write(String.format("<td class='contentTable qmrfDownloadLinks'>%s</td>", printDownloadLinks(uri)));
 			
 			String owner = !item.isPublished() || isAdminOrEditor()?
 							String.format("%s %s",item.getOwner().getFirstname()==null?"":item.getOwner().getFirstname(),
 												  item.getOwner().getLastname()==null?"":item.getOwner().getLastname()):"";
 			
-			output.write(String.format("<td class='contentTable'>%s</td>", owner));
+			output.write(String.format("<td class='contentTable qmrfOwner'>%s</td>", owner));
 			
 			if (!item.isPublished()) {
 				output.write(String.format("<td class='contentTableManageL'>%s</td>" +

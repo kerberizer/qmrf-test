@@ -4,12 +4,11 @@ html {
 
 body {
 	margin: 0;
-	padding: 5px;
 	height: 100%;
 	background-color: #ffffff;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
-	COLOR: #516373;
-	FONT-SIZE: 10pt;
+	color: #516373;
+	font-size: 10pt;
 }
 
 #wrap {
@@ -19,6 +18,12 @@ body {
 	height: auto !important;
 	height: 100%;
 	margin: 0 auto -80px;
+}
+
+div#header {
+	height: 140px;
+	text-align: left;
+	background: url("/qmrf/images/header-background.png") repeat-x scroll left top;
 }
 
 * html #wrap {
@@ -223,9 +228,6 @@ A:hover {
 }
 
 .logo_top-left {
-	position: absolute;
-	top: 5px;
-	left: 1em;
 	border: 0;
 }
 
@@ -244,6 +246,7 @@ A:hover {
 
 .ui-tabs .ui-tabs-nav li a {
 	font-size: 8pt;
+	padding: 0.5em !important;
 }
 
 ul#hnavlist {
@@ -417,6 +420,14 @@ td.qmrfNumber {
 td.qmrfNumber div {
 	width: 130px;
 	height: 0;
+}
+
+td.qmrfDate {
+	min-width: 5em;
+}
+
+td.qmrfDownloadLinks {
+	min-width: 5.5em;
 }
 
 td.contentTableManageL {
