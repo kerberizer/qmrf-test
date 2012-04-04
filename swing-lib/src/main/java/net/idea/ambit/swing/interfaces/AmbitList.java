@@ -15,11 +15,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import net.idea.ambit.swing.common.AmbitListOneItemEditor;
 import net.idea.ambit.swing.events.AmbitListChanged;
 import net.idea.ambit.swing.events.AmbitObjectChanged;
-
 import ambit2.base.exceptions.AmbitIOException;
 import ambit2.base.interfaces.IAmbitEditor;
 
@@ -33,7 +33,7 @@ import ambit2.base.interfaces.IAmbitEditor;
  * Contact: www.ideaconsult.net
  * 
  */
-public class AmbitList<T extends AmbitObject> extends AmbitObject  {
+public class AmbitList<T extends AmbitObject> extends AmbitObject {
 	/**
 	 * 
 	 */
@@ -41,6 +41,7 @@ public class AmbitList<T extends AmbitObject> extends AmbitObject  {
 	protected AmbitListChanged<T> listsEvent = null;
 	protected ArrayList<T> list  = null;
 	protected int selectedIndex = -1;	
+	
 	/**
 	 * 
 	 */
@@ -247,7 +248,7 @@ public class AmbitList<T extends AmbitObject> extends AmbitObject  {
 		setSelectedIndex(list.size()-1);
 		return getItem(getSelectedIndex());
 	}	
-	public Object next() {
+	public T next() {
 		int i = (getSelectedIndex() +1) % size();
 		setSelectedIndex(i);
 		return getItem(getSelectedIndex());
@@ -291,4 +292,8 @@ public class AmbitList<T extends AmbitObject> extends AmbitObject  {
         e.setEditable(editable);
         return e;
     }
-}
+    
+    public Iterator<T> getIterator() {
+    	return list.iterator();
+    }
+}    

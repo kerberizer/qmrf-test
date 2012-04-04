@@ -52,7 +52,10 @@ public class AbstractQMRFChapter extends AmbitObject {
 	protected boolean readOnly = false;
     protected QMRFAttributes attributes;    
 
-    public AbstractQMRFChapter() {
+    public QMRFAttributes getAttributes() {
+		return attributes;
+	}
+	public AbstractQMRFChapter() {
         this("chapter");
     }
     public AbstractQMRFChapter(String elementID) {
