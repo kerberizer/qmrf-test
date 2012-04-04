@@ -13,8 +13,10 @@ since RTF is white-space sensitive (except for newlines).
   <@rtf.newline/><#t>
 <#list qmrf.chapters as chapter><#t>
 	<@rtf.H2>${chapter.chapter}.${chapter.title}</@rtf.H2><@rtf.newline/><#t>
+	<@rtf.newline/><#t>
 	<#list chapter.subchapters.iterator as subchapter><#t>
-	  	<@rtf.big>${subchapter.chapter}.${subchapter.title}</@rtf.big><@rtf.newline/><#t>
+	  	<@rtf.big><@rtf.bold>${subchapter.chapter}.${subchapter.title}</@rtf.bold></@rtf.big><@rtf.newline/><#t>
+	  	<@rtf.newline/><#t>
 	  	 ${subchapter.text}<@rtf.newline/><#t>
 	     <#if subchapter.attributes.answer??><#t>
 	     	<@rtf.bold>${subchapter.attributes.answer}</@rtf.bold><@rtf.newline/><#t>
@@ -65,7 +67,8 @@ since RTF is white-space sensitive (except for newlines).
 		    		<#if entry.attributes.url??><@rtf.bold>WWW:</@rtf.bold> ${entry.attributes.url}<@rtf.newline/></#if><#t>
 		    		<@rtf.newline/>
    				</#list><#t>
-		 </#if><#t>    	     
+		 </#if><#t>   
+		 <@rtf.newline/><#t> 	     
 	</#list><#t>	
 </#list><#t>
 </@rtf.document>

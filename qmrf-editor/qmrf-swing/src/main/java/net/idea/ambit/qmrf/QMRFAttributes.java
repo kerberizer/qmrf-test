@@ -97,6 +97,10 @@ public class QMRFAttributes extends Hashtable<String,String>  {
 	    this.names.add(name);
     }
 
+	@Override
+	public synchronized String put(String key, String value) {
+		return super.put(key, value==null?null:value.trim());
+	}
 }
 
 

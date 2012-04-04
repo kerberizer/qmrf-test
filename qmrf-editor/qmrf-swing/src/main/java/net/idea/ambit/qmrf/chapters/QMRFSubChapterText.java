@@ -26,6 +26,7 @@ package net.idea.ambit.qmrf.chapters;
 
 import net.idea.ambit.qmrf.swing.QMRFSubChapterTextEditor;
 import net.idea.ambit.qmrf.xml.XMLException;
+import net.idea.qmrf.converters.QMRFConverter;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -48,7 +49,10 @@ public class QMRFSubChapterText extends AbstractQMRFChapter {
 
 	}
     public synchronized String getText() {
-        return text;
+    	if (cleanTags) {
+    		return QMRFConverter.replaceTags(text).replace("  ", " ").trim();
+    	} else
+    		return text;
     }
     public synchronized void setText(String text) {
         this.text = text;

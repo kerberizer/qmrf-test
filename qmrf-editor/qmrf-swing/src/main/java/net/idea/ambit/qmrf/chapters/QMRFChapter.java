@@ -43,8 +43,9 @@ import org.w3c.dom.NodeList;
 import ambit2.base.interfaces.IAmbitEditor;
 
 public class QMRFChapter extends AbstractQMRFChapter implements InterfaceQMRF, IAmbitObjectListener {
-	protected AmbitList subchapters;
+	protected AmbitList<AbstractQMRFChapter> subchapters;
     protected Hashtable<String, Catalog> catalogs;
+
     
 	public synchronized Hashtable<String, Catalog> getCatalogs() {
         return catalogs;
@@ -170,6 +171,12 @@ public class QMRFChapter extends AbstractQMRFChapter implements InterfaceQMRF, I
     public void ambitObjectChanged(AmbitObjectChanged event) {
         setModified(event.getObject().isModified());
         
+    }
+    
+    @Override
+    public void setCleanTags(boolean cleanTags) {
+        for (int i=0; i < subchapters.size();i++) 
+            subchapters.getItem(i).setCleanTags(cleanTags);
     }
 }
 

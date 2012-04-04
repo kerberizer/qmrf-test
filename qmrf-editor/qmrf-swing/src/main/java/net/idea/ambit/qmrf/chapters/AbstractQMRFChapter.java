@@ -51,7 +51,14 @@ public class AbstractQMRFChapter extends AmbitObject {
 	private static final long serialVersionUID = 979415290130989975L;
 	protected boolean readOnly = false;
     protected QMRFAttributes attributes;    
+    protected boolean cleanTags = false;
 
+    public boolean isCleanTags() {
+		return cleanTags;
+	}
+	public void setCleanTags(boolean cleanTags) {
+		this.cleanTags = cleanTags;
+	}
     public QMRFAttributes getAttributes() {
 		return attributes;
 	}

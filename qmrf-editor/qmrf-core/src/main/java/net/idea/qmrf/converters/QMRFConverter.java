@@ -275,6 +275,8 @@ public abstract class QMRFConverter {
 	protected static Pattern HTML_tags = Pattern.compile("(<html>|</html>|<head>|</head>|<title>|</title>|<body>|</body>|<b>|</b>|<i>|</i>|\t)");
 	protected static Pattern ptag = Pattern.compile("(<p>|<p style=\"margin-top: 0\">|</p>)");
 	protected static Pattern CRLF = Pattern.compile("(\n|\r)");
+	protected static Pattern BLANKS = Pattern.compile(" {2,}");
+	
 
 	public static String replaceNewLine(String text) {
 		if (text == null) return text;
@@ -308,7 +310,11 @@ public abstract class QMRFConverter {
 			newText = m.replaceAll("\n");
 		}
 
-		return newText.replace("  "," ").trim();
+		m = BLANKS.matcher(newText);
+		if (m.find()) {
+			newText = m.replaceAll(" ");
+		}
+		return newText.trim();
 
 
 	}
