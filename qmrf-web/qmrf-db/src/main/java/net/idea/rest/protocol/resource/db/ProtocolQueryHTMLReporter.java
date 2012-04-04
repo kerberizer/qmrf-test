@@ -351,7 +351,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		return
 		String.format("<form action='%s?method=PUT' method='POST' ENCTYPE=\"multipart/form-data\">" +
 				"<input  type='hidden' name='published' value='true'/>" +
-				"<input  title='This document is NOT published' class='draw' " +
+				"<input  title='Publish this document' class='draw' " +
 				"type='image' src='%s/images/script_add.png' value='Publish'></form>",
 				uri,
 				baseRef
@@ -362,7 +362,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		return
 		String.format("<form action='%s?method=DELETE' method='POST' ENCTYPE=\"multipart/form-data\">" +
 				"<input  type='hidden' name='published' value='true'/>" +
-				"<input  title='Delete document' class='draw'" +
+				"<input  title='Delete this document' class='draw'" +
 				"type='image' src='%s/images/script_delete.png' value='Delete'></form>",
 				uri,
 				baseRef);
@@ -377,6 +377,6 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				update_mode.update.name(),
 				((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"class='ieSux'":"",
 				baseRef,
-				"Update");
+				"Update this document");
 	}		
 }
