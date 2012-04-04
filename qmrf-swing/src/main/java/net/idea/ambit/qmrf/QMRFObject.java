@@ -158,9 +158,13 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
             {"QSAR_Miscelaneous","Miscellaneous information"},
             {"QMRF_Summary","Summary (JRC Inventory)"}
     };
-    
 
-    public QMRFObject() {
+    public void setCleanTags(boolean cleanTags) {
+        for (int i=0; i < chapters.size();i++) 
+        	chapters.get(i).setCleanTags(cleanTags);
+    }
+    
+	public QMRFObject() {
     	this(null,false);
     }
 	public QMRFObject(String[] args, boolean adminUser) {

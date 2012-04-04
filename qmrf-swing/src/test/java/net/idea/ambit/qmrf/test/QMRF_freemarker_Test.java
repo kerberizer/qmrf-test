@@ -69,7 +69,9 @@ public class QMRF_freemarker_Test {
         Map model = new HashMap();
         // make sure you add the RtfConverter, since this will be needed to escape interpolations as Rtf
         model.put("RtfConverter", new RtfConverter());
-        model.put("qmrf", getQMRF());
+        QMRFObject qmrf = getQMRF();
+        qmrf.setCleanTags(true);
+        model.put("qmrf", qmrf);
 
      
         /* Merge data model with template */
