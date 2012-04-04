@@ -26,13 +26,13 @@ since RTF is white-space sensitive (except for newlines).
 			{\f6\fswiss\fcharset186\fprq2 Arial Baltic;}<#t>
 			{\f100\fnil\fcharset2 Symbol;}<#t>
 		}<#t>
-		\viewkind4\uc1\pard\f0\fs#{RTF_DefaultFontSize*2} <#t>
+		\viewkind4\uc1\pard\f0\fs#{RTF_DefaultFontSize*2}<#t>
 		<#nested><#t>
 	}<#t>
 </#macro>
 
 <#macro newline>
-	\par\f0\fs#{RTF_DefaultFontSize*2} <#t>
+	\par\f0\fs#{RTF_DefaultFontSize*2}<#t>
 </#macro>
 
 <#macro bold>
@@ -48,23 +48,39 @@ since RTF is white-space sensitive (except for newlines).
 </#macro>
 
 <#macro small>
-	{\fs#{RTF_SmallFontSize*2} <#nested>}<#t>
+	{\fs#{RTF_SmallFontSize*2}<#nested>}<#t>
 </#macro>
 
 <#macro big>
-	{\fs#{RTF_BigFontSize*2} <#nested>}<#t>
+	{\fs#{RTF_BigFontSize*2}<#nested>}<#t>
 </#macro>
 
 <#macro H1>
-	{\fs#{RTF_H1FontSize*2}  <#nested>}<@newline/><#t>
+	{\fs#{RTF_H1FontSize*2}<#nested>}<@newline/><#t>
 </#macro>
 
 <#macro H2>
-	{\fs#{RTF_H2FontSize*2}  <#nested>}<@newline/><#t>
+	{\fs#{RTF_H2FontSize*2}<#nested>}<@newline/><#t>
 </#macro>
 
 <#macro fontSize size>
 	{\fs#{size*2} <#nested>}<#t>
+</#macro>
+
+<#macro super>
+	{\super <#nested>\nosupersub }<#t>
+</#macro>
+
+<#macro sub>
+	{\sub <#nested>\nosupersub }<#t>
+</#macro>
+
+<#macro left>
+	{\pard \ql <#nested> \par}<#t>
+</#macro>
+
+<#macro justified>
+	{\pard \qj <#nested> \par}<#t>
 </#macro>
 
 <#macro bullet withNewline=true>

@@ -5,7 +5,7 @@ since RTF is white-space sensitive (except for newlines).
 <#import "rtf.ftl" as rtf>
 <#escape x as RtfConverter(x)>
 <@rtf.document>
- <@rtf.H1>${qmrf.title}</@rtf.H1><@rtf.newline/><#t>
+<@rtf.left><@rtf.H1>${qmrf.title}</@rtf.H1></@rtf.left><@rtf.newline/><#t>
   Author ${qmrf.author}<@rtf.newline/><#t>
   Version ${qmrf.version}<@rtf.newline/><#t>
   email ${qmrf.email}<@rtf.newline/><#t>
@@ -17,7 +17,7 @@ since RTF is white-space sensitive (except for newlines).
 	<#list chapter.subchapters.iterator as subchapter><#t>
 	  	<@rtf.big><@rtf.bold>${subchapter.chapter}.${subchapter.title}</@rtf.bold></@rtf.big><@rtf.newline/><#t>
 	  	<@rtf.newline/><#t>
-	  	 ${subchapter.text}<@rtf.newline/><#t>
+	  	 <@rtf.justified>${subchapter.text}</@rtf.justified><@rtf.newline/><#t>
 	     <#if subchapter.attributes.answer??><#t>
 	     	<@rtf.bold>${subchapter.attributes.answer}</@rtf.bold><@rtf.newline/><#t>
 	     </#if><#t>
@@ -53,6 +53,7 @@ since RTF is white-space sensitive (except for newlines).
 	     	<@rtf.newline/>
 	     </#if><#t>	 
 	      <#if subchapter.catalogReference??><#t>
+	      		<@rtf.left><#t>
 		    	<#list subchapter.catalogReference.iterator as entry><#t>
 					<#if entry.attributes.title??><@rtf.bold>Title:</@rtf.bold> ${entry.attributes.title}<@rtf.newline/></#if><#t>
 		    		<#if entry.attributes.group??>${entry.attributes.group} </#if><#t>
@@ -67,6 +68,7 @@ since RTF is white-space sensitive (except for newlines).
 		    		<#if entry.attributes.url??><@rtf.bold>WWW:</@rtf.bold> ${entry.attributes.url}<@rtf.newline/></#if><#t>
 		    		<@rtf.newline/>
    				</#list><#t>
+   				</@rtf.left><#t>
 		 </#if><#t>   
 		 <@rtf.newline/><#t> 	     
 	</#list><#t>	
