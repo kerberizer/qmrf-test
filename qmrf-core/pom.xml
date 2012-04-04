@@ -39,12 +39,14 @@
 	<artifactId>commons-lang</artifactId>
 	<version>2.6</version>
 	</dependency>
-	<dependency>
-	  <groupId>org.freemarker</groupId>
-	  <artifactId>freemarker</artifactId>
-	  <!-- Latest 2.3.x (not 2.4.x), at least 2.3.19 -->
-	  <version>[2.3.19,2.4)</version>
-	</dependency>	
+
+     <dependency>
+     	<groupId>ambit</groupId>
+     	<artifactId>freemarker_rtf</artifactId>
+     	<version>${project.version}</version>
+     	<type>jar</type>
+     	<scope>compile</scope>
+     </dependency>
  </dependencies>
  <build>
  <pluginManagement>
