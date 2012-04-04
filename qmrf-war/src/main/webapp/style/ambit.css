@@ -445,7 +445,11 @@ td.contentTableManageR {
 	padding: 0.1em 0.5em 0.1em 0;
 }
 
-img.ieSux {
+a.updateLinkOnIE {
+	position: relative;
+}
+
+img.updateLinkOnIE {
 	border: none;
 	position: relative;
 	bottom: 9px;
