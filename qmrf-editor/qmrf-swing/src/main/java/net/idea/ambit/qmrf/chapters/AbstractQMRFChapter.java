@@ -194,7 +194,7 @@ public class AbstractQMRFChapter extends AmbitObject {
     @Override
     public void setName(String name) {
 
-    	super.setName(name);
+    	super.setName(name==null?null:name.trim());
     }
     /*
 	public QMRFAttributes getAttributes() {

@@ -55,7 +55,7 @@ public class QMRFSubChapterText extends AbstractQMRFChapter {
     		return text;
     }
     public synchronized void setText(String text) {
-        this.text = text;
+        this.text = text==null?text:text.trim();
         setModified(true);
     }
     @Override

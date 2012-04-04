@@ -76,19 +76,23 @@ since RTF is white-space sensitive (except for newlines).
 </#macro>
 
 <#macro left>
-	{\pard \ql <#nested> \par}<#t>
+	{\pard \ql \li360 <#nested> \par}<#t>
 </#macro>
 
 <#macro justified>
-	{\pard \qj <#nested> \par}<#t>
+	{\pard \qj \fi360 <#nested> \par}<#t>
 </#macro>
 
-<#macro bullet withNewline=true>
+<#macro href>
+{\field{\*\fldinst{HYPERLINK "<#nested>"}}{\fldrslt{\ul <#nested>}}}<#t>
+</#macro>  
+
+<#macro bullet  withNewline=true>
 	<#-- you may wish to leave off the newline on the last bullet in a table cell, by passing in false above -->
 	<#if RTF_InTable>
 		{\pard\f100\'B7   }<#nested><#if withNewline>\par</#if><#t>
 	<#else>
-		{\pard{\pntext\f100\'B7\tab}{\*\pn\pnlvlblt\pnf100\pnindent0{\pntxtb\'B7}}\ltrpar\fi-300\li300\f0\fs#{RTF_DefaultFontSize*2} <#nested><#if withNewline>\par</#if>}<#t>
+		{\pard {\pntext\f100\'B7\tab }{\*\pn\pnlvlblt\pnf100\pnindent0{\pntxtb\'B7}}\ltrpar\fi-300\li360\f0\fs#{RTF_DefaultFontSize*2} <#nested><#if withNewline>\par</#if>}<#t>
 	</#if>
 </#macro>
 
