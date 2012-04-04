@@ -370,12 +370,13 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 
 	protected String getUpdateString(Reference baseRef, DBProtocol item) {
 		return
-		String.format("<a href='%s%s/%s?mode=%s' target='upload'><img %s src='%s/images/script_edit.png' title='%s'></a>",
+		String.format("<a %s href='%s%s/%s?mode=%s' target='upload'><img %s src='%s/images/script_edit.png' title='%s'></a>",
+				((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"class='updateLinkOnIE'":"",
 				baseRef,
 				Resources.editor,
 				item.getIdentifier(),
 				update_mode.update.name(),
-				((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"class='ieSux'":"",
+				((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"class='updateLinkOnIE'":"",
 				baseRef,
 				"Update this document");
 	}		

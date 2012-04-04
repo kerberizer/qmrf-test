@@ -224,7 +224,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<div id='wrap'>\n" +
 					"<div id='header'>\n" +
 					"<a href='#'>\n" +
-					"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.jpg' alt='JRC IHCP logo'>\n" +
+					"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.png' alt='JRC IHCP logo'>\n" +
 					"</a>\n" +
 					"</div>\n",
 					baseReference));
