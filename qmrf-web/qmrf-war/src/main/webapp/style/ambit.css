@@ -26,6 +26,22 @@ div#header {
 	background: url("/qmrf/images/header-background.png") repeat-x scroll left top;
 }
 
+ul.topLinks {
+	height: auto;
+	margin: 0;
+	padding: 0.5em 1em 0 0;
+	text-align: right;
+}
+
+li.topLinks {
+	display: inline;
+}
+
+.logo_top-left {
+	border: 0;
+	margin-top: -24px;
+}
+
 * html #wrap {
 	height: 100%
 }
@@ -225,23 +241,6 @@ A:hover {
 	font-weight: bold;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
 	text-decoration: underline;
-}
-
-.logo_top-left {
-	border: 0;
-}
-
-.logo_header {
-	position: relative;
-	top: -55px;
-	width: 100%;
-}
-
-.logo_top-right {
-	position: absolute;
-	top: 5px;
-	right: 1em;
-	border: 0;
 }
 
 .ui-tabs .ui-tabs-nav li a {
