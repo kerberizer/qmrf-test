@@ -350,9 +350,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected String getPublishString(Reference baseRef, String uri) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<form action='%s?method=PUT' method='POST' ENCTYPE='multipart/form-data'>");
-		stringBuilder.append("<input  type='hidden' name='published' value='true'/>");
-		stringBuilder.append("<input  title='Publish this document' class='draw' ");
-		stringBuilder.append("type='image' src='%s/images/script_add.png' value='Publish'></form>");
+		stringBuilder.append("<input type='hidden' name='published' value='true'>");
+		stringBuilder.append("<input title='Publish this document' class='draw' "); // cont'd
+		stringBuilder.append("type='image' src='%s/images/script_add.png' value='Publish'>");
+		stringBuilder.append("</form>");
 		
 		return String.format(stringBuilder.toString(), uri, baseRef);
 	}
@@ -360,24 +361,22 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected String getDeleteString(Reference baseRef, String uri) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<form action='%s?method=DELETE' method='POST' ENCTYPE='multipart/form-data'>");
-		stringBuilder.append("<input  type='hidden' name='published' value='true'/>");
-		stringBuilder.append("<input  title='Delete this document' class='draw'");
-		stringBuilder.append("type='image' src='%s/images/script_delete.png' value='Delete'></form>");
+		stringBuilder.append("<input type='hidden' name='published' value='true'>");
+		stringBuilder.append("<input title='Delete this document' class='draw'");
+		stringBuilder.append("type='image' src='%s/images/script_delete.png' value='Delete'>");
+		stringBuilder.append("</form>");
 		
 		return String.format(stringBuilder.toString(), uri, baseRef);
 	}	
 
 	protected String getUpdateString(Reference baseRef, DBProtocol item) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("<form action='%s%s/%s' method='GET'>");
+		stringBuilder.append("<input type='hidden' name='mode' value='%s'>");
+		stringBuilder.append("<input title='Update this document' class='draw' "); // cont'd
+		stringBuilder.append("type='image' src='%s/images/script_edit.png' value='Update'>");
+		stringBuilder.append("</form>");
 		
-		return
-		String.format("<a %s href='%s%s/%s?mode=%s' target='upload'><img %s src='%s/images/script_edit.png' title='%s'></a>",
-				((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"class='updateLinkOnIE'":"",
-				baseRef,
-				Resources.editor,
-				item.getIdentifier(),
-				update_mode.update.name(),
-				((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"class='updateLinkOnIE'":"",
-				baseRef,
-				"Update this document");
+		return String.format(stringBuilder.toString(), baseRef, Resources.editor, item.getIdentifier(), update_mode.update.name(), baseRef);
 	}		
 }
