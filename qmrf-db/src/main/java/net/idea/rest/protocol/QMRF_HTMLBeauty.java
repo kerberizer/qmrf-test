@@ -212,26 +212,53 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// HTML body begins here.
 			w.write("<body>\n");
 			
-			w.write(String.format("<link rel='tylesheet' " +
+			w.write(String.format(
+					"<link rel='tylesheet' " +
 					"href='%s/style/tablesorter.css' " +
 					"type='text/css' " +
 					"media='screen' " +
 					"title='Flora (Default)'>\n",
-					baseReference));
+					baseReference
+			));
 			
-			w.write("\n");
+			w.write("<div id='wrap'>\n");
 			
-			w.write(String.format("<div id='wrap'>\n" +
-					"<div id='header'>\n" +
-					"<a href='#'>\n" +
+			w.write("<div id='header'>\n");
+			
+			// top links
+			w.write(String.format(
+					"<ul class='topLinks'>\n" +
+					"<li class='topLinks'>\n" +
+					"<a href='%s'>Download QMRF Editor</a>\n" +
+					"</li>\n" +
+					"<li class='topLinks'>|</li>\n" +
+					"<li class='topLinks'>\n" +
+					"<a class='email' href='%s'>Submit QMRF by e-mail</a>\n" +
+					"</li>\n" +
+					"<li class='topLinks'>|</li>\n" +
+					"<li class='topLinks'>\n" +
+					"<a href='%s'>Help</a>\n" +
+					"</li>\n" +
+					"</ul>\n",
+					"http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe",
+					"mailto:JRC-IHCP-COMPUTOX@ec.europa.eu",
+					"http://qmrf.sf.net/"
+			));
+			
+			// the JRC IHCP logo
+			w.write(String.format(
+					"<a href='http://ihcp.jrc.ec.europa.eu/'>\n" +
 					"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.png' alt='JRC IHCP logo'>\n" +
-					"</a>\n" +
-					"</div>\n",
-					baseReference));
+					"</a>\n",
+					baseReference
+			));
 			
-			w.write(
-					"<div id='inner-wrap'>\n" +
-					"\t<div id='left'>\n");
+			w.write("</div>\n"); // header
+			
+			// left section
+			w.write("<div id='inner-wrap'>\n" +
+					"\t<div id='left'>\n"
+			);
 			
 			//menu
 			String[][] menu = {
@@ -242,7 +269,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			w.write(
 					"\t\t<div id='menu'>\n" +
-					"\t\t\t<ul id='navmenu'>\n");
+					"\t\t\t<ul id='navmenu'>\n"
+			);
 						
 			for (String[] menuItem: menu) {
 				w.write(printMenuItem(menuItem[0], menuItem[1], baseReference.toString(), menuItem[2],menuItem[3]));
@@ -314,7 +342,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			writeDiv3(w, left, middle, right);
 			*/
 
-		}
+		} // writeTopHeader()
 		protected String printMenuItem(String relativeURI,String title,String baseReference,String pagesize) {
 			return this.printMenuItem(relativeURI, title, baseReference, pagesize,"");
 		}
