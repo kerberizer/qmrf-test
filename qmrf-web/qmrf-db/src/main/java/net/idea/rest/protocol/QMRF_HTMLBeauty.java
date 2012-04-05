@@ -448,41 +448,44 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				String.format("<img border='0' title='Showing QMRF documents for this chemical' width='150' height='150' src='%s?media=%s&w=150&h=150'><br>Showing QMRF documents\n",
 						structure,Reference.encode("image/png"));
 			
-				return
-			   String.format(		
-			   "<div class='search ui-widget'>\n"+
-			   "<p title='%s'>%s</p>\n"+
-			   "<form method='GET' action='%s%s?pagesize=10'>\n"+
-			   "<table width='200px'>\n"+
-			   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter search query'></td></tr>\n"+
-			   "<tr><td colspan='2'><input %s tabindex='1' type='radio' value='title' name='option' title='Title' size='20'>Title</td></tr>\n"+
-			   "<tr><td colspan='2'><input %s tabindex='1' type='radio' value='text' name='option' title='Free text search' size='20'>Free text</td></tr>\n"+
-			   "<tr><td><input %s type='radio' tabindex='2' name='option' value='endpoint' title='Search by endpoint'>Endpoint</td>\n"+
-			   "<tr><td colspan='2'><input %s tabindex='3' type='radio' value='author' name='option' title='Search by author' size='20'>Author</td></tr>\n"+
-			   "<tr><td><input %s type='radio' tabindex='4' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF number</td>\n"+
-			   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
-			   "<input type='hidden' name='structure' value='%s'>\n"+
-			   "<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='4'  value='Search'/></td></tr>\n"+
-			   "</table>\n"+			   
-			   "</form> \n"+
-			   "&nbsp;\n"+
-			   "<div class='structureright'>%s</div>"+
-			   "</div>\n",
-			   hint,
-			   getSearchTitle(),
-			   baseReference,
-			   getSearchURI(),
-			   searchQuery==null?"":searchQuery,
-			   SearchMode.title.equals(option)?"checked":"",
-			   SearchMode.text.equals(option)?"checked":"",
-			   SearchMode.endpoint.equals(option)?"checked":"",
-			   SearchMode.author.equals(option)?"checked":"",
-			   SearchMode.qmrfnumber.equals(option)?"checked":"",
-			   pageSize,
-			   structure==null?"":structure,
-			   imgURI
+				StringBuilder stringBuilder = new StringBuilder();
+				stringBuilder.append("<div class='search ui-widget'>\n");
+				stringBuilder.append("<p title='%s'>%s</p>\n");
+				stringBuilder.append("<form method='GET' action='%s%s?pagesize=10'>\n");
+				stringBuilder.append("<table width='200px'>\n");
+				stringBuilder.append("<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter search query'></td></tr>\n");
+				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='1' type='radio' value='title' name='option' title='Title' size='20'>Title</td></tr>\n");
+				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='1' type='radio' value='text' name='option' title='Free text search' size='20'>Free text</td></tr>\n");
+				stringBuilder.append("<tr><td><input %s type='radio' tabindex='2' name='option' value='endpoint' title='Search by endpoint'>Endpoint</td>\n");
+				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='3' type='radio' value='author' name='option' title='Search by author' size='20'>Author</td></tr>\n");
+				stringBuilder.append("<tr><td><input %s type='radio' tabindex='4' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF number</td>\n");
+				stringBuilder.append("<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n");
+				stringBuilder.append("<input type='hidden' name='structure' value='%s'>\n");
+				stringBuilder.append("<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='4' value='Search'/></td></tr>\n");
+				stringBuilder.append("</table>\n");
+				stringBuilder.append("</form> \n");
+				stringBuilder.append("&nbsp;\n");
+				stringBuilder.append("<div class='structureright'>%s</div>");
+				stringBuilder.append("</div>\n");
+				
+				return String.format(
+						stringBuilder.toString(),
+						hint,
+						getSearchTitle(),
+						baseReference,
+						getSearchURI(),
+						searchQuery==null?"":searchQuery,
+						SearchMode.title.equals(option)?"checked":"",
+						SearchMode.text.equals(option)?"checked":"",
+						SearchMode.endpoint.equals(option)?"checked":"",
+						SearchMode.author.equals(option)?"checked":"",
+						SearchMode.qmrfnumber.equals(option)?"checked":"",
+						pageSize,
+						structure==null?"":structure,
+						imgURI
 			   );
 		}
+		
 		@Override
 		public void writeHTMLHeader(Writer w,String title,Request request,String meta,ResourceDoc doc) throws IOException {
 
