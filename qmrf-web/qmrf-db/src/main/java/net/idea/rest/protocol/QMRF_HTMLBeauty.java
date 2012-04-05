@@ -321,19 +321,16 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						break;
 					}
 					}
-				} catch (Exception x) {/*unknown role */}
+				} catch (Exception x) {/* unknown role */}
 				
 			if (myProfile!=null) w.write(myProfile);
 			if (unpublishedDoc!=null) w.write(unpublishedDoc);
 			w.write(printMenuItem(Resources.login, 
 					request.getClientInfo().getUser()==null?"Login":"Logout", 
 					baseReference.toString(),null,
-					request.getClientInfo().getUser()==null?"Login is only required for editors (to submit new documents)":String.format("%s logout",request.getClientInfo().getUser())));
-			w.write("\t\t\t\t<li id='/help'><a class='selectable' target='_help' href='http://qmrf.sf.net/'>Help</a></li>\n");
-			w.write("\t\t\t\t<li><a class='selectable' href='http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe'>Get QMRF Editor</a></li>\n");
-			w.write(
-			"\t\t\t</ul>\n" +
-			"\t\t</div>\n"); // div id='menu'
+					request.getClientInfo().getUser()==null?"Login is only required for editors (to submit new documents)":String.format("%s logout",request.getClientInfo().getUser())
+			));
+			w.write("\t\t\t</ul>\n\t\t</div>\n"); // div id='menu'
 		
 			// Apply style for the hovered buttons sans (!) the currently selected one.
 			// There are better ways to do it, but this should be okay for now.
