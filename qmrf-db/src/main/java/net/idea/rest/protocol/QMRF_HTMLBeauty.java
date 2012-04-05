@@ -117,6 +117,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"xmlns:ot=\"http://opentox.org/api/1.1/\"")
 					);
 			
+			// HEAD starts here.
 			w.write(String.format("<head> <meta property=\"dc:creator\" content=\"%s\"/> <meta property=\"dc:title\" content=\"%s\"/>",
 					request.getResourceRef(),
 					title
@@ -146,57 +147,74 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.MultiFile.pack.js\"></script>\n",baseReference));
 			
 			// Initialize Google +1 buttons
-			w.write("<script type='text/javascript'>" +
+			final String googlePlusInit =
+					"<script type='text/javascript'>" +
 					"(function() {" +
 					"var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;" +
 					"po.src = 'https://apis.google.com/js/plusone.js';" +
 					"var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);" +
 					"})();" +
-					"</script>"
-			);
+					"</script>";
+			w.write(googlePlusInit);
 
 			// Initialize Facebook JavaScript SDK
-			w.write("<div id=\"fb-root\"></div>\n" +
+			final String facebookInit =
+					"<div id=\"fb-root\"></div>\n" +
 					"<script>(function(d, s, id) {\n" +
 					"var js, fjs = d.getElementsByTagName(s)[0];\n" +
 					"if (d.getElementById(id)) return;\n" +
 					"js = d.createElement(s); js.id = id;\n" +
 					"js.src = \"//connect.facebook.net/en_GB/all.js#xfbml=1\";\n" +
 					"fjs.parentNode.insertBefore(js, fjs);\n" +
-					"}(document, 'script', 'facebook-jssdk'));</script>\n"
-			);
+					"}(document, 'script', 'facebook-jssdk'));</script>\n";
+			w.write(facebookInit);
 			
 			// Initialize Twitter JS
-			w.write("<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id))" +
+			final String twitterInit =
+					"<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id))" +
 					"{js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";" +
-					"fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>\n"
-			);
+					"fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>\n";
+			w.write(twitterInit);
 
 			// Initialize LinkedIn
-			w.write("<script src='http://platform.linkedin.com/in.js' type='text/javascript'></script>\n");
+			final String linkedInInit = "<script src='http://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
+			w.write(linkedInInit);
 			
 			//w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.tablesorter.min.js\"></script>\n",baseReference));
 			w.write(meta);
 					
-			w.write(String.format("<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">\n",baseReference));
-			w.write(String.format("<link href=\"%s/style/jquery-ui-1.8.18.custom.css\" rel=\"stylesheet\" type=\"text/css\">\n",baseReference));
+			w.write(String.format(
+					"<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">\n",
+					baseReference
+			));
+			w.write(String.format(
+					"<link href=\"%s/style/jquery-ui-1.8.18.custom.css\" rel=\"stylesheet\" type=\"text/css\">\n",
+					baseReference
+			));
 			
 			w.write("<meta name=\"robots\" content=\"index,follow\"><META NAME=\"GOOGLEBOT\" CONTENT=\"index,FOLLOW\">\n");
 			w.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n");
 			w.write("<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n");
-			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jme/jme.js\"></script>\n",baseReference));
+			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jme/jme.js\"></script>\n", baseReference));
 			w.write("<script>$(function() {$( \".accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
+			
 			// Don't style the submit button with jQ if the browser is MSIE 7.
 			if (!isMsie7()) w.write("<script>$(function() {$(\"#submit\").button();});</script>");
+			
 			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true, ajaxOptions: {error: function( xhr, status, index, anchor ) {$( anchor.hash ).html(status );}}});});</script>");
+			
 			// The next line is commented, because we MUST NOT initialise any div-tabs before they get populated.
 			//but this is only true for documents ... the rest of the resources are loaded the usual way
 			if (isLoadTabs()) {
 				w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
 			}
+			
 			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
+			
 			w.write("<script type='text/javascript'>function hideDiv(divId) {\n$('#'+divId).hide();}</script>\n");
-			w.write("<script type='text/javascript'>function toggleDiv(divId) {\n" +
+			
+			final String toggleDivScript =
+					"<script type='text/javascript'>function toggleDiv(divId) {\n" +
 					"$('#'+divId).toggle();\n" +
 					"if ($('#'+divId+'_toggler').hasClass('togglerPlus')) {\n" +
 					"$('#'+divId+'_toggler').removeClass('togglerPlus');\n" +
@@ -205,28 +223,29 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"$('#'+divId+'_toggler').removeClass('togglerMinus');\n" +
 					"$('#'+divId+'_toggler').addClass('togglerPlus');\n" +
 					"}\n" +
-					"}</script>\n"
-			);
+					"}</script>\n";
+			w.write(toggleDivScript);
+			
+			// HEAD ends here.
 			w.write("</head>\n");
 			
 			// HTML body begins here.
 			w.write("<body>\n");
 			
-			w.write(String.format(
-					"<link rel='tylesheet' " +
+			final String tableSorterCSS =
+					"<link rel='stylesheet' " +
 					"href='%s/style/tablesorter.css' " +
 					"type='text/css' " +
 					"media='screen' " +
-					"title='Flora (Default)'>\n",
-					baseReference
-			));
+					"title='Flora (Default)'>\n";
+			w.write(String.format(tableSorterCSS, baseReference));
 			
 			w.write("<div id='wrap'>\n");
 			
 			w.write("<div id='header'>\n");
 			
 			// top links
-			w.write(String.format(
+			final String topLinks =
 					"<ul class='topLinks'>\n" +
 					"<li class='topLinks'>\n" +
 					"<a href='%s'>Download QMRF Editor</a>\n" +
@@ -239,19 +258,21 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"<li class='topLinks'>\n" +
 					"<a href='%s'>Help</a>\n" +
 					"</li>\n" +
-					"</ul>\n",
+					"</ul>\n";
+			w.write(String.format(
+					topLinks,
 					"http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe",
 					"mailto:JRC-IHCP-COMPUTOX@ec.europa.eu",
 					"http://qmrf.sf.net/"
 			));
+					
 			
 			// the JRC IHCP logo
-			w.write(String.format(
+			final String logoTopLeft =
 					"<a href='http://ihcp.jrc.ec.europa.eu/'>\n" +
 					"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.png' alt='JRC IHCP logo'>\n" +
-					"</a>\n",
-					baseReference
-			));
+					"</a>\n";
+			w.write(String.format(logoTopLeft, baseReference));
 			
 			w.write("</div>\n"); // header
 			
@@ -320,14 +341,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// the change is implemented purely with simple CSS a:hover, and for this
 			// reason, we simply disable the mousever effect for it.
 			if (!isMsie7()) {
-				w.write(String.format(
+				final String menuMouseOverScript =
 						"<script>\n" +
-
 						"$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );\n" +
 						"$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );\n" +
-
-						"</script>\n"
-				));
+						"</script>\n";
+				w.write(menuMouseOverScript);
 			}
 				
 			//followed by the search form
@@ -515,14 +534,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// the change is implemented purely with simple CSS a:hover, and for this
 			// reason, we simply disable the mousever effect for it.
 			if (!isMsie7()) {
-				b.append(String.format(
-						"<script>\n" +
-
-						"$('a.pselectable').mouseover(function () { $(this).addClass('phovered');    } );\n" +
-						"$('a.pselectable').mouseout(function  () { $(this).removeClass('phovered'); } );\n" +
-
-						"</script>\n"
-				));
+				b.append("<script>\n");
+				b.append("$('a.pselectable').mouseover(function () { $(this).addClass('phovered');    } );\n");
+				b.append("$('a.pselectable').mouseout(function  () { $(this).removeClass('phovered'); } );\n");
+				b.append("</script>\n");
 			}
 
 			return b.toString();
