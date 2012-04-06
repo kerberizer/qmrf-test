@@ -265,7 +265,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"mailto:JRC-IHCP-COMPUTOX@ec.europa.eu",
 					"http://qmrf.sf.net/"
 			));
-					
 			
 			// the JRC IHCP logo
 			final String logoTopLeft =
@@ -278,35 +277,45 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			// left section
 			w.write("<div id='inner-wrap'>\n" +
-					"\t<div id='left'>\n"
+					"<div id='left'>\n"
 			);
 			
 			//menu
 			String[][] menu = {
-					{Resources.protocol,"Documents","10","All published QMRF documents"},
-					{Resources.chemical,"Structures","10","Chemical structures search"},
-					{Resources.endpoint,"Endpoints",null,"QMRF documents by endpoints"},
+					{ Resources.protocol, "Documents", "10", "All published QMRF documents" },
+					{ Resources.chemical, "Structures", "10", "Chemical structures search" },
+					{ Resources.endpoint, "Endpoints", null, "QMRF documents by endpoints" },
 			};
 
 			w.write(
-					"\t\t<div id='menu'>\n" +
-					"\t\t\t<ul id='navmenu'>\n"
+					"<div id='menu'>\n" +
+					"<ul id='navmenu'>\n"
 			);
 						
+			// Documents, Structures, Endpoints
 			for (String[] menuItem: menu) {
-				w.write(printMenuItem(menuItem[0], menuItem[1], baseReference.toString(), menuItem[2],menuItem[3]));
+				w.write(printMenuItem(menuItem[0], menuItem[1], baseReference.toString(), menuItem[2], menuItem[3]));
 			}
-			if (request.getClientInfo().getUser()!=null)  {
-				w.write(printMenuItem(Resources.myaccount, "My profile", baseReference.toString(),null,
-						String.format("%s profile and documents.",request.getClientInfo().getUser())));
+			
+			// If user is logged in, show My profile.
+			if (request.getClientInfo().getUser() != null) {
+				w.write(printMenuItem(
+						Resources.myaccount,
+						"My profile",
+						baseReference.toString(),
+						null,
+						String.format("%s's profile and documents.", request.getClientInfo().getUser())
+				));
 			}
+			
 			String myProfile=null;
 			String unpublishedDoc = null;
-			for (Role role: request.getClientInfo().getRoles())  try {
-					QMRFRoles qmrfrole = QMRFRoles.valueOf(role.getName());
-					if (qmrfrole.getURI()!=null)
-						myProfile = printMenuItem(qmrfrole.getURI(), qmrfrole.toString(), baseReference.toString(),null,qmrfrole.getHint());
-					switch (qmrfrole) {
+			
+			for (Role role: request.getClientInfo().getRoles()) try {
+				QMRFRoles qmrfrole = QMRFRoles.valueOf(role.getName());
+				if (qmrfrole.getURI()!=null)
+					myProfile = printMenuItem(qmrfrole.getURI(), qmrfrole.toString(), baseReference.toString(),null,qmrfrole.getHint());
+				switch (qmrfrole) {
 					case qmrf_manager: {
 						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),"10","All registered users."));
 						w.write(printMenuItem(Resources.organisation, "Organisations", baseReference.toString(),"10","All registered user affiliations."));
@@ -320,18 +329,21 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						unpublishedDoc = printMenuItem(Resources.unpublished, "Unpublished documents", baseReference.toString(),"10","All unpublished QMRF documents.");
 						break;
 					}
-					}
-				} catch (Exception x) {/* unknown role */}
+				}
+			} catch (Exception x) {/* unknown role */}
 				
 			if (myProfile!=null) w.write(myProfile);
+			
 			if (unpublishedDoc!=null) w.write(unpublishedDoc);
+			
 			w.write(printMenuItem(Resources.login, 
 					request.getClientInfo().getUser()==null?"Login":String.format("Logout [<b>%s</b>]", request.getClientInfo().getUser()),
 					baseReference.toString(),
 					null,
 					request.getClientInfo().getUser()==null?"Login to submit new documents (only required for editors)":String.format("You are currently logged in as \"%s\". Click here to logout.", request.getClientInfo().getUser())
 			));
-			w.write("\t\t\t</ul>\n\t\t</div>\n"); // div id='menu'
+			
+			w.write("</ul>\n</div>\n"); // div id='menu'
 		
 			// Apply style for the hovered buttons sans (!) the currently selected one.
 			// There are better ways to do it, but this should be okay for now.
@@ -364,7 +376,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			return this.printMenuItem(relativeURI, title, baseReference, pagesize,"");
 		}
 		protected String printMenuItem(String relativeURI,String title,String baseReference,String pagesize,String hint) {
-			return String.format("\t\t\t\t<li><a class='%s' title='%s' href='%s%s%s%s'>%s</a></li>\n",
+			return String.format("<li><a class='%s' title='%s' href='%s%s%s%s'>%s</a></li>\n",
 					getSearchURI().equals(relativeURI)?"selected":"selectable",
 					hint==null?title:hint,
 					baseReference,relativeURI,
@@ -545,7 +557,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		}
 
 		/*
-		
 		public String getPaging(int page,int start, int last, long pageSize) {
 			String url = "<li><a href='?page=%d&pagesize=%d'>%s</a></li>";
 		    StringBuilder b = new StringBuilder(); 
@@ -561,6 +572,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		    return b.toString();
 		}
 		*/
+		
 		public String getSearchURI() {
 			return searchURI;
 		}
