@@ -380,7 +380,7 @@ td.togglerPlus {
 	width: 16px;
 	min-width: 16px;
 	min-height: 16px;
-	background: url("/qmrf/images/zoom_in.png") no-repeat scroll center center transparent;
+	background: url("/qmrf/images/magnifier_zoom_in.png") no-repeat scroll center center transparent;
 	cursor: pointer;
 }
 
@@ -388,7 +388,7 @@ td.togglerMinus {
 	width: 16px;
 	min-width: 16px;
 	min-height: 16px;
-	background: url("/qmrf/images/zoom_out.png") no-repeat scroll center center transparent;
+	background: url("/qmrf/images/magnifier_zoom_out.png") no-repeat scroll center center transparent;
 	cursor: pointer;
 }
 
