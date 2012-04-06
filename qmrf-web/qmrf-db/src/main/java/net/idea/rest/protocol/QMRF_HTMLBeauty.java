@@ -404,17 +404,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			output.write("\n</div>\n"); 
 			//footer
 			
-			output.write("\n<div id='footer'>\n" +
-						"<table class='footerTable'>\n<tr>\n" +
-						"<td>\n" +
-						"<a class='email' href='mailto:%20JRC-IHCP-COMPUTOX@ec.europa.eu'>JRC-IHCP-Computox@ec.europa.eu</a>\n" +
-						"</td>\n" +
-						"<td style='text-align: right;'>\n" +
-						"Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC\n" +
-						"</td>\n" +
-						"</tr>\n</table>\n" +
-						"</div>\n"
-			);
+			final String footerText =
+				"<div id='footer'>\n" +
+				"Developed by <b>IDEAconsult Ltd.</b> (2007-2012) on behalf of <b>JRC</b>\n" +
+				"</div>\n";
+			output.write(footerText);
+			
 			output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
 			output.write("\n</body>");
 			output.write("</html>");
