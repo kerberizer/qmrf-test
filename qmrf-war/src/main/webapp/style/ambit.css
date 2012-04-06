@@ -90,15 +90,22 @@ h1 {
 }
 
 #footer {
-	position: relative;
-	height: 80px;
-	color: #516373;
-	background-color: #ddd;
-	width: 100%;
-	-webkit-border-radius: 10px;
-	-khtml-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	position: fixed;
+	height: 40px;
+	width: 50%;
+	left: 25%;
+	bottom: 15px;
+	padding: 10px 0 0 0;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: -30px;
+	-webkit-border-radius: 20px;
+	-khtml-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	color: white;
+	background-color: #0065A2;
+	text-align: center;
 }
 
 div.pusher {
