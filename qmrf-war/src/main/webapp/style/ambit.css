@@ -444,16 +444,6 @@ td.contentTableManageR {
 	padding: 0.1em 0.5em 0.1em 0;
 }
 
-a.updateLinkOnIE {
-	position: relative;
-}
-
-img.updateLinkOnIE {
-	border: none;
-	position: relative;
-	bottom: 9px;
-}
-
 div.socialPanel {
 	width: 100%;
 }
