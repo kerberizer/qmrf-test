@@ -326,9 +326,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			if (myProfile!=null) w.write(myProfile);
 			if (unpublishedDoc!=null) w.write(unpublishedDoc);
 			w.write(printMenuItem(Resources.login, 
-					request.getClientInfo().getUser()==null?"Login":"Logout", 
-					baseReference.toString(),null,
-					request.getClientInfo().getUser()==null?"Login is only required for editors (to submit new documents)":String.format("%s logout",request.getClientInfo().getUser())
+					request.getClientInfo().getUser()==null?"Login":String.format("Logout [<b>%s</b>]", request.getClientInfo().getUser()),
+					baseReference.toString(),
+					null,
+					request.getClientInfo().getUser()==null?"Login to submit new documents (only required for editors)":String.format("You are currently logged in as \"%s\". Click here to logout.", request.getClientInfo().getUser())
 			));
 			w.write("\t\t\t</ul>\n\t\t</div>\n"); // div id='menu'
 		
