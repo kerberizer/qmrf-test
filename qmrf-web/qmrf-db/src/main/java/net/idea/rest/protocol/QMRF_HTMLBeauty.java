@@ -258,12 +258,24 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"<li class='topLinks'>\n" +
 					"<a class='topLinks' href='%s'>Help</a>\n" +
 					"</li>\n" +
+					"<li class='topLinks'>|</li>\n" +
+					"<li class='topLinks'>\n" +
+					"<a class='topLinks' title='%s' href='%s%s'>%s</a>\n" +
+					"</li>\n" +
 					"</ul>\n";
 			w.write(String.format(
 					topLinks,
-					"http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe",
-					"mailto:JRC-IHCP-COMPUTOX@ec.europa.eu",
-					"http://qmrf.sf.net/"
+					"http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe", // Download QMRF Editor
+					"mailto:JRC-IHCP-COMPUTOX@ec.europa.eu", // Sumbit QMRF by e-mail
+					"http://qmrf.sf.net/", // Help
+					request.getClientInfo().getUser()==null? // Log in/out hint
+							"Log in here to submit new documents (only required for editors)"
+							:
+							String.format("You are currently logged in as \"%s\". Click here to log out.", request.getClientInfo().getUser()),
+					baseReference.toString(), // Log in/out URL 1/2
+					Resources.login,  //Log in/out URL 2/2
+					request.getClientInfo().getUser()==null? // Log in/out text
+							"Log in":String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser())
 			));
 			
 			// the JRC IHCP logo
@@ -335,13 +347,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			if (myProfile!=null) w.write(myProfile);
 			
 			if (unpublishedDoc!=null) w.write(unpublishedDoc);
-			
-			w.write(printMenuItem(Resources.login, 
-					request.getClientInfo().getUser()==null?"Login":String.format("Logout [<b>%s</b>]", request.getClientInfo().getUser()),
-					baseReference.toString(),
-					null,
-					request.getClientInfo().getUser()==null?"Login to submit new documents (only required for editors)":String.format("You are currently logged in as \"%s\". Click here to logout.", request.getClientInfo().getUser())
-			));
 			
 			w.write("</ul>\n</div>\n"); // div id='menu'
 		
