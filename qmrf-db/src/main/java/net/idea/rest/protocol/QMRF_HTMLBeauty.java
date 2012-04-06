@@ -248,15 +248,15 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			final String topLinks =
 					"<ul class='topLinks'>\n" +
 					"<li class='topLinks'>\n" +
-					"<a href='%s'>Download QMRF Editor</a>\n" +
+					"<a class='topLinks' href='%s'>Download QMRF Editor</a>\n" +
 					"</li>\n" +
 					"<li class='topLinks'>|</li>\n" +
 					"<li class='topLinks'>\n" +
-					"<a class='email' href='%s'>Submit QMRF by e-mail</a>\n" +
+					"<a class='topLinks email' href='%s'>Submit QMRF by e-mail</a>\n" +
 					"</li>\n" +
 					"<li class='topLinks'>|</li>\n" +
 					"<li class='topLinks'>\n" +
-					"<a href='%s'>Help</a>\n" +
+					"<a class='topLinks' href='%s'>Help</a>\n" +
 					"</li>\n" +
 					"</ul>\n";
 			w.write(String.format(

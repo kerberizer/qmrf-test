@@ -37,6 +37,10 @@ li.topLinks {
 	display: inline;
 }
 
+a.topLinks {
+	font-weight: normal !important;
+}
+
 .logo_top-left {
 	border: 0;
 	margin-top: -24px;
