@@ -278,7 +278,7 @@ public class ProtocolFactory {
 		        		dir = new File(dir==null?new File(System.getProperty("java.io.tmpdir")):dir,type.name());
 		        		if ((dir!=null) && !dir.exists())  dir.mkdir();
 		        	} catch (Exception x) {dir = null; }
-		        	description = fi.getName();
+		        	description = new File(fi.getName()).getName();
 		        	int extIndex = fi.getName().lastIndexOf(".");
 		        	String ext = extIndex>0?fi.getName().substring(extIndex):"";
 		        	//generate new file name
