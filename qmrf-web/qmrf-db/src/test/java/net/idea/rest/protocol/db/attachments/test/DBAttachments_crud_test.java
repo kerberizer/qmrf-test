@@ -51,7 +51,7 @@ public class DBAttachments_crud_test  extends CRUDTest<DBProtocol,DBAttachment> 
 			throws Exception {
 		DBProtocol protocol = new DBProtocol(2,1,2009);
 		URL url = getClass().getClassLoader().getResource("net/idea/qmrf/test");
-		DBAttachment attachment = DBAttachment.file2attachment(new File(url.getFile()), "Description", attachment_type.document);
+		DBAttachment attachment = DBAttachment.file2attachment(new File(url.getFile()), "Description", url.getFile(), attachment_type.document);
 		return new AddAttachment(protocol, attachment);
 	}
 
@@ -60,7 +60,7 @@ public class DBAttachments_crud_test  extends CRUDTest<DBProtocol,DBAttachment> 
 			throws Exception {
 		DBProtocol protocol = new DBProtocol(2,1,2009);
 		URL url = getClass().getClassLoader().getResource("net/idea/qmrf/Training.sdf");
-		DBAttachment attachment = DBAttachment.file2attachment(new File(url.getFile()), "Description", attachment_type.data_training);
+		DBAttachment attachment = DBAttachment.file2attachment(new File(url.getFile()), "Description", url.getFile(), attachment_type.data_training);
 		return new AddAttachment(protocol, attachment);
 	}
 

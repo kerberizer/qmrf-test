@@ -130,7 +130,7 @@ public class DBAttachment extends Document {
 		return String.format("%s %s",getType().getDescription(),getTitle()==null?"":getTitle());
 	}
 	
-	public static DBAttachment file2attachment(File file, String description, attachment_type type) {
+	public static DBAttachment file2attachment(File file, String description, String originalFileName, attachment_type type) {
 		DBAttachment attachment = new DBAttachment();
 		int extindex = file.getName().lastIndexOf(".");
 		if (extindex>0) {
@@ -142,7 +142,7 @@ public class DBAttachment extends Document {
 		}
 		attachment.setDescription(description);
 		attachment.setType(type);
-		attachment.setOriginalFileName(file.getAbsolutePath());
+		attachment.setOriginalFileName(originalFileName);
 		attachment.setImported(false);
 		return attachment;
 	}
