@@ -19,6 +19,135 @@ import org.restlet.data.Reference;
 import org.restlet.security.Role;
 
 public class QMRF_HTMLBeauty extends HTMLBeauty {
+	
+	final static String qmrfEditorDownloadLink = "http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe";
+	final static String qmrfEditorEmail = "JRC-IHCP-COMPUTOX@ec.europa.eu";
+	final static String QMRF_title = "(Q)SAR Model Reporting Format Inventory";
+	final static String[] css = new String[] {
+		"<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">\n",
+		"<link href=\"%s/style/jquery-ui-1.8.18.custom.css\" rel=\"stylesheet\" type=\"text/css\">\n",
+		"<link href=\"%s/style/jquery.dataTables.css\" rel=\"stylesheet\" type=\"text/css\">\n"
+		
+	};
+
+	final static String[] js = new String[] {
+		"<script type='text/javascript' src='%s/jquery/jquery-1.7.1.min.js'></script>\n",
+		"<script type='text/javascript' src='%s/jquery/jquery-ui-1.8.18.custom.min.js'></script>\n",
+		"<script type='text/javascript' charset='utf8' src='%s/jquery/jquery.dataTables-1.9.0.min.js'\n",
+		"<script type='text/javascript' src='%s/jme/jme.js'></script>\n"
+	};
+	
+	//meta
+	final static String[] metaTag = new String[] {
+		"<meta name=\"robots\" content=\"index,follow\"><META NAME=\"GOOGLEBOT\" CONTENT=\"index,FOLLOW\">\n",
+		"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n",
+		"<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n"
+	};
+	
+	// Google +1 buttons
+	final static String googlePlusInit =
+		"<script type='text/javascript'>" +
+		"(function() {" +
+		"var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;" +
+		"po.src = 'https://apis.google.com/js/plusone.js';" +
+		"var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);" +
+		"})();" +
+		"</script>";
+
+	// Facebook JavaScript SDK
+	final static String facebookInit =
+			"<div id=\"fb-root\"></div>\n" +
+			"<script>(function(d, s, id) {\n" +
+			"var js, fjs = d.getElementsByTagName(s)[0];\n" +
+			"if (d.getElementById(id)) return;\n" +
+			"js = d.createElement(s); js.id = id;\n" +
+			"js.src = \"//connect.facebook.net/en_GB/all.js#xfbml=1\";\n" +
+			"fjs.parentNode.insertBefore(js, fjs);\n" +
+			"}(document, 'script', 'facebook-jssdk'));</script>\n";
+	
+	// Twitter JS
+	final static String twitterInit =
+			"<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id))" +
+			"{js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";" +
+			"fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>\n";
+
+	// LinkedIn
+	final static String linkedInInit = "<script src='http://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
+	
+	
+	final static String toggleDivScript =
+			"<script type='text/javascript'>function toggleDiv(divId) {\n" +
+			"$('#'+divId).toggle();\n" +
+			"if ($('#'+divId+'_toggler').hasClass('togglerPlus')) {\n" +
+			"$('#'+divId+'_toggler').removeClass('togglerPlus');\n" +
+			"$('#'+divId+'_toggler').addClass('togglerMinus');\n" +
+			"} else if ($('#'+divId+'_toggler').hasClass('togglerMinus')) {\n" +
+			"$('#'+divId+'_toggler').removeClass('togglerMinus');\n" +
+			"$('#'+divId+'_toggler').addClass('togglerPlus');\n" +
+			"}\n" +
+			"}</script>\n";	
+
+	final static String tableSorterCSS =
+		"<link rel='stylesheet' " +
+		"href='%s/style/tablesorter.css' " +
+		"type='text/css' " +
+		"media='screen' " +
+		"title='Flora (Default)'>\n";
+
+	
+	final static String hideFooterScript =
+		"<script type='text/javascript'>\n" +
+		"$(document).ready( function () {\n" +
+		"$('div#footer').delay(%d).animate({bottom: '-20px'}, 'slow');\n" +
+		"});\n" +
+		"</script>\n";
+	
+	// the JRC IHCP logo
+	final static String logoTopLeft =
+			"<a href='http://ihcp.jrc.ec.europa.eu/'>\n" +
+			"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.png' alt='JRC IHCP logo'>\n" +
+			"</a>\n";
+	
+	final static String menuMouseOverScript =
+		"<script>\n" +
+		"$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );\n" +
+		"$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );\n" +
+		"</script>\n";
+
+	// top links
+	final static String topLinks =
+			"<ul class='topLinks'>\n" +
+			"<li class='topLinks'>\n" +
+			"<a class='topLinks' href='%s'>Download QMRF Editor</a>\n" +
+			"</li>\n" +
+			"<li class='topLinks'>|</li>\n" +
+			"<li class='topLinks'>\n" +
+			"<a class='topLinks email' href='mailto:%s'>Submit QMRF by e-mail</a>\n" +
+			"</li>\n" +
+			"<li class='topLinks'>|</li>\n" +
+			"<li class='topLinks'>\n" +
+			"<a class='topLinks' href='%s'>Help</a>\n" +
+			"</li>\n" +
+			"<li class='topLinks'>|</li>\n" +
+			"<li class='topLinks'>\n" +
+			"<a class='topLinks' title='%s' href='%s%s'>%s</a>\n" +
+			"</li>\n" +
+			"</ul>\n";
+
+	final static String footerText =
+		"<div id='footer'>\n" +
+		"Developed by <b>IDEAconsult Ltd.</b> (2007-2012) on behalf of <b>JRC</b>\n" +
+		"</div>\n";
+
+	final static String _trStart = "<tr>\n";
+	final static String _trEnd = "</tr>\n";
+	final static String _tdStart = "<td>";
+	final static String _tdEnd = "</td>";
+	final static String _tableStart = "<table>\n";
+	final static String _tableEnd = "</table>\n";
+	final static String _divStart = "\n<div>\n";
+	final static String _divEnd = "\n</div>\n";
+	
 	private boolean loadTabs;
 
 	public enum update_mode {
@@ -78,18 +207,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		}
 		@Override
 		public String getTitle() {
-			return "(Q)SAR Model Reporting Format Inventory";
+			return QMRF_title;
 		}
 		public void writeTopLinks(Writer w,String title,Request request,String meta,ResourceDoc doc, Reference baseReference) throws IOException {
-/*
-			w.write(String.format("<a href='%s%s'>Protocols</a>&nbsp;",baseReference,Resources.protocol));
-			w.write(String.format("<a href='%s%s'>Organisations</a>&nbsp;",baseReference,Resources.organisation));
-			w.write(String.format("<a href='%s%s'>Projects</a>&nbsp;",baseReference,Resources.project));
-			
-			w.write(String.format("<a href='%s%s'>Users</a>&nbsp;",baseReference,Resources.user));
-*/
-			
-			
 		}
 	
 		@Override
@@ -142,98 +262,41 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					)); 			
 			w.write(String.format("<title>%s</title>\n",title));
 			
-			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery-1.7.1.min.js\"></script>\n",baseReference));
-			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery-ui-1.8.18.custom.min.js\"></script>\n",baseReference));
-			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.MultiFile.pack.js\"></script>\n",baseReference));
-			
-			// Initialize Google +1 buttons
-			final String googlePlusInit =
-					"<script type='text/javascript'>" +
-					"(function() {" +
-					"var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;" +
-					"po.src = 'https://apis.google.com/js/plusone.js';" +
-					"var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);" +
-					"})();" +
-					"</script>";
+			// Initialize Google +1, FB, Twitter, Linked In buttons
 			w.write(googlePlusInit);
-
-			// Initialize Facebook JavaScript SDK
-			final String facebookInit =
-					"<div id=\"fb-root\"></div>\n" +
-					"<script>(function(d, s, id) {\n" +
-					"var js, fjs = d.getElementsByTagName(s)[0];\n" +
-					"if (d.getElementById(id)) return;\n" +
-					"js = d.createElement(s); js.id = id;\n" +
-					"js.src = \"//connect.facebook.net/en_GB/all.js#xfbml=1\";\n" +
-					"fjs.parentNode.insertBefore(js, fjs);\n" +
-					"}(document, 'script', 'facebook-jssdk'));</script>\n";
 			w.write(facebookInit);
-			
-			// Initialize Twitter JS
-			final String twitterInit =
-					"<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id))" +
-					"{js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";" +
-					"fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>\n";
 			w.write(twitterInit);
-
-			// Initialize LinkedIn
-			final String linkedInInit = "<script src='http://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
 			w.write(linkedInInit);
-			
-			//w.write(String.format("<script type=\"text/javascript\" src=\"%s/jquery/jquery.tablesorter.min.js\"></script>\n",baseReference));
+
 			w.write(meta);
-					
-			w.write(String.format(
-					"<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">\n",
-					baseReference
-			));
-			w.write(String.format(
-					"<link href=\"%s/style/jquery-ui-1.8.18.custom.css\" rel=\"stylesheet\" type=\"text/css\">\n",
-					baseReference
-			));
-			
-			w.write("<meta name=\"robots\" content=\"index,follow\"><META NAME=\"GOOGLEBOT\" CONTENT=\"index,FOLLOW\">\n");
-			w.write("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n");
-			w.write("<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n");
-			w.write(String.format("<script type=\"text/javascript\" src=\"%s/jme/jme.js\"></script>\n", baseReference));
+
+			//meta		
+			for (String tag : metaTag ) w.write(String.format(tag,baseReference));
+			//css			
+			for (String style : css ) w.write(String.format(style,baseReference));
+			//js
+			for (String script : js ) w.write(String.format(script,baseReference));
+
+
+
 			w.write("<script>$(function() {$( \".accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
+			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
+			w.write("<script type='text/javascript'>function hideDiv(divId) {\n$('#'+divId).hide();}</script>\n");
+
 			
 			// Don't style the submit button with jQ if the browser is MSIE 7.
 			if (!isMsie7()) w.write("<script>$(function() {$(\"#submit\").button();});</script>");
 			
-			//w.write("<script>$(function() {$( \".tabs\" ).tabs({event: \"mouseover\",cache: true, ajaxOptions: {error: function( xhr, status, index, anchor ) {$( anchor.hash ).html(status );}}});});</script>");
-			
 			// The next line is commented, because we MUST NOT initialise any div-tabs before they get populated.
 			//but this is only true for documents ... the rest of the resources are loaded the usual way
-			if (isLoadTabs()) {
+			if (isLoadTabs()) 
 				w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
-			}
-			
-			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
-			
-			w.write("<script type='text/javascript'>function hideDiv(divId) {\n$('#'+divId).hide();}</script>\n");
-			
-			final String toggleDivScript =
-					"<script type='text/javascript'>function toggleDiv(divId) {\n" +
-					"$('#'+divId).toggle();\n" +
-					"if ($('#'+divId+'_toggler').hasClass('togglerPlus')) {\n" +
-					"$('#'+divId+'_toggler').removeClass('togglerPlus');\n" +
-					"$('#'+divId+'_toggler').addClass('togglerMinus');\n" +
-					"} else if ($('#'+divId+'_toggler').hasClass('togglerMinus')) {\n" +
-					"$('#'+divId+'_toggler').removeClass('togglerMinus');\n" +
-					"$('#'+divId+'_toggler').addClass('togglerPlus');\n" +
-					"}\n" +
-					"}</script>\n";
+
 			w.write(toggleDivScript);
 			
 			// Hide the footer delay() milliseconds after the page is loaded.
 			// For some reason this is way slower than expected on MSIE 7.
-			final String hideFooterScript =
-					"<script type='text/javascript'>\n" +
-					"$(document).ready( function () {\n" +
-					"$('div#footer').delay(%d).animate({bottom: '-20px'}, 'slow');\n" +
-					"});\n" +
-					"</script>\n";
+
 			w.write(String.format(hideFooterScript, isMsie7()?2000:7000));
 			
 			// HEAD ends here.
@@ -242,62 +305,36 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// HTML body begins here.
 			w.write("<body>\n");
 			
-			final String tableSorterCSS =
-					"<link rel='stylesheet' " +
-					"href='%s/style/tablesorter.css' " +
-					"type='text/css' " +
-					"media='screen' " +
-					"title='Flora (Default)'>\n";
 			w.write(String.format(tableSorterCSS, baseReference));
 			
 			w.write("<div id='wrap'>\n");
 			
 			w.write("<div id='header'>\n");
 			
-			// top links
-			final String topLinks =
-					"<ul class='topLinks'>\n" +
-					"<li class='topLinks'>\n" +
-					"<a class='topLinks' href='%s'>Download QMRF Editor</a>\n" +
-					"</li>\n" +
-					"<li class='topLinks'>|</li>\n" +
-					"<li class='topLinks'>\n" +
-					"<a class='topLinks email' href='%s'>Submit QMRF by e-mail</a>\n" +
-					"</li>\n" +
-					"<li class='topLinks'>|</li>\n" +
-					"<li class='topLinks'>\n" +
-					"<a class='topLinks' href='%s'>Help</a>\n" +
-					"</li>\n" +
-					"<li class='topLinks'>|</li>\n" +
-					"<li class='topLinks'>\n" +
-					"<a class='topLinks' title='%s' href='%s%s'>%s</a>\n" +
-					"</li>\n" +
-					"</ul>\n";
+
 			w.write(String.format(
 					topLinks,
 					// Download QMRF Editor
-					"http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe",
-					// Submit QMRF by e-mail
-					"mailto:JRC-IHCP-COMPUTOX@ec.europa.eu",
+					qmrfEditorDownloadLink, 
+					//Sumbit QMRF by e-mail
+					qmrfEditorEmail, 
 					// Help
 					"http://qmrf.sf.net/",
 					// Log in/out hint
-					request.getClientInfo().getUser()==null?
-							"Log in here to submit new documents (only required for editors)":
+					request.getClientInfo().getUser()==null? 
+							"Log in here to submit new documents (only required for editors)"
+							:
 							String.format("You are currently logged in as \"%s\". Click here to log out.", request.getClientInfo().getUser()),
-					// Log in/out URL 1/2
-					baseReference.toString(),
-					// Log in/out URL 2/2
-					Resources.login,
+					// Log in/out URL 1/2							
+					baseReference.toString(), 
+					 //Log in/out URL 2/2
+					Resources.login, 
 					// Log in/out text
-					request.getClientInfo().getUser()==null?"Log in":String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser())
+					request.getClientInfo().getUser()==null? 
+							"Log in":String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser())
 			));
 			
-			// the JRC IHCP logo
-			final String logoTopLeft =
-					"<a href='http://ihcp.jrc.ec.europa.eu/'>\n" +
-					"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.png' alt='JRC IHCP logo'>\n" +
-					"</a>\n";
+
 			w.write(String.format(logoTopLeft, baseReference));
 			
 			w.write("</div>\n"); // header
@@ -371,11 +408,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// the change is implemented purely with simple CSS a:hover, and for this
 			// reason, we simply disable the mousever effect for it.
 			if (!isMsie7()) {
-				final String menuMouseOverScript =
-						"<script>\n" +
-						"$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );\n" +
-						"$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );\n" +
-						"</script>\n";
 				w.write(menuMouseOverScript);
 			}
 				
@@ -408,21 +440,17 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		@Override
 		public void writeHTMLFooter(Writer output,String title,Request request) throws IOException {
 			//div ui-widget
-			output.write("\n</div>\n"); 
+			output.write(_divEnd); 
 			//div id=content
-			output.write("\n</div>\n"); 
+			output.write(_divEnd); 
 			//div inner-wrap
-			output.write("\n</div>\n");
+			output.write(_divEnd);
 			// Push the footer downwards, so that we don't accidentally step on it.
 			output.write("\n<div class='pusher'></div>");
 			//div id=wrap
-			output.write("\n</div>\n"); 
+			output.write(_divEnd); 
 			//footer
 			
-			final String footerText =
-				"<div id='footer'>\n" +
-				"Developed by <b>IDEAconsult Ltd.</b> (2007-2012) on behalf of <b>JRC</b>\n" +
-				"</div>\n";
 			output.write(footerText);
 			
 			output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
@@ -439,7 +467,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			} catch (Exception x) {
 				x.printStackTrace();
 			} finally {
-				w.write("</div>\n");
+				w.write(_divEnd);
 			}
 		}	
 	
@@ -491,7 +519,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				stringBuilder.append("</form> \n");
 				stringBuilder.append("&nbsp;\n");
 				stringBuilder.append("<div class='structureright'>%s</div>");
-				stringBuilder.append("</div>\n");
+				stringBuilder.append(_divEnd);
 				
 				return String.format(
 						stringBuilder.toString(),
@@ -642,8 +670,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				content.append(printWidgetHeader(header));
 				content.append(printWidgetContentHeader(""));
 				content.append(form);
-				content.append("<table>");
-				content.append("<tr>");
+				content.append(_tableStart);
+				content.append(_trStart);
 				
 				try {
 					content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
@@ -661,10 +689,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				case attachments: {
 					for (attachment_type atype: attachment_type.values()) {
 						if (atype.ordinal() % 2 ==0) {
-							content.append("</tr><tr>");
+							content.append(_trEnd);
+							content.append(_trStart);
 						}
 						String title= String.format("Attachments: %s(s) - %s, %s files max", atype.toString(),atype.getDescription(),atype.maxFiles());
-						content.append("<td>");
+						content.append(_tdStart);
 						content.append(printWidget(title,
 								String.format("<p><input type=\"file\"  class='multi' maxlength='%d' accept='%s' name=\"%s\" title='%s' size=\"60\"></p>",
 										atype.maxFiles(),
@@ -672,34 +701,36 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 										atype.name(),
 										title),"box"
 								));
-						content.append("</td>");
+						content.append(_tdEnd);
 					}
 				
 				} default: {
 				
-					content.append("<td>");
+					content.append(_tdStart);
 					content.append(printWidget(String.format("%s QMRF XML file ",mode.toString()), 
 						String.format("<p><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"60\"></p>",
 								ReadProtocol.fields.filename.name(),
 								"QMRF XML"),"box"
 						));
 				
-					content.append("</td>");					
+					content.append(_tdEnd);					
 				}
 				}
-				content.append("</tr>");
-				content.append("<tr><td colspan='1'>");	
+				content.append(_trEnd);
+				content.append(_trStart);
+				content.append("<td colspan='1'>");	
 				content.append(printWidget("Options",
 						String.format("<strong>%s</strong>%s",
 						"Publish immediately",	ReadProtocol.fields.published.getHTMLField(protocol)),"box"
 						));	
-				content.append("</td></tr>");					
-				content.append("</tr>");
-				content.append("<tr><td colspan='2' align='center'><input type='submit' id='submit' enabled='false' value='Upload'></td>");
+				content.append("</td></tr>"); // </tr> ne e li izlishno tuk?					
+				content.append(_trEnd);
+				content.append(_trStart);
+				content.append("<td colspan='2' align='center'><input type='submit' id='submit' enabled='false' value='Upload'></td>");
 //				content.append("<input type='submit' enabled='false' value='Submit'>");
 
-				content.append("</tr>");
-				content.append("</table>");
+				content.append(_trEnd);
+				content.append(_tableEnd);
 				content.append("</form>");
 				content.append(printWidgetContentFooter());
 				content.append(printWidgetFooter());
