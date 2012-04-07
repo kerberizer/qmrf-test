@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
@@ -263,6 +264,7 @@ public class ProtocolFactory {
 			if (fi.isFormField()) {
 //				protocol.setDataTemplate(new Template(new URL(fi.getString(utf8))));
 			} else {	
+				String originalName = "";
 				String description = "";
 				if (fi.getSize()==0) return null;
 				File file = null;
@@ -277,14 +279,17 @@ public class ProtocolFactory {
 		        		if ((dir!=null) && !dir.exists())  dir.mkdir();
 		        	} catch (Exception x) {dir = null; }
 		        	description = fi.getName();
-		          	file = new File(
-		            		String.format("%s/%s",
-		            				dir==null?System.getProperty("java.io.tmpdir"):dir,
-		            				protocol.getID()>0?String.format("qmrf%d_%s_%s", protocol.getID(),type.name(),fi.getName()):fi.getName()));
+		        	int extIndex = fi.getName().lastIndexOf(".");
+		        	String ext = extIndex>0?fi.getName().substring(extIndex):"";
+		        	//generate new file name
+		        	originalName = fi.getName();
+		        	String newName = String.format("qmrf%d_%s_%s%s", protocol.getID()>0?protocol.getID():0,
+		        								type.name(),UUID.randomUUID().toString(),ext);
+		          	file = new File(String.format("%s/%s",dir==null?System.getProperty("java.io.tmpdir"):dir,newName));
 		        }
 		        fi.write(file);
 		       
-		        return DBAttachment.file2attachment(file, description, type);
+		        return DBAttachment.file2attachment(file, description,originalName, type);
 		        
 			}
 			return null;
