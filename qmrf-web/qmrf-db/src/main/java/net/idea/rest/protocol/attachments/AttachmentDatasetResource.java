@@ -132,7 +132,7 @@ public class AttachmentDatasetResource extends ProtocolAttachmentResource {
 	
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
-		AttachmentHTMLReporter rep = new AttachmentHTMLReporter(protocol,getRequest(),true,null);
+		AttachmentHTMLReporter rep = new AttachmentHTMLReporter(protocol,getRequest(),true,null,getHTMLBeauty());
 		rep.setHeadless(headless);
 		return rep;
 	}
