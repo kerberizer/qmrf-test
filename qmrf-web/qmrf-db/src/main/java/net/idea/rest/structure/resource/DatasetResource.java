@@ -7,10 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.idea.modbcum.p.QueryExecutor;
-import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
-import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.db.DBConnection;
 
 import org.restlet.Context;

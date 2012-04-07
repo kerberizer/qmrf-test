@@ -10,9 +10,7 @@ import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.resource.UserDBResource;
-import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
 import org.restlet.Context;
 import org.restlet.Request;

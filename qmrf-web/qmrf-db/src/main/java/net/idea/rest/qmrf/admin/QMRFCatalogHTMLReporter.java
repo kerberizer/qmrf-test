@@ -1,7 +1,6 @@
 package net.idea.rest.qmrf.admin;
 
 import java.io.Writer;
-import java.util.Iterator;
 
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.ResourceDoc;
@@ -9,9 +8,6 @@ import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.reporters.CatalogHTMLReporter;
 
 import org.restlet.Request;
-import org.restlet.data.Form;
-import org.restlet.data.Reference;
-import org.restlet.resource.ResourceException;
 
 public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 
