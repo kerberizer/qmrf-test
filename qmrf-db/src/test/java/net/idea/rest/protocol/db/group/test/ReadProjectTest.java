@@ -6,7 +6,6 @@ import junit.framework.Assert;
 import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.db.ReadProject;
 import net.idea.rest.protocol.db.test.QueryTest;
-import net.toxbank.client.io.rdf.TOXBANK;
 
 
 public class ReadProjectTest  extends QueryTest<ReadProject> {

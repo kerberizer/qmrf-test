@@ -4,7 +4,6 @@ import java.io.Writer;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
-import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.groups.DBGroup;
 import net.idea.rest.groups.IDBGroup;

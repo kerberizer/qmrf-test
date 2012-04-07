@@ -1,10 +1,10 @@
 package net.idea.rest.protocol.resource.db;
 
-import org.restlet.resource.ResourceException;
-
 import net.idea.qmrf.client.Resources;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
+
+import org.restlet.resource.ResourceException;
 
 public class ProtocolChaptersResource extends SingleProtocolResource {
 

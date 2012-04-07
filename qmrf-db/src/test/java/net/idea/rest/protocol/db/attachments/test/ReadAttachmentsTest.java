@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
-import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.rest.protocol.db.test.QueryTest;
 

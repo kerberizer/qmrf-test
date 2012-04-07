@@ -4,7 +4,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import net.idea.qmrf.client.QMRFRoles;
-import net.idea.qmrf.client.Resources;
 import net.idea.restnet.aa.local.UserLoginHTMLReporter;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;

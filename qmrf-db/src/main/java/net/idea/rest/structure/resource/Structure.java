@@ -12,9 +12,7 @@ import net.toxbank.client.resource.Protocol;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
-import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
 import org.restlet.data.Reference;
 import org.restlet.resource.ResourceException;
 
