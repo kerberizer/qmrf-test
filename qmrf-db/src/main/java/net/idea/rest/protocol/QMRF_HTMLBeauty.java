@@ -227,13 +227,14 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(toggleDivScript);
 			
 			// Hide the footer delay() milliseconds after the page is loaded.
+			// For some reason this is way slower than expected on MSIE 7.
 			final String hideFooterScript =
 					"<script type='text/javascript'>\n" +
 					"$(document).ready( function () {\n" +
-					"$('div#footer').delay(7000).animate({bottom: '-20px'}, 'slow');\n" +
+					"$('div#footer').delay(%d).animate({bottom: '-20px'}, 'slow');\n" +
 					"});\n" +
 					"</script>\n";
-			w.write(hideFooterScript);
+			w.write(String.format(hideFooterScript, isMsie7()?2000:7000));
 			
 			// HEAD ends here.
 			w.write("</head>\n");
