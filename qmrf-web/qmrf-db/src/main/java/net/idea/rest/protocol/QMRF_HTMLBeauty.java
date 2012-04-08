@@ -122,11 +122,15 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"<li class='topLinks'>\n" +
 			"<a class='topLinks' href='%s'>Help</a>\n" +
 			"</li>\n" +
+			"%s" +
+			"</ul>\n";
+	
+	// log in/out link
+	final static String logInOutLinkTemplate =
 			"<li class='topLinks'>|</li>\n" +
 			"<li class='topLinks'>\n" +
 			"<a class='topLinks' title='%s' href='%s%s'>%s</a>\n" +
-			"</li>\n" +
-			"</ul>\n";
+			"</li>\n";
 
 	final static String footerText =
 		"<div id='footer'>\n" +
@@ -307,15 +311,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			w.write("<div id='header'>\n");
 			
-
-			w.write(String.format(
-					topLinks,
-					// Download QMRF Editor
-					qmrfEditorDownloadLink, 
-					//Sumbit QMRF by e-mail
-					qmrfEditorEmail, 
-					// Help
-					baseReference.toString(),					
+			String logInOutLink = "";
+			
+			if (!getSearchURI().equals(Resources.login)) {
+				logInOutLink = String.format(logInOutLinkTemplate,
 					// Log in/out hint
 					request.getClientInfo().getUser()==null? 
 							"Log in here to submit new documents (only required for editors)"
@@ -327,7 +326,18 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					Resources.login, 
 					// Log in/out text
 					request.getClientInfo().getUser()==null? 
-							"Log in":String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser())
+							"Log in":String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser()));
+			}
+			
+			w.write(String.format(
+					topLinks,
+					// Download QMRF Editor
+					qmrfEditorDownloadLink, 
+					//Sumbit QMRF by e-mail
+					qmrfEditorEmail, 
+					// Help
+					baseReference.toString(),					
+					logInOutLink
 			));
 			
 
