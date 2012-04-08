@@ -462,13 +462,13 @@ public class QMRF_xml2pdf extends QMRFConverter {
 			int header_font_size = 10;
 			Image png_left = Image.getInstance(QMRF_xml2pdf.class
 					.getClassLoader().getResource(
-							"ambit2/qmrfeditor/logo.png"));
+							"ambit2/qmrfeditor/logo.jpg"));
 			png_left.setAlignment(Image.LEFT);
 			png_left.setBorder(0);
 			png_left.setIndentationLeft(0);
 
 			
-			png_left.scalePercent(60);
+			png_left.scalePercent(25);
 
 
 			PdfPCell cell;
@@ -482,7 +482,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 
 			cell = new PdfPCell();
 			cell.setMinimumHeight(70);
-			cell.addElement(new Chunk(png_left, +14, -40));
+			cell.addElement(new Chunk(png_left, 0, -47));
 			table.addCell(cell);
 
 			String Text = "";
