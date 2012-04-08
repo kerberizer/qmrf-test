@@ -88,7 +88,22 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"}\n" +
 			"}</script>\n";	
 
-	
+	/*
+	final static String showFooterScript =
+		"<script type='text/javascript'>\n" +
+		"$(document).ready( function () {\n" +
+			"$('div#footer').hover(\n" +
+				"function () {\n" +
+					"$('div#footer').animate({bottom: '15px'}, 'fast');\n" +
+				"},\n" +
+				"function () {\n" +
+					"$('div#footer').animate({bottom: '-17px'}, 'slow');\n" +
+				"}\n" +
+			")\n" +
+		"});\n" +
+		"</script>\n";
+	*/
+
 	final static String hideFooterScript =
 		"<script type='text/javascript'>\n" +
 		"$(document).ready( function () {\n" +
@@ -127,6 +142,13 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"<a class='topLinks' title='%s' href='%s%s'>%s</a>\n" +
 			"</li>\n" +
 			"</ul>\n";
+
+	/*
+	final static String footerText =
+		"<div id='footer'>\n" +
+		"Developed by <b>IDEAconsult Ltd.</b> (2007-2012) on behalf of <b>JRC</b>\n" +
+		"</div>\n";
+	*/
 
 	final static String footerText =
 		"<div id='footer'>\n" +
@@ -293,10 +315,14 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			w.write(toggleDivScript);
 			
+			// Show the footer on mouse hover.
+
+			// w.write(String.format(showFooterScript));
+
 			// Hide the footer N milliseconds after the page is loaded.
 
 			w.write(String.format(hideFooterScript, 7000));
-			
+
 			// HEAD ends here.
 			w.write("</head>\n");
 			
