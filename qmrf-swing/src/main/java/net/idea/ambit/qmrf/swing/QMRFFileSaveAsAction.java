@@ -28,6 +28,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.StringWriter;
 
@@ -35,6 +36,7 @@ import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import net.idea.ambit.qmrf.QMRFData;
+import net.idea.ambit.qmrf.converters.QMRF_xml2rtf;
 import net.idea.ambit.swing.common.UITools;
 import net.idea.ambit.swing.interfaces.ISharedData;
 import net.idea.qmrf.converters.QMRF_xml2excel;
@@ -75,7 +77,8 @@ public class QMRFFileSaveAsAction extends QMRFAction {
     public File selectFile(String defaultDir) {
         return  MyIOUtilities.selectFile(mainFrame,null,
                 defaultDir,
-                new String[] {".xml",".pdf",".xls"},new String[]{"QMRF files (*.xml)","PDF files (*.pdf)","XLS files (*.xls)"},false);
+                new String[] {".xml",".pdf",".rtf",".xls"},
+                new String[]{"QMRF files (*.xml)","PDF files (*.pdf)","Rich Text Format files (*.rtf)","XLS files (*.xls)"},false);
         
     }
 	public void saveFile(String defaultDir) {
@@ -106,7 +109,11 @@ public class QMRFFileSaveAsAction extends QMRFAction {
             	  StringWriter w = new StringWriter();	
             	  getQMRFData().getQmrf().write(w);
             	  x.xml2pdf(w.toString(),out);
-            	  
+            } else  if (filename.endsWith("rtf")) {
+				 QMRF_xml2rtf qhtml = new QMRF_xml2rtf();
+				 qhtml.initConfig();
+				 OutputStreamWriter writer = new OutputStreamWriter(out);
+				 qhtml.xml2rtf(getQMRFData().getQmrf(),writer);	            	
             } else if (filename.endsWith("xls")) {
             	QMRF_xml2excel x = new QMRF_xml2excel();
             	/*
