@@ -59,6 +59,7 @@ import net.idea.ambit.qmrf.catalogs.Catalogs;
 import net.idea.ambit.qmrf.chapters.AbstractQMRFChapter;
 import net.idea.ambit.qmrf.chapters.QMRFChapter;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterReference;
+import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
 import net.idea.ambit.qmrf.swing.QMRFWelcomePanel;
 import net.idea.ambit.qmrf.xml.InterfaceQMRF;
 import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
@@ -192,6 +193,24 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 		this(args,adminUser);
 		
 		read(in);
+	}
+	
+	public String getNumber() {
+		try {
+			QMRFSubChapterText ch10 = (QMRFSubChapterText)chapters.get(chapters.size()-1).getSubchapters().getItem(0);
+			return ch10.getText();
+		} catch (Exception x) {
+			return "";
+		}
+	}
+	
+	public String getQmrftitle() {
+		try {
+			QMRFSubChapterText ch1 = (QMRFSubChapterText)chapters.get(0).getSubchapters().getItem(0);
+			return ch1.getText();
+		} catch (Exception x) {
+			return "";
+		}
 	}
 	public void init() {
 
