@@ -61,6 +61,18 @@
 					<port>8081</port>
 				</configuration>
   	</plugin>
+ 	<plugin>
+       	<groupId>org.apache.maven.plugins</groupId>
+       	<artifactId>maven-resources-plugin</artifactId>
+      	 <version>2.5</version>
+       	<configuration>
+        	<nonFilteredFileExtensions>
+           	<nonFilteredFileExtension></nonFilteredFileExtension>
+		   <nonFilteredFileExtension>ico</nonFilteredFileExtension>
+		   <nonFilteredFileExtension>png</nonFilteredFileExtension>
+          	</nonFilteredFileExtensions>
+        </configuration>
+      	</plugin>  	
   </plugins>
   </pluginManagement>
     <finalName>qmrf</finalName>

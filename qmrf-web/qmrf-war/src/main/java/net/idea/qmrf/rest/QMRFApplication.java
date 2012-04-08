@@ -329,8 +329,7 @@ public class QMRFApplication extends TaskApplication<String> {
 		router.attach("/jme/", jmeDir);
 		router.attach("/jquery/", jquery);
 		router.attach("/style/", styleDir);
-		router.attach("/favicon.ico", FavIconResource.class);
-		router.attach("/favicon.png", FavIconResource.class);
+
 	}
 
 	/**
