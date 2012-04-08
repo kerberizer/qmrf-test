@@ -110,8 +110,45 @@ public class ReadUser<T>  extends ReadUserID<T> {
 			public Object getValue(DBUser protocol) {
 				return protocol==null?null:protocol.getHomepage();
 			}				
+		},
+		keywords {
+			@Override
+			public void setParam(DBUser user, ResultSet rs) throws SQLException {
+				try {
+					String n = rs.getString(name());
+					user.setKeywords(n);
+				} catch (Exception x) {user.setKeywords(null);}
+			}		
+			@Override
+			public Object getValue(DBUser reviewer) {
+				return reviewer==null?null:reviewer.getKeywords();
+			}				
+		},		
+		reviewer {
+			@Override
+			public void setParam(DBUser user, ResultSet rs) throws SQLException {
+				try {
+					user.setReviewer(rs.getBoolean(name()));
+				} catch (Exception x) {user.setReviewer(false);}
+			}		
+			@Override
+			public Object getValue(DBUser user) {
+				return user==null?null:user.isReviewer();
+			}				
+		},		
+		email {
+			@Override
+			public void setParam(DBUser user, ResultSet rs) throws SQLException {
+				try {
+					String n = rs.getString(name());
+					user.setEmail(n);
+				} catch (Exception x) {user.setEmail(null);}
+			}		
+			@Override
+			public Object getValue(DBUser user) {
+				return user==null?null:user.getEmail();
+			}				
 		}
-	
 		;
 		public String getCondition() {
 			return String.format(" %s = ? ",name());
@@ -146,7 +183,7 @@ public class ReadUser<T>  extends ReadUserID<T> {
 	}
 	
 	protected static String sql = 
-		"SELECT iduser,username,title,firstname,lastname,institute,weblog,homepage from user %s %s";
+		"SELECT iduser,username,title,firstname,lastname,institute,weblog,homepage,email,keywords,reviewer from user %s %s";
 
 	
 	public ReadUser(DBUser user) {

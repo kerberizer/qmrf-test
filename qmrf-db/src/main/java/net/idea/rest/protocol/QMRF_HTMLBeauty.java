@@ -33,7 +33,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	final static String[] js = new String[] {
 		"<script type='text/javascript' src='%s/jquery/jquery-1.7.1.min.js'></script>\n",
 		"<script type='text/javascript' src='%s/jquery/jquery-ui-1.8.18.custom.min.js'></script>\n",
-		"<script type='text/javascript' charset='utf8' src='%s/jquery/jquery.dataTables-1.9.0.min.js'\n",
+		"<script type='text/javascript' charset='utf8' src='%s/jquery/jquery.dataTables-1.9.0.min.js'></script>\n",
 		"<script type='text/javascript' src='%s/jme/jme.js'></script>\n"
 	};
 	
@@ -86,13 +86,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"$('#'+divId+'_toggler').addClass('togglerPlus');\n" +
 			"}\n" +
 			"}</script>\n";	
-
-	final static String tableSorterCSS =
-		"<link rel='stylesheet' " +
-		"href='%s/style/tablesorter.css' " +
-		"type='text/css' " +
-		"media='screen' " +
-		"title='Flora (Default)'>\n";
 
 	
 	final static String hideFooterScript =
@@ -282,7 +275,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("<script>$(function() {$( \".accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
 			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
 			w.write("<script type='text/javascript'>function hideDiv(divId) {\n$('#'+divId).hide();}</script>\n");
+			final String dtableOptions = "'bJQueryUI': true, "+
+					//"'sPaginationType': 'full_numbers',"+
+					"'bPaginate'      : true,"+
+					"\"sDom\": 'T<\"clear\"><\"fg-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix\"lfr>t<\"fg-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix\"ip>'";
 
+			w.write(String.format("<script>$(function() {$( \".datatable\" ).dataTable({%s });});</script>",dtableOptions));
 			
 			// Don't style the submit button with jQ if the browser is MSIE 7.
 			if (!isMsie7()) w.write("<script>$(function() {$(\"#submit\").button();});</script>");
@@ -304,8 +302,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			// HTML body begins here.
 			w.write("<body>\n");
-			
-			w.write(String.format(tableSorterCSS, baseReference));
 			
 			w.write("<div id='wrap'>\n");
 			
@@ -381,7 +377,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					myProfile = printMenuItem(qmrfrole.getURI(), qmrfrole.toString(), baseReference.toString(),null,qmrfrole.getHint());
 				switch (qmrfrole) {
 					case qmrf_manager: {
-						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),"10","All registered users."));
+						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),"","All registered users."));
 						w.write(printMenuItem(Resources.organisation, "Organisations", baseReference.toString(),"10","All registered user affiliations."));
 						break;
 					}
