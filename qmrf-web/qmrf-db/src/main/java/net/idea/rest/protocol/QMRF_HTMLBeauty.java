@@ -293,7 +293,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			w.write(toggleDivScript);
 			
-			// Hide the footer delay() milliseconds after the page is loaded.
+			// Hide the footer N milliseconds after the page is loaded.
 
 			w.write(String.format(hideFooterScript, 7000));
 			
