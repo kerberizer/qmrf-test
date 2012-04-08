@@ -272,7 +272,7 @@ System.out.println(ttffont);
 						}
 						case text: {
 							createNodePhrase(subchapters[i][0].toString(),doc,phrase,font);
-                            align = Paragraph.ALIGN_LEFT;
+                            align = Paragraph.ALIGN_JUSTIFIED;
 							break;
 						}
 						case answer: {
@@ -528,7 +528,6 @@ System.out.println(ttffont);
 //        return org.apache.commons.lang.StringEscapeUtils.unescapeXml(replaceTags(v));
         try {
             org.w3c.dom.Document doc = nodeBuilder.parse(new InputSource(new StringReader(v)));
-            StringBuffer b = new StringBuffer();
             org.w3c.dom.Element e = doc.getDocumentElement();
             getText(e, phrase, font, ScriptMode.normal,true,0);
             return;
@@ -612,7 +611,7 @@ System.out.println(ttffont);
         } else if (node.getNodeType() == node.TEXT_NODE) {
         	
         	String value = node.getNodeValue();
-        	if (trim) value=replaceNewLine(value);
+        	if (trim) value=replaceBlanks(value).trim();
         	if ("".equals(value)) return paragraphs;
         	//System.out.println(value);
              Chunk chunk = new Chunk(value,currentFont);
