@@ -40,6 +40,7 @@ import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
+import org.restlet.ext.freemarker.ContextTemplateLoader;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Filter;
 import org.restlet.routing.Router;
@@ -50,6 +51,8 @@ import org.restlet.security.SecretVerifier;
 import org.restlet.security.User;
 import org.restlet.service.TunnelService;
 
+import freemarker.template.Configuration;
+
 /**
  * (Q)SAR Model Reporting Format web services / web application
  * 
@@ -57,6 +60,8 @@ import org.restlet.service.TunnelService;
  * 
  */
 public class QMRFApplication extends TaskApplication<String> {
+	/** The Freemarker's configuration. */
+    private Configuration configuration;
 
 	public QMRFApplication() {
 		super();
@@ -135,8 +140,6 @@ public class QMRFApplication extends TaskApplication<String> {
 		setCookieUserRouter.attach(Resources.user, new UserRouter(getContext(),
 				protocols, org_router, projectRouter));
 
-		setCookieUserRouter.attach("/", protocolRouter);
-		setCookieUserRouter.attach("", protocolRouter);
 
 		setCookieUserRouter.attach(Resources.endpoint,
 				ProtocolsByEndpointResource.class);
@@ -149,6 +152,9 @@ public class QMRFApplication extends TaskApplication<String> {
 		setCookieUserRouter.attach(Resources.task, new QMRFTaskRouter(
 				getContext()));
 
+		setCookieUserRouter.attach("", QMRFWelcomeResource.class);
+		setCookieUserRouter.attach("/", QMRFWelcomeResource.class);
+		
 		router.attach(auth);
 		/**
 		 * Images, styles, favicons, applets
@@ -175,6 +181,14 @@ public class QMRFApplication extends TaskApplication<String> {
 		 * QMRFApplication.printRoutes(router, ">", w);
 		 * System.out.println(w.toString());
 		 */
+		
+        configuration = new Configuration();
+        
+        ContextTemplateLoader loader = new ContextTemplateLoader(getContext(),"war:///WEB-INF/templates/");
+        configuration.setTemplateLoader(loader);
+		
+        //"clap://class/templates"));
+        
 		return router;
 	}
 
@@ -332,6 +346,16 @@ public class QMRFApplication extends TaskApplication<String> {
 
 	}
 
+    
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+	
 	/**
 	 * Standalone, for testing mainly
 	 * 
