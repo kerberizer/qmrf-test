@@ -22,7 +22,7 @@
 	
 	<div class=".ui-widget-content" style="margin-top: 20px; padding: 0 .5em; font-size: 12pt;">
 	In the regulatory assessment of chemicals (e.g. under REACH), <b>(Q)SAR models</b> are playing an increasingly important 
-	role inpredicting properties for hazard and risk assessment. This implies both a need to be able to identify
+	role in predicting properties for hazard and risk assessment. This implies both a need to be able to identify
 	relevant (Q)SARs and to use them to derive estimates and/or have access to their precalculated estimates.
 	To help meet these needs, we are developing a database of (Q)SAR models (i.e. an inventory of information on the models).
 	The JRC QSAR Model Database is freely accessible from <a href='./protocol'>this web site</a>.
