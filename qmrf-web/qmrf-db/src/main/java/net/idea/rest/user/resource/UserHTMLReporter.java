@@ -1,15 +1,25 @@
 package net.idea.rest.user.resource;
 
 import java.io.Writer;
+import java.net.URL;
+import java.net.URLEncoder;
 
+import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.IQueryRetrieval;
+import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.modbcum.p.DefaultAmbitProcessor;
+import net.idea.modbcum.p.MasterDetailsProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFHTMLReporter;
+import net.idea.rest.groups.DBOrganisation;
+import net.idea.rest.groups.db.ReadOrganisation;
+import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.db.QueryURIReporter;
+import net.toxbank.client.resource.Organisation;
 
 import org.restlet.Request;
 import org.restlet.data.Form;
@@ -21,14 +31,33 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 	 */
 	private static final long serialVersionUID = -7959033048710547839L;
 	DBUser.fields[] entryFields = DBUser.fields.values();
-	DBUser.fields[] displayFields = DBUser.fields.values();
+	protected GroupQueryURIReporter groupURIReporter ;
 	
 	public UserHTMLReporter() {
 		this(null,true,false,new UserHTMLBeauty());
 	}
-	public UserHTMLReporter(Request baseRef, boolean collapsed,boolean editable,UserHTMLBeauty htmlBeauty) {
-		super(baseRef,collapsed,null,htmlBeauty);
+	public UserHTMLReporter(Request request, boolean collapsed,boolean editable,UserHTMLBeauty htmlBeauty) {
+		super(request,collapsed,null,htmlBeauty);
 		setTitle("User");
+		getProcessors().clear();
+		groupURIReporter = new GroupQueryURIReporter(request);
+		IQueryRetrieval<DBOrganisation> queryO = new ReadOrganisation(new DBOrganisation()); 
+		MasterDetailsProcessor<DBUser,DBOrganisation,IQueryCondition> orgReader = new MasterDetailsProcessor<DBUser,DBOrganisation,IQueryCondition>(queryO) {
+			@Override
+			protected DBUser processDetail(DBUser target, DBOrganisation detail)
+					throws Exception {
+				detail.setResourceURL(new URL(groupURIReporter.getURI(detail)));
+				target.addOrganisation(detail);
+				return target;
+			}
+		};
+		getProcessors().add(orgReader);
+		processors.add(new DefaultAmbitProcessor<DBUser,DBUser>() {
+			public DBUser process(DBUser target) throws AmbitException {
+				processItem(target);
+				return target;
+			};
+		});				
 	}
 	@Override
 	protected QueryURIReporter createURIReporter(Request request, ResourceDoc doc) {
@@ -36,62 +65,112 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 	}
 	@Override
 	protected boolean printAsTable() {
-		return true; //collapsed || !editable;
+		return collapsed;
 	}
 
+	@Override
+	protected void printPageNavigator(IQueryRetrieval<DBUser> query)
+			throws Exception {
+		//print nothing, dataTAbles have their own paging
+	}
 	
 	@Override
 	protected void printTableHeader(Writer output) throws Exception {
-		output.write("<table width='90%'>\n");
-
-		output.write("<tr bgcolor='FFFFFF' >\n");	
-		output.write(String.format("<th width='50%'>%s</th>","Name"));
-		output.write(String.format("<th width='25%'>%s</th>",DBUser.fields.homepage.toString()));
-		output.write(String.format("<th width='25%'>%s</th>","Documents"));
-		output.write("</tr>\n");
+		if (printAsTable()) {
+			output.write("<div style='float:left;width:100%;align:center' >");
+			output.write("<table class='datatable'  cellpadding='0' border='0' width='100%' cellspacing='0'>\n");
+			//output.write("<caption><h3>Users</h3></caption>\n");	
+			output.write("<thead>\n");	
+			output.write(String.format("<th>%s</th>","Name"));
+			output.write(String.format("<th>%s</th>","Affiliation"));
+			output.write(String.format("<th>%s</th>","e-mail"));
+			output.write(String.format("<th>%s</th>","Keywords"));
+			output.write(String.format("<th>%s</th>","Reviewer"));
+			output.write("</thead>\n");
+			output.write("<tbody>\n");
+		}
 		
 	}
-
+	
+	@Override
+	public void footer(Writer output, IQueryRetrieval<DBUser> query) {
+		try {
+			if (printAsTable()) output.write("</tbody></table></div>\n");	
+		} catch (Exception x) {}
+		if (!headless)
+			super.footer(output, query);
+	}
+	final static DBUser.fields[] displayFields = {
+			DBUser.fields.email,
+			DBUser.fields.username,
+			DBUser.fields.homepage,
+			DBUser.fields.keywords,
+			DBUser.fields.reviewer
+			};
+	
 	@Override
 	protected void printForm(Writer output, String uri, DBUser user, boolean editable) {
 		try {
+			StringBuilder rendering = new StringBuilder();
 			
-			DBUser.fields[] fields = editable?entryFields:displayFields;
-			for (DBUser.fields field : fields) {
-				output.write("<tr bgcolor='FFFFFF'>\n");	
-				Object value = user==null?null:field.getValue(user);
-
-				if (editable) {
-					value = field.getHTMLField(user);
-				} else 
-					if (value==null) value = "";
-							
-				switch (field) {
-				case iduser: {
-					if (!editable)
-						output.write(String.format("<th>%s</th><td align='left'><a href='%s'>%s</a></td>\n",
-							field.toString(),
-							uri,
-							uri));		
-					break;
-				}	
-				default :
-					output.write(String.format("<th>%s</th><td align='left'>%s</td>\n",
-						field.toString(),value));
+			String protocolURI = String.format(
+					"<a href=\"%s%s/U%d%s?headless=true&details=false&media=text/html\" title=\"QMRF documents\">QMRF documents</a>",
+					uriReporter.getRequest().getRootRef(),
+					Resources.user,
+					user.getID(),
+					Resources.protocol);
+			
+			String orgURI = String.format(
+					"<a href=\"%s%s/U%d%s?headless=true&details=false&media=text/html\" title=\"Affiliation\">Affiliation</a>",
+					uriReporter.getRequest().getRootRef(),
+					Resources.user,
+					user.getID(),
+					Resources.organisation);
+			
+				//tab headers
+				rendering.append(String.format(
+				"<div class='protocol'>\n"+					
+				"<div class='tabs'>\n"+
+				"<ul>"+
+				"<li><a href='#tabs-id'>%s</a></li>"+
+				"<li>%s<span></span></li>"+
+				"</ul>",
+				"User profile",
+				protocolURI
+				));
+				//identifiers
+				rendering.append("<div id='tabs-id'><span class='summary'>");
+				rendering.append("<table width='80%%'>");
+				rendering.append(String.format("<tr><th colspan='2'><a href='%s%s/U%d'>%s&nbsp;%s&nbsp%s</a></th></tr>",
+								uriReporter.getRequest().getRootRef(),Resources.user,user.getID(),
+								user.getTitle().trim(),user.getFirstname().trim(),user.getLastname().trim()));
+				for (Organisation org : user.getOrganisations()) {
+					rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", 
+							"Affiliation",
+							org.getTitle()
+							));					
 				}
-							
-				output.write("</tr>\n");				
-			}
-			output.write("<tr bgcolor='FFFFFF'>\n");
-			output.write("</tr>\n");
-			output.flush();
+				for (DBUser.fields field : displayFields) 
+					rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", 
+							field.toString(),
+							field.getValue(user)==null?"":field.getValue(user)
+							));
+	
+				rendering.append("</table>");
+				rendering.append("</span></div>");
+			
+				rendering.append(String.format("<div id='QMRF_documents'>%s</div>",protocolURI));
+
+				rendering.append("</div>\n</div>\n");//tabs , protocol
+
+				output.write(rendering.toString());
 		} catch (Exception x) {x.printStackTrace();} 
 	}	
 	@Override
 	protected void printTable(Writer output, String uri, DBUser user) {
 		try {
 			output.write("<tr bgcolor='FFFFFF'>\n");	
-			output.write(String.format("<td>%s</td>",renderItem(user)));			
+			output.write(renderItem(user));			
 			output.write("</tr>\n");
 		} catch (Exception x) {
 			x.printStackTrace();
@@ -100,57 +179,23 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 	
 	
 	public String renderItem(DBUser item) {
-		
-		String protocolURI = String.format(
-				"<a href=\"%s%s/U%d%s?headless=true&details=false&media=text/html\" title=\"QMRF documents\">QMRF documents</a>",
-				uriReporter.getRequest().getRootRef(),
-				Resources.user,
-				item.getID(),
-				Resources.protocol);
-		
-		String orgURI = String.format(
-				"<a href=\"%s%s/U%d%s?headless=true&details=false&media=text/html\" title=\"Affiliation\">Affiliation</a>",
-				uriReporter.getRequest().getRootRef(),
-				Resources.user,
-				item.getID(),
-				Resources.organisation);
-		
 		StringBuilder rendering = new StringBuilder();
-			//tab headers
-			rendering.append(String.format(
-			"<div class='protocol'>\n"+					
-			"<div class='tabs'>\n"+
-			"<ul>"+
-			"<li><a href='#tabs-id'>%s&nbsp;%s&nbsp%s</a></li>"+
-			"<li>%s<span></span></li>"+
-			"<li>%s<span></span></li>"+
-			"</ul>",
-			item.getTitle(),item.getFirstname(),item.getLastname(),
-			orgURI,
-			protocolURI
-			));
-			//identifiers
-			rendering.append(String.format(
-			"<div id='tabs-id'>"+
-			"<span class='summary'><table width='80%%'>\n"+ 
-			"<tr><th colspan='2'><a href='%s%s/U%d'>%s&nbsp;%s&nbsp%s</a></th></tr>"+
-			"<tr><td>%s</td><th align='left'>%s</th></tr>"+
-			"<tr><td width='10%%'>%s</td><th align='left'>%s</th></tr>"+
-			"</table></span>"+
-			"</div>",
-			uriReporter.getRequest().getRootRef(),Resources.user,item.getID(),
-			item.getTitle().trim(),item.getFirstname().trim(),item.getLastname().trim(),
-			item.getUserName()==null?"":"Username:&nbsp;",item.getUserName()==null?"":item.getUserName(),
-			item.getHomepage()==null?"":"WWW:&nbsp;",
-			item.getHomepage()==null?"":String.format("<a href='%s'>%s</a>",item.getHomepage(),item.getHomepage())					
-			));
-			rendering.append(String.format("<div id='Affiliation'>%s</div>",orgURI));				
-			rendering.append(String.format("<div id='QMRF_documents'>%s</div>",protocolURI));
 
-			rendering.append("</div>\n</div>\n");//tabs , protocol
-
-			return rendering.toString();
-		
+			rendering.append(String.format("<td>%s %s %s %s</td>",
+					item.getTitle(),item.getFirstname(),item.getLastname(),
+					item.getUserName()==null?"":String.format("<br>[<a href='%s%s/U%d' target='user'>%s</a>]",uriReporter.getBaseReference(),Resources.user,item.getID(),item.getUserName())
+					));
+			rendering.append(String.format("<td>%s%s</td>",
+					item.getOrganisations()==null?"":item.getOrganisations().get(0).getTitle(),
+					item.getHomepage()==null?"":String.format("<br><a href='%s' target='_blank'>%s</a>",item.getHomepage(),item.getHomepage())							
+							));
+			rendering.append(String.format("<td>%s</td>",item.getEmail()==null?"":
+							String.format("<a href='mailto:%s'>%s</a>",URLEncoder.encode(item.getEmail()),item.getEmail())));
+			//rendering.append(String.format("<td>%s</td>",item.getUserName()==null?"":
+				//			String.format("<a href='%s%s/U%d' target='user'>%s</a>",uriReporter.getBaseReference(),Resources.user,item.getID(),item.getUserName())));
+			rendering.append(String.format("<td>%s</td>",item.getKeywords()==null?"":item.getKeywords()));
+			rendering.append(String.format("<td>%s</td>",item.isReviewer()?"Yes":""));
+		return rendering.toString();
 
 	}
 

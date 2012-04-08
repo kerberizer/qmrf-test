@@ -108,7 +108,8 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	public void footer(Writer output, Q query) {
 		try {
 			if (printAsTable()) output.write("</table>\n");	
-			if (record==(query.getPage()*query.getPageSize())) {
+			
+			if (!headless && (record==(query.getPage()*query.getPageSize()))) {
 				if (((QMRF_HTMLBeauty)htmlBeauty).getSearchQuery()==null) {
 					 output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidget("You haven't specified a QMRF document search query", "Please try the documents search menu."));
 				} else  

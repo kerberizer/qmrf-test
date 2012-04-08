@@ -44,16 +44,42 @@ public class DBUser extends User {
 				return user==null?null:user.getWeblog();
 			}			
 		},
+		email {
+			@Override
+			public Object getValue(DBUser user) {
+				return user==null?null:user.getEmail();
+			}			
+		},		
+		keywords {
+			@Override
+			public Object getValue(DBUser user) {
+				return user==null?null:user.getKeywords();
+			}			
+		},		
+		reviewer {
+			@Override
+			public Object getValue(DBUser user) {
+				return user==null?null:user.isReviewer();
+			}			
+		},				
 		homepage {
 			@Override
 			public Object getValue(DBUser user) {
 				return user==null?null:user.getHomepage();
 			}			
+			@Override
+			public String toString() {
+				return "WWW";
+			}
 		};
 		public String getHTMLField(DBUser protocol) {
 			Object value = getValue(protocol);
 			return String.format("<input name='%s' type='text' size='40' value='%s'>\n",
 					name(),getDescription(),value==null?"":value.toString());
+		}
+		@Override
+		public String toString() {
+			return String.format("%s%s", name().substring(0,1).toUpperCase(),name().substring(1));
 		}
 		public String getDescription() { return toString();}
 		public Object getValue(DBUser user) {
@@ -61,6 +87,20 @@ public class DBUser extends User {
 		}
 	}
 	protected int id=-1;
+	protected String keywords;
+	protected boolean reviewer = false;
+	public String getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+	public boolean isReviewer() {
+		return reviewer;
+	}
+	public void setReviewer(boolean reviewer) {
+		this.reviewer = reviewer;
+	}
 	public int getID() {
 		return id;
 	}
@@ -107,6 +147,7 @@ public class DBUser extends User {
 			return Integer.parseInt(vars.get(FileResource.resourceKey).toString().substring(1)); 
 		} catch (Exception x) { return -1; }
 	}
+	
 	@Override
 	public String toString() {
 		return String.format("<a href='%s' title='%s'>%s</a>",
