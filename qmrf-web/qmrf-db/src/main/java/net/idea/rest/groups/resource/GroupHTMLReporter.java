@@ -11,6 +11,7 @@ import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
 
 import org.restlet.Request;
@@ -49,6 +50,26 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 			output.write("</thead>\n");
 		}
 		
+	}
+	
+	@Override
+	public void footer(Writer output, IQueryRetrieval<IDBGroup> query) {
+		try {
+			if (printAsTable()) output.write("</table></div>\n");	
+			if (htmlBeauty == null) htmlBeauty = new HTMLBeauty();
+			htmlBeauty.writeHTMLFooter(output, "", uriReporter.getRequest());			
+
+			output.flush();
+		} catch (Exception x) {
+			
+		}
+		
+	}
+
+	@Override
+	protected void printPageNavigator(IQueryRetrieval<IDBGroup> query)
+			throws Exception {
+
 	}
 
 	@Override
