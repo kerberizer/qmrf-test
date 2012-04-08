@@ -278,9 +278,14 @@ public class ProtocolFactory {
 		        		dir = new File(dir==null?new File(System.getProperty("java.io.tmpdir")):dir,type.name());
 		        		if ((dir!=null) && !dir.exists())  dir.mkdir();
 		        	} catch (Exception x) {dir = null; }
-		        	description = new File(fi.getName()).getName();
+		        	//stupid File class ... 
+		        	String pathSeparator = System.getProperty("file.separator");
+		        	description = fi.getName().replace("\\",pathSeparator);
+		        	description = fi.getName().replace("/",pathSeparator);
+		        	description = new File(description).getName();
 		        	int extIndex = fi.getName().lastIndexOf(".");
 		        	String ext = extIndex>0?fi.getName().substring(extIndex):"";
+		        	
 		        	//generate new file name
 		        	originalName = fi.getName();
 		        	String newName = String.format("qmrf%d_%s_%s%s", protocol.getID()>0?protocol.getID():0,
