@@ -670,12 +670,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				content.append(_trStart);
 				
 				try {
-					content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
+					content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"30\"></p>",
 							ReadProtocol.fields.user_uri.name(),"Owner",protocol==null?"":protocol.getOwner()==null?"":protocol.getOwner().getResourceURL()));
 					content.append(String.format(
-							"<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
+							"<p><input type='hidden' name='%s' title='%s' value='%s' size=\"30\"></p>",
 							ReadProtocol.fields.organisation_uri.name(),"Organisation",protocol==null?"":protocol.getOrganisation()==null?"":protocol.getOrganisation().getResourceURL()));
-					content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"60\"></p>",
+					content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"30\"></p>",
 							ReadProtocol.fields.project_uri.name(),"Project",protocol==null?"":protocol.getProject()==null?"":protocol.getProject().getResourceURL()));
 					} catch (Exception x) {x.printStackTrace(); /*ok, no defaults if anything goes wrong */ }	
 				//The XMLf
@@ -691,7 +691,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						String title= String.format("Attachments: %s(s) - %s, %s files max", atype.toString(),atype.getDescription(),atype.maxFiles());
 						content.append(_tdStart);
 						content.append(printWidget(title,
-								String.format("<p><input type=\"file\"  class='multi' maxlength='%d' accept='%s' name=\"%s\" title='%s' size=\"60\"></p>",
+								String.format("<p><input type=\"file\"  class='multi' maxlength='%d' accept='%s' name=\"%s\" title='%s' size=\"30\"></p>",
 										atype.maxFiles(),
 										atype.acceptFormats(),
 										atype.name(),
@@ -704,7 +704,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				
 					content.append(_tdStart);
 					content.append(printWidget(String.format("%s QMRF XML file ",mode.toString()), 
-						String.format("<p><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"60\"></p>",
+						String.format("<p><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"30\"></p>",
 								ReadProtocol.fields.filename.name(),
 								"QMRF XML"),"box"
 						));
