@@ -40,12 +40,15 @@ public class QMRF_xml2rtf  {
         cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER); 
 	}	
 	public synchronized void  xml2rtf(Reader reader, Writer out) throws Exception {
+		xml2rtf(getQMRF(reader),out);
+	}
+	public synchronized void  xml2rtf(QMRFObject qmrf, Writer out) throws Exception {
 	       Template temp = cfg.getTemplate("qmrf_rtf.ftl", Locale.UK);
 
 	        Map model = new HashMap();
 	        // make sure you add the RtfConverter, since this will be needed to escape interpolations as Rtf
 	        model.put("RtfConverter", new RtfConverter());
-	        QMRFObject qmrf = getQMRF(reader);
+
 	        qmrf.setCleanTags(true);
 	        model.put("qmrf", qmrf);
 	     
