@@ -315,7 +315,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					//Sumbit QMRF by e-mail
 					qmrfEditorEmail, 
 					// Help
-					"http://qmrf.sf.net/",
+					baseReference.toString(),					
 					// Log in/out hint
 					request.getClientInfo().getUser()==null? 
 							"Log in here to submit new documents (only required for editors)"
