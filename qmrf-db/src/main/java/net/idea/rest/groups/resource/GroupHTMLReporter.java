@@ -41,11 +41,12 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 	}
 	@Override
 	protected void printTableHeader(Writer output) throws Exception {
-		output.write("<table width='100%'>\n");
+		output.write("<div style='float:left;width:100%;align:center' >");
+		output.write("<table class='datatable'  cellpadding='0' border='0' width='100%' cellspacing='0'>\n");
 		if (!headless) {
-			output.write("<tr bgcolor='FFFFFF' >\n");	
+			output.write("<thead>\n");	
 			output.write(String.format("<th>%s</th>",DBGroup.fields.name.toString()));
-			output.write("</tr>\n");
+			output.write("</thead>\n");
 		}
 		
 	}
@@ -67,13 +68,13 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 	protected void printForm(Writer output, String uri, IDBGroup group, boolean editable) {
 		try {
 			if (user!=null) {
-				output.write("<tr bgcolor='FFFFFF'>\n");	
+				output.write("<tr>\n");	
 				output.write(String.format("<th>%s URI</th><td align='left'><input name='%s_uri' value='' size='80'></td>\n",
 									getTitle(),getTitle().toLowerCase()));
 				output.write("</tr>\n");			
 			} else
 			for (DBGroup.fields field : DBGroup.fields.values()) {
-				output.write("<tr bgcolor='FFFFFF'>\n");	
+				output.write("<tr>\n");	
 				Object value = field.getValue(group);
 
 				if (editable) {
