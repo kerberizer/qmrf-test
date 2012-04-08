@@ -286,7 +286,16 @@ public abstract class QMRFConverter {
 			newText = m.replaceAll("");
 		}
 		return newText;
+	}
 
+	public static String replaceBlanks(String text) {
+		if (text == null) return text;
+		String  newText = text;
+		Matcher m = BLANKS.matcher(newText);
+		if (m.find()) {
+			newText = m.replaceAll(" ");
+		}
+		return newText;
 	}
 
 	
