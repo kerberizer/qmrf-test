@@ -279,10 +279,9 @@ public class ProtocolFactory {
 		        		if ((dir!=null) && !dir.exists())  dir.mkdir();
 		        	} catch (Exception x) {dir = null; }
 		        	//stupid File class ... 
-		        	String pathSeparator = System.getProperty("file.separator");
-		        	description = fi.getName().replace("\\",pathSeparator);
-		        	description = fi.getName().replace("/",pathSeparator);
-		        	description = new File(description).getName();
+		        	int lastIndex = fi.getName().lastIndexOf("\\");
+		        	if (lastIndex < 0) lastIndex = fi.getName().lastIndexOf("/");
+		        	description = stripFileName(fi.getName());
 		        	int extIndex = fi.getName().lastIndexOf(".");
 		        	String ext = extIndex>0?fi.getName().substring(extIndex):"";
 		        	
@@ -300,4 +299,10 @@ public class ProtocolFactory {
 			return null;
 		}	
 
+	public static String stripFileName(String fileName) {
+    	int lastIndex = fileName.lastIndexOf("\\");
+    	if (lastIndex < 0) lastIndex = fileName.lastIndexOf("/");
+    	return lastIndex>0?fileName.substring(lastIndex+1):fileName;
+    	
+	}
 }
