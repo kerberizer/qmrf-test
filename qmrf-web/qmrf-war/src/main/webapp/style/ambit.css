@@ -27,6 +27,9 @@ div#header {
 }
 
 ul.topLinks {
+	position: absolute;
+	top: 0;
+	right: 0;
 	height: auto;
 	margin: 0;
 	padding: 0.5em 1em 0 0;
@@ -43,7 +46,6 @@ a.topLinks {
 
 .logo_top-left {
 	border: 0;
-	margin-top: -24px;
 }
 
 * html #wrap {
