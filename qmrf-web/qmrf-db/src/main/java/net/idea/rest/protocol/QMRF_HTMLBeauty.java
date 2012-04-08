@@ -377,8 +377,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					myProfile = printMenuItem(qmrfrole.getURI(), qmrfrole.toString(), baseReference.toString(),null,qmrfrole.getHint());
 				switch (qmrfrole) {
 					case qmrf_manager: {
-						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),"","All registered users."));
-						w.write(printMenuItem(Resources.organisation, "Organisations", baseReference.toString(),"10","All registered user affiliations."));
+						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),null,"All registered users."));
+						w.write(printMenuItem(Resources.organisation, "Organisations", baseReference.toString(),null,"All registered user affiliations."));
 						break;
 					}
 					case qmrf_admin: {
