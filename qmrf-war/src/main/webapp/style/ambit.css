@@ -426,7 +426,7 @@ td.togglerMinus {
 */
 
 td.qmrfNumber {
-	min-width: 8.7em;
+	white-space: nowrap;
 }
 
 td.qmrfNumber div {
@@ -435,11 +435,11 @@ td.qmrfNumber div {
 }
 
 td.qmrfDate {
-	min-width: 5em;
+	white-space: nowrap;
 }
 
 td.qmrfDownloadLinks {
-	min-width: 5.5em;
+	white-space: nowrap;
 }
 
 td.contentTableManageL {
