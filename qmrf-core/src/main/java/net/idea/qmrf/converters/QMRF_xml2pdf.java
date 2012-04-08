@@ -222,10 +222,10 @@ public class QMRF_xml2pdf extends QMRFConverter {
 			}
 
 			PdfOutline root = writer.getDirectContent().getRootOutline();
-
+			
 			for (int i = 0; i < subchapters.length; i++)
-
 				try {
+					float indent = 20;
 					int align = Paragraph.ALIGN_LEFT;
 					if (Mode.chapter == (Mode) subchapters[i][2]) {
 						document.add(new Paragraph(new Chunk('\n', font)));
@@ -295,6 +295,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 							PdfOutline outline = new PdfOutline(root,
 									destination, subchapterBookmark);
 
+							indent = 0;
 							break;
 
 						}
@@ -387,6 +388,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 
 						Paragraph p = new Paragraph(phrase);
 						p.setAlignment(align);
+						p.setIndentationLeft(indent);
 						document.add(p);
 						float pos = writer.getVerticalPosition(false);
 						/*
