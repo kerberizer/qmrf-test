@@ -287,16 +287,15 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			if (!isMsie7()) w.write("<script>$(function() {$(\"#submit\").button();});</script>");
 			
 			// The next line is commented, because we MUST NOT initialise any div-tabs before they get populated.
-			//but this is only true for documents ... the rest of the resources are loaded the usual way
+			// But this is only true for documents, as the rest of the resources are loaded the usual way.
 			if (isLoadTabs()) 
 				w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
 
 			w.write(toggleDivScript);
 			
 			// Hide the footer delay() milliseconds after the page is loaded.
-			// For some reason this is way slower than expected on MSIE 7.
 
-			w.write(String.format(hideFooterScript, isMsie7()?2000:7000));
+			w.write(String.format(hideFooterScript, 7000));
 			
 			// HEAD ends here.
 			w.write("</head>\n");
