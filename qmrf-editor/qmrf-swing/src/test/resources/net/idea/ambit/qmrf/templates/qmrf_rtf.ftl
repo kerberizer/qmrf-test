@@ -3,9 +3,12 @@ If you indent your templates for readability, make sure you trim them using the 
 since RTF is white-space sensitive (except for newlines).
 -->
 <#import "rtf.ftl" as rtf>
+<#import "logo.ftl" as logo>
 <#escape x as RtfConverter(x)>
-<@rtf.document>
-<@rtf.left><@rtf.H1>${qmrf.title}</@rtf.H1></@rtf.left><@rtf.newline/><#t>
+<@rtf.document><#t>
+<@rtf.left><#t>
+<@logo.logo/><#t>
+<@rtf.H1>${qmrf.title}</@rtf.H1></@rtf.left><@rtf.newline/><#t>
   Author ${qmrf.author}<@rtf.newline/><#t>
   Version ${qmrf.version}<@rtf.newline/><#t>
   email ${qmrf.email}<@rtf.newline/><#t>
