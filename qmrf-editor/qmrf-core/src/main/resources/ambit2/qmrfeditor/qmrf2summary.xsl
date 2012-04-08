@@ -104,7 +104,6 @@
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
 <div class='summary'><p>
     <xsl:apply-templates select="software_ref"/>
-    
    </p></div>
 </xsl:template>
 
@@ -393,10 +392,8 @@
 <xsl:template match="app_domain_software">
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
   <xsl:value-of select="." disable-output-escaping="yes"/>	
-   <br><!-- 
-		<xsl:apply-templates select="software_ref"/>
-		 -->
-   </br>    
+   <xsl:apply-templates select="software_ref"/>
+ 
 </xsl:template>
 
 <xsl:template match="applicability_limits">
@@ -757,15 +754,27 @@
 
 
 <xsl:template match="software_ref"> 
+	<xsl:choose><xsl:when test="id(@idref)/@name != ''">
+	<br/>
 	<xsl:text>Name: </xsl:text>
 	<xsl:value-of select="id(@idref)/@name" disable-output-escaping="yes"/>
-	<xsl:text> Description: </xsl:text>
+	<br/></xsl:when></xsl:choose>	
+	
+	<xsl:choose><xsl:when test="id(@idref)/@description != ''">
+	<xsl:text>Description: </xsl:text>
 	<xsl:value-of select="id(@idref)/@description" disable-output-escaping="yes"/>
-	<xsl:text> Contact: </xsl:text>
+	<br/></xsl:when></xsl:choose>	
+	
+	<xsl:choose><xsl:when test="id(@idref)/@contact != ''">
+	<xsl:text>Contact: </xsl:text>
 	<xsl:value-of select="id(@idref)/@contact" disable-output-escaping="yes"/>
-	<xsl:text> </xsl:text>
-    <xsl:call-template name="print_href"/>
-    <br/>
+	<br/></xsl:when></xsl:choose>
+
+	<xsl:choose><xsl:when test="id(@idref)/@url != ''">
+	<xsl:text>WWW: </xsl:text>
+	<xsl:call-template name="print_href"/>
+	<br/></xsl:when></xsl:choose>
+
 	<!-- 
 	crashes if using these 
 		<td> 
@@ -786,14 +795,14 @@ crashes if using id(@idref)/@version  - apparently in some xml files the version
 </xsl:template>
 
 <xsl:template match="descriptor_ref"> 
-Descriptor: 
  <xsl:choose>
     <xsl:when test="@idref != ''">
   	<!-- now the rendering itself  -->	
   		<tr>
+<td>Descriptor:</td>   		
      <td>
 	<xsl:value-of select="id(@idref)/@name" disable-output-escaping="yes"/>
- <xsl:choose>
+   <xsl:choose>
     <xsl:when test="id(@idref)/@units != ''">
   		<xsl:text> , </xsl:text>
      <i>
