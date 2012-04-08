@@ -462,7 +462,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 			int header_font_size = 10;
 			Image png_left = Image.getInstance(QMRF_xml2pdf.class
 					.getClassLoader().getResource(
-							"ambit2/qmrfeditor/logo-qmrf-77px.png"));
+							"ambit2/qmrfeditor/logo.png"));
 			png_left.setAlignment(Image.LEFT);
 			png_left.setBorder(0);
 			png_left.setIndentationLeft(0);
