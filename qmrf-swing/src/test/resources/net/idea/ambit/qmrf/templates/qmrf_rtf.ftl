@@ -4,16 +4,15 @@ since RTF is white-space sensitive (except for newlines).
 -->
 <#import "rtf.ftl" as rtf>
 <#import "logo.ftl" as logo>
+<#import "table.ftl" as top>
 <#escape x as RtfConverter(x)>
 <@rtf.document><#t>
-<@rtf.left><#t>
-<@logo.logo/><#t>
-<@rtf.H1>${qmrf.title}</@rtf.H1></@rtf.left><@rtf.newline/><#t>
-  Author ${qmrf.author}<@rtf.newline/><#t>
-  Version ${qmrf.version}<@rtf.newline/><#t>
-  email ${qmrf.email}<@rtf.newline/><#t>
-  Contact ${qmrf.contact}<@rtf.newline/><#t>
-  <@rtf.newline/><#t>
+<@top.top_pic><@logo.logo/></@top.top_pic><#t>
+<@top.top_first><@rtf.bold><@rtf.italic>QMRF identifier (JRC Inventory): </@rtf.italic><@rtf.big>${qmrf.number}</@rtf.big></@rtf.bold></@top.top_first><#t>
+<@top.top_middle><@rtf.bold><@rtf.italic>QMRF Title: </@rtf.italic><@rtf.big>${qmrf.qmrftitle}</@rtf.big></@rtf.bold></@top.top_middle><#t>
+<@top.top_middle><@rtf.bold><@rtf.italic>Printing Date: </@rtf.italic>${.now?date}</@rtf.bold></@top.top_middle><#t>
+<@top.top_last></@top.top_last><#t>
+\pard\par<#t>
 <#list qmrf.chapters as chapter><#t>
 	<@rtf.H2>${chapter.chapter}.${chapter.title}</@rtf.H2><@rtf.newline/><#t>
 	<#list chapter.subchapters.iterator as subchapter><#t>
