@@ -68,7 +68,7 @@ public abstract class QMRFConverter {
 			{"QSAR_models","QSAR_models_text",Mode.text},
 			
 			{"QSAR_software","QSAR_software",Mode.title},
-			{"QSAR_software","QSAR_software_text",Mode.reference,"software_ref","software",att_software, new Boolean(true)},
+			{"QSAR_software","QSAR_software_text",Mode.reference,"software_ref","software",att_software, new Boolean(false)},
 
 			
 			{"QSAR_General_information","QSAR_General_information",Mode.chapter},
