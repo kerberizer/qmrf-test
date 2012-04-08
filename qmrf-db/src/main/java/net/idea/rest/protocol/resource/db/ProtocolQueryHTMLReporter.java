@@ -229,7 +229,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		MediaType[] mimes = {
 				MediaType.APPLICATION_PDF,
 				MediaType.APPLICATION_EXCEL,
-				MediaType.APPLICATION_WORD,
+				MediaType.APPLICATION_RTF,
 				MediaType.APPLICATION_XML,
 				null
 				};
@@ -245,7 +245,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		String[] description = {
 				"Download as PDF",
 				"Download as MS Excel",
-				"Download as MS Word",
+				"Download as Rich Text Format (RTF)",
 				"Download as QMRF XML",
 				"Browse attachments"
 		};			
@@ -253,8 +253,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			MediaType mime = mimes[i];
 				
 			b.append(String.format(
-					"<a href=\"%s?media=%s\" target='_blank'><img src=\"%s/images/%s\" alt=\"%s\" title=\"%s\" border=\"0\"/></a>\n",
+					"<a href=\"%s%s?media=%s\" target='_blank'><img src=\"%s/images/%s\" alt=\"%s\" title=\"%s\" border=\"0\"/></a>\n",
 					uri,
+					Resources.document,
 					Reference.encode(mime.toString()),
 					getUriReporter().getBaseReference().toString(),
 					image[i],

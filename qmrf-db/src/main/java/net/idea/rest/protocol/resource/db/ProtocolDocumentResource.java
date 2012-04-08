@@ -18,9 +18,8 @@ public class ProtocolDocumentResource extends SingleProtocolResource {
 	@Override
 	protected void customizeVariants(MediaType[] mimeTypes) {
 		super.customizeVariants(mimeTypes);
-		getVariants().add(new Variant(MediaType.APPLICATION_POWERPOINT));
+		getVariants().add(new Variant(MediaType.APPLICATION_RTF));
 		getVariants().add(new Variant(MediaType.APPLICATION_MSOFFICE_DOCX));
-		getVariants().add(new Variant(MediaType.APPLICATION_MSOFFICE_PPTX));
 		getVariants().add(new Variant(MediaType.APPLICATION_WORD));
 		getVariants().add(new Variant(MediaType.APPLICATION_OPENOFFICE_ODT));
 		getVariants().add(new Variant(MediaType.APPLICATION_TEX));
@@ -50,6 +49,8 @@ public class ProtocolDocumentResource extends SingleProtocolResource {
 	protected String getExtension(MediaType mediaType) {
 		String ext = super.getExtension(mediaType);
 		if (ext == null) {
+			if (MediaType.APPLICATION_RTF.equals(mediaType))
+				return ".rtf";
 			if (MediaType.APPLICATION_WORD.equals(mediaType))
 				return ".doc";
 			if (MediaType.APPLICATION_EXCEL.equals(mediaType))

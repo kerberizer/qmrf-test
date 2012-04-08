@@ -116,6 +116,7 @@ and idchemical=282
 				else if ("txt".equals(format)) attachment.setMediaType(MediaType.TEXT_PLAIN.toString());
 				else if ("smi".equals(format)) attachment.setMediaType(ChemicalMediaType.CHEMICAL_SMILES.toString());
 				else if ("doc".equals(format)) attachment.setMediaType(MediaType.APPLICATION_WORD.toString());
+				else if ("rtf".equals(format)) attachment.setMediaType(MediaType.APPLICATION_RTF.toString());
 				else if ("docx".equals(format)) attachment.setMediaType(MediaType.APPLICATION_MSOFFICE_DOCX.toString());
 				else attachment.setMediaType(MediaType.APPLICATION_ALL.toString());
 				attachment.setID(rs.getInt(_fields.idattachment.name()));

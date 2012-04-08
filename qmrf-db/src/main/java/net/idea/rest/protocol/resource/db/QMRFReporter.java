@@ -7,6 +7,7 @@ import java.io.StringReader;
 
 import javax.xml.transform.stream.StreamSource;
 
+import net.idea.ambit.qmrf.converters.QMRF_xml2rtf;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.r.QueryReporter;
@@ -39,6 +40,8 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 			this.media = media; fileExtension = "xls";
 		} else if (MediaType.APPLICATION_WORD.equals(media)) {
 			this.media = media; fileExtension = "doc";
+		} else if (MediaType.APPLICATION_RTF.equals(media)) {
+			this.media = media; fileExtension = "rtf";
 		}
 		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE,media.toString());
 	}
@@ -72,10 +75,15 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 				 QMRF_xml2excel qexcel = new QMRF_xml2excel();
 				 qexcel.xml2excel(new InputSource(new StringReader(xml)),getOutput());	      
 		         
-			} else if (MediaType.APPLICATION_WORD.equals(media)) {
+			} else if (MediaType.APPLICATION_MSOFFICE_DOCX.equals(media)) {
 				 QMRF_xml2html qhtml = new QMRF_xml2html();
 				 OutputStreamWriter writer = new OutputStreamWriter(getOutput());
 				 qhtml.xml2summary(new StreamSource(new StringReader(xml)),writer);	  
+			} else if (MediaType.APPLICATION_RTF.equals(media)) {
+				 QMRF_xml2rtf qhtml = new QMRF_xml2rtf();
+				 qhtml.initConfig();
+				 OutputStreamWriter writer = new OutputStreamWriter(getOutput());
+				 qhtml.xml2rtf(new StringReader(xml),writer);	  
 			}
 			
 		} catch (IOException x) {

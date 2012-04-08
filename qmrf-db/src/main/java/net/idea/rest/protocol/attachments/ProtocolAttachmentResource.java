@@ -55,6 +55,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 		getVariants().add(new Variant(MediaType.APPLICATION_MSOFFICE_DOCX));
 		getVariants().add(new Variant(MediaType.APPLICATION_MSOFFICE_PPTX));
 		getVariants().add(new Variant(MediaType.APPLICATION_WORD));
+		getVariants().add(new Variant(MediaType.APPLICATION_RTF));
 		getVariants().add(new Variant(MediaType.APPLICATION_OPENOFFICE_ODT));
 		getVariants().add(new Variant(MediaType.APPLICATION_TEX));
 		getVariants().add(new Variant(MediaType.APPLICATION_TAR));
@@ -132,6 +133,8 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 		if (ext == null) {
 			if (MediaType.APPLICATION_WORD.equals(mediaType))
 				return ".doc";
+			if (MediaType.APPLICATION_RTF.equals(mediaType))
+				return ".rtf";
 			if (MediaType.APPLICATION_EXCEL.equals(mediaType))
 				return ".xls";			
 			else if (MediaType.APPLICATION_GNU_TAR.equals(mediaType))
