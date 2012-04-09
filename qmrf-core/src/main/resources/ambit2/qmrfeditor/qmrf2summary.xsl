@@ -239,7 +239,7 @@
 
 <xsl:template match="model_endpoint">
   <strong><xsl:value-of select="@chapter" />.<xsl:value-of select="@name" /></strong>
-   <xsl:text> </xsl:text>
+   <br/>
 		<xsl:apply-templates select="endpoint_ref"/>
  </xsl:template>
 
@@ -601,9 +601,12 @@
 </xsl:template>
  
 <xsl:template match="endpoint_ref"> 
-	<xsl:value-of select="id(@idref)/@group"/><xsl:text> </xsl:text>
-	<xsl:value-of select="id(@idref)/@subgroup"/><xsl:text> </xsl:text>
-	<xsl:value-of select="id(@idref)/@name"/>
+	<br/><xsl:value-of select="id(@idref)/@group"/>
+	<xsl:choose><xsl:when test="id(@idref)/@subgroup != ''">
+	<br/>
+	<xsl:value-of select="id(@idref)/@subgroup" disable-output-escaping="yes"/>
+	</xsl:when></xsl:choose>		
+	<br/><xsl:value-of select="id(@idref)/@name"/>
 </xsl:template>
 
 <!-- 9. Interpretation -->
