@@ -16,7 +16,12 @@
 			<li class='topLinks'>|</li>
 						-->
 			<li class='topLinks'>
-			<a class='topLinks' title='Log in here to submit new documents (only required for editors)' href='./login'>Log in</a>
+
+			<#if username??>
+				<a class='topLinks' title='You are currently logged in as "${username}". Click here to log out.' href='./login'>Log out [<b>${username}</b>]</a>			   
+			<#else>
+				<a class='topLinks' title='Log in here to submit new documents (only required for editors)' href='./login'>Log in</a>   
+			</#if>			
 			</li>
 			</ul>
 
