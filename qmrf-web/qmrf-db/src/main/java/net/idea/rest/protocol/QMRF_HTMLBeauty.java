@@ -116,7 +116,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"</li>\n" +
 			"<li class='topLinks'>|</li>\n" +
 			"<li class='topLinks'>\n" +
-			"<a class='topLinks email' href='mailto:%s'>Submit QMRF by e-mail</a>\n" +
+			"<a class='topLinks email' href='mailto:%s'>Submit QMRF by E-mail</a>\n" +
 			"</li>\n" +
 			"<li class='topLinks'>|</li>\n" +
 			"<li class='topLinks'>\n" +
@@ -371,7 +371,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			if (request.getClientInfo().getUser() != null) {
 				w.write(printMenuItem(
 						Resources.myaccount,
-						"My profile",
+						"My Profile",
 						baseReference.toString(),
 						null,
 						String.format("%s's profile and documents.", request.getClientInfo().getUser())
@@ -392,11 +392,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						break;
 					}
 					case qmrf_admin: {
-						unpublishedDoc = printMenuItem(Resources.unpublished, "Unpublished documents", baseReference.toString(),"10","All unpublished QMRF documents.");
+						unpublishedDoc = printMenuItem(Resources.unpublished, "Unpublished Documents", baseReference.toString(),"10","All unpublished QMRF documents.");
 						break;
 					}
 					case qmrf_editor: {
-						unpublishedDoc = printMenuItem(Resources.unpublished, "Unpublished documents", baseReference.toString(),"10","All unpublished QMRF documents.");
+						unpublishedDoc = printMenuItem(Resources.unpublished, "Unpublished Documents", baseReference.toString(),"10","All unpublished QMRF documents.");
 						break;
 					}
 				}
