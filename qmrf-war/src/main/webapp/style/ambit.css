@@ -135,10 +135,31 @@ table.footerTable {
 	padding: 10px;
 }
 
+a.download {
+	font-weight: normal;
+	text-decoration: none;
+	background: url("/qmrf/images/application_put.png") no-repeat scroll 0 0 transparent;
+	padding: 0 0 0 20px;
+}
+
 a.email {
 	font-weight: normal;
 	text-decoration: none;
-	background: url("/qmrf/images/Icon_External_Link_E-Mail.png") no-repeat scroll 0 1px transparent;
+	background: url("/qmrf/images/email_attach.png") no-repeat scroll 0 0 transparent;
+	padding: 0 0 0 20px;
+}
+
+a.help {
+	font-weight: normal;
+	text-decoration: none;
+	background: url("/qmrf/images/book_open.png") no-repeat scroll 0 0 transparent;
+	padding: 0 0 0 20px;
+}
+
+a.login {
+	font-weight: normal;
+	text-decoration: none;
+	background: url("/qmrf/images/key.png") no-repeat scroll 0 0 transparent;
 	padding: 0 0 0 20px;
 }
 
