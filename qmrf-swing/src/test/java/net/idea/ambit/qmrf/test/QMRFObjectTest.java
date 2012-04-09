@@ -141,7 +141,7 @@ public class QMRFObjectTest {
         
     }
     
-    @Test
+    
     public void xtestXSLT() throws Exception{
     	QMRFObject o = new QMRFObject();
     	InputStream in = getClass().getClassLoader().getResourceAsStream("ambit2/qmrfeditor/qmrf.xml"); 
