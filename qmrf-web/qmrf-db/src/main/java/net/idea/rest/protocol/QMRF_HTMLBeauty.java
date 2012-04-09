@@ -119,7 +119,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	final static String topLinks =
 		"<ul class='topLinks'>\n" +
 			"<li class='topLinks'>\n" +
-				"<a class='topLinks' href='%s'>Download QMRF Editor</a>\n" +
+				"<a class='topLinks download' href='%s'>Download QMRF Editor</a>\n" +
 			"</li>\n" +
 			"<li class='topLinks'>|</li>\n" +
 			"<li class='topLinks'>\n" +
@@ -127,7 +127,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"</li>\n" +
 			"<li class='topLinks'>|</li>\n" +
 			"<li class='topLinks'>\n" +
-				"<a class='topLinks' href='%s'>Help</a>\n" +
+				"<a class='topLinks help' href='%s'>Help</a>\n" +
 			"</li>\n" +
 			"%s" +
 		"</ul>\n";
@@ -145,7 +145,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	final static String logInOutLinkTemplate =
 		"<li class='topLinks'>|</li>\n" +
 		"<li class='topLinks'>\n" +
-		"<a class='topLinks' title='%s' href='%s%s'>%s</a>\n" +
+		"<a class='topLinks login' title='%s' href='%s%s'>%s</a>\n" +
 		"</li>\n";
 
 	// footer
