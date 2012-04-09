@@ -25,6 +25,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	final static String QMRF_title = "(Q)SAR Model Reporting Format Inventory";
 	final static String[] css = new String[] {
 		"<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">\n",
+		"<!--[if IE 7]><link rel='stylesheet' type='text/css' media='all' href='%s/style/ambit-msie7.css'><![endif]-->",
 		"<link href=\"%s/style/jquery-ui-1.8.18.custom.css\" rel=\"stylesheet\" type=\"text/css\">\n",
 		"<link href=\"%s/style/jquery.dataTables.css\" rel=\"stylesheet\" type=\"text/css\">\n",
 		"<link href=\"%s/images/favicon.ico\" rel=\"shortcut icon\" type=\"image/ico\">\n"
@@ -116,27 +117,36 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 	// top links
 	final static String topLinks =
-			"<ul class='topLinks'>\n" +
+		"<ul class='topLinks'>\n" +
 			"<li class='topLinks'>\n" +
-			"<a class='topLinks' href='%s'>Download QMRF Editor</a>\n" +
+				"<a class='topLinks' href='%s'>Download QMRF Editor</a>\n" +
 			"</li>\n" +
 			"<li class='topLinks'>|</li>\n" +
 			"<li class='topLinks'>\n" +
-			"<a class='topLinks email' href='mailto:%s'>Submit QMRF by E-mail</a>\n" +
+				"<a class='topLinks email' href='mailto:%s'>Submit QMRF by E-mail</a>\n" +
 			"</li>\n" +
 			"<li class='topLinks'>|</li>\n" +
 			"<li class='topLinks'>\n" +
-			"<a class='topLinks' href='%s'>Help</a>\n" +
+				"<a class='topLinks' href='%s'>Help</a>\n" +
 			"</li>\n" +
 			"%s" +
-			"</ul>\n";
+		"</ul>\n";
 	
+	// home menu option
+	final static String homeMenuOption =
+		"<li>" +
+			"<a class='selectable' title='Go to the welcome page' href='%s'>" +
+				"<img class='logo_home_menu' src='%s/images/logo_menu.png'>" +
+					"Home" +
+			"</a>" +
+		"</li>";
+		
 	// log in/out link
 	final static String logInOutLinkTemplate =
-			"<li class='topLinks'>|</li>\n" +
-			"<li class='topLinks'>\n" +
-			"<a class='topLinks' title='%s' href='%s%s'>%s</a>\n" +
-			"</li>\n";
+		"<li class='topLinks'>|</li>\n" +
+		"<li class='topLinks'>\n" +
+		"<a class='topLinks' title='%s' href='%s%s'>%s</a>\n" +
+		"</li>\n";
 
 	// footer
 	final static String footerText =
@@ -373,6 +383,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"<ul id='navmenu'>\n"
 			);
 						
+			// Home
+			w.write(String.format(homeMenuOption, baseReference.toString(), baseReference.toString()));
+			
 			// Documents, Structures, Endpoints
 			for (String[] menuItem: menu) {
 				w.write(printMenuItem(menuItem[0], menuItem[1], baseReference.toString(), menuItem[2], menuItem[3]));
