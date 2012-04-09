@@ -642,3 +642,47 @@ div.structureright img {
 	min-height:64px;
 	min-width:128px;
 }
+
+/* Settings for the welcome page */
+
+div.w_wrap {
+}
+
+div.w_menu {
+	width: 182px;
+	padding: 15px 20px 0 15px;
+	float: left;
+	display: inline-block;
+}
+
+div.w_content {
+	overflow: hidden;
+}
+
+div.w_enter {
+	clear: both;
+	text-align: center;
+}
+
+h1.w_h1 {
+}
+
+h2.w_h2 {
+}
+
+h3.w_h3 {
+}
+
+h4.w_h4 {
+}
+
+p.w_p {
+}
+
+img.w_img_logo_inventory {
+	border: 0;
+}
+
+div.pusher {
+	height: 50px;
+}

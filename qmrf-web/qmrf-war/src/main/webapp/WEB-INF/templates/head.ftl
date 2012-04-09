@@ -8,6 +8,7 @@
 <meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />
 
 <link href="./style/ambit.css" rel="stylesheet" type="text/css">
+<!--[if IE 7]><link rel="stylesheet" type="text/css" media="all" href="./style/ambit-msie7.css"><![endif]-->
 <link href="./style/jquery-ui-1.8.18.custom.css" rel="stylesheet" type="text/css">
 <link href="./style/jquery.dataTables.css" rel="stylesheet" type="text/css">
 <link href="./images/favicon.ico" rel="shortcut icon" type="image/ico">
@@ -20,9 +21,10 @@
 <link rel="primarytopic" type="application/rdf+xml" href="./protocol?media=application%252Frdf%252Bxml"/>
 <link rel="primarytopic" type="text/n3" href="./protocol?media=application/rdf+xml"/>
 <title>(Q)SAR Model Reporting Format Inventory</title>
-<script type='text/javascript'>
-$(document).ready( function () {
-$('div#footer').delay(7000).animate({bottom: '-20px'}, 'slow');
-});
+<script type="text/javascript">
+	$(document).ready( function () {
+		$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );
+		$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );
+	});
 </script>
 </head>
