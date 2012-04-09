@@ -18,9 +18,9 @@
 			<li class='topLinks'>
 
 			<#if username??>
-				<a class='topLinks' title='You are currently logged in as "${username}". Click here to log out.' href='./login'>Log out [<b>${username}</b>]</a>			   
+				<a class='topLinks login' title='You are currently logged in as "${username}". Click here to log out.' href='./login'>Log out [<b>${username}</b>]</a>			   
 			<#else>
-				<a class='topLinks' title='Log in here to submit new documents (only required for editors)' href='./login'>Log in</a>   
+				<a class='topLinks login' title='Log in here to submit new documents (only required for editors)' href='./login'>Log in</a>   
 			</#if>			
 			</li>
 			</ul>
