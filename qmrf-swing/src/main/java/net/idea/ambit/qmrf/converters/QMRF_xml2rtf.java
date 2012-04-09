@@ -24,11 +24,17 @@ import freemarker.template.Template;
 
 public class QMRF_xml2rtf  {
 	//TODO global config
-	Configuration cfg;
+	Configuration configuration;
 	
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
 	public synchronized void initConfig() throws Exception {
 		Logger.selectLoggerLibrary(Logger.LIBRARY_JAVA);
-		cfg = new Configuration();
+		configuration = new Configuration();
 		
 		URL url = getClass().getClassLoader().getResource("net/idea/ambit/qmrf/templates");
 
@@ -36,14 +42,14 @@ public class QMRF_xml2rtf  {
         ClassTemplateLoader ctl = new ClassTemplateLoader(RtfConverter.class, ""); // don't forget this to access rtf.ftl
         TemplateLoader[] loaders = new TemplateLoader[] { ftl, ctl };
         MultiTemplateLoader mtl = new MultiTemplateLoader(loaders);
-        cfg.setTemplateLoader(mtl);
-        cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER); 
+        configuration.setTemplateLoader(mtl);
+        configuration.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER); 
 	}	
 	public synchronized void  xml2rtf(Reader reader, Writer out) throws Exception {
 		xml2rtf(getQMRF(reader),out);
 	}
 	public synchronized void  xml2rtf(QMRFObject qmrf, Writer out) throws Exception {
-	       Template temp = cfg.getTemplate("qmrf_rtf.ftl", Locale.UK);
+	       Template temp = configuration.getTemplate("qmrf_rtf.ftl", Locale.UK);
 
 	        Map model = new HashMap();
 	        // make sure you add the RtfConverter, since this will be needed to escape interpolations as Rtf

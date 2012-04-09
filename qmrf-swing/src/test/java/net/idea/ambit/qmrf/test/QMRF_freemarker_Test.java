@@ -13,6 +13,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import net.idea.ambit.qmrf.QMRFObject;
+import net.idea.ambit.qmrf.converters.QMRF_xml2rtf;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -24,7 +25,6 @@ import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.core.Environment;
-import freemarker.ext.beans.BeansWrapper;
 import freemarker.log.Logger;
 import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
@@ -38,11 +38,9 @@ public class QMRF_freemarker_Test {
 		Logger.selectLoggerLibrary(Logger.LIBRARY_JAVA);
 		cfg = new Configuration();
 		
-		URL url = QMRF_freemarker_Test.class.getClassLoader().getResource("net/idea/ambit/qmrf/templates");
-
-        FileTemplateLoader ftl = new FileTemplateLoader(new File(url.getFile()));
         ClassTemplateLoader ctl = new ClassTemplateLoader(RtfConverter.class, ""); // don't forget this to access rtf.ftl
-        TemplateLoader[] loaders = new TemplateLoader[] { ftl, ctl };
+        ClassTemplateLoader qmrf = new ClassTemplateLoader(QMRF_xml2rtf.class, "");        
+        TemplateLoader[] loaders = new TemplateLoader[] { qmrf, ctl };
         MultiTemplateLoader mtl = new MultiTemplateLoader(loaders);
         cfg.setTemplateLoader(mtl);
         cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER); 
