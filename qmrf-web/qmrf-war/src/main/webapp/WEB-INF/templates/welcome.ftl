@@ -4,9 +4,9 @@
 	<#include "/banner.ftl">
 	<div class='w_menu'>
 		<ul id='navmenu'>
-		<li><a class='selectable' title='Click here to enter the QMRF inventory' href='./protocol'>
+		<li><a class='selectable enter_qmrf' title='Click here to enter the QMRF inventory' href='./protocol'>
 			<img class='w_logo_inventory' src='./images/logo_menu.png'>
-			Enter QMRF Inventory
+			Access
 		</a></li>
 		<li><a class='selectable' title='Click here to download the QMRF Editor application' href='http://qmrf.sf.net/editor'>Get QMRF Editor</a></li>
 		<li><a class='selectable' title='Click here to access the reviewers template' href='http://qmrf.sf.net/template'>Reviewers Template</a></li>

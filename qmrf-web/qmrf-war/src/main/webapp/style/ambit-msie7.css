@@ -11,7 +11,7 @@ This file has been created on 2012-04-09 by Luchesar V. ILIEV, IDEAconsult Ltd.,
 
 div.w_menu {
 	width: 182px;
-	margin-left: -15px;
+	margin-left: -25px;
 	margin-right: 40px;
 	padding: 25px 20px 0 0;
 	float: left;
@@ -20,11 +20,26 @@ div.w_menu {
 
 img.w_logo_inventory {
 	top: 3px;
-	left: 23px;
+	left: 48px;
 	border: 0;
+}
+
+div.w_content {
+	padding: 20px 20px 0 0;
 }
 
 p.w_p_send {
 	font-size: 10.5pt;
 	font-weight: bold;
+}
+
+div#menu {
+	margin-top: 12px;
+}
+
+img.logo_home_menu {
+	position: absolute;
+	top: -8px;
+	left: 25px;
+	border: 0;
 }
