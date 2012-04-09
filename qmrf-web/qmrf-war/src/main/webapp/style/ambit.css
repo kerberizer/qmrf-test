@@ -96,7 +96,7 @@ h1 {
 	height: 40px;
 	width: 50%;
 	left: 25%;
-	bottom: 15px;
+	bottom: -17px;
 	padding: 10px 0 0 0;
 	margin-left: auto;
 	margin-right: auto;
@@ -108,6 +108,22 @@ h1 {
 	color: white;
 	background-color: #0065A2;
 	text-align: center;
+}
+
+#footer-in {
+	position: fixed;
+	height: 45px;
+	width: 60%;
+	left: 20%;
+	bottom: -5px;
+}
+
+#footer-out {
+	position: fixed;
+	height: 60px;
+	width: 54%;
+	left: 23%;
+	bottom: -5px;
 }
 
 div.pusher {
@@ -705,4 +721,23 @@ img.w_logo_inventory {
 
 div.pusher {
 	height: 50px;
+}
+
+#w_footer {
+	position: fixed;
+	height: 40px;
+	width: 50%;
+	left: 25%;
+	bottom: 15px;
+	padding: 10px 0 0 0;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: -30px;
+	-webkit-border-radius: 20px;
+	-khtml-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	color: white;
+	background-color: #0065A2;
+	text-align: center;
 }
