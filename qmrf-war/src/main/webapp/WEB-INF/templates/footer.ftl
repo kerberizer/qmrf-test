@@ -1,4 +1,4 @@
-<div id='footer'>
+<div id='w_footer'>
 Developed by <b>IDEAconsult Ltd.</b> (2007-2012) on behalf of <b>JRC</b>
 </div>
 <script type="text/javascript">

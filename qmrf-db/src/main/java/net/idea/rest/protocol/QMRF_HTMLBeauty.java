@@ -75,7 +75,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	// LinkedIn
 	final static String linkedInInit = "<script src='http://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
 	
-	
+	// table row expander script
 	final static String toggleDivScript =
 			"<script type='text/javascript'>function toggleDiv(divId) {\n" +
 			"$('#'+divId).toggle();\n" +
@@ -88,13 +88,18 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"}\n" +
 			"}</script>\n";	
 
-	
-	final static String hideFooterScript =
-		"<script type='text/javascript'>\n" +
-		"$(document).ready( function () {\n" +
-		"$('div#footer').delay(%d).animate({bottom: '-20px'}, 'slow');\n" +
-		"});\n" +
-		"</script>\n";
+    // show the footer when the mouse is near
+    final static String showFooterScript =
+    	"<script type='text/javascript'>\n" +
+    		"$(document).ready( function () {\n" +
+    			"$('div#footer-in').mouseenter( function () {\n" +
+    					"$('div#footer').stop().animate({bottom: '15px'}, 'fast');\n" +
+    			"});\n" +
+    			"$('div#footer-out').mouseleave( function () {\n" +
+    					"$('div#footer').stop().animate({bottom: '-17px'}, 'slow');\n" +
+    			"});\n" +
+    		"});\n" +
+    	"</script>\n";
 	
 	// the JRC IHCP logo
 	final static String logoTopLeft =
@@ -102,6 +107,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.png' alt='JRC IHCP logo'>\n" +
 			"</a>\n";
 	
+	// menu mouseover effect
 	final static String menuMouseOverScript =
 		"<script>\n" +
 		"$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );\n" +
@@ -132,9 +138,14 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"<a class='topLinks' title='%s' href='%s%s'>%s</a>\n" +
 			"</li>\n";
 
+	// footer
 	final static String footerText =
+		"<div id='footer-out'>\n" +
+		"<div id='footer-in'>\n" +
 		"<div id='footer'>\n" +
 		"Developed by <b>IDEAconsult Ltd.</b> (2007-2012) on behalf of <b>JRC</b>\n" +
+		"</div>\n" +
+		"</div>\n" +
 		"</div>\n";
 
 	final static String _trStart = "<tr>\n";
@@ -295,11 +306,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			if (isLoadTabs()) 
 				w.write("<script>$(function() {$( \".tabs\" ).tabs({cache: true});});</script>");
 
+			// table row expander script
 			w.write(toggleDivScript);
 			
-			// Hide the footer N milliseconds after the page is loaded.
-
-			w.write(String.format(hideFooterScript, 7000));
+			// Show the footer when the mouse gets near it.
+			w.write(showFooterScript);
 			
 			// HEAD ends here.
 			w.write("</head>\n");
