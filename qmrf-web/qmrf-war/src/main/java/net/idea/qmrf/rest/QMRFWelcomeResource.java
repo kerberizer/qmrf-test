@@ -25,7 +25,8 @@ public class QMRFWelcomeResource extends ServerResource {
 	protected Representation get(Variant variant) throws ResourceException {
 		if (getRequest().getResourceRef().toString().endsWith("/")) {
 	        Map<String, Object> map = new HashMap<String, Object>();
-	        map.put("text", "This is a sample text.");
+	        if (getClientInfo().getUser()!=null) 
+	        	map.put("username", getClientInfo().getUser().getIdentifier());
 	        return toRepresentation(map, "welcome.ftl", MediaType.TEXT_PLAIN);
 		} else {
 			//if no slash, all the styles etc. paths are broken...
@@ -41,6 +42,7 @@ public class QMRFWelcomeResource extends ServerResource {
         return new TemplateRepresentation(
         		templateName,
         		((QMRFApplication)getApplication()).getConfiguration(),
+        		map,
         		MediaType.TEXT_HTML);
     }
     
