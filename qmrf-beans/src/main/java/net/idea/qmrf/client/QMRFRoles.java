@@ -22,7 +22,7 @@ public enum QMRFRoles {
 		}
 		@Override
 		public String toString() {
-			return "New document";
+			return "New Document";
 		}
 		@Override
 		public String getHint() {
