@@ -713,7 +713,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				} default: {
 				
 					content.append(_tdStart);
-					content.append(printWidget(String.format("%s QMRF XML file ",mode.toString()), 
+					content.append(printWidget(String.format("%s QMRF XML file ",update_mode.attachments.equals(mode)?update_mode.update:mode.toString()), 
 						String.format("<p><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"30\"></p>",
 								ReadProtocol.fields.filename.name(),
 								"QMRF XML"),"box"
