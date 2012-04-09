@@ -9,43 +9,22 @@ This file has been created on 2012-04-09 by Luchesar V. ILIEV, IDEAconsult Ltd.,
 
 @CHARSET "UTF-8";
 
-div.w_wrap {
-}
-
 div.w_menu {
 	width: 182px;
-	margin-left: -25px;
+	margin-left: -15px;
 	margin-right: 40px;
 	padding: 25px 20px 0 0;
 	float: left;
 	display: inline-block;
 }
 
-div.w_content {
-}
-
-div.w_enter {
-	clear: both;
-	width: 100%;
-	text-align: center;
-}
-
-h1.w_h1 {
-	font-size: 20pt;
-}
-
-h2.w_h2 {
-}
-
-h3.w_h3 {
-}
-
-h4.w_h4 {
-}
-
-p.w_p {
-}
-
-img.w_img_logo_inventory {
+img.w_logo_inventory {
+	top: 3px;
+	left: 23px;
 	border: 0;
+}
+
+p.w_p_send {
+	font-size: 10.5pt;
+	font-weight: bold;
 }
