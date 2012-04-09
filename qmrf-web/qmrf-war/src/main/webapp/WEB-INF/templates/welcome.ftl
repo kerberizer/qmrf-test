@@ -4,18 +4,21 @@
 	<#include "/banner.ftl">
 	<div class='w_menu'>
 		<ul id='navmenu'>
-		<li><a class='selectable' title='Click here to enter the QMRF inventory' href='./protocol'>Enter QMRF inventory</a></li>
-		<li><a class='selectable' title='Click here to access the QMRF user manual' href='http://qmrf.sf.net/manual'>User manual</a></li>
-		<li><a class='selectable' title='Click here to access the reviewers template' href='http://qmrf.sf.net/template'>Reviewers template</a></li>
+		<li><a class='selectable' title='Click here to enter the QMRF inventory' href='./protocol'>
+			<img class='w_logo_inventory' src='./images/logo_menu.png'>
+			Enter QMRF Inventory
+		</a></li>
 		<li><a class='selectable' title='Click here to download the QMRF Editor application' href='http://qmrf.sf.net/editor'>Get QMRF Editor</a></li>
+		<li><a class='selectable' title='Click here to access the reviewers template' href='http://qmrf.sf.net/template'>Reviewers Template</a></li>
 		<li><a class='selectable' title='Click here to read about the OECD Principles' href='http://ihcp.jrc.ec.europa.eu/our_labs/computational_toxicology/background/oecd-principles'>OECD Principles</a></li>
+		<li><a class='selectable' title='Click here to access the QMRF user manual' href='http://qmrf.sf.net/manual'>User Manual</a></li>
 		<li><a class='selectable' title='Click here to read the FAQ' href='http://qmrf.sf.net/faq'>FAQ</a></li>
 		<li><a class='selectable' title='Click here to access the general help pages' href='http://qmrf.sf.net/'>Help</a></li>
 		</ul>
 	</div> <#-- w_menu -->
 	
 	<div class='w_content'>
-		<h1 class='w_h1'>Welcome to the QMRF Inventory</h1>
+		<p class='w_p_header'>Welcome to the QMRF Inventory</p>
 		<p class='w_p'>
 			In the regulatory assessment of chemicals (e.g. under REACH), <b>(Q)SAR models</b> are playing an increasingly important role in predicting properties for hazard and risk assessment. This implies both a need to be able to identify relevant (Q)SARs and to use them to derive estimates and/or have access to their precalculated estimates. To help meet these needs, we are developing a database of (Q)SAR models (i.e. an inventory of information on the models). The JRC QSAR Model Database is freely accessible through this web site.
 		</p>
@@ -28,18 +31,10 @@
 		<p class='w_p'>
 			All <b>substances</b>, available in the QMRF Database can be searched by exact or similar structure, or by a substructure.
 		</p>
-	</div> <#-- w_content -->
-	
-	<div class='w_enter'>
-		<a href='./protocol'>
-			<img class='w_img_logo_inventory' src='./images/logo_welcome.png'>
-    	<h3 class='w_h3'>Enter the QMRF Inventory</h3>
-		</a>
-    	<h4 class='w_h4'>Please send us your models to have them included in the database.</h4>
-    	<p class='w_p'>
+    	<p class='w_p_send'>Please send us your models to have them included in the database:
     		<a class='email' href='mailto:JRC-IHCP-COMPUTOX@ec.europa.eu'>JRC-IHCP-COMPUTOX@ec.europa.eu</a>	
     	</p>
-	</div> <#-- w_enter -->
+	</div> <#-- w_content -->
 	
 	<#-- Prevents the footer from hiding the last line on smaller screens. -->
 	<div class='pusher'></div>

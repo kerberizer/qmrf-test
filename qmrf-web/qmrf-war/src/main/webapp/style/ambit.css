@@ -649,13 +649,15 @@ div.w_wrap {
 }
 
 div.w_menu {
+	position: relative;
 	width: 182px;
-	padding: 15px 20px 0 15px;
+	padding: 15px 20px 0 25px;
 	float: left;
 	display: inline-block;
 }
 
 div.w_content {
+	padding: 20px 20px 0 0;
 	overflow: hidden;
 }
 
@@ -677,9 +679,27 @@ h4.w_h4 {
 }
 
 p.w_p {
+	font-size: 11pt;
+	text-align: justify;
+	line-height: 120%;
+	padding-bottom: 10px;
 }
 
-img.w_img_logo_inventory {
+p.w_p_header {
+	padding: 0 0 10px 0;
+	font-size: 18pt;
+	font-weight: bold;
+}
+
+p.w_p_send {
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+img.w_logo_inventory {
+	position: absolute;
+	top: 5px;
+	left: 10px;
 	border: 0;
 }
 
