@@ -11,6 +11,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
+import net.idea.rest.FreeMarkerApplicaton;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.db.exceptions.MethodNotAllowedException;
@@ -138,7 +139,9 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} else if (singleItem && (structure==null)) {
 			
 			Object fileNamePrefix = getRequest().getAttributes().get(FileResource.resourceKey);
-			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType()),
+			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType(),
+					((FreeMarkerApplicaton<String>)getApplication()).getConfiguration()
+					),
 					variant.getMediaType(),filenamePrefix);		
 		} else return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);		
 	}

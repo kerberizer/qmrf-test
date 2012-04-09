@@ -1,5 +1,6 @@
 package net.idea.qmrf.rest;
 
+import java.io.File;
 import java.net.URL;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.task.QMRFAdminRouter;
 import net.idea.qmrf.task.QMRFEditorRouter;
 import net.idea.qmrf.task.QMRFTaskRouter;
+import net.idea.rest.FreeMarkerApplicaton;
 import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
@@ -51,7 +53,14 @@ import org.restlet.security.SecretVerifier;
 import org.restlet.security.User;
 import org.restlet.service.TunnelService;
 
+import com.joliciel.freemarker.rtf.RtfConverter;
+
+import freemarker.cache.ClassTemplateLoader;
+import freemarker.cache.FileTemplateLoader;
+import freemarker.cache.MultiTemplateLoader;
+import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
 
 /**
  * (Q)SAR Model Reporting Format web services / web application
@@ -59,9 +68,9 @@ import freemarker.template.Configuration;
  * @author nina
  * 
  */
-public class QMRFApplication extends TaskApplication<String> {
+public class QMRFApplication extends FreeMarkerApplicaton<String> {
 	/** The Freemarker's configuration. */
-    private Configuration configuration;
+ 
 
 	public QMRFApplication() {
 		super();
@@ -182,15 +191,13 @@ public class QMRFApplication extends TaskApplication<String> {
 		 * System.out.println(w.toString());
 		 */
 		
-        configuration = new Configuration();
-        
-        ContextTemplateLoader loader = new ContextTemplateLoader(getContext(),"war:///WEB-INF/templates/");
-        configuration.setTemplateLoader(loader);
+        initFreeMarkerConfiguration();
 		
         //"clap://class/templates"));
         
 		return router;
 	}
+
 
 	/*
 	 * protected Restlet createLocalAAVerifiedResource(Class clazz) {
@@ -346,14 +353,6 @@ public class QMRFApplication extends TaskApplication<String> {
 
 	}
 
-    
-	public Configuration getConfiguration() {
-		return configuration;
-	}
-
-	public void setConfiguration(Configuration configuration) {
-		this.configuration = configuration;
-	}
 
 	
 	/**

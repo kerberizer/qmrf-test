@@ -1,6 +1,5 @@
 package net.idea.rest.protocol.resource.db;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
@@ -22,10 +21,21 @@ import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 import org.xml.sax.InputSource;
 
+import freemarker.template.Configuration;
+
 public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryReporter<DBProtocol,Q,OutputStream> {
 	protected MediaType media;
 	protected String fileExtension= null;
+	protected Configuration freeMarkerConfiguration;
 	
+	public Configuration getFreeMarkerConfiguration() {
+		return freeMarkerConfiguration;
+	}
+
+	public void setFreeMarkerConfiguration(Configuration freeMarkerConfiguration) {
+		this.freeMarkerConfiguration = freeMarkerConfiguration;
+	}
+
 	public MediaType getMedia() {
 		return media;
 	}
@@ -46,10 +56,10 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 		else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE,media.toString());
 	}
 
-	public QMRFReporter(Request request, MediaType media) throws ResourceException {
+	public QMRFReporter(Request request, MediaType media, Configuration freeMarkerConfiguration) throws ResourceException {
 		super();
 		setMedia(media);
-	
+		this.freeMarkerConfiguration = freeMarkerConfiguration;
 	}
 	/**
 	 * 
@@ -80,13 +90,16 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 				 OutputStreamWriter writer = new OutputStreamWriter(getOutput());
 				 qhtml.xml2summary(new StreamSource(new StringReader(xml)),writer);	  
 			} else if (MediaType.APPLICATION_RTF.equals(media)) {
+				 if (freeMarkerConfiguration==null) throw new AmbitException("FreeMarker configuration not initialized");
 				 QMRF_xml2rtf qhtml = new QMRF_xml2rtf();
-				 qhtml.initConfig();
+				 qhtml.setConfiguration(freeMarkerConfiguration);
+				 //qhtml.initConfig();this fails when server side
 				 OutputStreamWriter writer = new OutputStreamWriter(getOutput());
 				 qhtml.xml2rtf(new StringReader(xml),writer);	  
 			}
-			
-		} catch (IOException x) {
+		} catch (AmbitException x) {
+			throw x;
+		} catch (Exception x) {
 			throw new AmbitException(x);
 		} finally {
 			return item;
