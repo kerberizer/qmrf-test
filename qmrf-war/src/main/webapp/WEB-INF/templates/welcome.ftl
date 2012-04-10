@@ -2,7 +2,7 @@
 <body>
 	<div class='w_wrap'>
 	<#include "/banner.ftl">
-	<div class='w_menu'>
+	<div class='w_left'>
 		<ul id='navmenu'>
 		<li><a class='selectable enter_qmrf' title='Click here to enter the QMRF inventory' href='./protocol'>
 			<img class='w_logo_inventory' src='./images/logo_menu.png'>
@@ -16,16 +16,28 @@
 		<li><a class='selectable' title='Click here to access the general help pages' href='http://qmrf.sf.net/'>Help</a></li>
 		</ul>
 	
-		<div id='stats' class="ui-widget-content">
-		<p>
-		Datasets:
-       		<span id='datasets'> </span>
-                <script> $("#datasets").load("http://ambit.uni-plovdiv.bg:8080/qmrfdata/admin/stats/dataset");</script>
-                <br/>
-		Chemical structures:
-                <span id='structures'> </span>
-                <script>$("#structures").load("http://ambit.uni-plovdiv.bg:8080/qmrfdata/admin/stats/structures");</script>
-		</p>
+		<div id='stats' class="w_stats">
+		<table class='w_table_stats'>
+			<tr class='w_tr'>
+				<th class='w_th' colspan='2'>Statistics</th>
+			</tr>
+			<tr class='w_tr'>
+				<td class='w_td_param'>
+					Datasets
+				</td>
+				<td class='w_td_value'>
+					<span id='valueDatasets'></span>
+				</td>
+			</tr>
+			<tr class='w_tr'>
+				<td class='w_td_param'>
+					Chemical structures
+				</td>
+				<td class='w_td_value'>
+                	<span id='valueStructures'></span>
+				</td>
+			</tr>
+		</table>
 		</div>
 
 	</div> <#-- w_menu -->

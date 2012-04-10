@@ -9,7 +9,7 @@ This file has been created on 2012-04-09 by Luchesar V. ILIEV, IDEAconsult Ltd.,
 
 @CHARSET "UTF-8";
 
-div.w_menu {
+div.w_left {
 	width: 182px;
 	margin-left: -25px;
 	margin-right: 40px;
@@ -22,6 +22,11 @@ img.w_logo_inventory {
 	top: 3px;
 	left: 48px;
 	border: 0;
+}
+
+div.w_stats {
+	margin-left: 41px;
+	margin-right: -39px;
 }
 
 div.w_content {
