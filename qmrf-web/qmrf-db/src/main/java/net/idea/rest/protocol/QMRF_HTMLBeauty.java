@@ -153,7 +153,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"<div id='footer-out'>\n" +
 		"<div id='footer-in'>\n" +
 		"<div id='footer'>\n" +
-		"Developed by <b>IDEAconsult Ltd.</b> (2007-2012) on behalf of <b>JRC</b>\n" +
+		"Developed by <a class='footerLink' href='http://i.dea.is/'>" +
+		"IDEAconsult Ltd.</a> (2007-2012) on behalf of " +
+		"<a class='footerLink' href='http://ihcp.jrc.ec.europa.eu/'>JRC</a>" +
 		"</div>\n" +
 		"</div>\n" +
 		"</div>\n";
