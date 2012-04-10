@@ -15,8 +15,20 @@
 		<li><a class='selectable' title='Click here to read the FAQ' href='http://qmrf.sf.net/faq'>FAQ</a></li>
 		<li><a class='selectable' title='Click here to access the general help pages' href='http://qmrf.sf.net/'>Help</a></li>
 		</ul>
-	</div> <#-- w_menu -->
 	
+		<div id='stats' class="ui-widget-content">
+		<p>
+		Datasets:
+       		<span id='datasets'> </span>
+                <script> $("#datasets").load("http://ambit.uni-plovdiv.bg:8080/qmrfdata/admin/stats/dataset");</script>
+                <br/>
+		Chemical structures:
+                <span id='structures'> </span>
+                <script>$("#structures").load("http://ambit.uni-plovdiv.bg:8080/qmrfdata/admin/stats/structures");</script>
+		</p>
+		</div>
+
+	</div> <#-- w_menu -->
 	<div class='w_content'>
 		<p class='w_p_header'>Welcome to the QMRF Inventory</p>
 		<p class='w_p'>
