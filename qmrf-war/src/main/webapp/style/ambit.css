@@ -126,6 +126,18 @@ h1 {
 	bottom: -5px;
 }
 
+a.footerLink, a.footerLink:active, a.footerLink:visited {
+	color: white !important;
+	font-weight: bold !important;
+}
+
+a.footerLink:hover {
+	color: white !important;
+	font-weight: bold !important;
+	cursor: pointer !important;
+	text-decoration: overline !important;
+}
+
 div.pusher {
 	height: 80px;
 }
