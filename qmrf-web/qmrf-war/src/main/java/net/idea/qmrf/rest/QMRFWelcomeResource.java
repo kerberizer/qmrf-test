@@ -27,7 +27,7 @@ public class QMRFWelcomeResource extends ServerResource {
 	        Map<String, Object> map = new HashMap<String, Object>();
 	        if (getClientInfo().getUser()!=null) 
 	        	map.put("username", getClientInfo().getUser().getIdentifier());
-	        return toRepresentation(map, "welcome.ftl", MediaType.TEXT_PLAIN);
+	        return toRepresentation(map, "body-welcome.ftl", MediaType.TEXT_PLAIN);
 		} else {
 			//if no slash, all the styles etc. paths are broken...
 			redirectSeeOther(String.format("%s/",getRequest().getResourceRef()));

@@ -63,6 +63,9 @@
 	<#-- Prevents the footer from hiding the last line on smaller screens. -->
 	<div class='pusher'></div>
 	
+	</div> <#-- w_wrap -->
+	
 <#include "/footer.ftl">
+<#include "/scripts-welcome.ftl">
 </body>
 </html>
