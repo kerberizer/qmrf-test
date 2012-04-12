@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.prediction.DBModel;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.qmrf.admin.QMRFCatalogHTMLReporter;
@@ -88,7 +89,11 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 				for (DBAttachment dataset: ((StructureHTMLBeauty)htmlBeauty).datasets)
 					rendering.append(renderAttachmentTab(item,dataset));
 			}
+			if (((StructureHTMLBeauty)htmlBeauty).models !=null) {
 				
+				for (DBModel model: ((StructureHTMLBeauty)htmlBeauty).models)
+					rendering.append(renderModelTab(item,model));
+			}				
 		}
 	
 		
@@ -107,6 +112,18 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			String uri = String.format(
 					"<a href=\"%s\" title=\"%s\">%s&nbsp;%s</a>",
 					datasetURI,attachment.getTitle(),attachment.getProtocol(),attachment.getType().toString());
+			return String.format("<li>%s<span></span></li>\n",uri);
+		} else return "";
+		
+	}
+	
+	protected String renderModelTab(Structure item, DBModel model) {
+		if (model!=null) {
+			String datasetURI = String.format("%s%s/%d?model=M%d&headless=true&details=false&media=text/html", 
+							getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),model.getID());
+			String uri = String.format(
+					"<a href=\"%s\" title=\"%s\">%s</a>",
+					datasetURI,model.getAlgorithm().getResourceURL(),"Predictions");
 			return String.format("<li>%s<span></span></li>\n",uri);
 		} else return "";
 		
@@ -154,7 +171,16 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 
 class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 	protected String queryService;
+	protected List<DBModel> models;
+	public List<DBModel> getModels() {
+		return models;
+	}
+
+	public void setModels(List<DBModel> models) {
+		this.models = models;
+	}
 	protected DBAttachment attachment = null;
+	
     public DBAttachment getAttachment() {
 		return attachment;
 	}
