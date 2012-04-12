@@ -26,43 +26,52 @@ import org.restlet.data.Form;
 import org.restlet.data.Reference;
 
 public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<DBUser>> {
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -7959033048710547839L;
 	DBUser.fields[] entryFields = DBUser.fields.values();
 	protected GroupQueryURIReporter groupURIReporter ;
+	final static DBUser.fields[] displayFields = {
+		DBUser.fields.email,
+		DBUser.fields.username,
+		DBUser.fields.homepage,
+		DBUser.fields.keywords,
+		DBUser.fields.reviewer
+	};
 	
 	public UserHTMLReporter() {
-		this(null,true,false,new UserHTMLBeauty());
+		this(null, true, false, new UserHTMLBeauty());
 	}
-	public UserHTMLReporter(Request request, boolean collapsed,boolean editable,UserHTMLBeauty htmlBeauty) {
-		super(request,collapsed,null,htmlBeauty);
+	
+	public UserHTMLReporter(Request request, boolean collapsed, boolean editable, UserHTMLBeauty htmlBeauty) {
+		super(request, collapsed, null, htmlBeauty);
 		setTitle("User");
 		getProcessors().clear();
 		groupURIReporter = new GroupQueryURIReporter(request);
 		IQueryRetrieval<DBOrganisation> queryO = new ReadOrganisation(new DBOrganisation()); 
-		MasterDetailsProcessor<DBUser,DBOrganisation,IQueryCondition> orgReader = new MasterDetailsProcessor<DBUser,DBOrganisation,IQueryCondition>(queryO) {
+		
+		MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition> orgReader = new MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition>(queryO) {
 			@Override
-			protected DBUser processDetail(DBUser target, DBOrganisation detail)
-					throws Exception {
+			protected DBUser processDetail(DBUser target, DBOrganisation detail) throws Exception {
 				detail.setResourceURL(new URL(groupURIReporter.getURI(detail)));
 				target.addOrganisation(detail);
 				return target;
 			}
 		};
+		
 		getProcessors().add(orgReader);
-		processors.add(new DefaultAmbitProcessor<DBUser,DBUser>() {
+		processors.add(new DefaultAmbitProcessor<DBUser, DBUser>() {
 			public DBUser process(DBUser target) throws AmbitException {
 				processItem(target);
 				return target;
 			};
 		});				
 	}
+	
 	@Override
 	protected QueryURIReporter createURIReporter(Request request, ResourceDoc doc) {
 		return new UserURIReporter<IQueryRetrieval<DBUser>>(request);
 	}
+	
 	@Override
 	protected boolean printAsTable() {
 		return collapsed;
@@ -70,26 +79,25 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 
 	@Override
 	protected void printPageNavigator(IQueryRetrieval<DBUser> query)
-			throws Exception {
-		//print nothing, dataTAbles have their own paging
+		throws Exception {
+		// print nothing, DataTables have their own paging
 	}
 	
 	@Override
 	protected void printTableHeader(Writer output) throws Exception {
 		if (printAsTable()) {
-			output.write("<div style='float:left;width:100%;align:center' >");
-			output.write("<table class='datatable'  cellpadding='0' border='0' width='100%' cellspacing='0'>\n");
+			output.write("<div style='float:left; width:100%; align:center'>\n");
+			output.write("<table class='datatable' cellpadding='0' border='0' width='100%' cellspacing='0'>\n");
 			//output.write("<caption><h3>Users</h3></caption>\n");	
 			output.write("<thead>\n");	
-			output.write(String.format("<th>%s</th>","Name"));
-			output.write(String.format("<th>%s</th>","Affiliation"));
-			output.write(String.format("<th>%s</th>","e-mail"));
-			output.write(String.format("<th>%s</th>","Keywords"));
-			output.write(String.format("<th>%s</th>","Reviewer"));
+			output.write(String.format("<th>%s</th>", "Name"));
+			output.write(String.format("<th>%s</th>", "Affiliation"));
+			output.write(String.format("<th>%s</th>", "E-mail"));
+			output.write(String.format("<th>%s</th>", "Keywords"));
+			output.write(String.format("<th>%s</th>", "Reviewer"));
 			output.write("</thead>\n");
 			output.write("<tbody>\n");
 		}
-		
 	}
 	
 	@Override
@@ -100,13 +108,6 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 		if (!headless)
 			super.footer(output, query);
 	}
-	final static DBUser.fields[] displayFields = {
-			DBUser.fields.email,
-			DBUser.fields.username,
-			DBUser.fields.homepage,
-			DBUser.fields.keywords,
-			DBUser.fields.reviewer
-			};
 	
 	@Override
 	protected void printForm(Writer output, String uri, DBUser user, boolean editable) {
@@ -127,45 +128,43 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 					user.getID(),
 					Resources.organisation);
 			
-				//tab headers
-				rendering.append(String.format(
+			// tab headers
+			final String tabHeaders =
 				"<div class='protocol'>\n"+					
 				"<div class='tabs'>\n"+
-				"<ul>"+
-				"<li><a href='#tabs-id'>%s</a></li>"+
-				"<li>%s<span></span></li>"+
-				"</ul>",
-				"User profile",
-				protocolURI
-				));
-				//identifiers
-				rendering.append("<div id='tabs-id'><span class='summary'>");
-				rendering.append("<table width='80%%'>");
-				rendering.append(String.format("<tr><th colspan='2'><a href='%s%s/U%d'>%s&nbsp;%s&nbsp%s</a></th></tr>",
-								uriReporter.getRequest().getRootRef(),Resources.user,user.getID(),
-								user.getTitle().trim(),user.getFirstname().trim(),user.getLastname().trim()));
-				for (Organisation org : user.getOrganisations()) {
-					rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", 
-							"Affiliation",
-							org.getTitle()
-							));					
-				}
-				for (DBUser.fields field : displayFields) 
+				"<ul>\n"+
+				"<li><a href='#tabs-id'>%s</a></li>\n"+
+				"<li>%s<span></span></li>\n"+
+				"</ul>\n";
+			rendering.append(String.format(tabHeaders, "User Profile", protocolURI));
+				
+			// identifiers
+			rendering.append("<div id='tabs-id'><span class='summary'>");
+			rendering.append("<table width='80%%'>");
+			rendering.append(String.format("<tr><th colspan='2'><a href='%s%s/U%d'>%s&nbsp;%s&nbsp%s</a></th></tr>",
+							uriReporter.getRequest().getRootRef(),Resources.user,user.getID(),
+							user.getTitle().trim(),user.getFirstname().trim(),user.getLastname().trim()));
+			
+			for (Organisation org : user.getOrganisations())
+				rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", "Affiliation", org.getTitle()));					
+			
+			for (DBUser.fields field : displayFields) 
 					rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", 
 							field.toString(),
 							field.getValue(user)==null?"":field.getValue(user)
-							));
+					));
 	
-				rendering.append("</table>");
-				rendering.append("</span></div>");
+			rendering.append("</table>");
+			rendering.append("</span></div>");
 			
-				rendering.append(String.format("<div id='QMRF_documents'>%s</div>",protocolURI));
+			rendering.append(String.format("<div id='QMRF_documents'>%s</div>",protocolURI));
 
-				rendering.append("</div>\n</div>\n");//tabs , protocol
+			rendering.append("</div>\n</div>\n"); // tabs, protocol
 
-				output.write(rendering.toString());
+			output.write(rendering.toString());
 		} catch (Exception x) {x.printStackTrace();} 
 	}	
+
 	@Override
 	protected void printTable(Writer output, String uri, DBUser user) {
 		try {
@@ -177,28 +176,53 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 		} 
 	}
 	
-	
 	public String renderItem(DBUser item) {
 		StringBuilder rendering = new StringBuilder();
 
-			rendering.append(String.format("<td>%s %s %s %s</td>",
-					item.getTitle(),item.getFirstname(),item.getLastname(),
-					item.getUserName()==null?"":String.format("<br>[<a href='%s%s/U%d' target='user'>%s</a>]",uriReporter.getBaseReference(),Resources.user,item.getID(),item.getUserName())
-					));
-			rendering.append(String.format("<td>%s%s</td>",
-					item.getOrganisations()==null?"":item.getOrganisations().get(0).getTitle(),
-					item.getHomepage()==null?"":String.format("<br><a href='%s' target='_blank'>%s</a>",item.getHomepage(),item.getHomepage())							
-							));
-			rendering.append(String.format("<td>%s</td>",item.getEmail()==null?"":
-							String.format("<a href='mailto:%s'>%s</a>",URLEncoder.encode(item.getEmail()),item.getEmail())));
-			//rendering.append(String.format("<td>%s</td>",item.getUserName()==null?"":
-				//			String.format("<a href='%s%s/U%d' target='user'>%s</a>",uriReporter.getBaseReference(),Resources.user,item.getID(),item.getUserName())));
-			rendering.append(String.format("<td>%s</td>",item.getKeywords()==null?"":item.getKeywords()));
-			rendering.append(String.format("<td>%s</td>",item.isReviewer()?"Yes":""));
+		rendering.append(String.format("<td>%s %s %s %s</td>",
+			item.getTitle(),
+			item.getFirstname(),
+			item.getLastname(),
+			item.getUserName()==null?"":
+				String.format("<br>[<a href='%s%s/U%d' target='user'>%s</a>]",
+					uriReporter.getBaseReference(),
+					Resources.user,
+					item.getID(),
+					item.getUserName()
+				)
+		));
+		
+		rendering.append(String.format("<td>%s%s</td>",
+			item.getOrganisations()==null?"":item.getOrganisations().get(0).getTitle(),
+			item.getHomepage()==null?"":
+				String.format("<br><a href='%s' target='_blank'>%s</a>",
+					item.getHomepage(),
+					item.getHomepage()
+				)							
+		));
+
+		rendering.append(String.format("<td>%s</td>",
+			item.getEmail()==null?"":
+				String.format("<a href='mailto:%s'>%s</a>",URLEncoder.encode(item.getEmail()), item.getEmail())
+		));
+		
+		/*
+		rendering.append(String.format("<td>%s</td>",
+			item.getUserName()==null?"":
+				String.format("<a href='%s%s/U%d' target='user'>%s</a>",
+						uriReporter.getBaseReference(),
+						Resources.user,
+						item.getID(),
+						item.getUserName()
+				)
+		));
+		*/
+		
+		rendering.append(String.format("<td>%s</td>", item.getKeywords()==null?"":item.getKeywords()));
+		rendering.append(String.format("<td>%s</td>", item.isReviewer()?"Yes":""));
+		
 		return rendering.toString();
-
 	}
-
 }
 
 class UserHTMLBeauty extends QMRF_HTMLBeauty {
@@ -207,8 +231,9 @@ class UserHTMLBeauty extends QMRF_HTMLBeauty {
 		super(Resources.user);
 		setSearchTitle("Search for users and authors");
 	}
+	
 	@Override
-	protected String searchMenu(Reference baseReference,Form form)  {
+	protected String searchMenu(Reference baseReference, Form form)  {
 		String pageSize = "10";
 		String userNameQuery = "";
 		try {
@@ -221,29 +246,32 @@ class UserHTMLBeauty extends QMRF_HTMLBeauty {
 			searchQuery = "";
 			pageSize = "10";
 		}
+		
 		String hint = "Search for users by first or last name or by user account name.";
-			return
-		   String.format(		
-		   "<div class='search ui-widget'>\n"+
-		   "<p title='%s'>%s</p>\n"+
-		   "<form method='GET' action='%s%s?pagesize=10'>\n"+
-		   "<table width='200px'>\n"+
-		   "<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Search by first or last name'></td></tr>\n"+
-		   "<tr><td colspan='2'><input type='text' name='username' size='20' value='%s' tabindex='0' title='Search by user name'></td></tr>\n"+
-		   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
-		   "<tr><td colspan='2' align='center'><input id='submit' type='submit' tabindex='4'  value='Search'/></td></tr>\n"+
-		   "</table>\n"+			   
-		   "</form> \n"+
-		   "&nbsp;\n"+
-		   "</div>\n",
-		   hint,
-		   getSearchTitle(),
-		   baseReference,
-		   getSearchURI(),
-		   searchQuery==null?"":searchQuery,
-		   userNameQuery==null?"":userNameQuery,				   
-		   pageSize
-		  
-		   );
+		
+		final String searchMenuTemplate =
+			"<div class='search ui-widget'>\n" +
+			"<p title='%s'>%s</p>\n" +
+			"<form method='GET' action='%s%s?pagesize=10'>\n" +
+			"<table width='200px'>\n" +
+			"<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Search by first or last name'></td></tr>\n" +
+			"<tr><td colspan='2'><input type='text' name='username' size='20' value='%s' tabindex='0' title='Search by user name'></td></tr>\n" +
+			"<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n" +
+			"<tr><td colspan='2' align='center'><input id='submit' type='submit' tabindex='4'  value='Search'/></td></tr>\n" +
+			"</table>\n" +			   
+			"</form> \n" +
+			"&nbsp;\n" +
+			"</div>\n";
+		   
+		return String.format(
+			searchMenuTemplate,
+			hint,
+			getSearchTitle(),
+			baseReference,
+			getSearchURI(),
+			searchQuery==null?"":searchQuery,
+			userNameQuery==null?"":userNameQuery,				   
+			pageSize
+		);
 	}
 }
