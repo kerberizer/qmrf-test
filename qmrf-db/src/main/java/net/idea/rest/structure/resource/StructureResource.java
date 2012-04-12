@@ -9,9 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.prediction.DBModel;
+import net.idea.rest.prediction.ReadModel;
+import net.idea.rest.prediction.ReadModelQuery;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
@@ -19,6 +23,7 @@ import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
+import net.idea.restnet.cli.algorithm.Algorithm;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryResource;
 
@@ -96,9 +101,15 @@ public class StructureResource extends CatalogResource<Structure> {
 		parameters.setSearchQuery(search);
 		
 		try {
-			parameters.setDatasets(verifyDataset(form.getValuesArray("dataset")));
+			String[] datasets = form.getValuesArray("dataset");
+			parameters.setDatasets(verifyDataset(datasets));
 		} catch (Exception x) { parameters.setDatasets(null); x.printStackTrace();}
 		
+		try {
+			String[] models = form.getValuesArray("model");
+			if ((models!=null) && (models.length>0))
+				parameters.setModels(verifyModels(models));
+		} catch (Exception x) { parameters.setModels(null); x.printStackTrace();}
 	}
 
 	protected String name2Structure(String name) {
@@ -225,7 +236,7 @@ public class StructureResource extends CatalogResource<Structure> {
 					attachment.setID(new Integer(Reference.decode(aKey.toString().substring(1))));
 					query.setFieldname(null);
 					query.setValue(attachment);
-				} else 	if ((aKey!=null) && aKey.toString().startsWith("QMRF")) {
+				} else 	if ((aKey!=null) && aKey.toString().startsWith(DBProtocol.prefix)) {
 					int[] ids = ReadProtocol.parseIdentifier(aKey);
 					query.setFieldname(new DBProtocol(ids[0],ids[1],ids[2]));
 					query.setValue(null);
@@ -250,6 +261,51 @@ public class StructureResource extends CatalogResource<Structure> {
 		
 	}
 	
+	public final static String algorithmURI = "/algorithm/fptanimoto";
+	
+	protected List<DBModel> verifyModels(String[] modelsKey) throws Exception {
+		if (modelsKey==null || modelsKey.length==0) return null;
+		List<DBModel> results = new ArrayList<DBModel>();
+		Connection conn = null;
+		QueryExecutor  exec = new QueryExecutor();
+		try {
+			IQueryRetrieval<DBModel>  query;
+			DBModel model = new DBModel();
+			
+			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			conn = dbc.getConnection();
+			exec.setConnection(conn);
+			for (String aKey : modelsKey) {
+				if ((aKey!=null) && aKey.toString().startsWith("M")) {
+					query = new ReadModel();
+					model.setID(new Integer(Reference.decode(aKey.toString().substring(1))));
+					((ReadModel)query).setValue(model);
+					((ReadModel)query).setModelRoot(queryService+"/model");
+				} else 	if ((aKey!=null) && aKey.toString().startsWith(DBProtocol.prefix)) {
+					query = new ReadModelQuery();
+					int[] ids = ReadProtocol.parseIdentifier(aKey);
+					((ReadModelQuery)query).setFieldname(new DBProtocol(ids[0],ids[1],ids[2]));
+					((ReadModelQuery)query).setValue(null);
+					((ReadModelQuery)query).setModelRoot(queryService+"/model");
+				} else continue;
+				ResultSet rs = exec.process(query);
+				while (rs.next()) {
+					DBModel a = query.getObject(rs);
+					results.add(a);
+				}
+				rs.close();
+
+			}
+			return results;
+		} catch (NumberFormatException x) {
+			return null;
+		} catch (Exception x) {
+			try { if (exec!=null) exec.close(); } catch (Exception xx) {}
+			try { if (conn!=null) conn.close(); } catch (Exception xx) {}
+			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
+		}
+		
+	}
 	
 }
 

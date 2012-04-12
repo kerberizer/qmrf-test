@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.idea.modbcum.i.reporter.Reporter;
+import net.idea.rest.prediction.DBModel;
 import net.idea.rest.protocol.attachments.DBAttachment;
 
 import org.restlet.Context;
@@ -61,11 +62,18 @@ public class MoleculeResource extends StructureResource {
 			} catch (Exception x) { }
 		}
 		String query = String.format("%s/query/compound/url/all?search=%s",queryService,Reference.encode(url.toString()));
-		if (datasets!=null) 
+		if (datasets!=null)  {
 			for (DBAttachment attachment: datasets) 
 				query = String.format("%s?feature_uris[]=%s%s/%d%s",url,
 						queryService,OpenTox.URI.dataset.getURI(),attachment.getIdquerydatabase(),OpenTox.URI.feature.getURI());
-
+		}
+		List<DBModel> models = parameters.getModels();
+		if (models!=null)  {
+			for (DBModel model: models) 
+				query = String.format("%s?feature_uris[]=%s%s/%d%s",url,
+							queryService,OpenTox.URI.model.getURI(),model.getID(),"/predicted");
+		}
+		
 		List<Structure> records = new ArrayList<Structure>();
 		try {
 			PropertiesIterator i = new PropertiesIterator(query);
