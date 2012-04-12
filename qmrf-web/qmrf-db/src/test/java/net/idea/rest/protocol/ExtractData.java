@@ -45,6 +45,9 @@ public class ExtractData extends DbUnitTest {
 	        partialDataSet.addTable("keywords", "SELECT * FROM keywords");
 	        partialDataSet.addTable("user_organisation", "SELECT * FROM user_organisation where iduser in (10,88)");
 	        
+	        partialDataSet.addTable("template", "SELECT * FROM template");
+	        partialDataSet.addTable("dictionary", "SELECT * FROM dictionary");
+	        
 	        FlatDtdDataSet.write(partialDataSet, new FileOutputStream(
 	        			"src/test/resources/net/idea/qmrf/partial-dataset.dtd"));
 	        FlatXmlDataSet.write(partialDataSet, 

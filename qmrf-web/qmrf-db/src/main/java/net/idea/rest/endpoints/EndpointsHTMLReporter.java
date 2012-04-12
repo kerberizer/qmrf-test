@@ -3,13 +3,13 @@ package net.idea.rest.endpoints;
 import java.io.Writer;
 
 import net.idea.modbcum.i.IQueryRetrieval;
+import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.rest.QMRFHTMLReporter;
-import net.idea.rest.structure.resource.OpenTox;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.reporters.DisplayMode;
 import net.idea.restnet.db.QueryURIReporter;
-import net.idea.restnet.rdf.ns.OTEE;
+import net.toxbank.client.Resources;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -24,7 +24,7 @@ import ambit2.base.data.Property;
  * @author nina
  *
  */
-public class EndpointsHTMLReporter extends QMRFHTMLReporter<Property, IQueryRetrieval<Property>> {
+public class EndpointsHTMLReporter extends QMRFHTMLReporter<Dictionary, IQueryRetrieval<Dictionary>> {
 
 	/**
 	 * 
@@ -81,24 +81,23 @@ public class EndpointsHTMLReporter extends QMRFHTMLReporter<Property, IQueryRetr
 	}	
 	@Override
 	protected QueryURIReporter createURIReporter(Request request, ResourceDoc doc) {
-		return new PropertyURIReporter(request,doc);
+		return new DictionaryURIReporter(request,doc);
 	}
 	
-	public String toURI(Property record) {
+	public String toURI(Dictionary record) {
 		count++;
 		//if (count==1) return ""; 
 		
 		String w = uriReporter.getURI(record);
 		
-		boolean isDictionary= record.getClazz().equals(Dictionary.class);
 		return String.format(
 				"<img src=\"%s/images/%s\">%s<a href=\"%s\">%s</a>&nbsp;<br>",
 
 				uriReporter.getBaseReference().toString(),
-				isDictionary?"folder.png":"feature.png",
-				isDictionary?"":"&nbsp;Feature:&nbsp;",						
+				"qmrf/chapter3.png",
+				"",						
 				w,
-				isDictionary?((Dictionary)record).getTemplate():record.toString()
+				((Dictionary)record).getTemplate()
 						);
 
 		
@@ -106,30 +105,20 @@ public class EndpointsHTMLReporter extends QMRFHTMLReporter<Property, IQueryRetr
 	
 
 	@Override
-	public Object processItem(Property record)
-			throws net.idea.modbcum.i.exceptions.AmbitException {
+	public Object processItem(Dictionary record) throws AmbitException {
 
 
 		try {
 			output.write("<tr>");
+			output.write("<td></td>");
 			output.write(String.format("<td>%s</td>",toURI(record)));
 			output.write("<td>");
-			if ( record.getClazz().equals(Dictionary.class) ){
-				output.write(String.format("<a href='%s/%s?%s=%s'>%s</a>", 
-						getUriReporter().getBaseReference(),
-						OpenTox.URI.dataset.name(),
-						search_features.feature_sameas.name(),
-						Reference.encode(String.format("%s%s",OTEE.NS,record.getName())),
-						"Datasets"
-						));
-			} else 
-				output.write(String.format("<a href='%s/%s?%s=%s'>%s</a>", 
-						getUriReporter().getBaseReference(),
-						OpenTox.URI.dataset.name(),
-						search_features.feature_id.name(),
-						Reference.encode(String.format("%s%s",OTEE.NS,record.getId())),
-						"Datasets"
-						));
+			output.write(String.format("<a href='%s%s?option=endpoint&search=%s'>%s</a>", 
+				getUriReporter().getBaseReference(),
+				Resources.protocol,
+				Reference.encode(record.getTemplate()),
+				"(Q)MRF documents"
+			));
 			
 			output.write("</td>");
 			output.write("</tr>");
@@ -139,21 +128,55 @@ public class EndpointsHTMLReporter extends QMRFHTMLReporter<Property, IQueryRetr
 		return null;
 	}
 	
+	
 	@Override
 	protected void printTableHeader(Writer output) throws Exception {
-		// TODO Auto-generated method stub
+		try {
+			output.write("<div style='float:left;width:100%;align:center' >");
+			output.write("<table class='datatable'  cellpadding='0' border='0' width='100%' cellspacing='0'>\n");
+			output.write("<thead>\n");	
+			output.write(String.format("<th>%s</th>","Code"));
+			output.write(String.format("<th>%s</th>","Name"));
+			output.write(String.format("<th>%s</th>","(Q)MRF documents"));
+			output.write("</thead>\n");
+			output.write("<tbody>\n");
+		} catch (Exception x) {
+			
+		}	
 		
 	}
 	@Override
-	protected void printTable(Writer output, String uri, Property item) {
-		// TODO Auto-generated method stub
+	protected void printTable(Writer output, String uri, Dictionary item) {
+
 		
 	}
 	@Override
-	protected void printForm(Writer output, String uri, Property item,
+	protected void printForm(Writer output, String uri, Dictionary item,
 			boolean editable) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	protected void printPageNavigator(IQueryRetrieval<Dictionary> query)
+			throws Exception {
+
+	}
+	@Override
+	public void header(Writer w, IQueryRetrieval<Dictionary> query) {
+		super.header(w, query);
+	}
+	@Override
+	public void footer(Writer output, IQueryRetrieval<Dictionary> query) {
+		try {
+			output.write("</tbody></table></div>");
+			if (!headless) {
+				if (htmlBeauty == null) htmlBeauty = new HTMLBeauty();
+				htmlBeauty.writeHTMLFooter(output, "", uriReporter.getRequest());			
+			}
+			output.flush();
+		} catch (Exception x) {
+			
+		}
 	}
 	
 }

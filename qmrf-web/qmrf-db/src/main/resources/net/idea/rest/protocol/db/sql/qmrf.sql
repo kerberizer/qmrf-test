@@ -169,6 +169,32 @@ CREATE TABLE  `keywords` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- -----------------------------------------------------
+-- Endpoints. 
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `template`;
+CREATE TABLE  `template` (
+  `idtemplate` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `code` varchar(16) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`idtemplate`),
+  UNIQUE KEY `template_list_index4157` (`name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- -----------------------------------------------------
+-- Endpoints hierarchy
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `dictionary`;
+CREATE TABLE  `dictionary` (
+  `idsubject` int(10) unsigned NOT NULL,
+  `relationship` enum('is_a','is_part_of') COLLATE utf8_bin NOT NULL DEFAULT 'is_a',
+  `idobject` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`idsubject`,`relationship`,`idobject`),
+  KEY `FK_dictionary_2` (`idobject`),
+  CONSTRAINT `FK_dictionary_1` FOREIGN KEY (`idsubject`) REFERENCES `template` (`idtemplate`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_dictionary_2` FOREIGN KEY (`idobject`) REFERENCES `template` (`idtemplate`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- -----------------------------------------------------
 -- DB schema version
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `version`;
@@ -179,7 +205,7 @@ CREATE TABLE  `version` (
   `comment` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`idmajor`,`idminor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-insert into version (idmajor,idminor,comment) values (2,0,"QMRF schema");
+insert into version (idmajor,idminor,comment) values (2,1,"QMRF schema");
 
 -- -----------------------------------------------------
 -- Create new protocol version

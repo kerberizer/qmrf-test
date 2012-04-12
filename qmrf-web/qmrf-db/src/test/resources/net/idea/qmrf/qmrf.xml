@@ -34,5 +34,27 @@
   <user_organisation iduser="10" idorganisation="5" priority="1"/>
   <user_organisation iduser="88" idorganisation="1" priority="1"/>
   <user_project iduser="3" idproject="3" priority="1"/>
+  
+  <template idtemplate="1" name="Physical Chemical Properties" code="A"/>
+  <template idtemplate="2" name="Human Health Effects" code="B"/>
+  <template idtemplate="3" name="Genetic Toxicology" code="??"/>
+  <template idtemplate="4" name="Environmental Effects" code="C"/>
+  <template idtemplate="5" name="Other" code="??"/>
+  <template idtemplate="6"/>
+  <template idtemplate="7" name="UV-VIS Adsorption Spectra" code="101"/>
+  <template idtemplate="8" name="Melting Point/Melting Range" code="102"/>
+  <template idtemplate="9" name="Boiling Point" code="103"/>
+  <template idtemplate="10" name="Vapour Pressure" code="104"/>
+  
+  <dictionary idsubject="1" relationship="is_part_of" idobject="6"/>
+  <dictionary idsubject="2" relationship="is_part_of" idobject="6"/>
+  <dictionary idsubject="3" relationship="is_part_of" idobject="6"/>
+  <dictionary idsubject="4" relationship="is_part_of" idobject="6"/>
+  <dictionary idsubject="5" relationship="is_part_of" idobject="6"/>
+  <dictionary idsubject="7" relationship="is_a" idobject="1"/>
+  <dictionary idsubject="8" relationship="is_a" idobject="1"/>
+  <dictionary idsubject="9" relationship="is_a" idobject="1"/>
+  <dictionary idsubject="10" relationship="is_a" idobject="1"/>
+  
 
 </dataset>
