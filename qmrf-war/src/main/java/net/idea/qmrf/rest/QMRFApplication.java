@@ -1,6 +1,5 @@
 package net.idea.qmrf.rest;
 
-import java.io.File;
 import java.net.URL;
 import java.util.UUID;
 
@@ -15,6 +14,7 @@ import net.idea.qmrf.task.QMRFAdminRouter;
 import net.idea.qmrf.task.QMRFEditorRouter;
 import net.idea.qmrf.task.QMRFTaskRouter;
 import net.idea.rest.FreeMarkerApplicaton;
+import net.idea.rest.endpoints.EndpointsResource;
 import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
@@ -29,7 +29,6 @@ import net.idea.restnet.aa.local.UserLoginPOSTResource;
 import net.idea.restnet.aa.local.UserLogoutPOSTResource;
 import net.idea.restnet.aa.resource.AdminRouter;
 import net.idea.restnet.c.ChemicalMediaType;
-import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.routers.MyRouter;
 import net.idea.restnet.db.aalocal.DBRole;
 import net.idea.restnet.db.aalocal.DBVerifier;
@@ -42,7 +41,6 @@ import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.Server;
 import org.restlet.data.Protocol;
-import org.restlet.ext.freemarker.ContextTemplateLoader;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Filter;
 import org.restlet.routing.Router;
@@ -52,15 +50,6 @@ import org.restlet.security.RoleAuthorizer;
 import org.restlet.security.SecretVerifier;
 import org.restlet.security.User;
 import org.restlet.service.TunnelService;
-
-import com.joliciel.freemarker.rtf.RtfConverter;
-
-import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.FileTemplateLoader;
-import freemarker.cache.MultiTemplateLoader;
-import freemarker.cache.TemplateLoader;
-import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
 
 /**
  * (Q)SAR Model Reporting Format web services / web application
@@ -163,6 +152,13 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 
 		setCookieUserRouter.attach("", QMRFWelcomeResource.class);
 		setCookieUserRouter.attach("/", QMRFWelcomeResource.class);
+		
+		
+		Router endpointsRouter = new MyRouter(getContext());
+		endpointsRouter.attachDefault(EndpointsResource.class);
+		endpointsRouter.attach(EndpointsResource.resourceID,EndpointsResource.class);
+		endpointsRouter.attach(EndpointsResource.resourceKey,EndpointsResource.class);
+		setCookieUserRouter.attach(EndpointsResource.resource, endpointsRouter);
 		
 		router.attach(auth);
 		/**

@@ -3,12 +3,14 @@ package  net.idea.rest.endpoints;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.q.conditions.StringCondition;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.endpoints.db.DictionaryObjectQuery;
 import net.idea.rest.endpoints.db.DictionaryQuery;
 import net.idea.rest.endpoints.db.QueryOntology;
-import net.idea.restnet.c.ResourceDoc;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.reporters.DisplayMode;
 import net.idea.restnet.db.QueryResource;
 import net.idea.restnet.db.QueryURIReporter;
@@ -26,7 +28,6 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 import ambit2.base.data.Dictionary;
-import ambit2.base.data.Property;
 
 /**
  * 
@@ -34,7 +35,7 @@ import ambit2.base.data.Property;
  * @author nina
  *
  */
-public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Property>, Property> {
+public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Dictionary>, Dictionary> {
 	
 	public static String resource = "/endpoints";
 	public static String resourceParent = "subject";
@@ -45,7 +46,6 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Propert
 	
 	public EndpointsResource() {
 		super();
-		setDocumentation(new ResourceDoc("Feature","Feature"));
 	}
 	public boolean isRecursive() {
 		return isRecursive;
@@ -70,7 +70,7 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Propert
 	}
 
 	@Override
-	public IProcessor<IQueryRetrieval<Property>, Representation> createConvertor(
+	public IProcessor<IQueryRetrieval<Dictionary>, Representation> createConvertor(
 			Variant variant)
 			throws net.idea.modbcum.i.exceptions.AmbitException,
 			ResourceException {
@@ -91,7 +91,7 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Propert
 		} else 
 		*/
 		if (variant.getMediaType().equals(MediaType.TEXT_URI_LIST)) {
-				PropertyURIReporter r = new PropertyURIReporter(getRequest(),null);
+				DictionaryURIReporter r = new DictionaryURIReporter(getRequest(),null);
 				r.setDelimiter("\n");
 				return new StringConvertor(	r,MediaType.TEXT_URI_LIST,filenamePrefix);
 				
@@ -106,8 +106,14 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Propert
 			throws ResourceException {
 		return new EndpointsHTMLReporter(getRequest(),!isRecursive()?DisplayMode.table:DisplayMode.singleitem,getHTMLBeauty());
 	}
+	
 	@Override
-	protected IQueryRetrieval<Property> createQuery(Context context, Request request,
+	protected HTMLBeauty getHTMLBeauty() {
+		if (htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.endpoint);
+		return htmlBeauty;
+	}
+	@Override
+	protected IQueryRetrieval<Dictionary> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
 		try {
 			Form form = getResourceRef(getRequest()).getQueryAsForm();
@@ -160,9 +166,8 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Propert
 	};
 	*/
 	@Override
-	protected QueryURIReporter<Property, IQueryRetrieval<Property>> getURUReporter(
+	protected QueryURIReporter<Dictionary, IQueryRetrieval<Dictionary>> getURUReporter(
 			Request baseReference) throws ResourceException {
-		//return (QueryURIReporter) new OntologyURIReporter(getRequest());
-		return new PropertyURIReporter(getRequest(),getDocumentation());
+		return new DictionaryURIReporter(getRequest(),getDocumentation());
 	}
 }
