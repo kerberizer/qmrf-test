@@ -129,26 +129,124 @@
   <endpoint id="endpoint110" group="3.Ecotoxic effects" subgroup="" name="3.11.Toxicity to sediment organisms (survival, growth, reproduction)" />
   <endpoint id="endpoint111" group="3.Ecotoxic effects" subgroup="Toxicity to birds" name="3.12.a.Short term toxicity (feeding, gavage, other)" />
   <endpoint id="endpoint112" group="3.Ecotoxic effects" subgroup="Toxicity to birds" name="3.12.b.Long-term toxicity (survival, growth, reproduction)" />
-  <endpoint id="endpoint113" group="4.Human health effects" subgroup="Acute toxicity" name="4.1.Acute inhalation toxicity" />
-  <endpoint id="endpoint114" group="4.Human health effects" subgroup="Acute toxicity" name="4.2.Acute oral toxicity" />
-  <endpoint id="endpoint115" group="4.Human health effects" subgroup="Acute toxicity" name="4.3.Acute dermal toxicity" />
-  <endpoint id="endpoint116" group="4.Human health effects" subgroup="Skin irritation /corrosion" name="4.4.Skin irritation /corrosion" />
-  <endpoint id="endpoint117" group="4.Human health effects" subgroup="" name="4.5.Acute photoirritation" />
-  <endpoint id="endpoint118" group="4.Human health effects" subgroup="" name="4.6.Skin sensitisation" />
+  <endpoint id="endpoint113" group="4.Human health effects" subgroup="Acute toxicity" name="4.1.Acute inhalation toxicity">
+    <test id="oecd403" regulation="OECD" code="403" name="Acute Inhalation Toxicity" />
+    <test id="ec_b2" regulation="EU" code="B.2" name="Acute Toxicity (Inhalation)"></test>
+    <test id="oecd433" regulation="OECD" code="433" name="Acute Inhalation Toxicity - Fixed Concentration Procedure (FCP)" note="DRAFT" />
+    <test id="oecd436" regulation="OECD" code="436" name="DRAFT Acute Inhalation Toxicity - Acute Toxic Class (ATC) Method" />
+  </endpoint>
+  <endpoint id="endpoint114" group="4.Human health effects" subgroup="Acute toxicity" name="4.2.Acute oral toxicity">
+    <test id="oecd401" regulation="OECD" code="401" name="Acute Oral Toxicity" note="DELETED" />
+    <test id="ec_b1" regulation="EU" code="B.1" name="Acute Toxicity (Oral)" note="DELETED"></test>
+    <test id="oecd420" regulation="OECD" code="420" name="Acute Oral Toxicity-Fixed Dose Method" />
+    <test id="ec_b1bis" regulation="EU" code="B.1 bis" name="Acute Toxicity (Oral) Fixed Dose Method"></test>
+    <test id="oecd425" regulation="OECD" code="425" name="Acute Oral Toxicity: Up-and-Down Procedure" />
+    <test id="ec_b1tris" regulation="EU" code="B.1 tris" name="Acute Toxicity (Oral). Acute Toxic Class Method"></test>
+    <test id="oecd423" regulation="OECD" code="423" name="Acute Oral Toxicity - Acute Toxic Class Method" />
+  </endpoint>
+  <endpoint id="endpoint115" group="4.Human health effects" subgroup="Acute toxicity" name="4.3.Acute dermal toxicity">
+    <test id="ec_b2" regulation="EU" code="B.2" name="Acute Toxicity (Dermal)"></test>
+    <test id="oecd402" regulation="OECD" code="402" name="Acute Dermal Toxicity" />
+  </endpoint>
+  <endpoint id="endpoint116" group="4.Human health effects" subgroup="Skin irritation /corrosion" name="4.4.Skin irritation /corrosion">
+    <test id="ec_b4" regulation="EU" code="B.4" name="Acute Toxicity (Skin Irritation)"></test>
+    <test id="oecd404" regulation="OECD" code="404" name="Acute Dermal Irritation/Corrosion" />
+
+    <test id="eu_b46" regulation="EU" code="B.46" name="In vitro Skin Irritation Reconstructed Human Epidermis (RhE) Test Method" />
+    <test id="oecd4xx" regulation="OECD" code="4xx" name="In vitro Skin Irritation Reconstructed Human Epidermis (RhE) Test Method" />
+
+  </endpoint>
+  <endpoint id="endpoint117" group="4.Human health effects" subgroup="" name="4.5.Acute photoirritation">
+    <test id="oecd432" regulation="OECD" code="432" name="In Vitro 3T3 NRU Phototoxicity Test" />
+    <test id="ec_b41" regulation="EU" code="B.41" name="3T3 NRU Phototoxicity Test"></test>
+  </endpoint>
+  <endpoint id="endpoint118" group="4.Human health effects" subgroup="" name="4.6.Skin sensitisation">
+    <test id="oecd406" regulation="OECD" code="406" name="Skin Sensitisation" />
+    <test id="ec_b6" regulation="EU" code="B.6" name="Skin Sensitisation"></test>
+    <test id="oecd429" regulation="OECD" code="429" name="LLNA" />
+    <test id="ec_b42" regulation="EU" code="B.42" name="Skin Sensitisation: Local Lymph Node Assay"></test>
+  </endpoint>
   <endpoint id="endpoint119" group="4.Human health effects" subgroup="" name="4.7.Respiratory sensitisation" />
   <endpoint id="endpoint120" group="4.Human health effects" subgroup="" name="4.8.Photosensitisation" />
-  <endpoint id="endpoint121" group="4.Human health effects" subgroup="" name="4.9.Eye irritation/corrosion" />
-  <endpoint id="endpoint122" group="4.Human health effects" subgroup="" name="4.10.Mutagenicity " />
+  <endpoint id="endpoint121" group="4.Human health effects" subgroup="" name="4.9.Eye irritation/corrosion">
+    <test id="oecd405" regulation="OECD" code="405" name="Acute Eye Irritation/Corrosion" />
+    <test id="ec_b5" regulation="EU" code="B.5" name="Acute Toxicity (Eye Irritation)"></test>
+    <test id="oecd437" regulation="OECD" code="437" name="The Bovine Corneal Opacity and Permeability (BCOP) Test Mehod for Identifying Eye Corrosives and Severe Irritants" />
+    <test id="oecd438" regulation="OECD" code="438" name="The Isolated Chicken Eye (ICE) Test Method for Identifying Ocular Corrosives and Severe Irritants" />
+  </endpoint>
+  <endpoint id="endpoint122" group="4.Human health effects" subgroup="" name="4.10.Mutagenicity ">
+    <test id="oecd471" regulation="OECD" code="471" name="Bacterial Reverse Mutation Test" />
+    <test id="ec_b13_14" regulation="EU" code="B.13/14." name="Mutagenicity: Reverse Mutation Test Using Bacteria"></test>
+    <test id="oecd473" regulation="OECD" code="473" name="In Vitro Mammalian Chromosome Aberration Test" />
+    <test id="ec_b10" regulation="EU" code="B.10" name="Mutagenicity - In Vitro Mammalian Chromosome Aberration Test"></test>
+    <test id="ec_b12" regulation="EU" code="B.12" name="Mutagenicity In Vivo Mamm. Erythrocyte Micronucleus Test"></test>
+    <test id="oecd474" regulation="OECD" code="474" name="Mamm. Erythrocyte Micronucleus Test" />
+   <!-- Chromosome aberration -->	
+    <test id="ec_b11" regulation="EU" code="B.11" name="Mutagenicity In Vivo Mammalian Bone Marrow Chromosome Aberration Test"></test>
+    <test id="oecd475" regulation="OECD" code="475" name="Mammalian Bone Marrow Chromosome Aberration Test" />
+	<!-- Cell gene mutation -->
+    <test id="ec_b17" regulation="EU" code="B.17" name="In Vitro Mammalian Cell Gene Mutation Test"></test>
+    <test id="oecd476" regulation="OECD" code="476" name="In Vitro Mammalian Cell Gene Mutation Test" />
+	<!-- recessive Lethal Test -->
+    <test id="ec_b20" regulation="EU" code="B.20" name="Sex-Linked recessive Lethal Test in Drosophila Melanogaster"></test>
+    <test id="oecd477" regulation="OECD" code="477" name="Sex-Linked recessive Lethal Test in Drosophila Melanogaster" />
+	<!-- dominant Lethal Test -->
+    <test id="ec_b22" regulation="EU" code="B.22" name="Rodent Dominant Lethal test"></test>
+    <test id="oecd478" regulation="OECD" code="478" name="Rodent Dominant Lethal test" />
+	<!-- Sister Chromatid Exchange -->
+    <test id="ec_b19" regulation="EU" code="B.19" name="Sister Chromatid Exchange Assay In Vitro"></test>
+    <test id="oecd479" regulation="OECD" code="479" name="In Vitro Sister Chromatid Exchange Assay in Mammalian Cells" />
+	<!-- gene mutation assay -->
+    <test id="ec_b15" regulation="EU" code="B.15" name="Gene Mutation Saccharomyces Cerevisiae"></test>
+    <test id="oecd480" regulation="OECD" code="480" name="Saccharomyces Cerevisiae, Mitotic Recombination Assay" />
+	<!-- Mitotic Recombination -->
+    <test id="ec_b16" regulation="EU" code="B.16" name="Mitotic Recombination Saccharomyces Cerevisiae"></test>
+    <test id="oecd481" regulation="OECD" code="481" name="Saccharomyces Cerevisiae, Mitotic Recombination Assay" />
+	<!-- DNA Damage and Repair- -->
+    <test id="ec_b18" regulation="EU" code="B.18" name="DNA Damage and Repair-Unscheduled DNA Synthesis - Mammalian Cells in Vitro"></test>
+    <test id="oecd482" regulation="OECD" code="482" name="DNA Damage and Repair, Unscheduled DNA Synthesis in Mammalian Cells in Vitro" />
+	<!-- Chromosome Aberration -->
+    <test id="ec_b23" regulation="EU" code="B.23" name="Mammalian Spermatogonial Chromosome Aberration Test"></test>
+    <test id="oecd483" regulation="OECD" code="483" name="Mammalian Spermatogonial Chromosome Aberration Test" />
+	<!-- Chromosome Aberration -->
+    <test id="ec_b24" regulation="EU" code="B.24" name="Mouse Spot Test"></test>
+    <test id="oecd484" regulation="OECD" code="484" name="Mouse Spot Test" />
+	<!--  Heritable Translocation -->
+    <test id="ec_b25" regulation="EU" code="B.25" name="Mouse Heritable Translocation"></test>
+    <test id="oecd485" regulation="OECD" code="485" name="Mouse Heritable Translocation Assay" />
+	<!--  Mammalian Cell Transformation -->
+    <test id="ec_b21" regulation="EU" code="B.21" name="In vitro Mammalian Cell Transformation Tests"></test>
+  
+	<!--  Unscheduled DNA Syntesis -->
+    <test id="ec_b39" regulation="EU" code="B.39" name="Unscheduled DNA Syntesis (UDS) Test with Mammalian Liver Cells In Vivo"></test>
+    <test id="oecd486" regulation="OECD" code="486" name="Unscheduled DNA Syntesis (UDS) Test with Mammalian Liver Cells In Vivo" />
+  
+	<!--  Micronucleus  -->
+    <test id="oecd487" regulation="OECD" code="487" name="In vitro Micronucleus Test" />
+
+
+  </endpoint>
   <endpoint id="endpoint123" group="4.Human health effects" subgroup="" name="4.11.Photomutagenicity" />
-  <endpoint id="endpoint124" group="4.Human health effects" subgroup="" name="4.12.Carcinogenicity" />
+  <endpoint id="endpoint124" group="4.Human health effects" subgroup="" name="4.12.Carcinogenicity">
+    <test id="ec_b32" regulation="EU" code="B.32" name="Carcinogenicity Test"></test>
+    <test id="oecd451" regulation="OECD" code="451" name="Carcinogenicity Studies" />
+  </endpoint>
   <endpoint id="endpoint125" group="4.Human health effects" subgroup="" name="4.13.Photocarcinogenicity" />
-  <endpoint id="endpoint126" group="4.Human health effects" subgroup="" name="4.14.Repeated dose toxicity " />
+  <endpoint id="endpoint126" group="4.Human health effects" subgroup="" name="4.14.Repeated dose toxicity ">
+    <test id="oecd407" regulation="OECD" code="407" name="Repeated Dose Oral Toxicity-Rodent 28/14-Days" />
+    <test id="ec_b7" regulation="EU" code="B.7" name="Repeated Dose (28 Days) Toxicity (Oral)"></test>
+    <test id="oecd408" regulation="OECD" code="408" name="Repeated Dose 90-day Oral Toxicity Study in Rodents" />
+    <test id="ec_b26" regulation="EU" code="B.26" name="Repeated Dose (28 Days) Toxicity (Oral)"></test>
+    <test id="oecd409" regulation="OECD" code="409" name="Repeated Dose 90-day Oral Toxicity Study in Non-Rodents" />
+    <test id="ec_b27" regulation="EU" code="B.27" name="Repeated Dose 90-day Oral Toxicity Study in Non-Rodents"></test>
+  </endpoint>
   <endpoint id="endpoint127" group="4.Human health effects" subgroup="" name="4.15.In vitro reproductive toxicity (e.g. embryotoxic effects in cell culture such as embryo stem cells)  " />
   <endpoint id="endpoint128" group="4.Human health effects" subgroup="" name="4.16.In vivo pre-natal-developmental toxicity" />
   <endpoint id="endpoint129" group="4.Human health effects" subgroup="" name="4.17.In vivo pre-, peri-, post natal development and / or fertility (1 or 2 gen. Study or enhanced 1 gen study) " />
   <endpoint id="endpoint130" group="4.Human health effects" subgroup="Endocrine Activity" name="4.18.a.Receptor-binding (specify receptor)" />
   <endpoint id="endpoint131" group="4.Human health effects" subgroup="Endocrine Activity" name="4.18.b.Receptor binding and gene expression (specify receptor)" />
   <endpoint id="endpoint132" group="4.Human health effects" subgroup="Endocrine Activity" name="4.18.c.Other (e.g. inhibition of specific enzymes involved in hormone synthesis or regulation, specify enzyme(s) and hormone)" />
+
   <endpoint id="endpoint133" group="5.Toxicokinetics " subgroup="Skin penetration" name="5.1.Skin penetration" />
   <endpoint id="endpoint134" group="5.Toxicokinetics " subgroup="Ocular membrane penetration" name="5.2.Ocular membrane penetration" />
   <endpoint id="endpoint135" group="5.Toxicokinetics " subgroup="Gastrointestinal absorption" name="5.3.Gastrointestinal absorption" />
