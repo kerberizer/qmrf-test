@@ -1,0 +1,66 @@
+/*
+This CSS stylesheet defines the look of the DataTables used, http://datatables.net/
+
+The contents of this file are in the public domain. If this is not applicable, the contents are
+licensed under the 2-clause license BSD license ("Simplified BSD License" or "FreeBSD License").
+
+This file has been created on 2012-04-12 by Luchesar V. ILIEV, IDEAconsult Ltd., http://i.dea.is/
+*/
+
+@CHARSET "UTF-8";
+div.dataTableWrapper {
+	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
+	font-size: 10pt;
+	background-color: red;
+}
+
+div.dataTables_length {
+	float: right;
+}
+
+div.dataTables_filter {
+	float: left;
+}
+
+div.dataTables_info {
+	float: left;
+}
+
+div.dataTables_paginate {
+	float: right;
+}
+
+div.dataTables_length,
+div.dataTables_filter,
+div.dataTables_paginate,
+div.dataTables_info {
+	padding: 6px;
+}
+
+table.datatable {
+	width: 100%;
+	clear: both;
+	display: inline-block;
+	border-collapse: collapse;
+}
+
+table.datatable td,
+table.datatable th {
+	padding: 5px 10px;
+	border-left: 1px solid #F0F0F0;
+	border-right: 1px solid #F0F0F0;
+}
+
+table.datatable thead th {
+	color: white;
+	background-color: #0065A2;
+}
+
+table.datatable tr.even td {
+	/*
+	color: #107FEB;
+	background-color: #D9ECF9;
+	*/
+	background-color: #F0F0F0;
+	border: 1px solid white;
+}

@@ -27,7 +27,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">\n",
 		"<!--[if IE 7]><link rel='stylesheet' type='text/css' media='all' href='%s/style/ambit-msie7.css'><![endif]-->",
 		"<link href=\"%s/style/jquery-ui-1.8.18.custom.css\" rel=\"stylesheet\" type=\"text/css\">\n",
-		"<link href=\"%s/style/jquery.dataTables.css\" rel=\"stylesheet\" type=\"text/css\">\n",
+		"<link href=\"%s/style/dataTables.css\" rel=\"stylesheet\" type=\"text/css\">\n",
 		"<link href=\"%s/images/favicon.ico\" rel=\"shortcut icon\" type=\"image/ico\">\n"
 	
 	};
@@ -292,23 +292,27 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(meta);
 
 			//meta		
-			for (String tag : metaTag ) w.write(String.format(tag,baseReference));
+			for (String tag : metaTag ) w.write(String.format(tag, baseReference));
 			//css			
-			for (String style : css ) w.write(String.format(style,baseReference));
+			for (String style : css ) w.write(String.format(style, baseReference));
 			//js
-			for (String script : js ) w.write(String.format(script,baseReference));
+			for (String script : js ) w.write(String.format(script, baseReference));
 
 
 
 			w.write("<script>$(function() {$( \".accordion\" ).accordion({autoHeight: false,navigation: true});});</script>");
 			w.write("<script>$(function() {$( \"#selectable\" ).selectable();});</script>");
 			w.write("<script type='text/javascript'>function hideDiv(divId) {\n$('#'+divId).hide();}</script>\n");
-			final String dtableOptions = "'bJQueryUI': true, "+
-					//"'sPaginationType': 'full_numbers',"+
-					"'bPaginate'      : true,"+
-					"\"sDom\": 'T<\"clear\"><\"fg-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix\"lfr>t<\"fg-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix\"ip>'";
+			
+			final String dtableOptions =
+				"'bPaginate': true," +
+				"'sPaginationType': 'full_numbers'";
 
-			w.write(String.format("<script>$(function() {$( \".datatable\" ).dataTable({%s });});</script>",dtableOptions));
+			/*
+			w.write(String.format("<script>$(function() {$( \".datatable\" ).dataTable({%s });});</script>", dtableOptions));
+			*/
+			
+			w.write(String.format("<script>$(document).ready( function() {$('table.datatable').dataTable({ %s });});</script>", dtableOptions));
 			
 			// Don't style the submit button with jQ if the browser is MSIE 7.
 			if (!isMsie7()) w.write("<script>$(function() {$(\"#submit\").button();});</script>");

@@ -139,12 +139,12 @@ public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporte
 	@Override
 	protected void printTableHeader(Writer output) throws Exception {
 		try {
-			output.write("<div style='float:left;width:100%;align:center' >");
-			output.write("<table class='datatable'  cellpadding='0' border='0' width='100%' cellspacing='0'>\n");
+			output.write("<div class='dataTableWrapper'>");
+			output.write("<table class='datatable'>\n");
 			output.write("<thead>\n");	
-			output.write(String.format("<th>%s</th>","Code"));
-			output.write(String.format("<th>%s</th>","Name"));
-			output.write(String.format("<th>%s</th>","(Q)MRF documents"));
+			output.write(String.format("<th>%s</th>", "Code"));
+			output.write(String.format("<th>%s</th>", "Name"));
+			output.write(String.format("<th>%s</th>", "(Q)MRF documents"));
 			output.write("</thead>\n");
 			output.write("<tbody>\n");
 		} catch (Exception x) {

@@ -86,8 +86,8 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 	@Override
 	protected void printTableHeader(Writer output) throws Exception {
 		if (printAsTable()) {
-			output.write("<div style='float:left; width:100%; align:center'>\n");
-			output.write("<table class='datatable' cellpadding='0' border='0' width='100%' cellspacing='0'>\n");
+			output.write("<div class='dataTableWrapper'>\n");
+			output.write("<table class='datatable'>\n");
 			//output.write("<caption><h3>Users</h3></caption>\n");	
 			output.write("<thead>\n");	
 			output.write(String.format("<th>%s</th>", "Name"));
