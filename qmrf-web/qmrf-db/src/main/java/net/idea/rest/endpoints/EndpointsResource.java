@@ -35,7 +35,7 @@ import ambit2.base.data.Dictionary;
  * @author nina
  *
  */
-public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Dictionary>, Dictionary> {
+public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<IQueryRetrieval<D>, D> {
 	
 	public static String resource = "/endpoints";
 	public static String resourceParent = "subject";
@@ -70,7 +70,7 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Diction
 	}
 
 	@Override
-	public IProcessor<IQueryRetrieval<Dictionary>, Representation> createConvertor(
+	public IProcessor<IQueryRetrieval<D>, Representation> createConvertor(
 			Variant variant)
 			throws net.idea.modbcum.i.exceptions.AmbitException,
 			ResourceException {
@@ -113,7 +113,7 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Diction
 		return htmlBeauty;
 	}
 	@Override
-	protected IQueryRetrieval<Dictionary> createQuery(Context context, Request request,
+	protected IQueryRetrieval<D> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
 		try {
 			Form form = getResourceRef(getRequest()).getQueryAsForm();
@@ -128,11 +128,12 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Diction
 			setRecursive(false);
 		}		
 		Object key = request.getAttributes().get(resourceKey);
-		QueryOntology q = new QueryOntology();
-		q.setIncludeParent(false);
-		if (key != null) 	
-			q.setValue(key==null?null:new Dictionary(Reference.decode(key.toString()),null));
-		else {
+		if (key != null) {
+			QueryOntology q = new QueryOntology();
+			q.setIncludeParent(false);
+			q.setValue(key==null?null:new EndpointTest(Reference.decode(key.toString()),null));
+			return q;
+		} else {
 			key =  request.getAttributes().get(resourceParent);
 			DictionaryQuery qd = new DictionaryObjectQuery();
 			qd.setCondition(StringCondition.getInstance(StringCondition.C_EQ));
@@ -140,7 +141,7 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Diction
 			
 			return qd;
 		}
-		return q;
+
 	}
 	
 	
@@ -166,7 +167,7 @@ public class EndpointsResource extends QMRFQueryResource<IQueryRetrieval<Diction
 	};
 	*/
 	@Override
-	protected QueryURIReporter<Dictionary, IQueryRetrieval<Dictionary>> getURUReporter(
+	protected QueryURIReporter<D, IQueryRetrieval<D>> getURUReporter(
 			Request baseReference) throws ResourceException {
 		return new DictionaryURIReporter(getRequest(),getDocumentation());
 	}

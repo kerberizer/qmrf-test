@@ -1,5 +1,7 @@
 package net.idea.rest.endpoints;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 
 import net.idea.modbcum.i.IQueryRetrieval;
@@ -24,7 +26,7 @@ import ambit2.base.data.Property;
  * @author nina
  *
  */
-public class EndpointsHTMLReporter extends QMRFHTMLReporter<Dictionary, IQueryRetrieval<Dictionary>> {
+public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporter<D, IQueryRetrieval<D>> {
 
 	/**
 	 * 
@@ -84,7 +86,7 @@ public class EndpointsHTMLReporter extends QMRFHTMLReporter<Dictionary, IQueryRe
 		return new DictionaryURIReporter(request,doc);
 	}
 	
-	public String toURI(Dictionary record) {
+	public String toURI(D record) {
 		count++;
 		//if (count==1) return ""; 
 		
@@ -97,7 +99,7 @@ public class EndpointsHTMLReporter extends QMRFHTMLReporter<Dictionary, IQueryRe
 				"qmrf/chapter3.png",
 				"",						
 				w,
-				((Dictionary)record).getTemplate()
+				record.getTemplate()
 						);
 
 		
@@ -105,12 +107,15 @@ public class EndpointsHTMLReporter extends QMRFHTMLReporter<Dictionary, IQueryRe
 	
 
 	@Override
-	public Object processItem(Dictionary record) throws AmbitException {
+	public Object processItem(D record) throws AmbitException {
 
 
 		try {
 			output.write("<tr>");
-			output.write("<td></td>");
+			output.write("<td>");
+			if (((EndpointTest)record).getCode()!=null)
+				output.write(((EndpointTest)record).getCode());
+			output.write("</td>");
 			output.write(String.format("<td>%s</td>",toURI(record)));
 			output.write("<td>");
 			output.write(String.format("<a href='%s%s?option=endpoint&search=%s'>%s</a>", 
@@ -123,7 +128,9 @@ public class EndpointsHTMLReporter extends QMRFHTMLReporter<Dictionary, IQueryRe
 			output.write("</td>");
 			output.write("</tr>");
 		} catch (Exception x) {
-			Context.getCurrentLogger().severe(x.getMessage());
+			StringWriter w = new StringWriter();
+			x.printStackTrace(new PrintWriter(w));
+			Context.getCurrentLogger().severe(w.toString());
 		}
 		return null;
 	}
@@ -146,27 +153,27 @@ public class EndpointsHTMLReporter extends QMRFHTMLReporter<Dictionary, IQueryRe
 		
 	}
 	@Override
-	protected void printTable(Writer output, String uri, Dictionary item) {
+	protected void printTable(Writer output, String uri, D item) {
 
 		
 	}
 	@Override
-	protected void printForm(Writer output, String uri, Dictionary item,
+	protected void printForm(Writer output, String uri, D item,
 			boolean editable) {
 		// TODO Auto-generated method stub
 		
 	}
 	@Override
-	protected void printPageNavigator(IQueryRetrieval<Dictionary> query)
+	protected void printPageNavigator(IQueryRetrieval<D> query)
 			throws Exception {
 
 	}
 	@Override
-	public void header(Writer w, IQueryRetrieval<Dictionary> query) {
+	public void header(Writer w, IQueryRetrieval<D> query) {
 		super.header(w, query);
 	}
 	@Override
-	public void footer(Writer output, IQueryRetrieval<Dictionary> query) {
+	public void footer(Writer output, IQueryRetrieval<D> query) {
 		try {
 			output.write("</tbody></table></div>");
 			if (!headless) {
