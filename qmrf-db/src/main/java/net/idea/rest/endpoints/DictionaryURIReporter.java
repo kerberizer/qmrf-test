@@ -8,14 +8,13 @@ import org.restlet.Request;
 import org.restlet.data.Reference;
 
 import ambit2.base.data.Dictionary;
-import ambit2.base.data.Property;
 
 /**
  * Generates uri of {@link PropertyResource}
  * @author nina
  *
  */
-public class DictionaryURIReporter extends QueryURIReporter<Dictionary, IQueryRetrieval<Dictionary>> {
+public class DictionaryURIReporter<D extends Dictionary> extends QueryURIReporter<D, IQueryRetrieval<D>> {
 
 	/**
 	 * 

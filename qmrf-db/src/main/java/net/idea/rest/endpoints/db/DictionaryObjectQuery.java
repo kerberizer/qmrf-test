@@ -31,14 +31,14 @@ package net.idea.rest.endpoints.db;
 
 import ambit2.base.data.Dictionary;
 
-public class DictionaryObjectQuery extends DictionaryQuery<Dictionary> {
+public class DictionaryObjectQuery<D extends Dictionary> extends DictionaryQuery<D> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7844553625486670502L;
 	
-	public DictionaryObjectQuery(Dictionary value) {
+	public DictionaryObjectQuery(D value) {
 		super((value==null)?null:value.getTemplate());
 	}	
 	public DictionaryObjectQuery() {

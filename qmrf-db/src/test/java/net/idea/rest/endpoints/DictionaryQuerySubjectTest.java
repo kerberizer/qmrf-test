@@ -43,10 +43,10 @@ import org.junit.Test;
 
 import ambit2.base.data.Dictionary;
 
-public class DictionaryQuerySubjectTest extends QueryTest<DictionaryQuery<Dictionary>> {
+public class DictionaryQuerySubjectTest<D extends  Dictionary> extends QueryTest<DictionaryQuery<D>> {
 
 	@Override
-	protected DictionaryQuery<Dictionary> createQuery() throws Exception {
+	protected DictionaryQuery<D> createQuery() throws Exception {
 		DictionarySubjectQuery q = new DictionarySubjectQuery();
 		q.setCondition(StringCondition.getInstance(StringCondition.C_REGEXP));
 		q.setValue("Physical");
@@ -54,11 +54,11 @@ public class DictionaryQuerySubjectTest extends QueryTest<DictionaryQuery<Dictio
 	}
 
 	@Override
-	protected void verify(DictionaryQuery<Dictionary> query, ResultSet rs) throws Exception {
+	protected void verify(DictionaryQuery<D> query, ResultSet rs) throws Exception {
 		int records = 0;
 		while (rs.next()) {
 			records ++;
-			Dictionary d = query.getObject(rs);
+			D d = query.getObject(rs);
 			Assert.assertNull(d.getParentTemplate());
 			Assert.assertEquals("Physical Chemical Properties",d.getTemplate());				
 		}

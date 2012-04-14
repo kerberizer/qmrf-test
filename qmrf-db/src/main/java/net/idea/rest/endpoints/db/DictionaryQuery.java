@@ -39,6 +39,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
+import net.idea.rest.endpoints.EndpointTest;
 import ambit2.base.data.Dictionary;
 
 
@@ -49,7 +50,7 @@ public abstract class DictionaryQuery<T extends Dictionary> extends AbstractQuer
 	 */
 	private static final long serialVersionUID = -7315142224794511557L;
 	public static final String SQL = 
-		"select tObject.name as category,tSubject.name as field,relationship  from dictionary d "+
+		"select tObject.name as category,tSubject.name as field,relationship,tObject.code as catCode,tSubject.code as code  from dictionary d "+
 		"join template as tSubject on d.idsubject=tSubject.idtemplate "+
 		"join template as tObject on d.idobject=tObject.idtemplate "+
 		"where %s.name %s ? order by tObject.idtemplate";
@@ -80,7 +81,9 @@ public abstract class DictionaryQuery<T extends Dictionary> extends AbstractQuer
 	}
 	public T getObject(ResultSet rs) throws AmbitException {
 		try {
-			return (T)new Dictionary(rs.getString(2),rs.getString(1),rs.getString(3));
+			EndpointTest var = new EndpointTest(rs.getString(2),rs.getString(1),rs.getString(3));
+			var.setCode(rs.getString("code"));
+			return (T) var;
 		} catch (SQLException x) {
 			throw new AmbitException(x);
 		}

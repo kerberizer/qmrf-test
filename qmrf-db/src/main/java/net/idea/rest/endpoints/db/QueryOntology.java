@@ -10,10 +10,11 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
+import net.idea.rest.endpoints.EndpointTest;
 import ambit2.base.data.Dictionary;
 
-public class QueryOntology  extends AbstractQuery<Boolean, Dictionary, StringCondition, Dictionary> implements
-												IQueryRetrieval<Dictionary> {
+public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean, D, StringCondition, D> implements
+												IQueryRetrieval<D> {
 
 	/**
 	 * 
@@ -29,14 +30,14 @@ public class QueryOntology  extends AbstractQuery<Boolean, Dictionary, StringCon
 	}	
 	protected String sqlParent = 
 	
-		"select 0,t2.name,t1.name\n"+
+		"select 0,t2.name,t1.name,t2.code as category,t1.code as code\n"+
 		"from ((`template` `t1`\n"+
 		"join `dictionary` `d` on((`t1`.`idtemplate` = `d`.`idsubject`)))\n"+
 		"join `template` `t2` on((`d`.`idobject` = `t2`.`idtemplate`)))\n"+
 		"where t1.name %s ?\n"+
 		"union\n";		
 	protected String sqlChild = 	
-		"select 1,t2.name,t1.name\n"+
+		"select 1,t2.name,t1.name,t2.code as category,t1.code as code\n"+
 		"from ((`template` `t1`\n"+
 		"join `dictionary` `d` on((`t1`.`idtemplate` = `d`.`idsubject`)))\n"+
 		"join `template` `t2` on((`d`.`idobject` = `t2`.`idtemplate`)))\n"+
@@ -51,7 +52,7 @@ public class QueryOntology  extends AbstractQuery<Boolean, Dictionary, StringCon
 		this.includeParent = includeParent;
 	}
 
-	public QueryOntology(Dictionary dictionary) {
+	public QueryOntology(D dictionary) {
 		setFieldname(true);
 		setValue(dictionary);
 	}
@@ -59,7 +60,7 @@ public class QueryOntology  extends AbstractQuery<Boolean, Dictionary, StringCon
 	public QueryOntology() {
 		setFieldname(true);
 	}
-	public double calculateMetric(Dictionary object) {
+	public double calculateMetric(D object) {
 		return 1;
 	}
 
@@ -83,9 +84,11 @@ public class QueryOntology  extends AbstractQuery<Boolean, Dictionary, StringCon
 		return String.format(includeParent?sqlParent+sqlChild:sqlChild,c,c,c);
 	}
 
-	public Dictionary getObject(ResultSet rs) throws AmbitException {
+	public D getObject(ResultSet rs) throws AmbitException {
 		try {
-			return new Dictionary(rs.getString(3),rs.getString(2));
+			EndpointTest result = new EndpointTest(rs.getString(3),rs.getString(2));
+			result.setCode(rs.getString("code"));
+			return (D)result;
 		} catch (SQLException x) {
 			throw new AmbitException(x);
 		}
