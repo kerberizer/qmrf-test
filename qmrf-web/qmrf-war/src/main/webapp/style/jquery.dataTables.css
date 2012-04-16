@@ -31,13 +31,13 @@ table.dataTable td.dataTables_empty {
 	text-align: center;
 }
 
-table.dataTable tr.odd { background-color: #E2E4FF; }
-table.dataTable tr.even { background-color: white; }
+table.dataTable tr.odd { background-color: white; }
+table.dataTable tr.even { background-color: #F2F8FC; }
 
-table.dataTable tr.odd td.sorting_1 { background-color: #D3D6FF; }
+table.dataTable tr.odd td.sorting_1 { background-color: #F9FAFF; }
 table.dataTable tr.odd td.sorting_2 { background-color: #DADCFF; }
 table.dataTable tr.odd td.sorting_3 { background-color: #E0E2FF; }
-table.dataTable tr.even td.sorting_1 { background-color: #EAEBFF; }
+table.dataTable tr.even td.sorting_1 { background-color: #E6E7F4; }
 table.dataTable tr.even td.sorting_2 { background-color: #F2F3FF; }
 table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 
@@ -57,6 +57,9 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
  */
 .dataTables_length {
 	float: left;
+	padding: 5px 10px !important;
+	font-size: 10pt !important;
+	font-weight: normal !important;
 }
 
 
@@ -66,6 +69,8 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 .dataTables_filter {
 	float: right;
 	text-align: right;
+	padding: 5px 10px !important;
+	font-size: 10pt !important;
 }
 
 
@@ -75,6 +80,9 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 .dataTables_info {
 	clear: both;
 	float: left;
+	padding: 5px 10px !important;
+	font-size: 10pt !important;
+	font-weight: normal !important;
 }
 
 
@@ -84,6 +92,8 @@ table.dataTable tr.even td.sorting_3 { background-color: #F9F9FF; }
 .dataTables_paginate {
 	float: right;
 	text-align: right;
+	padding: 5px 10px !important;
+	font-size: 10pt !important;
 }
 
 /* Two button pagination - previous / next */
@@ -217,3 +227,9 @@ table.dataTable th:active {
 	*margin-top: -1px;
 }
 
+/*
+ * jQueryUI
+ */
+#DataTables_Table_0_previous {
+	padding: 0 5px 0 0;
+}
