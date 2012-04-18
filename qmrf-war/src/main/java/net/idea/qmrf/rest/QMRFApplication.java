@@ -23,6 +23,7 @@ import net.idea.rest.protocol.resource.db.UnpublishedProtocolsResource;
 import net.idea.rest.structure.resource.DatasetResource;
 import net.idea.rest.structure.resource.StructureRouter;
 import net.idea.rest.user.UserRouter;
+import net.idea.rest.user.alerts.resource.AlertRouter;
 import net.idea.rest.user.resource.MyAccountResource;
 import net.idea.restnet.aa.cookie.CookieAuthenticator;
 import net.idea.restnet.aa.local.UserLoginPOSTResource;
@@ -129,15 +130,17 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		OrganisationRouter org_router = new OrganisationRouter(getContext());
 		ProjectRouter projectRouter = new ProjectRouter(getContext());
 		Restlet protocolRouter;
+		AlertRouter alertRouter = new AlertRouter(getContext());
 
+		
 		protocolRouter = protocols; // createProtectedResource(protocols,"protocol",new
 									// ProtocolAuthorizer());
 		setCookieUserRouter.attach(Resources.protocol, protocolRouter);
 		setCookieUserRouter.attach(Resources.project, projectRouter);
 		setCookieUserRouter.attach(Resources.organisation, org_router);
 		setCookieUserRouter.attach(Resources.user, new UserRouter(getContext(),
-				protocols, org_router, projectRouter));
-
+				protocols, org_router, projectRouter, alertRouter));
+	
 
 		setCookieUserRouter.attach(Resources.endpoint,
 				ProtocolsByEndpointResource.class);
@@ -178,6 +181,7 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		auth = createCookieAuthenticator(false);
 		auth.setNext(protectedRouter);
 		router.attach("/protected", auth);
+
 
 		router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
 		router.setRoutingMode(Router.MODE_BEST_MATCH);

@@ -37,4 +37,6 @@
   <user_organisation iduser="3" idorganisation="1" priority="1"/>
   <user_project iduser="3" idproject="3" priority="1"/>
 
+  <alert idquery="1" name="cell" query="cell" qformat="FREETEXT" rfrequency="daily" rinterval="1" iduser="3" sent="2012-01-16 09:30:51.000000000"/>
+  <alert idquery="2" name="toxicity" query="toxicity" qformat="FREETEXT" rfrequency="weekly" rinterval="1" iduser="3" sent="2012-01-16 09:30:51.000000000"/>
 </dataset>
