@@ -40,10 +40,12 @@ public class ReadModel  extends AbstractQuery<DBProtocol, DBModel, EQCondition, 
 		super();
 		setFieldname(protocol);
 	}
+	/*
 	public ReadModel(Integer id, Integer version,Integer year, String dir) {
 		super();
 		setFieldname(id==null?null:new DBProtocol(id,version,year));
 	}
+	*/
 	public ReadModel() {
 		this((DBProtocol)null);
 	}

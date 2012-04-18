@@ -19,6 +19,9 @@ import net.idea.rest.protocol.attachments.db.AddAttachment;
 import net.idea.rest.protocol.db.CreateProtocol;
 import net.idea.rest.protocol.db.CreateProtocolVersion;
 import net.idea.rest.protocol.db.DeleteProtocol;
+import net.idea.rest.protocol.db.PublishProtocol;
+import net.idea.rest.protocol.db.ReadProtocol;
+import net.idea.rest.protocol.db.ReadProtocolByID;
 import net.idea.rest.protocol.db.UpdateFreeTextIndex;
 import net.idea.rest.protocol.db.UpdateKeywords;
 import net.idea.rest.protocol.db.UpdateProtocol;
@@ -61,7 +64,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 			public String getDescription() {
 				return "New document version";
 			}				
-		};
+		};		
 		public String getDescription() {return name();}
 		}
 	protected List<FileItem> input;
@@ -172,8 +175,15 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 	}
 
 	public TaskResult create() throws ResourceException {
-		boolean existing = protocol!=null&&protocol.getID()>0;
+		boolean existing = protocol!=null&&protocol.getIdentifier()!=null;
+		String identifier = existing?protocol.getIdentifier():DBProtocol.generateIdentifier();
 		AccessRights policy = new AccessRights(null);
+		try {
+			if (existing && UpdateMode.dataTemplateOnly.equals(updateMode) && (protocol.getID()<=0))
+				retrieveProtocol(protocol,connection);
+		} catch (Exception x) {
+			
+		}
 		try {
 			protocol = ProtocolFactory.getProtocol(protocol,input, 10000000,dir,policy,updateMode);
 			if (user!=null) protocol.setOwner(user);
@@ -274,9 +284,11 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 				}
 				
 				if (existing) {
-					CreateProtocolVersion q = new CreateProtocolVersion(protocol);
+					protocol.setIdentifier(identifier); //in case the web form messed up the identifier
+					CreateProtocolVersion q = new CreateProtocolVersion(DBProtocol.generateIdentifier(),protocol);
 					exec.process(q);
 				} else {
+					protocol.setIdentifier(identifier);
 					CreateProtocol q = new CreateProtocol(protocol);
 					exec.process(q);
 				}
@@ -342,15 +354,20 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 	}
 
 	public TaskResult update() throws ResourceException {
-		if ((protocol==null)||(protocol.getID()<=0)) 
+		if ((protocol==null)||(!protocol.isValidIdentifier())||(protocol.getID()<=0)||(protocol.getVersion()<=0)) 
 					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Can't update: Not an existing protocol!");
+	
 		AccessRights policy = new AccessRights(null);
 		try {
 			//get only fields from the web form
+		
 			DBProtocol newProtocol = ProtocolFactory.getProtocol(null,input, 10000000,dir,policy,updateMode);
 			newProtocol.setID(protocol.getID());
 			newProtocol.setVersion(protocol.getVersion());
-			newProtocol.setIdentifier(null);
+			if (newProtocol.getIdentifier()==null)
+				newProtocol.setIdentifier(protocol.getIdentifier());
+			
+			//all non-null fields will be updated
 			if (newProtocol.getProject() != null) {
 				DBProject p = (DBProject) newProtocol.getProject();
 				p.setID(p.parseURI(baseReference));
@@ -374,63 +391,40 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		} catch (Exception x) {
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,x);
 		}
-		
+			String uri = null; 
 			try {
 				connection.setAutoCommit(false);
 				//protocol.setOwner(user);
 				exec = new UpdateExecutor<IQueryUpdate>();
 				exec.setConnection(connection);
-				
+
 				UpdateProtocol q = new UpdateProtocol(protocol);
 				exec.process(q);
-				
-				
-				String uri = reporter.getURI(protocol);
-				
+				if (protocol.isPublished()) {
+					PublishProtocol pq = new PublishProtocol(protocol);
+					exec.process(pq);
+					retrieveProtocolIdentifier(protocol,connection);
+				}
+				uri = reporter.getURI(protocol);
 				if ((protocol.getKeywords()!=null) && (protocol.getKeywords().size()>0)) {
 					UpdateKeywords k = new UpdateKeywords(protocol);
 					exec.process(k);
 				}
-				
-				
 				try {
 					UpdateFreeTextIndex x = new UpdateFreeTextIndex(protocol);
 					exec.process(x);
 				} catch (Exception x) {
-					x.printStackTrace();
-					//free text index failed, but ignore so far
+					x.printStackTrace(); //free text index failed, but ignore so far
 				}
-				/*
-				if (protocol.getAuthors()!=null) {
-					DeleteAuthor da = new DeleteAuthor(protocol, null);
-					exec.process(da);
-					if (protocol.getAuthors().size()>0) {
-						AddAuthors k = new AddAuthors(protocol);
-						exec.process(k);
-					}
-				}
-				*/
-				
 				if ((protocol.getAttachments()!=null) && protocol.getAttachments().size()>0) 
 					for (DBAttachment attachment: protocol.getAttachments()) {
 						AddAttachment k = new AddAttachment(protocol,attachment);
 						exec.process(k);
 					}
-					
 				
 				connection.commit();
 				TaskResult result = new TaskResult(uri,false);
-				/*
-				try {
-					addDefaultProtocolRights(policy,protocol.getOwner(),true,true,true,true);
-					if ((policy.getRules()!=null) && (policy.getRules().size()>0)) {
-						retrieveAccountNames(policy,connection);
-						policy.setResource(new URL(uri));
-						result.setPolicy(generatePolicy(protocol,policy));
-					} else result.setPolicy(null);
-				} 
-				catch (Exception x) { result.setPolicy(null);}
-				*/
+
 			
 				return result;
 			} catch (ProcessorException x) {
@@ -487,72 +481,47 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 
 	}
 	
-	/*
-	protected void retrieveAccountNames(AccessRights accessRights,Connection connection) throws Exception {
+	protected void retrieveProtocol(DBProtocol protocol,Connection connection) throws Exception {
 		QueryExecutor qexec = new QueryExecutor();
 		try {
-			
+			qexec.setCloseConnection(false);
 			qexec.setConnection(connection);
-			ReadUser getUser = new ReadUser();
-			for (PolicyRule rule: accessRights.getRules()) 
-				if (rule instanceof UserPolicyRule)  {
-					DBUser u = ((UserPolicyRule<? extends DBUser>) rule).getSubject();
-				    if (u.getID()<=0) u.setID(u.parseURI(baseReference));
-					if (u.getUserName()==null) {
-						getUser.setValue(u);
-						ResultSet rs = null;
-						try { 
-							rs = qexec.process(getUser); 
-							while (rs.next()) { u.setUserName(getUser.getObject(rs).getUserName()); }
-						} catch (Exception x) { if (rs!=null) rs.close(); }
+			ReadProtocol getProtocol = new ReadProtocol(protocol);
+			qexec.setConnection(connection);
+			ResultSet rs = null;
+			try { 
+					rs = qexec.process(getProtocol); 
+					while (rs.next()) { 
+						DBProtocol result = getProtocol.getObject(rs);
+						protocol.setID(result.getID());
+						protocol.setVersion(result.getVersion());
 					}	
-			}
-			ReadGroup getGroup = null;
-			ReadOrganisation readOrg = new ReadOrganisation(null);
-			ReadProject readProject = new ReadProject(null);
-			for (PolicyRule rule: accessRights.getRules()) 
-				if (rule instanceof GroupPolicyRule)  {
-					Group u = ((GroupPolicyRule<? extends Group>) rule).getSubject();
-					
-					if (u instanceof IDBGroup) {
-						IDBGroup u_id = (IDBGroup) u;
-						if (u_id.getID()<=0) u_id.setID(u_id.parseURI(baseReference));
-					}
-					if (u.getGroupName()==null) {
-						getGroup = u instanceof DBOrganisation?readOrg:readProject;
-						getGroup.setValue(u);
-						ResultSet rs = null;
-						try { 
-							rs = qexec.process(getGroup); 
-							while (rs.next()) { u.setGroupName(getGroup.getObject(rs).getGroupName()); }
-						} catch (Exception x) { if (rs!=null) rs.close(); }
-					}
-			}
+			} catch (Exception x) { if (rs!=null) rs.close(); }
+			qexec.setConnection(null);
 		}
 		finally { try {qexec.close(); } catch (Exception x) {}}			
-	}
 
-	protected List<String> generatePolicy(DBProtocol protocol, AccessRights policy) throws Exception {
-		OpenSSOServicesConfig config = OpenSSOServicesConfig.getInstance();
-		SimpleAccessRights policyTools = new SimpleAccessRights(config.getPolicyService());
-		List<String> policies = policyTools.createPolicyXML(policy);
-		return policies.size()>0?policies:null;
 	}
-	
-	protected void deletePolicy(URL url) throws Exception {
-		if (getToken()==null) return;
+	protected void retrieveProtocolIdentifier(DBProtocol protocol,Connection connection) throws Exception {
+		QueryExecutor qexec = new QueryExecutor();
 		try {
-			OpenSSOServicesConfig config = OpenSSOServicesConfig.getInstance();
-			SimpleAccessRights policyTools = new SimpleAccessRights(config.getPolicyService());
-			OpenSSOToken ssoToken = new OpenSSOToken(config.getOpenSSOService());
-			ssoToken.setToken(getToken());
-			policyTools.deleteAllPolicies(ssoToken,url);
-		} catch (Exception x) {
-			throw new ResourceException(Status.SERVER_ERROR_BAD_GATEWAY,String.format("Error deleting policies for %s",url),x);
+			qexec.setCloseConnection(false);
+			qexec.setConnection(connection);
+			ReadProtocolByID getProtocol = new ReadProtocolByID();
+			getProtocol.setValue(protocol);
+			qexec.setConnection(connection);
+			ResultSet rs = null;
+			try { 
+					rs = qexec.process(getProtocol); 
+					while (rs.next()) { 
+						DBProtocol result = getProtocol.getObject(rs);
+						protocol.setIdentifier(result.getIdentifier());
+					}	
+			} catch (Exception x) { if (rs!=null) rs.close(); }
+			qexec.setConnection(null);
 		}
-	}
+		finally { try {qexec.close(); } catch (Exception x) {}}			
 
-	*/
-
+	}	
 }
 

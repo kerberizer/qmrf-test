@@ -8,11 +8,11 @@ import java.util.List;
 import net.idea.modbcum.i.IStoredProcStatement;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
-import net.idea.modbcum.q.update.AbstractObjectUpdate;
+import net.idea.modbcum.q.update.AbstractUpdate;
 import net.idea.rest.protocol.DBProtocol;
 
 
-public class CreateProtocolVersion  extends AbstractObjectUpdate<DBProtocol> implements IStoredProcStatement {
+public class CreateProtocolVersion  extends AbstractUpdate<String,DBProtocol> implements IStoredProcStatement {
 	protected static final ReadProtocol.fields[] f = new ReadProtocol.fields[] {
 			ReadProtocol.fields.idprotocol,
 			ReadProtocol.fields.version,
@@ -22,19 +22,22 @@ public class CreateProtocolVersion  extends AbstractObjectUpdate<DBProtocol> imp
 	};
 	protected String[] create_sql = {"{CALL createProtocolVersion(?,?,?,?,?)}"};
 
-	public CreateProtocolVersion(DBProtocol ref) {
+	public CreateProtocolVersion(String newIdentifier,DBProtocol ref) {
 		super(ref);
+		setGroup(newIdentifier);
 	}
 	public CreateProtocolVersion() {
-		this(null);
+		this(DBProtocol.generateIdentifier(),null);
 	}		
 	public List<QueryParam> getParameters(int index) throws AmbitException {
-		if (getObject().getID()<=0) throw new AmbitException("No protocol ID");
+		if (getGroup()==null) throw new AmbitException("The new QMRF number is not specified!");
+		if (!getObject().isValidIdentifier()) throw new AmbitException("No protocol ID");
+		
 		
 		List<QueryParam> params1 = new ArrayList<QueryParam>();
 
-		params1.add(ReadProtocol.fields.idprotocol.getParam(getObject()));
-		params1.add(ReadProtocol.fields.version.getParam(getObject()));
+		params1.add(ReadProtocol.fields.identifier.getParam(getObject()));
+		params1.add(new QueryParam<String>(String.class,getGroup()));
 		params1.add(ReadProtocol.fields.title.getParam(getObject()));
 		params1.add(ReadProtocol.fields.anabstract.getParam(getObject()));
 		
@@ -66,6 +69,7 @@ public class CreateProtocolVersion  extends AbstractObjectUpdate<DBProtocol> imp
 	 */
 	@Override
 	public void getStoredProcedureOutVars(CallableStatement statement) throws SQLException {
-		getObject().setVersion(statement.getInt(f.length+1));
+		int version = statement.getInt(f.length+1);
+		getObject().setVersion(version);
 	}
 }

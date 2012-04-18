@@ -304,7 +304,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			
 			output.write(String.format("<td class='contentTable qmrfNumber'><a href='%s'>%s</a>&nbsp;%s%s</td>",
 						uri,
-						ReadProtocol.fields.identifier.getValue(item),
+						item.getVisibleIdentifier(),
 						"",
 						((QMRF_HTMLBeauty)htmlBeauty).isMsie7()?"<div></div>":""
 			));			

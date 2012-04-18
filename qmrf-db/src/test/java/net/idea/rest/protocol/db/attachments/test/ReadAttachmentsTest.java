@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
+import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.protocol.db.test.QueryTest;
 
 /**
@@ -19,7 +20,7 @@ public class ReadAttachmentsTest  extends QueryTest<ReadAttachment> {
 
 	@Override
 	protected ReadAttachment createQuery() throws Exception {
-		DBProtocol protocol = new DBProtocol(83,1,2009);
+		DBProtocol protocol = new DBProtocol(CRUDTest.id83v1);
 		return new ReadAttachment(protocol,System.getProperty("java.io.tmpdir"));
 	}
 

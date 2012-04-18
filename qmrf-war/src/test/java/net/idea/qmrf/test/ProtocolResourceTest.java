@@ -39,6 +39,8 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
  */
 public class ProtocolResourceTest extends ProtectedResourceTest {
 
+	protected static String id2v1 = "8f0aba27-862e-11e1-ba85-00ff3739b863";
+	protected static String id2v2 = "8f0afddb-862e-11e1-ba85-00ff3739b863";
 	@Override
 	protected boolean isAAEnabled() {
 		return false;
@@ -53,8 +55,8 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 	@Override
 	public String getTestURI() {
-		return String.format("http://localhost:%d%s/%s-2009-2-2", port,
-				Resources.protocol, DBProtocol.prefix);
+		return String.format("http://localhost:%d%s/%s", port,
+							Resources.protocol, id2v2);
 	}
 
 	@Test
@@ -69,8 +71,8 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		String line = null;
 		int count = 0;
 		while ((line = r.readLine()) != null) {
-			Assert.assertEquals(String.format("http://localhost:%d%s/%s-2009-2-2",
-					port, Resources.protocol, DBProtocol.prefix), line);
+			Assert.assertEquals(String.format("http://localhost:%d%s/%s",
+					port, Resources.protocol, id2v2), line);
 			count++;
 		}
 		return count == 1;
@@ -92,9 +94,9 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		List<Protocol> protocols = ioClass.fromJena(model);
 		Assert.assertEquals(1, protocols.size());
 		Assert.assertEquals(String.format(
-				"http://localhost:8181/protocol/%s-2009-2-2", DBProtocol.prefix),
+				"http://localhost:8181/protocol/%s",id2v2),
 				protocols.get(0).getResourceURL().toString());
-		Assert.assertEquals("QMRF-2009-2-2", protocols.get(0).getIdentifier());
+		Assert.assertEquals(id2v2, protocols.get(0).getIdentifier());
 		Assert.assertEquals("QSAR model for narcosis", protocols.get(0)
 				.getTitle());
 		Assert.assertNotNull(protocols.get(0).getAbstract());
@@ -155,8 +157,8 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 						"SELECT idprotocol,version FROM protocol where idprotocol=2 and version=2");
 		Assert.assertEquals(new BigInteger("2"),table.getValue(0, "idprotocol"));
 		c.close();
-		String org = String.format("http://localhost:%d%s/%s-2009-2-2", port,
-				Resources.protocol, DBProtocol.prefix);
+		String org = String.format("http://localhost:%d%s/%s", port,
+				Resources.protocol, id2v2);
 		RemoteTask task = testAsyncPoll(new Reference(org),	MediaType.TEXT_URI_LIST, null, Method.DELETE);
 		Assert.assertEquals(Status.SUCCESS_OK.getCode(), task.getStatus());
 		// Assert.assertNull(task.getResult());
@@ -178,21 +180,24 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 	@Test
 	public void testUpdateEntryFromMultipartWeb() throws Exception {
-		String uri = String.format("http://localhost:%d%s/%s-2009-2-2", port,
-				Resources.protocol, DBProtocol.prefix);
-		createEntryFromMultipartWeb(new Reference(uri), Method.PUT);
-
+		String uri = String.format("http://localhost:%d%s/%s", port,
+										Resources.protocol, id2v2);
+		String newURI = createEntryFromMultipartWeb(new Reference(uri), Method.PUT);
+		String newQMRF = "Q12-171A-0001";
 		IDatabaseConnection c = getConnection();
 		ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM protocol");
 		Assert.assertEquals(5, table.getRowCount());
 		table = c
 				.createQueryTable(
 						"EXPECTED",
-						"SELECT p.idprotocol,p.version,published from protocol p where p.idprotocol=2 and version=2");
+						"SELECT p.idprotocol,p.version,published,qmrf_number from protocol p where p.idprotocol=2 and version=2");
 		Assert.assertEquals(1, table.getRowCount());
 		Assert.assertEquals(Boolean.TRUE, table.getValue(0, "published"));
-
+		Assert.assertEquals(newQMRF, table.getValue(0, "qmrf_number"));
 		c.close();
+
+		Assert.assertEquals(String.format("http://localhost:%d/protocol/%s",port,newQMRF),newURI);
+		System.out.println(newURI);
 	}
 
 	@Test
@@ -204,7 +209,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		table = c
 				.createQueryTable(
 						"EXPECTED",
-						"SELECT p.idprotocol,p.version,filename,title,abstract from protocol p where p.idprotocol=2 order by version");
+						"SELECT p.idprotocol,p.version,filename,title,abstract,qmrf_number,published from protocol p where p.idprotocol=2 order by version");
 		Assert.assertEquals(3, table.getRowCount());
 		Assert.assertEquals(new BigInteger("1"), table.getValue(0, "version"));
 		Assert.assertEquals(new BigInteger("2"), table.getValue(1, "version"));
@@ -212,7 +217,8 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		Assert.assertNotSame(getTestURI(), url);
 		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(2, "title"));
 		Assert.assertNotNull(table.getValue(2, "abstract"));
-
+		Assert.assertNotSame("Q-1234-5678", table.getValue(0, "qmrf_number"));
+		Assert.assertEquals(Boolean.FALSE, table.getValue(0, "published"));
 		c.close();
 	}
 
@@ -230,7 +236,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		table = c
 				.createQueryTable(
 						"EXPECTED",
-						"SELECT abstract,p.idprotocol,p.version,filename,p.iduser,status,title,abstract from protocol p where p.idprotocol>121 order by p.iduser");
+						"SELECT abstract,p.idprotocol,p.version,filename,p.iduser,status,title,abstract,qmrf_number from protocol p where p.idprotocol>121 order by p.iduser");
 		Assert.assertEquals(1, table.getRowCount());
 		//Assert.assertEquals(new BigInteger("1"), table.getValue(0, "version"));
 		//Assert.assertEquals(new BigInteger("3"), table.getValue(0, "iduser"));
@@ -238,6 +244,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		Assert.assertEquals(STATUS.RESEARCH.toString(), table.getValue(0, "status"));
 		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(0, "title"));
 		Assert.assertNotNull(table.getValue(0, "abstract"));
+		Assert.assertNotSame("Q-1234-5678", table.getValue(0, "qmrf_number"));
 		c.close();
 	}
 
@@ -311,6 +318,10 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 				values[i] = null;
 				break;
 			}
+			case identifier: {
+				values[i] = "Q-1234-5678";
+				break;
+			}			
 			default: {
 				values[i] = field.name();
 			}
@@ -343,20 +354,20 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		}
 		if (!task.isCompletedOK())
 			System.out.println(task.getError());
+		
 		Assert.assertTrue(task
 				.getResult()
 				.toString()
 				.startsWith(
-						String.format("http://localhost:%d/protocol/%s", port,
-								DBProtocol.prefix)));
+						String.format("http://localhost:%d/protocol/", port)));
 
 		return task.getResult().toString();
 
 	}
 
 	public void testDownloadFile() throws Exception {
-		testGet(String.format("http://localhost:%d%s/%s-2-1%s", port,
-				Resources.protocol, DBProtocol.prefix, Resources.document),
+		testGet(String.format("http://localhost:%d%s/%s%s", port,
+				Resources.protocol, id2v1, Resources.document),
 				MediaType.APPLICATION_PDF);
 	}
 

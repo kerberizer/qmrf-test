@@ -34,7 +34,7 @@ public class UpdateFreeTextIndex extends AbstractObjectUpdate<DBProtocol>{
 		"'&#13;',''))\n" 	+
 		"from protocol %s on duplicate key update keywords=values(keywords) ";
 		
-	public static final String where = "where idprotocol=? and version=?";
+	public static final String where = "where qmrf_number=?";
 
 	public UpdateFreeTextIndex(DBProtocol ref) {
 		super(ref);
@@ -45,27 +45,18 @@ public class UpdateFreeTextIndex extends AbstractObjectUpdate<DBProtocol>{
 	public List<QueryParam> getParameters(int index) throws AmbitException {
 
 		List<QueryParam> params = new ArrayList<QueryParam>();
-		if ((getObject()!=null) && (getObject().getID()>0)) 
-			params.add(new QueryParam<Integer>(Integer.class, getObject().getID()));
-		if ((getObject()!=null) && (getObject().getVersion()>0)) 		
-			params.add(new QueryParam<Integer>(Integer.class, getObject().getVersion()));
+		
+		if ((getObject()!=null) && (getObject().isValidIdentifier())) 
+			params.add(new QueryParam<String>(String.class, getObject().getIdentifier()));
 		
 		return params;
 		
 	}
 
 	public String[] getSQL() throws AmbitException {
-		StringBuilder where = null;
-		if ((getObject()!=null) && (getObject().getID()>0))  {
-			 if (where==null) where = new StringBuilder();
-			 where.append("where ");
-			 where.append(" idprotocol=? ");
-		}
-		if ((getObject()!=null) && (getObject().getVersion()>0)) {	
-			if (where==null) { where = new StringBuilder();  where.append("where ");} 
-			else  where.append(" and ");
-			 where.append(" version=? ");
-		}
+		String where = null;
+		if ((getObject()!=null) && (getObject().isValidIdentifier())) 
+			 where = UpdateFreeTextIndex.where;
 	
 		return  new String[] {String.format(update_sql,where==null?"":where)};
 	}

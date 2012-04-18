@@ -49,9 +49,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 			Object key = request.getAttributes().get(FileResource.resourceKey);
 			if (key!=null)  
 			try { //add attachments to a protocol
-				int ids[] = ReadProtocol.parseIdentifier(key.toString());
-				protocol = new DBProtocol(ids[0],ids[1],ids[2]);
-				protocol.setIdentifier(ReadProtocol.generateIdentifier(protocol));
+				protocol = new DBProtocol(key.toString());
 				protocol.setResourceURL(new URL(String.format("%s%s/%s", getRequest().getRootRef(),Resources.protocol, protocol.getIdentifier())));
 				if (update_mode.newdocument.equals(mode)) mode = update_mode.attachments;
 			} catch (Exception x) {

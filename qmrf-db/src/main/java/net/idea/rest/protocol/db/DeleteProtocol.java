@@ -41,9 +41,9 @@ import net.idea.rest.protocol.DBProtocol;
 public class DeleteProtocol extends AbstractObjectUpdate<DBProtocol> {
 
 	public static final String[] delete_sql = {
-		"delete from keywords where idprotocol=? and version=?",
-		"delete from protocol_authors where idprotocol=? and version=?",
-		"delete from protocol where idprotocol=? and version=?"
+		"delete a from keywords a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=?",
+		"delete a from protocol_authors a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=?",
+		"delete from protocol where qmrf_number=?"
 		};
 
 	public DeleteProtocol(DBProtocol ref) {
@@ -53,11 +53,9 @@ public class DeleteProtocol extends AbstractObjectUpdate<DBProtocol> {
 		this(null);
 	}		
 	public List<QueryParam> getParameters(int index) throws AmbitException {
-		if (getObject()==null || getObject().getID()<=0) throw new AmbitException("No protocol id!");
-		if (getObject()==null || getObject().getVersion()<=0) throw new AmbitException("Invalid version!");
+		if (getObject()==null || !getObject().isValidIdentifier()) throw new AmbitException("No protocol identifier!");
 		List<QueryParam> params = new ArrayList<QueryParam>();
-		params.add(new QueryParam<Integer>(Integer.class, getObject().getID()));
-		params.add(new QueryParam<Integer>(Integer.class, getObject().getVersion()));
+		params.add(new QueryParam<String>(String.class, getObject().getIdentifier()));
 		
 		return params;
 		

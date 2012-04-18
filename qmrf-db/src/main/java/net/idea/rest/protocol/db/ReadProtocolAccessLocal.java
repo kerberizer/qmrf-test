@@ -40,13 +40,12 @@ public class ReadProtocolAccessLocal extends AbstractQuery<DBProtocol, String, E
 		
 		if ((getValue() == null) || (getFieldname() == null)) throw new AmbitException("Empty parameters");
 		List<QueryParam> params = new ArrayList<QueryParam>();
-		params.add(new QueryParam<Integer>(Integer.class, getFieldname().getID()));
-		params.add(new QueryParam<Integer>(Integer.class, getFieldname().getVersion()));
+		params.add(new QueryParam<String>(String.class, getFieldname().getIdentifier()));
 		return params;
 	}
 
 	public String getSQL() throws AmbitException {
-		return "select idprotocol,version,published,iduser,username from protocol join user using(iduser) where idprotocol=? and version=?";
+		return "select idprotocol,version,published,iduser,username from protocol join user using(iduser) where qmrf_number=?";
 	}
 	/**
 	 * If found, will return true always. 

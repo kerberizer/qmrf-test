@@ -37,6 +37,12 @@ import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.update.AbstractObjectUpdate;
 import net.idea.rest.protocol.DBProtocol;
 
+/**
+ * Update is one of the few queries, which still require idprotocol and version, instead of identifier.
+ * The reason is we want to be able to change the identifier.
+ * @author nina
+ *
+ */
 
 public class UpdateProtocol extends AbstractObjectUpdate<DBProtocol>{
 	private ReadProtocol.fields[] f = new ReadProtocol.fields[] {
@@ -47,10 +53,9 @@ public class UpdateProtocol extends AbstractObjectUpdate<DBProtocol>{
 			ReadProtocol.fields.idproject,
 			ReadProtocol.fields.idorganisation,
 			ReadProtocol.fields.iduser,
-			ReadProtocol.fields.status,
-			ReadProtocol.fields.published
+			ReadProtocol.fields.status
 	};
-	public static final String update_sql = "update protocol set updated=now(),%s where idprotocol=? and version=?";
+	public static final String update_sql = "update protocol set updated=now(),%s where idprotocol=? and version=? and published=false";
 
 
 	public UpdateProtocol(DBProtocol ref) {
@@ -61,10 +66,23 @@ public class UpdateProtocol extends AbstractObjectUpdate<DBProtocol>{
 	}			
 	public List<QueryParam> getParameters(int index) throws AmbitException {
 		List<QueryParam> params1 = new ArrayList<QueryParam>();
-
+		if (getObject()==null) throw new AmbitException("Empty protocol");
+		if (getObject().getID()<=0) throw new AmbitException("Invalid document ID");
+		if (getObject().getVersion()<=0) throw new AmbitException("Invalid document version");
 		for (ReadProtocol.fields field: f) 
 			if (field.getValue(getObject())!=null)
-				params1.add(field.getParam(getObject()));
+				switch (field) {
+				case identifier: {
+					 if (getObject().isValidIdentifier()) {
+						 params1.add(new QueryParam<String>(String.class, getObject().getIdentifier()));
+					 } else 
+						 throw new AmbitException(String.format("Invalid QMRF number %s",getObject().getIdentifier()));
+					break;
+				}
+				default: {
+					params1.add(field.getParam(getObject()));
+				}
+				}
 		
 		if (params1.size()==0) throw new AmbitException("Nothing to update!");
 		params1.add(ReadProtocol.fields.idprotocol.getParam(getObject()));
@@ -80,6 +98,10 @@ public class UpdateProtocol extends AbstractObjectUpdate<DBProtocol>{
 				switch (field) {
 				case anabstract: {
 					b.append(String.format("%s%s=?",d,"abstract"));
+					break;
+				}
+				case identifier: {
+					b.append(String.format("%s%s=?",d,"qmrf_number"));
 					break;
 				}
 				default: {	

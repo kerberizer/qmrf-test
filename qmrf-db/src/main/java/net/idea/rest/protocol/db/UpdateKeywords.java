@@ -12,7 +12,7 @@ import net.idea.rest.protocol.DBProtocol;
 public class UpdateKeywords extends AbstractObjectUpdate<DBProtocol>{
 
 	public static final String[] update_sql = {
-		"update protocol set abstract=UpdateXML(abstract, '//keywords', concat('<keywords>',?,'</keywords>')) where idprotocol=? and version=?"		
+		"update protocol set abstract=UpdateXML(abstract, '//keywords', concat('<keywords>',?,'</keywords>')) where qmrf_number=?"		
 		};
 
 	public UpdateKeywords(DBProtocol ref) {
@@ -26,8 +26,7 @@ public class UpdateKeywords extends AbstractObjectUpdate<DBProtocol>{
 		List<QueryParam> params = new ArrayList<QueryParam>();
 		params.add(new QueryParam<String>(String.class, 
 						ReadProtocol.fields.xmlkeywords.getValue(getObject()).toString()));
-		params.add(new QueryParam<Integer>(Integer.class, getObject().getID()));
-		params.add(new QueryParam<Integer>(Integer.class, getObject().getVersion()));		
+		params.add(new QueryParam<String>(String.class, getObject().getIdentifier()));
 		return params;
 		
 	}

@@ -18,7 +18,7 @@ public class ReadAuthor extends ReadUser<DBProtocol> {
 	 * 
 	 */
 	private static final long serialVersionUID = -2677470406987442304L;
-	private static final String join = "\njoin protocol_authors using(iduser) where ";
+	private static final String join = "\njoin protocol_authors using(iduser)\njoin protocol using(idprotocol,version) where ";
 	public ReadAuthor(DBProtocol protocol,DBUser user) {
 		super(user);
 		setFieldname(protocol);
@@ -27,10 +27,9 @@ public class ReadAuthor extends ReadUser<DBProtocol> {
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params = null;
-		if (getFieldname()==null || getFieldname().getID()<=0 || getFieldname().getVersion()<=0) throw new InvalidProtocolException();
+		if (getFieldname()==null || getFieldname().getIdentifier()==null) throw new InvalidProtocolException();
 		params = new ArrayList<QueryParam>();
-		params.add(ReadProtocol.fields.idprotocol.getParam(getFieldname()));
-		params.add(ReadProtocol.fields.version.getParam(getFieldname()));
+		params.add(ReadProtocol.fields.identifier.getParam(getFieldname()));
 		if ((getValue()!=null) && getValue().getID()>0)
 			params.add(fields.iduser.getParam(getValue()));
 		
@@ -40,15 +39,13 @@ public class ReadAuthor extends ReadUser<DBProtocol> {
 	public String getSQL() throws AmbitException {
 		if ((getValue()!=null) && (getValue().getID()>0))
 			return String.format(sql,join,
-				   String.format("%s and %s and %s",
-						   ReadProtocol.fields.idprotocol.getCondition(),
-						   ReadProtocol.fields.version.getCondition(),
+				   String.format("%s and %s",
+						   ReadProtocol.fields.identifier.getCondition(),
 						   fields.iduser.getCondition()));
 		else 
 			return String.format(sql,join,
-					String.format("%s and %s",
-							ReadProtocol.fields.idprotocol.getCondition(),
-							ReadProtocol.fields.version.getCondition()
+					String.format("%s ",
+							ReadProtocol.fields.identifier.getCondition()
 							));
 			
 	}	

@@ -3,6 +3,7 @@ package net.idea.rest.protocol.attachments;
 import java.io.File;
 import java.net.URL;
 
+import net.idea.rest.protocol.DBProtocol;
 import net.toxbank.client.resource.Document;
 
 public class DBAttachment extends Document {
@@ -52,11 +53,11 @@ public class DBAttachment extends Document {
 	}
 	
 	protected int idquerydatabase= -1;
-	protected String protocol = null;
-	public String getProtocol() {
+	protected DBProtocol protocol = null;
+	public DBProtocol getQMRFDocument() {
 		return protocol;
 	}
-	public void setProtocol(String protocol) {
+	public void setQMRFDocument(DBProtocol protocol) {
 		this.protocol = protocol;
 	}
 	public int getIdquerydatabase() {

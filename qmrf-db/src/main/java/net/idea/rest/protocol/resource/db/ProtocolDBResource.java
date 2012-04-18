@@ -192,8 +192,11 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		else {
 			editable = showCreateLink;
 			singleItem = true;
+			/*
 			int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
 			ReadProtocol query =  new ReadProtocol(id[0],id[1],id[2]);
+			*/
+			ReadProtocol query = new ReadProtocol(Reference.decode(key.toString()));
 			query.setShowUnpublished(true);
 			if (userID>0) query.setFieldname(new DBUser(userID));
 			return (Q)query;
@@ -320,8 +323,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				}
 				case qmrfnumber: {
 					try {
-						int[] ids = ReadProtocol.parseIdentifier(search.toString().trim());
-						IQueryRetrieval<DBProtocol> query = new ReadProtocol(ids[0],ids[1],ids[2]);
+						IQueryRetrieval<DBProtocol> query = new ReadProtocol(search.toString().trim());
 						editable = showCreateLink;
 						singleItem = false;				
 						return (Q)query;						
@@ -455,8 +457,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			if (key!=null) return super.createUpdateQuery(method, context, request, response);
 		} else if (Method.PUT.equals(method)) {
 			if (key!=null) {
-				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-				return (Q)new ReadProtocol(id[0],id[1],id[2]);
+				return (Q)new ReadProtocol(Reference.decode(key.toString()));
 			}
 		}
 		throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);		

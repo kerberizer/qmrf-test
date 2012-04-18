@@ -5,7 +5,6 @@ import java.io.StringReader;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 
 import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
@@ -67,7 +66,7 @@ public class ProtocolFactory {
 					try {
 						if ("on".equals(s)) {protocol.setPublished(true); break;}
 						else if ("".equals(s)) {protocol.setPublished(false); break;}
-						else if ("true".equals(s)) {protocol.setPublished(true); break;}
+						else if ("true".equals(s)) {protocol.setPublished(true);  break;}
 						else if ("false".equals(s)) {protocol.setPublished(false); break;}
 					} catch (Exception x) { 
 						protocol.setPublished(false);
@@ -114,7 +113,7 @@ public class ProtocolFactory {
 				    	QMRFObject qmrf = new QMRFObject();
 						qmrf.read(new StringReader(protocol.getAbstract()));
 						protocol.setTitle(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(0).getSubchapters().getItem(0)).getText()));
-						protocol.setIdentifier(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(0)).getText()));
+						//protocol.setIdentifier(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(0)).getText()));
 						String keywords = QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(2)).getText());
 						String[] keyword = keywords.split(",");
 						for (String key:keyword) protocol.addKeyword(key);
@@ -288,7 +287,7 @@ public class ProtocolFactory {
 		        	//generate new file name
 		        	originalName = fi.getName();
 		        	String newName = String.format("qmrf%d_%s_%s%s", protocol.getID()>0?protocol.getID():0,
-		        								type.name(),UUID.randomUUID().toString(),ext);
+		        								type.name(),DBProtocol.generateIdentifier(),ext);
 		          	file = new File(String.format("%s/%s",dir==null?System.getProperty("java.io.tmpdir"):dir,newName));
 		        }
 		        fi.write(file);

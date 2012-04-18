@@ -29,7 +29,7 @@ import org.restlet.data.Reference;
 import org.restlet.representation.Representation;
 
 public class AttachmentResourceTest extends ResourceTest {
-	
+	protected final static String id83="8f0adb53-862e-11e1-ba85-00ff3739b863";
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
@@ -38,8 +38,9 @@ public class AttachmentResourceTest extends ResourceTest {
 	}
 	@Override
 	public String getTestURI() {
-		return String.format("http://localhost:%d%s/%s-2009-83-1%s", port,Resources.protocol,
-					DBProtocol.prefix,Resources.attachment);
+		return String.format("http://localhost:%d%s/%s%s", port,
+				Resources.protocol,
+				id83,Resources.attachment);
 	}
 	
 	@Test
@@ -47,7 +48,7 @@ public class AttachmentResourceTest extends ResourceTest {
 		testGet(getTestURI(),MediaType.TEXT_URI_LIST);
 	}
 	/**
-	 * The URI should be /protocol/QMRF-200983-1/attachment
+	 * The URI should be /protocol/{id83}/attachment
 	 */
 	@Override
 	public boolean verifyResponseURI(String uri, MediaType media, InputStream in)
@@ -58,8 +59,8 @@ public class AttachmentResourceTest extends ResourceTest {
 		while ((line = r.readLine())!= null) {
 			System.out.println(line);
 			Assert.assertTrue(line.startsWith(
-					String.format("http://localhost:%d%s/%s-2009-83-1%s",port,Resources.protocol,
-							DBProtocol.prefix,Resources.attachment)
+					String.format("http://localhost:%d%s/%s%s",port,Resources.protocol,
+							id83,Resources.attachment)
 							));
 			count++;
 		}
@@ -70,7 +71,7 @@ public class AttachmentResourceTest extends ResourceTest {
 	public void testCreateEntryFromMultipartWeb() throws Exception {
 		String url = createEntryFromMultipartWeb(new Reference(getTestURI()));
 		
-		Assert.assertEquals(String.format("http://localhost:%d/protocol/QMRF-2009-83-1/attachment",port),url);
+		Assert.assertEquals(String.format("http://localhost:%d/protocol/%s/attachment",port,id83),url);
 
 		
    	    IDatabaseConnection c = getConnection();	
@@ -109,8 +110,9 @@ public class AttachmentResourceTest extends ResourceTest {
 		}
 		if (!task.isCompletedOK())
 			System.out.println(task.getError());
+		
 		Assert.assertTrue(task.getResult().toString().startsWith(
-							String.format("http://localhost:%d/protocol/%s",port,DBProtocol.prefix)));
+					String.format("http://localhost:%d/protocol/",port)));
 		
 		return task.getResult().toString();
 
@@ -128,7 +130,7 @@ public class AttachmentResourceTest extends ResourceTest {
 	
 	@Test
 	public void testImportAttachment() throws Exception {
-		Reference uri = new Reference(String.format("http://localhost:%d/protocol/QMRF-2009-83-1/attachment/A108/dataset",port));
+		Reference uri = new Reference(String.format("http://localhost:%d/protocol/%s/attachment/A108/dataset",port,id83));
 
 		IDatabaseConnection c = getConnection();	
 		ITable  table = 	c.createQueryTable("EXPECTED","SELECT idattachment,imported,name FROM attachments where idattachment=108");

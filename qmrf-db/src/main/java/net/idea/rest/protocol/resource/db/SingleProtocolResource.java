@@ -30,8 +30,7 @@ public class SingleProtocolResource  extends ProtocolDBResource<ReadProtocol> {
 		try {
 			if (key==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			else {
-				int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-				return new ReadProtocol(id[0],id[1],id[2]);
+				return new ReadProtocol(Reference.decode(key.toString()));
 			}
 		} catch (ResourceException x) {
 			throw x;

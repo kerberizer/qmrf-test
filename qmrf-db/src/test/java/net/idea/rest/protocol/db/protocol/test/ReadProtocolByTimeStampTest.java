@@ -12,13 +12,13 @@ public class ReadProtocolByTimeStampTest extends QueryTest<ReadProtocol> {
 
 	@Override
 	protected ReadProtocol createQuery() throws Exception {
-		ReadProtocol q = new ReadProtocol();
+
 		DBProtocol p = new DBProtocol();
 		p.setTimeModified(1254757473000L);//in msec
 		/**
 		 * in DB: 1241795264, 1254757473 
 		 */
-		q.setValue(p);
+		ReadProtocol q = new ReadProtocol(p);
 		return q;
 	}
 

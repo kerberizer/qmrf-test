@@ -36,10 +36,10 @@ public class ReadAttachment extends AbstractQuery<DBProtocol, DBAttachment, EQCo
 		id_srcdataset
 	}
 	protected static String sql = 
-		"SELECT idprotocol,version,protocol.created,idattachment,type,a.name,`format`,description,a1.name is not null as imported,id_srcdataset FROM protocol\n" +
+		"SELECT idprotocol,version,qmrf_number,protocol.created,idattachment,type,a.name,`format`,description,a1.name is not null as imported,id_srcdataset,published,title FROM protocol\n" +
 		"join attachments a using(idprotocol,version)\n" +
 		"left join `ambit2-qmrf`.src_dataset a1 using(name) where %s ";
-	protected static String where_protocol = "idprotocol=? and version=?";
+	protected static String where_protocol = "protocol.qmrf_number=?";
 	protected static String where_attachment = "idattachment=?";
 	protected static String where_datasetname = "a.name=?";
 	protected static String where_datasetid = "a1.idsrcdatset=?";
@@ -61,11 +61,13 @@ and idchemical=282
 		setFieldname(protocol);
 		this.dir = dir;
 	}
+	/*
 	public ReadAttachment(Integer id, Integer version,Integer year, String dir) {
 		super();
 		setFieldname(id==null?null:new DBProtocol(id,version,year));
 		this.dir = dir;
 	}
+	*/
 	public ReadAttachment(String dir) {
 		this((DBProtocol)null,dir);
 	}
@@ -81,8 +83,7 @@ and idchemical=282
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();
 		if (getFieldname()!=null) {
-			params.add(fields.idprotocol.getParam(getFieldname()));
-			params.add(fields.version.getParam(getFieldname()));
+			params.add(fields.identifier.getParam(getFieldname()));
 		} 
 		if ((getValue()!=null)&&(getValue().getID()>0))
 			params.add(new QueryParam<Integer>(Integer.class, getValue().getID()));
@@ -132,9 +133,12 @@ and idchemical=282
 				try {
 					protocol.setID(rs.getInt(ReadProtocol.fields.idprotocol.name()));
 					protocol.setVersion(rs.getInt(ReadProtocol.fields.version.name()));
+					protocol.setPublished(rs.getBoolean(ReadProtocol.fields.published.name()));
+					protocol.setTitle(rs.getString(ReadProtocol.fields.title.name()));
+					protocol.setIdentifier(rs.getString("qmrf_number"));
 					Timestamp ts = rs.getTimestamp(ReadProtocol.fields.created.name());
 					protocol.setSubmissionDate(ts.getTime());
-					attachment.setProtocol(ReadProtocol.generateIdentifier(protocol));
+					attachment.setQMRFDocument(protocol);
 				} catch (Exception x) {
 					x.printStackTrace();
 					

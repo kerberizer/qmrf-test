@@ -232,15 +232,15 @@ public class StructureResource extends CatalogResource<Structure> {
 			conn = dbc.getConnection();
 			exec.setConnection(conn);
 			for (String aKey : attachmentKey) {
-				if ((aKey!=null) && aKey.toString().startsWith("A")) {
+				if (aKey==null) continue;
+				if (aKey.toString().startsWith("A")) {
 					attachment.setID(new Integer(Reference.decode(aKey.toString().substring(1))));
 					query.setFieldname(null);
 					query.setValue(attachment);
-				} else 	if ((aKey!=null) && aKey.toString().startsWith(DBProtocol.prefix)) {
-					int[] ids = ReadProtocol.parseIdentifier(aKey);
-					query.setFieldname(new DBProtocol(ids[0],ids[1],ids[2]));
+				} else {
+					query.setFieldname(new DBProtocol(Reference.decode(aKey.toString())));
 					query.setValue(null);
-				} else continue;
+				} 
 				ResultSet rs = exec.process(query);
 				while (rs.next()) {
 					DBAttachment a = query.getObject(rs);
@@ -276,18 +276,18 @@ public class StructureResource extends CatalogResource<Structure> {
 			conn = dbc.getConnection();
 			exec.setConnection(conn);
 			for (String aKey : modelsKey) {
-				if ((aKey!=null) && aKey.toString().startsWith("M")) {
+				if (aKey==null) continue;
+				if (aKey.toString().startsWith("M")) {
 					query = new ReadModel();
 					model.setID(new Integer(Reference.decode(aKey.toString().substring(1))));
 					((ReadModel)query).setValue(model);
 					((ReadModel)query).setModelRoot(queryService+"/model");
-				} else 	if ((aKey!=null) && aKey.toString().startsWith(DBProtocol.prefix)) {
+				} else  {
 					query = new ReadModelQuery();
-					int[] ids = ReadProtocol.parseIdentifier(aKey);
-					((ReadModelQuery)query).setFieldname(new DBProtocol(ids[0],ids[1],ids[2]));
+					((ReadModelQuery)query).setFieldname(new DBProtocol(aKey));
 					((ReadModelQuery)query).setValue(null);
 					((ReadModelQuery)query).setModelRoot(queryService+"/model");
-				} else continue;
+				}
 				ResultSet rs = exec.process(query);
 				while (rs.next()) {
 					DBModel a = query.getObject(rs);

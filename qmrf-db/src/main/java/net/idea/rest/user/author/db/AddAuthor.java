@@ -17,34 +17,30 @@ import net.idea.rest.user.DBUser;
  * @author nina
  *
  */
-public class AddAuthor  extends AbstractUpdate<DBProtocol,DBUser> {
-	public static final String sql_addAuthor = "insert ignore into protocol_authors (idprotocol,version,iduser) values ";
-	protected static final String[] sql = new String[] {
-		String.format("%s (?,?,?)",sql_addAuthor)
-		};
+public class AddAuthor  extends AbstractUpdate<DBUser,DBProtocol> {
+	public static final String[] sql_addAuthor = new String[] { 
+		"insert ignore into protocol_authors (idprotocol,version,iduser) select idprotocol,version,? from protocol where qmrf_number=?"
+	};
 	
-	public AddAuthor(DBProtocol protocol,DBUser author) {
-		super(author);
-		setGroup(protocol);
+	public AddAuthor(DBUser author,DBProtocol protocol) {
+		super(protocol);
+		setGroup(author);
 	}
 	public AddAuthor() {
 		this(null,null);
 	}		
 	public List<QueryParam> getParameters(int index) throws AmbitException {
-		if (getObject()==null || getObject().getID()<=0) throw new InvalidUserException();
-		if (getGroup()==null || getGroup().getID()<=0 || getGroup().getVersion()<=0) throw new InvalidProtocolException();
+		if (getGroup()==null || getGroup().getID()<=0) throw new InvalidUserException();
+		if (getObject()==null || getObject().getIdentifier()==null) throw new InvalidProtocolException();
 		List<QueryParam> params = new ArrayList<QueryParam>();
 		params.add(new QueryParam<Integer>(Integer.class, getGroup().getID()));
-		params.add(new QueryParam<Integer>(Integer.class, getGroup().getVersion()));
-		params.add(new QueryParam<Integer>(Integer.class, getObject().getID()));
+		params.add(new QueryParam<String>(String.class, getObject().getIdentifier()));
 		return params;
 		
 	}
 
 	public String[] getSQL() throws AmbitException {
-		if (getObject()==null || getObject().getID()<=0) throw new InvalidUserException();
-		if (getGroup()==null || getGroup().getID()<=0 || getGroup().getVersion()<=0) throw new InvalidProtocolException();
-		return sql;
+		return sql_addAuthor;
 	}
 	public void setID(int index, int id) {
 			

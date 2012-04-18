@@ -6,6 +6,7 @@ import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.ReadProtocolVersions;
+import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.protocol.db.test.QueryTest;
 
 
@@ -14,7 +15,7 @@ public class ReadProtocolVersionTest extends QueryTest<ReadProtocol> {
 
 	@Override
 	protected ReadProtocol createQuery() throws Exception {
-		return new ReadProtocolVersions(2,2009);
+		return new ReadProtocolVersions(CRUDTest.id2v1);
 	}
 
 	@Override

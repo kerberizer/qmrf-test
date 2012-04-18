@@ -19,6 +19,7 @@ $mysql -uroot -p
 
 create database qmrf;
 GRANT ALL ON qmrf.* TO 'guest'@'localhost';
+GRANT TRIGGER ON qmrf.* TO 'guest'@'localhost';
 use qmrf;
 source qmrf.sql;
 

@@ -52,7 +52,7 @@ import net.idea.modbcum.p.AbstractDBProcessor;
  */
 public class DbCreateDatabase extends AbstractDBProcessor<String,String> {
 	
-	public final static String version = "2.1";
+	public final static String version = "2.2";
 	
     /**
 	 */
@@ -81,6 +81,7 @@ public class DbCreateDatabase extends AbstractDBProcessor<String,String> {
 		} catch (AmbitException x) {
 			throw x;
 		} catch (Exception x) {
+			x.printStackTrace();
 			throw new AmbitException(x);
 		}
 		
@@ -237,6 +238,7 @@ public class DbCreateDatabase extends AbstractDBProcessor<String,String> {
                         
                         if (line.trim().toUpperCase().startsWith("END "+delimiter)) {
                             table.append("END");
+                            delimiter = ";";
                             int ok = t.executeUpdate(table.toString());
                             logger.debug(table.toString());
                             table = new StringBuffer();                            
