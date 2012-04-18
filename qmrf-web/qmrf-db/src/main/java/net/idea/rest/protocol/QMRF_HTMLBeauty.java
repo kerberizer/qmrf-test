@@ -2,6 +2,8 @@ package net.idea.rest.protocol;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
@@ -404,13 +406,15 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				));
 			}
 			
-			String myProfile=null;
+			List<String> myProfile= new ArrayList<String>();
 			String unpublishedDoc = null;
 			
 			for (Role role: request.getClientInfo().getRoles()) try {
 				QMRFRoles qmrfrole = QMRFRoles.valueOf(role.getName());
-				if (qmrfrole.getURI()!=null)
-					myProfile = printMenuItem(qmrfrole.getURI(), qmrfrole.toString(), baseReference.toString(),null,qmrfrole.getHint());
+				if (qmrfrole.getURI()!=null) {
+					String myself = printMenuItem(qmrfrole.getURI(), qmrfrole.toString(), baseReference.toString(),null,qmrfrole.getHint());
+					if (myProfile.indexOf(myself)<0) myProfile.add(myself);
+				}	
 				switch (qmrfrole) {
 					case qmrf_manager: {
 						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),null,"All registered users."));
@@ -428,7 +432,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				}
 			} catch (Exception x) {/* unknown role */}
 				
-			if (myProfile!=null) w.write(myProfile);
+			if (myProfile!=null) for (String myself: myProfile) w.write(myself);
 			
 			if (unpublishedDoc!=null) w.write(unpublishedDoc);
 			
