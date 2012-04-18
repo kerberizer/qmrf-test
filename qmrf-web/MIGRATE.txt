@@ -1,182 +1,83 @@
-How to migrate old 'qmrf_documents' database to a new qmrf database.
+This is a list of actions for setting up (or upgrading to) the latest version of the QSAR Model Reporting Format Inventory database.
 
-The most recent versions of SQL scripts are available at 
-https://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/qmrf.sql
-https://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/migrate.sql
+1) Please skip this step if you have an existing database instance named qmrf_documents. If qmrf_documents does not exist, run the following commands in a mysql console:
 
-0. If the old qmrf_documents already exists, skip this step. 
-Create the old database by running the create.sql script in mysql console.
-$mysql -uroot -p
-
+mysql -uroot -p
 create database qmrf_documents;
 GRANT ALL ON `qmrf_documents`.* TO 'guest'@'localhost';
 use qmrf_documents;
 source `qmrf_documents-20120217.sql`;
 
+Please note that the file qmrf_documents-20120217.sql should contain the most recent dump of the old qmrf_documents database and should be located in the current folder.
 
-1. Create new qmrf database in mysql console 
-$mysql -uroot -p
+2) Create the new qmrf database, set up corresponding grants and create the tables that are required. Download the qmrf.sql script from:
 
-create database qmrf;
+http://sourceforge.net/p/qmrf/code/125/tree/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/qmrf.sql?format=raw
+
+Run the following commands in a mysql console:
+
+mysql -uroot -p
+create database qmrf character set utf8;
 GRANT ALL ON qmrf.* TO 'guest'@'localhost';
-GRANT TRIGGER ON qmrf.* TO 'guest'@'localhost';
 use qmrf;
 source qmrf.sql;
 
-The output should look like as :
+Please note that the file qmrf.sql should be located in the current folder.
 
-----------------------------
-mysql> create database qmrf;
-Query OK, 1 row affected (0.00 sec)
+3) Migrate the content from the old database (qmrf_documents) into the new one (qmrf). Download the migrate.sql script from:
 
-mysql> GRANT ALL ON qmrf.* TO 'guest'@'localhost';
-Query OK, 0 rows affected (0.00 sec)
+http://sourceforge.net/p/qmrf/code/125/tree/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/migrate.sql?format=raw
 
-mysql> use qmrf;
-Database changed
-mysql> source qmrf.sql;
-Query OK, 0 rows affected, 1 warning (0.00 sec)
+Run the following commands in a mysql console:
 
-Query OK, 0 rows affected (0.03 sec)
-
-Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-Query OK, 0 rows affected (0.03 sec)
-
-Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-Query OK, 0 rows affected (0.03 sec)
-
-Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-Query OK, 0 rows affected (0.03 sec)
-
-Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-Query OK, 0 rows affected (0.03 sec)
-
-Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-Query OK, 0 rows affected (0.06 sec)
-
-Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-Query OK, 0 rows affected (0.02 sec)
-
-Query OK, 0 rows affected (0.03 sec)
-
-Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-Query OK, 0 rows affected (0.00 sec)
-
-Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-Query OK, 0 rows affected (0.01 sec)
-
-Query OK, 1 row affected (0.00 sec)
-
-Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-Query OK, 0 rows affected (0.00 sec)
-
-mysql>
-----------------------------
-
-2. Migrate the old content, by running 'migrate.sql' script in mysql console.  The script assumes both databases 'qmrf_documents.sql' and 'qmrf.sql' 
-exist.
-
+$mysql -uroot -p
 use qmrf;
 source migrate.sql;
 
-----------------------------
-mysql> use qmrf
-Database changed
-mysql> source migrate.sql
-Database changed
-Query OK, 0 rows affected (0.00 sec)
+Please note that the file migrate.sql should be located in the current folder.
 
-Query OK, 1 row affected (0.00 sec)
-
-Query OK, 60 rows affected (0.01 sec)
-Records: 60  Duplicates: 0  Warnings: 0
-
-Query OK, 39 rows affected (0.00 sec)
-Records: 39  Duplicates: 0  Warnings: 0
-
-Query OK, 132 rows affected (0.03 sec)
-Records: 121  Duplicates: 11  Warnings: 0
-
-Query OK, 149 rows affected (0.00 sec)
-Records: 149  Duplicates: 0  Warnings: 0
-
-Query OK, 153 rows affected (0.51 sec)
-Records: 153  Duplicates: 0  Warnings: 0
-
-Query OK, 70 rows affected (0.01 sec)
-Records: 70  Duplicates: 0  Warnings: 0
-
-Query OK, 276 rows affected (0.03 sec)
-Records: 277  Duplicates: 1  Warnings: 0
-
-----------------------------
-
-2. Migrate chemical structures database.  Run  `ambit2-qmrf.sql` in mysql console:
+4) Create the chemical structures database, populate it with data and set up associated grants. Run the following commands in a mysql console:
 
 $mysql -uroot -p
 source ambit2-qmrf.sql;
-
-On success the following command will list all training and validation datasets, imported in the chemical structure database.
-
-mysql> select name from src_dataset;
-+----------------------------------------------------------+
-| name                                                     |
-+----------------------------------------------------------+
-...
-| qmrf83_Mutagenicity training                             |
-+----------------------------------------------------------+
-59 rows in set (0.00 sec)
-
-Run
 GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'localhost';
 
-3. Migrate users database (skip this steps , if it already exists).
+Please note that the file ambit2-qmrf.sql is provided in this archive and should be placed in the current folder.
 
-mysql> create database tomcat_users;
-Query OK, 1 row affected (0.00 sec)
+5) Please skip this step if the tomcat_users database exists already. If the tomcat_users database does not exist, run the following commands in a mysql console:
 
-mysql> use tomcat_users;
-Database changed
-mysql> source tomcat_users.sql
+$mysql -uroot -p
+create database tomcat_users;
+use tomcat_users;
+source tomcat_users.sql;
+GRANT ALL ON `tomcat_users`.* TO 'guest'@'localhost';
 
+Please note that the file tomcat_users.sql is provided in this archive and should be placed in the current folder.
 
-4. Deploy qmrfdata.war Open   http://yourhost:port/qmrfdata/dataset with a browser; it should display the training and validation datasets.
+6) Deploy the qmrfdata.war in your Tomcat instance. Open the following URI in your browser:
 
-5. Deploy qmrf.war.  Open   http://yourhost:port/qmrf with a browser; it should display the first 10 QMRF documents.
+http://yourhost:port/qmrfdata/dataset
 
-If the migration has been successful,  http://yourhost:port/qmrf/admin/database will show
+The browser should display the training and validation datasets.
 
-DB name	qmrf
-Version	2.0
-Created	2012
-Note	QMRF schema
+7) Undeploy the old qmrf.war and deploy the new qmrf.war (included in this archive) in your Tomcat instance. Open the following URI in your browser:
 
-6. Configuration
+http://yourhost:port/qmrf
 
-{tomcat-dir}/webapps/qmrf/WEB-INF/classes/config/qmrf.properties
+The browser should display the first 10 QMRF documents.
 
-#Use OpenSSO service for authentication and authorisation - true or false
-qmrf_openssso_protected=false
-#File path to store attachments_ If null will use the temp folder <<<< REPLACE with the folder where attachments are stored
-qmrf_attachments_dir=/tmp/qmrf/attachments  
-#URI of Ambit web service to store and query structures and data via OpenTox REST API
-#Can be downloaded by http://ambit_sf_net
-#If not defined, query by structure will not be available
-qmrf_ambit_service=https://ambit.uni-plovdiv.bg:8443/qmrfdata  <<<< REPLACE with http://yourhost:port/qmrfdata/
-#If not OpenSSO protected, will have POST/PUT/DELETE enabled only for admin user with this password
-qmrf_admin_password=admin
-#Allow connections to SSL sites without certs (similar to curl -k option)
-insecure=true
-#google.analytics code
-google_analytics=XYZ
- 
+8) Change some configuration settings for the qmrf web application (required only if your setup differs from the defaults). Open and edit the {tomcat-dir}/webapps/qmrf/WEB-INF/classes/config/qmrf.properties file.
 
+#File path to store attachments. If null will use the temp folder <<<< REPLACE with the folder where attachments are stored (you could reuse the existing folder from your previous setup; please note that Tomcat should have read and write access to this folder;
+qmrf_attachments_dir=/srv/qmrf-docs
+
+#If not defined correctly, query by structure will not be available
+qmrf_ambit_service=http://qsardb.jrc.it/qmrfdata  <<<< REPLACE with http://yourhost:port/qmrfdata/ where yourhost is the fully qualified domain name of the host, running the Tomcat instance in which the qmrfdata web application hase been deployed.
+
+Please note that you should restart Tomcat to make sure that the config changes you've eventually made are reflected.
+
+9) Optionally remove old databases which are not needed anymore. You might want to ensure that you have recent dumps of these databases before droping them. Run the following commands in a mysql console:
+
+mysql -uroot -p
+drop database qmrf_documents;
+drop database ambit_qmrf;
