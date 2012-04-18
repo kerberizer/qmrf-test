@@ -56,5 +56,6 @@
   <dictionary idsubject="9" relationship="is_a" idobject="1"/>
   <dictionary idsubject="10" relationship="is_a" idobject="1"/>
   
-
+	<alert idquery="1" name="cell" query="cell" qformat="FREETEXT" rfrequency="daily" rinterval="1" iduser="3" sent="2012-01-16 09:30:51.000000000"/>
+  <alert idquery="2" name="toxicity" query="toxicity" qformat="FREETEXT" rfrequency="weekly" rinterval="1" iduser="3" sent="2012-01-16 09:30:51.000000000"/>
 </dataset>

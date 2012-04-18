@@ -2,15 +2,25 @@ package net.idea.rest.user;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
+import net.idea.rest.user.alerts.db.DBAlert;
 import net.toxbank.client.resource.User;
 
 import org.restlet.routing.Template;
 
 public class DBUser extends User {
+	protected List<DBAlert> alerts;
+	
+	public List<DBAlert> getAlerts() {
+		return alerts;
+	}
+	public void setAlerts(List<DBAlert> alerts) {
+		this.alerts = alerts;
+	}
 	public enum fields {
 		iduser {
 			@Override
@@ -89,6 +99,7 @@ public class DBUser extends User {
 	protected int id=-1;
 	protected String keywords;
 	protected boolean reviewer = false;
+	
 	public String getKeywords() {
 		return keywords;
 	}
