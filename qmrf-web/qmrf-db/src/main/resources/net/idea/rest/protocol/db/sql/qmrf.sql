@@ -194,20 +194,6 @@ CREATE TABLE  `version` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 insert into version (idmajor,idminor,comment) values (2,2,"QMRF schema");
 
-
------------------------------------------------------
- Trigger 
------------------------------------------------------
-DELIMITER $$
-CREATE TRIGGER draft_qmrfnumber AFTER INSERT ON protocol
- FOR EACH ROW BEGIN
-   IF isnull(NEW.qmrf_number) THEN
-        UPDATE protocol set qmrf_number = concat('DRAFT-',year(NEW.created),'-',LAST_INSERT_ID(),'-',NEW.version) where idprotocol=LAST_INSERT_ID();
-	END IF;
- END $$
-DELIMITER ;
-
-
 -- -----------------------------------------------------
 -- Create new protocol version
 -- -----------------------------------------------------
