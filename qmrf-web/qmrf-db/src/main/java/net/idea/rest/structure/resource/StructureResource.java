@@ -57,7 +57,7 @@ public class StructureResource extends CatalogResource<Structure> {
 		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
 		//parameters.setDatasets(form.getValuesArray("dataset"));
 		String search = form.getFirstValue(QueryResource.search_param) == null ? ""
-				: form.getFirstValue(QueryResource.search_param);
+				: form.getFirstValue(QueryResource.search_param).trim();
 		
 		if ((search == null) || "".equals(search))	search="benzene"; //let's have a default
 		
