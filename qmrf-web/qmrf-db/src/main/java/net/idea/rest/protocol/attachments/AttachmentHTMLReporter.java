@@ -42,7 +42,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 			String qmrf = ReadProtocol.generateIdentifier(protocol);
 			
 			((AttachmentURIReporter)uriReporter).setPrefix(String.format("%s/%s",Resources.protocol,qmrf));
-			setTitle(String.format("<a href='%s%s/%s'>%s</a> attachment",request.getRootRef(),Resources.protocol,qmrf,qmrf));
+			setTitle(String.format("<a href='%s%s/%s'>%s</a> attachment",request.getRootRef(),Resources.protocol,qmrf,protocol.getVisibleIdentifier()));
 			uploadUI = String.format("<a href='%s%s/%s' target='upload'>%s</a>",request.getRootRef(),Resources.editor,qmrf,"Add attachment(s)");
 		} else {
 			setTitle("Attachment");

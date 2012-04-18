@@ -78,8 +78,7 @@ public class UnpublishedProtocolsResource<Q extends IQueryRetrieval<DBProtocol>>
 		else {
 			editable = showCreateLink;
 			singleItem = true;
-			int id[] = ReadProtocol.parseIdentifier(Reference.decode(key.toString()));
-			ReadProtocol query =  new ReadProtocol(id[0],id[1],id[2]);
+			ReadProtocol query =  new ReadProtocol(Reference.decode(key.toString()));
 			query.setShowUnpublished(true);
 			if (userID>0) query.setFieldname(new DBUser(userID));
 			return (Q)query;

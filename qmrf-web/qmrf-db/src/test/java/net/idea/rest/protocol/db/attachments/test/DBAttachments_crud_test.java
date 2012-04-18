@@ -27,7 +27,7 @@ public class DBAttachments_crud_test  extends CRUDTest<DBProtocol,DBAttachment> 
 	@Override
 	protected IQueryUpdate<DBProtocol,DBAttachment> deleteQuery()
 			throws Exception {
-		return new DeleteAttachment(new DBAttachment(108),new DBProtocol(83,1,2009));
+		return new DeleteAttachment(new DBAttachment(108),new DBProtocol(id83v1));
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class DBAttachments_crud_test  extends CRUDTest<DBProtocol,DBAttachment> 
 	@Override
 	protected IQueryUpdate<DBProtocol, DBAttachment> createQuery()
 			throws Exception {
-		DBProtocol protocol = new DBProtocol(2,1,2009);
+		DBProtocol protocol = new DBProtocol(id2v1);
 		URL url = getClass().getClassLoader().getResource("net/idea/qmrf/test");
 		DBAttachment attachment = DBAttachment.file2attachment(new File(url.getFile()), "Description", url.getFile(), attachment_type.document);
 		return new AddAttachment(protocol, attachment);
@@ -58,7 +58,7 @@ public class DBAttachments_crud_test  extends CRUDTest<DBProtocol,DBAttachment> 
 	@Override
 	protected IQueryUpdate<DBProtocol, DBAttachment> createQueryNew()
 			throws Exception {
-		DBProtocol protocol = new DBProtocol(2,1,2009);
+		DBProtocol protocol = new DBProtocol(id2v1);
 		URL url = getClass().getClassLoader().getResource("net/idea/qmrf/Training.sdf");
 		DBAttachment attachment = DBAttachment.file2attachment(new File(url.getFile()), "Description", url.getFile(), attachment_type.data_training);
 		return new AddAttachment(protocol, attachment);

@@ -1,7 +1,11 @@
 use qmrf;
 GRANT ALL ON qmrf.* TO 'guest'@'localhost';
+GRANT TRIGGER ON qmrf.* TO 'guest'@'localhost';
+GRANT ALL ON qmrf.* TO 'guest'@'127.0.0.1';
+GRANT TRIGGER ON qmrf.* TO 'guest'@'127.0.0.1';
+
 -- project
-insert into qmrf.project values(1,"N/A",null,null);
+insert into qmrf.project values(1,"Default",null,null);
 
 -- organisation
 insert ignore into qmrf.organisation
@@ -27,10 +31,10 @@ insert ignore into qmrf.user_organisation
 SELECT iduser,idorganisation,1 FROM `user` join organisation on user.institute=organisation.name;
 
 -- documents
-insert ignore into protocol
-SELECT ifnull(idqmrf_origin,idqmrf),version,qmrf_title,xml,true,
+insert into protocol
+SELECT ifnull(idqmrf_origin,idqmrf),version,ifnull(qmrf_title,uuid()),ifnull(qmrf_number,uuid()),xml,true,
 u.iduser,
-1,idorganisation,qmrf_number,null,"RESEARCH",1,updated,updated,status='published'
+1,idorganisation,qmrf_number,null,"RESEARCH",updated,updated,status='published'
 FROM qmrf_documents.documents docs, qmrf.`user` u, qmrf.`user_organisation` org
 where
 docs.user_name=u.username
@@ -81,6 +85,7 @@ description,type,olda.updated,format,original_name,imported
 from qmrf_documents.documents docs
 join qmrf_documents.attachments olda using(idqmrf);
 
+update qmrf.attachments set name = replace(name,"#","N");
 
 -- attachments - to retrieve files from 
 -- SELECT concat("curl \"http://qsardb.jrc.it/qmrf/download_attachment.jsp?name=",replace(name," ","+"),"\" 1>  \"qmrf\\",type,"\\\"",name,"'")

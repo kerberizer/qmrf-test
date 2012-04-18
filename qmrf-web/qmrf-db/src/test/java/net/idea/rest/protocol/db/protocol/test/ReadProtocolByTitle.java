@@ -13,8 +13,7 @@ public class ReadProtocolByTitle  extends QueryTest<ReadProtocol> {
 	protected ReadProtocol createQuery() throws Exception {
 		DBProtocol p = new DBProtocol();
 		p.setTitle("mutagenicity");
-		ReadProtocol query = new ReadProtocol();
-		query.setValue(p);
+		ReadProtocol query = new ReadProtocol(p);
 		return query;
 	}
 

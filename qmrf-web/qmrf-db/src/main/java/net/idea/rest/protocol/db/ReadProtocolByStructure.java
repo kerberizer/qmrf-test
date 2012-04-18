@@ -33,7 +33,7 @@ public class ReadProtocolByStructure extends ReadProtocolAbstract<Structure> {
 		//ReadProtocol.fields.accesslevel
 	};	
 	protected static String sql = 
-		"select protocol.idprotocol,protocol.version,protocol.title,abstract as anabstract,iduser,\n"+
+		"select protocol.idprotocol,protocol.version,protocol.title,protocol.qmrf_number,abstract as anabstract,iduser,\n"+
 		"summarySearchable,idproject,idorganisation,filename,template,protocol.updated,status,\n"+
 		"protocol.`created`,published\n"+
 		"from protocol,attachments a, `ambit2-qmrf`.src_dataset q\n"+
@@ -54,34 +54,5 @@ public class ReadProtocolByStructure extends ReadProtocolAbstract<Structure> {
 		return sql;
 
 	}
-	
-	public DBProtocol getObject(ResultSet rs) throws AmbitException {
-		DBProtocol p = null;
-		try {
-			p =  new DBProtocol();
-			for (fields field:ReadProtocolByStructure.sqlFields) try {
-				field.setParam(p,rs);
-				
-			} catch (Exception x) {
-				x.printStackTrace();
-			}
-			try {
-				Timestamp ts = rs.getTimestamp(fields.updated.name());
-				p.setTimeModified(ts.getTime());
-			} catch (Exception x) {}
-			try {
-				Timestamp ts = rs.getTimestamp(fields.created.name());
-				p.setSubmissionDate(ts.getTime());
-			} catch (Exception x) {
-				x.printStackTrace();
-				
-			}
-			return p;
-		} catch (Exception x) {
-			x.printStackTrace();
-			return null;
-		} finally {
-			if (p!=null) p.setIdentifier(ReadProtocol.generateIdentifier(p));
-		}
-	}	
+
 }

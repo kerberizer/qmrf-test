@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 
 import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
+import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.protocol.db.test.QueryTest;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.author.db.ReadAuthor;
@@ -13,7 +14,7 @@ public class ReadProtocolAuthorsTest extends QueryTest<ReadAuthor> {
 
 	@Override
 	protected ReadAuthor createQuery() throws Exception {
-		return new ReadAuthor(new DBProtocol(83,1,2009),null);
+		return new ReadAuthor(new DBProtocol(CRUDTest.id83v1),null);
 	}
 
 	@Override

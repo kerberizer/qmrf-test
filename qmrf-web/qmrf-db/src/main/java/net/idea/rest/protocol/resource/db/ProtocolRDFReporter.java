@@ -114,7 +114,7 @@ public class ProtocolRDFReporter<Q extends IQueryRetrieval<DBProtocol>> extends 
 						
 		
 			String uri = uriReporter.getURI(item);
-			output.setNsPrefix(item.getIdentifier(), String.format("%s/",uri));
+			//output.setNsPrefix(item.getIdentifier(), String.format("%s/",uri));
 			item.setResourceURL(new URL(uri));
 			//no local file names should be serialized!
 			//if (item.getDocument()!=null) item.getDocument().setResourceURL(new URL(String.format("%s%s",uri,Resources.document)));

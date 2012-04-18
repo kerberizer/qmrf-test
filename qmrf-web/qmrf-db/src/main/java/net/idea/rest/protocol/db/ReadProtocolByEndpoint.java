@@ -36,33 +36,5 @@ public class ReadProtocolByEndpoint extends ReadProtocolAbstract<String> {
 
 	}
 	
-	public DBProtocol getObject(ResultSet rs) throws AmbitException {
-		DBProtocol p = null;
-		try {
-			p =  new DBProtocol();
-			for (fields field:ReadProtocolByStructure.sqlFields) try {
-				field.setParam(p,rs);
-				
-			} catch (Exception x) {
-				x.printStackTrace();
-			}
-			try {
-				Timestamp ts = rs.getTimestamp(fields.updated.name());
-				p.setTimeModified(ts.getTime());
-			} catch (Exception x) {}
-			try {
-				Timestamp ts = rs.getTimestamp(fields.created.name());
-				p.setSubmissionDate(ts.getTime());
-			} catch (Exception x) {
-				x.printStackTrace();
-				
-			}
-			return p;
-		} catch (Exception x) {
-			x.printStackTrace();
-			return null;
-		} finally {
-			if (p!=null) p.setIdentifier(ReadProtocol.generateIdentifier(p));
-		}
-	}	
+	
 }

@@ -47,10 +47,12 @@ public class ReadModelQuery extends AbstractQuery<DBProtocol, Algorithm, EQCondi
 		super();
 		setFieldname(protocol);
 	}
+	/*
 	public ReadModelQuery(Integer id, Integer version,Integer year, String dir) {
 		super();
 		setFieldname(id==null?null:new DBProtocol(id,version,year));
 	}
+	*/
 	public ReadModelQuery() {
 		this((DBProtocol)null);
 	}
@@ -67,8 +69,7 @@ public class ReadModelQuery extends AbstractQuery<DBProtocol, Algorithm, EQCondi
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();
 		if (getFieldname()!=null) {
-			params.add(fields.idprotocol.getParam(getFieldname()));
-			params.add(fields.version.getParam(getFieldname()));
+			params.add(fields.identifier.getParam(getFieldname()));
 		} 
 		if (getValue()!=null)
 			params.add(new QueryParam<String>(String.class, getValue().getResourceURL().toExternalForm()));

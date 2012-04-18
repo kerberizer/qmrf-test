@@ -681,13 +681,13 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				String hint = "<p>Upload a QMRF XML file, complying to <a href='http://qmrf.sf.net/qmrf.dtd' target='help'>QMRF DTD</a> schema. The QMRF Editor can be downloaded from <a href='http://qmrf.sf.net' target='help'>http://qmrf.sf.net</a>. </p> ";
 				switch (mode) {
 				case attachments: {
-					header = String.format("%s to <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier());
+					header = String.format("%s to <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getVisibleIdentifier());
 					form = String.format("<form method='%s' action=\"%s\" ENCTYPE=\"multipart/form-data\">","POST",action);
 					hint = "<p>All files are optional, you could select any combination of attachment type(s) to upload.</p>";
 					break;
 				}
 				case update : {
-					header = String.format("%s QMRF XML file of <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier());
+					header = String.format("%s QMRF XML file of <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getVisibleIdentifier());
 					form = String.format("<form method='%s' action=\"%s\" ENCTYPE=\"multipart/form-data\">","PUT",protocol.getResourceURL());
 					break;
 				}

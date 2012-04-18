@@ -13,8 +13,8 @@ import net.idea.rest.protocol.attachments.DBAttachment;
 public class AddAttachment extends AbstractUpdate<DBProtocol,DBAttachment>{
 	public static final String[] create_sql = {
 		"insert into attachments " +
-		"(idattachment,idprotocol,version,name,description,type,updated,format,original_name,imported)\n"+
-		"values (null,?,?,?,?,?,now(),?,?,?)"
+		//"(idattachment,idprotocol,version,name,description,type,updated,format,original_name,imported)\n"+
+		"SELECT null,idprotocol,version,?,?,?,now(),?,?,? from protocol where qmrf_number=?"
 	};
 
 	public AddAttachment(DBProtocol protocol,DBAttachment attachment) {
@@ -26,8 +26,10 @@ public class AddAttachment extends AbstractUpdate<DBProtocol,DBAttachment>{
 		List<QueryParam> params = new ArrayList<QueryParam>();
 		for (AttachmentFields field : AttachmentFields.values()) 
 			if (AttachmentFields.idattachment.equals(field)) continue;
+			else if (AttachmentFields.idprotocol.equals(field)) continue;
+			else if (AttachmentFields.version.equals(field)) continue;
 			else params.add(field.getParam(this));
-		
+		params.add(new QueryParam<String>(String.class, getGroup().getIdentifier()));
 		return params;
 	}
 

@@ -160,11 +160,8 @@ public class UserResourceTest extends ResourceTest {
 				MediaType.TEXT_URI_LIST, new UrlEncodedFormEntity(formparams, "UTF-8"),
 				Method.POST);
 		//wait to complete
-		while (!task.isDone()) {
-			task.poll();
-			Thread.sleep(100);
-			Thread.yield();
-		}
+		task.waitUntilCompleted(Integer.MAX_VALUE);
+
 		Assert.assertTrue(task.getResult().toString().startsWith(String.format("http://localhost:%d/user/U",port)));
 
         c = getConnection();	

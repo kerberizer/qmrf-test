@@ -5,6 +5,7 @@ The default maven profile is -P qmrf
 The tests assume 
 CREATE USER 'guest'@'localhost' IDENTIFIED BY 'guest';
 GRANT ALL ON qmrf.* TO 'guest'@'localhost';
-
+GRANT TRIGGER ON qmrf.* TO 'guest'@'localhost';
 Test DB
 GRANT ALL ON `qmrf-test`.* TO 'guest'@'localhost';
+GRANT TRIGGER ON qmrf_test.* TO 'guest'@'localhost';

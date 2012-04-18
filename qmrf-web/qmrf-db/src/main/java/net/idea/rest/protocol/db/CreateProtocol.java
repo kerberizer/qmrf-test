@@ -40,7 +40,7 @@ import net.idea.rest.protocol.DBProtocol;
 
 public class CreateProtocol extends AbstractObjectUpdate<DBProtocol>{
 	public static final String[] create_sql = {
-		"insert into protocol (idprotocol,title,abstract,iduser,summarySearchable,idproject,idorganisation,status,published,created) " +
+		"insert into protocol (idprotocol,title,qmrf_number,abstract,iduser,summarySearchable,idproject,idorganisation,status,created) " +
 		"values (?,?,?,?,?,?,?,?,?,now())",
 	};
 
@@ -55,13 +55,13 @@ public class CreateProtocol extends AbstractObjectUpdate<DBProtocol>{
 		ReadProtocol.fields[] f = new ReadProtocol.fields[] {
 				ReadProtocol.fields.idprotocol,
 				ReadProtocol.fields.title,
+				ReadProtocol.fields.identifier,
 				ReadProtocol.fields.anabstract,
 				ReadProtocol.fields.iduser,
 				ReadProtocol.fields.summarySearchable,
 				ReadProtocol.fields.idproject,
 				ReadProtocol.fields.idorganisation,
-				ReadProtocol.fields.status,
-				ReadProtocol.fields.published
+				ReadProtocol.fields.status
 		};
 		for (ReadProtocol.fields field: f) 
 			params1.add(field.getParam(getObject()));

@@ -111,7 +111,7 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 							getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),attachment.getID());
 			String uri = String.format(
 					"<a href=\"%s\" title=\"%s\">%s&nbsp;%s</a>",
-					datasetURI,attachment.getTitle(),attachment.getProtocol(),attachment.getType().toString());
+					datasetURI,attachment.getTitle(),attachment.getQMRFDocument().getVisibleIdentifier(),attachment.getType().toString());
 			return String.format("<li>%s<span></span></li>\n",uri);
 		} else return "";
 		
@@ -237,8 +237,8 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		
 		searchTitle = attachment==null?getSearchTitle():
 				String.format("<a href='%s%s/%s' title='QMRF document'>%s</a>&nbsp;<a href='%s%s/%s%s/A%d' title='%s'>%s</a>",
-							baseReference,Resources.protocol,attachment.getProtocol(),attachment.getProtocol(),
-							baseReference,Resources.protocol,attachment.getProtocol(),Resources.attachment,attachment.getID(),
+							baseReference,Resources.protocol,attachment.getQMRFDocument().getIdentifier(),attachment.getQMRFDocument().getVisibleIdentifier(),
+							baseReference,Resources.protocol,attachment.getQMRFDocument().getIdentifier(),Resources.attachment,attachment.getID(),
 							attachment.getDescription(),attachment.getType().toString());
 		/*already set by the resource
 		searchQuery = form.getFirstValue(QueryResource.search_param);

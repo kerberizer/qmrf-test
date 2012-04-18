@@ -183,7 +183,7 @@ public class ReadUser<T>  extends ReadUserID<T> {
 	}
 	
 	protected static String sql = 
-		"SELECT iduser,username,title,firstname,lastname,institute,weblog,homepage,email,keywords,reviewer from user %s %s";
+		"SELECT user.iduser,username,user.title,firstname,lastname,institute,weblog,homepage,email,keywords,reviewer from user %s %s";
 
 	
 	public ReadUser(DBUser user) {

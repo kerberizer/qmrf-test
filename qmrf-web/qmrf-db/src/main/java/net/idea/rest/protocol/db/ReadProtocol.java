@@ -39,6 +39,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			
 			fields.title,
 			fields.filename,
+			fields.identifier,
 			fields.published,
 			fields.user_uri,
 			fields.author_uri,
@@ -155,7 +156,12 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			public Object getValue(DBProtocol protocol) {
 				return protocol==null?null:protocol.getIdentifier();
 			}
+			
+			public String getCondition() {
+				return " protocol.qmrf_number = ? ";
+			}			
 		},
+		
 		title {
 			@Override
 			public QueryParam getParam(DBProtocol protocol) {
@@ -733,7 +739,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		
 		//ReadProtocol.fields.accesslevel
 	};	
-	
+	/*
 	public ReadProtocol(Integer id) {
 		this(id,null,null);
 	}
@@ -745,18 +751,24 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 	public ReadProtocol() {
 		this(null,null,null);
 	}
-		
+	*/
+	public ReadProtocol(String identifier) {
+		this(identifier==null?null:new DBProtocol(identifier));
+	}
+	public ReadProtocol(DBProtocol protocol) {
+		super();
+		setValue(protocol);
+		setFieldname(null);
+	}		
+	public ReadProtocol() {
+		this((DBProtocol)null);
+	}
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();
 		if (getValue()!=null) {
-			if (getValue().getID()>0) {
-				params.add(fields.idprotocol.getParam(getValue()));
-				if (getValue().getVersion()>0) {
-					params.add(fields.version.getParam(getValue()));
-					renumber = true;
-				} else 
-					throw new AmbitException("Protocol version not set!");
+			if (getValue().isValidIdentifier()) {
+				params.add(fields.identifier.getParam(getValue()));		
 			} else if (getValue().getTitle()!=null) {
 				params.add(fields.title.getParam(getValue()));
 			} else if (getValue().getTimeModified()!=null) {
@@ -777,27 +789,24 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		if ((getFieldname()!=null) && (getFieldname().getID()>0)) byUser = fields.iduser.getCondition();
 		
 		if (getValue()!=null) {
-			if (getValue().getID()>0) {
-				if (getValue().getVersion()>0)
-					return String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,"where",
-							String.format("%s and %s %s %s %s",
-									fields.idprotocol.getCondition(),
-									fields.version.getCondition(),
+			if (getValue().getIdentifier()!=null) {
+					return String.format(sql_nokeywords,"where",
+							String.format("%s %s %s",
+									fields.identifier.getCondition(),
 									byUser==null?"":" and ",
 									byUser==null?"":byUser,
 									publishedOnly));
-				else
-					throw new AmbitException("Protocol version not set!");
+
 			} else 
 				if (getValue().getTitle()!=null)
-					return String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,"where",
+					return String.format(sql_nokeywords,"where",
 										String.format("%s %s %s %s",
 												fields.title.getCondition(),
 												byUser==null?"":" and ",
 												byUser==null?"":byUser,
 												publishedOnly));
 				else if (getValue().getTimeModified()!=null)
-					return String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,"where",
+					return String.format(sql_nokeywords,"where",
 									String.format("%s %s %s %s",
 											fields.updated.getCondition(),
 											byUser==null?"":" and ",
@@ -805,56 +814,32 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 											publishedOnly));			
 		} 
 		String sql = onlyUnpublished?
-				String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,
+				String.format(sql_nokeywords,
 						"where",byUser==null?"published=0":String.format("%s %s",byUser,publishedOnly))
 				:getShowUnpublished()?
-				String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,
+				String.format(sql_nokeywords,
 						"where",byUser==null?"":byUser):
-				String.format(renumber?sql_nokeywords_renumber:sql_nokeywords,
+				String.format(sql_nokeywords,
 						"where",byUser==null?"published=1":String.format("%s %s",byUser,publishedOnly)); //published only
 		return sql;
 	}
 
 	public DBProtocol getObject(ResultSet rs) throws AmbitException {
-		DBProtocol p = null;
+		DBProtocol p = super.getObject(rs);
+		DBUser user = (DBUser) p.getOwner();
 		try {
-			p =  new DBProtocol();
-			for (fields field:sqlFields) try {
-				field.setParam(p,rs);
-				
-			} catch (Exception x) {
-				//x.printStackTrace();
-			}
-			DBUser user = (DBUser) p.getOwner();
+			user.setUserName(rs.getString("username"));
+			user.setFirstname(rs.getString("firstname"));
+			user.setLastname(rs.getString("lastname"));
+		} catch (Exception x) {x.printStackTrace();}			
 
-			try {
-				user.setUserName(rs.getString("username"));
-				user.setFirstname(rs.getString("firstname"));
-				user.setLastname(rs.getString("lastname"));
-			} catch (Exception x) {x.printStackTrace();}			
-			try {
-				Timestamp ts = rs.getTimestamp(fields.updated.name());
-				p.setTimeModified(ts.getTime());
-			} catch (Exception x) {}
-			try {
-				Timestamp ts = rs.getTimestamp(fields.created.name());
-				p.setSubmissionDate(ts.getTime());
-			} catch (Exception x) {
-				x.printStackTrace();
-				
-			}
-			return p;
-		} catch (Exception x) {
-			x.printStackTrace();
-			return null;
-		} finally {
-			if (p!=null) p.setIdentifier(ReadProtocol.generateIdentifier(p));
-		}
+		return p;
 	}
 	@Override
 	public String toString() {
 		return getValue()==null?"All protocols":String.format("Protocol id=P%s",getValue().getID());
 	}
+
 
 }
 

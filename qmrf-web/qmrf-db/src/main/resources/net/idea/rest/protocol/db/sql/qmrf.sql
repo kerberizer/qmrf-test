@@ -1,7 +1,7 @@
 -- CREATE DATABASE `tb` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 -- -----------------------------------------------------
--- Users. If registered, 'username' points to OpenAM user name
+-- Users. If registered, 'username' points to tomcat_users table
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE  `user` (
@@ -18,8 +18,7 @@ CREATE TABLE  `user` (
    `keywords` varchar(128) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '""',
   `reviewer` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'true if wants to become a reviewer',
   PRIMARY KEY (`iduser`),
-  UNIQUE KEY `Index_2` (`username`),
-  UNIQUE KEY `Index_3` (`lastname`,`firstname`,`email`)
+  UNIQUE KEY `Index_2` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -----------------------------------------------------
@@ -87,6 +86,7 @@ CREATE TABLE  `protocol` (
   `idprotocol` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `version` int(10) unsigned NOT NULL DEFAULT '1' COMMENT 'Version',
   `title` varchar(255) NOT NULL COMMENT 'Title',
+  `qmrf_number` varchar(36) NOT NULL COMMENT 'QMRF Number',
   `abstract` text,
   `summarySearchable` tinyint(1) NOT NULL DEFAULT '1',
   `iduser` int(10) unsigned NOT NULL COMMENT 'Link to user table',
@@ -95,16 +95,15 @@ CREATE TABLE  `protocol` (
   `filename` text COMMENT 'Path to file name',
   `template` text COMMENT 'Data template',
   `status` enum('RESEARCH','SOP') NOT NULL DEFAULT 'RESEARCH' COMMENT 'Research or Standard Operating Procedure',
-  `latest` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Is the latest version',
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last updated',
   `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `published` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`idprotocol`,`version`) USING BTREE,
+  UNIQUE KEY `qmrf_number` (`qmrf_number`),
   KEY `Index_3` (`title`),
   KEY `FK_protocol_1` (`idproject`),
   KEY `FK_protocol_2` (`idorganisation`),
   KEY `FK_protocol_3` (`iduser`),
-  KEY `Index_7` (`latest`),
   KEY `updated` (`updated`),
   CONSTRAINT `FK_protocol_1` FOREIGN KEY (`idproject`) REFERENCES `project` (`idproject`),
   CONSTRAINT `FK_protocol_2` FOREIGN KEY (`idorganisation`) REFERENCES `organisation` (`idorganisation`),
@@ -143,18 +142,6 @@ CREATE TABLE  `attachments` (
   KEY `name` (`name`),
   KEY `type` (`type`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
-
--- -----------------------------------------------------
--- Trigger 
--- -----------------------------------------------------
--- DELIMITER $
--- CREATE TRIGGER insert_protocol_id BEFORE UPDATE ON protocol
--- FOR EACH ROW BEGIN
---	IF NEW.idprotocol != null THEN
---		set NEW.version = OLD.version+1;
---	END IF;
--- END $
--- DELIMITER ;
 
 -- -----------------------------------------------------
 -- Keywords. Want to do full text search, thus MyISAM. 
@@ -205,7 +192,21 @@ CREATE TABLE  `version` (
   `comment` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`idmajor`,`idminor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-insert into version (idmajor,idminor,comment) values (2,1,"QMRF schema");
+insert into version (idmajor,idminor,comment) values (2,2,"QMRF schema");
+
+
+-----------------------------------------------------
+ Trigger 
+-----------------------------------------------------
+DELIMITER $$
+CREATE TRIGGER draft_qmrfnumber AFTER INSERT ON protocol
+ FOR EACH ROW BEGIN
+   IF isnull(NEW.qmrf_number) THEN
+        UPDATE protocol set qmrf_number = concat('DRAFT-',year(NEW.created),'-',LAST_INSERT_ID(),'-',NEW.version) where idprotocol=LAST_INSERT_ID();
+	END IF;
+ END $$
+DELIMITER ;
+
 
 -- -----------------------------------------------------
 -- Create new protocol version
@@ -213,16 +214,16 @@ insert into version (idmajor,idminor,comment) values (2,1,"QMRF schema");
 DROP PROCEDURE IF EXISTS `createProtocolVersion`;
 DELIMITER $$
 CREATE PROCEDURE createProtocolVersion(
-                IN protocol_id INT,
-                IN version_id INT,
+                IN protocol_qmrf_number VARCHAR(36),
+                IN new_qmrf_number VARCHAR(36),
                 IN title_new VARCHAR(255),
                 IN abstract_new TEXT,
                 OUT version_new INT)
 begin
     DECLARE no_more_rows BOOLEAN;
     DECLARE protocols CURSOR FOR
-    select max(version)+1 from protocol where idprotocol=protocol_id group by idprotocol LIMIT 1;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND     SET no_more_rows = TRUE;
+    select max(version)+1 from protocol where idprotocol in (select idprotocol from protocol where qmrf_number=protocol_qmrf_number) LIMIT 1;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET no_more_rows = TRUE;
 
     OPEN protocols;
     the_loop: LOOP
@@ -233,11 +234,10 @@ begin
 		  LEAVE the_loop;
   	END IF;
 
-    select version_new;
   	-- create new version
-    insert into protocol (idprotocol,version,title,abstract,iduser,summarySearchable,idproject,idorganisation,filename,status,created)
-    select idprotocol,version_new,title_new,abstract_new,iduser,summarySearchable,idproject,idorganisation,null,status,now() 
-    from protocol where idprotocol=protocol_id and version=version_id;
+    insert into protocol (idprotocol,version,title,qmrf_number,abstract,iduser,summarySearchable,idproject,idorganisation,filename,status,created)
+    select idprotocol,version_new,ifnull(title_new,title),new_qmrf_number,ifnull(abstract_new,abstract),iduser,summarySearchable,idproject,idorganisation,null,status,now() 
+    from protocol where qmrf_number=protocol_qmrf_number;
    	-- copy authors
     -- insert into protocol_authors
     -- select idprotocol,version_new,iduser from protocol_authors where idprotocol=protocol_id and version=version_id;
