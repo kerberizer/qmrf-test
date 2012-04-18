@@ -19,11 +19,9 @@ import net.idea.rest.prediction.ReadModelQuery;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
-import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
-import net.idea.restnet.cli.algorithm.Algorithm;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryResource;
 
@@ -37,13 +35,11 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
-import uk.ac.cam.ch.wwmm.opsin.NameToStructure;
-
 public class StructureResource extends CatalogResource<Structure> {
 	protected String queryService;
 	protected boolean singleItem = false;
 	protected HTMLBeauty htmlBeauty = null;
-	protected NameToStructure nameToStructure;
+	
 	public StructureResource() {
 		super();
 		queryService = ((TaskApplication) getApplication())
@@ -111,7 +107,7 @@ public class StructureResource extends CatalogResource<Structure> {
 				parameters.setModels(verifyModels(models));
 		} catch (Exception x) { parameters.setModels(null); x.printStackTrace();}
 	}
-
+	/*
 	protected String name2Structure(String name) {
 		try {
 			if (nameToStructure == null) nameToStructure = NameToStructure.getInstance();
@@ -120,6 +116,7 @@ public class StructureResource extends CatalogResource<Structure> {
 			return null;
 		}
 	}
+	*/
 	@Override
 	protected Iterator<Structure> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
@@ -131,16 +128,16 @@ public class StructureResource extends CatalogResource<Structure> {
 					queryService));
 			switch (parameters.option) {
 			case similarity: {
-				String smiles = name2Structure(parameters.getSearchQuery());
-				if (smiles!=null) parameters.setSearchQuery(smiles);
+				//String smiles = name2Structure(parameters.getSearchQuery());
+				//if (smiles!=null) parameters.setSearchQuery(smiles);
 				ref = new Reference(String.format(
 						"%s/query/similarity?threshold=%3.2f", queryService,
 						parameters.threshold));
 				break;
 			}
 			case smarts: {
-				String smiles = name2Structure(parameters.getSearchQuery());
-				if (smiles!=null) parameters.setSearchQuery(smiles);
+				//String smiles = name2Structure(parameters.getSearchQuery());
+				//if (smiles!=null) parameters.setSearchQuery(smiles);
 				ref = new Reference(String.format("%s/query/smarts",
 						queryService));
 				break;
