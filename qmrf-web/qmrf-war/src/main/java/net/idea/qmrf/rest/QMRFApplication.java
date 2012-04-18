@@ -290,7 +290,7 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 	 */
 	protected Restlet createAdminRouter() {
 		Authorizer authz = new SimpleRoleAndMethodAuthorizer(new DBRole(
-				QMRFRoles.qmrf_admin.name(), QMRFRoles.qmrf_admin.toString()));
+				QMRFRoles.qmrf_manager.name(), QMRFRoles.qmrf_manager.toString()));
 		authz.setNext(new QMRFAdminRouter(getContext()));
 		return authz;
 	}
@@ -310,7 +310,7 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 	protected Restlet createUnpublishedRouter() {
 		Authorizer authz = new SimpleRoleAndMethodAuthorizer(
 				new DBRole(QMRFRoles.qmrf_editor.name(), QMRFRoles.qmrf_editor.toString()),
-				new DBRole(QMRFRoles.qmrf_admin.name(), QMRFRoles.qmrf_admin.toString())
+				new DBRole(QMRFRoles.qmrf_manager.name(), QMRFRoles.qmrf_manager.toString())
 				);
 		authz.setNext(new AdminRouter(getContext()) {
 			@Override
