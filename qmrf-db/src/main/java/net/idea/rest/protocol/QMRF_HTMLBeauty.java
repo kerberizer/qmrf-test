@@ -419,10 +419,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					case qmrf_manager: {
 						w.write(printMenuItem(Resources.user, "Users", baseReference.toString(),null,"All registered users."));
 						w.write(printMenuItem(Resources.organisation, "Organisations", baseReference.toString(),null,"All registered user affiliations."));
+						unpublishedDoc = printMenuItem(Resources.unpublished, "Unpublished Documents", baseReference.toString(),"10","All unpublished QMRF documents.");
 						break;
 					}
 					case qmrf_admin: {
-						unpublishedDoc = printMenuItem(Resources.unpublished, "Unpublished Documents", baseReference.toString(),"10","All unpublished QMRF documents.");
 						break;
 					}
 					case qmrf_editor: {
