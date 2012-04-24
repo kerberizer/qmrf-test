@@ -211,6 +211,7 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		String secret = getProperty(Resources.Config.secret.name());
 		CookieAuthenticator cookieAuth = new CookieAuthenticator(getContext(),
 				"tomcat_users", (secret==null?UUID.randomUUID().toString():secret).getBytes());
+		cookieAuth.setCookieName("qmrfs");
 		long sessionLength = 1000*60*45L; //45 min in milliseconds
 		try { sessionLength = Long.parseLong(getProperty(Resources.Config.sessiontimeout.name())); } catch (Exception x) {}
 		if (sessionLength<600000) sessionLength =  600000; //10 min in case the config is broken
