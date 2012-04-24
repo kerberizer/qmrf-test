@@ -4,13 +4,16 @@ import java.sql.Connection;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.alerts.db.DBAlert;
 import net.idea.rest.user.alerts.db.ReadAlert;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.RepresentationConvertor;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.db.DBConnection;
@@ -89,7 +92,7 @@ public class AlertDBResource	extends QMRFQueryResource<ReadAlert,DBAlert> {
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless)
 			throws ResourceException {
-		return new AlertHTMLReporter(getRequest(),!singleItem,editable);
+		return new AlertHTMLReporter(getRequest(),!singleItem,editable,getHTMLBeauty());
 	}
 	
 	protected DBUser getUser(Object userKey) throws ResourceException {
@@ -229,5 +232,10 @@ public class AlertDBResource	extends QMRFQueryResource<ReadAlert,DBAlert> {
 	protected boolean isAllowedMediaType(MediaType mediaType)
 			throws ResourceException {
 		return MediaType.APPLICATION_WWW_FORM.equals(mediaType);
+	}
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		if (htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.alert);
+		return htmlBeauty;
 	}
 }
