@@ -45,6 +45,7 @@ public class Resources {
 		secret,
 		insecure,
 		qmrf_email,
+		sessiontimeout
 	}
 	
 	public final static String AMBIT_LOCAL_USER="aa.local.admin.name";
