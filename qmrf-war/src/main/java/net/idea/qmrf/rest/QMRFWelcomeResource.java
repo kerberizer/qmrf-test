@@ -23,14 +23,14 @@ public class QMRFWelcomeResource extends ServerResource {
 
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-		if (getRequest().getResourceRef().toString().endsWith("/")) {
+		if (getRequest().getResourceRef().toString().equals(String.format("%s/",getRequest().getRootRef()))) {
 	        Map<String, Object> map = new HashMap<String, Object>();
 	        if (getClientInfo().getUser()!=null) 
 	        	map.put("username", getClientInfo().getUser().getIdentifier());
 	        return toRepresentation(map, "body-welcome.ftl", MediaType.TEXT_PLAIN);
 		} else {
 			//if no slash, all the styles etc. paths are broken...
-			redirectSeeOther(String.format("%s/",getRequest().getResourceRef()));
+			redirectSeeOther(String.format("%s/",getRequest().getRootRef()));
 			return null;
 		}
 	}
