@@ -141,7 +141,7 @@ public class ReadUser<T>  extends ReadUserID<T> {
 			public void setParam(DBUser user, ResultSet rs) throws SQLException {
 				try {
 					String n = rs.getString(name());
-					user.setEmail(n);
+					if (n!=null) user.setEmail(n);
 				} catch (Exception x) {user.setEmail(null);}
 			}		
 			@Override

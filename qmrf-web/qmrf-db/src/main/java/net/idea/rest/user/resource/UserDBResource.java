@@ -48,6 +48,11 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	protected boolean editable = true;
 
 	@Override
+	protected void doInit() throws ResourceException {
+		super.doInit();
+		getVariants().add(new Variant(MediaType.TEXT_XML));
+	}
+	@Override
 	public RepresentationConvertor createConvertor(Variant variant)
 			throws AmbitException, ResourceException {
 		/*
@@ -62,14 +67,19 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 				return new StringConvertor(	
 						new UserURIReporter<IQueryRetrieval<DBUser>>(getRequest())
 						,MediaType.TEXT_URI_LIST,filenamePrefix);
-				
+		} else if (variant.getMediaType().equals(MediaType.TEXT_CSV)) {
+			return new OutputWriterConvertor(
+					new UserCSVReporter<IQueryRetrieval<DBUser>>(getRequest().getResourceRef()),
+					MediaType.TEXT_CSV);
+		} else if (variant.getMediaType().equals(MediaType.TEXT_XML)) {
+			return new OutputWriterConvertor(
+					new UserXMLReporter<IQueryRetrieval<DBUser>>(getRequest().getResourceRef()),
+					MediaType.TEXT_XML);			
 		} else if (variant.getMediaType().equals(MediaType.APPLICATION_RDF_XML) ||
 					variant.getMediaType().equals(MediaType.APPLICATION_RDF_TURTLE) ||
 					variant.getMediaType().equals(MediaType.TEXT_RDF_N3) ||
 					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES) ||
-					variant.getMediaType().equals(MediaType.APPLICATION_JSON) ||
-					variant.getMediaType().equals(MediaType.TEXT_CSV) 
-					
+					variant.getMediaType().equals(MediaType.APPLICATION_JSON) 
 					) {
 				return new RDFJenaConvertor<DBUser, IQueryRetrieval<DBUser>>(
 						new UserRDFReporter<IQueryRetrieval<DBUser>>(
@@ -215,4 +225,6 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 		if (htmlBeauty==null) htmlBeauty =  new UserHTMLBeauty();
 		return htmlBeauty;
 	}
+	
+	
 }
