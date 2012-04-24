@@ -33,10 +33,9 @@ public class Resources {
 	public static final String data_validation = "/data_validation";
 	*/
 	public enum Config {
-		qmrf_opensso_protected,
+		qmrf_protected,
 		qmrf_attachments_dir,
 		qmrf_ambit_service,
-		qmrf_admin_password,
 		qmrf_default_owner,
 		qmrf_default_project,
 		qmrf_default_organisation,
