@@ -5,6 +5,7 @@ import java.util.Map;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.restnet.c.TaskApplication;
 
 import org.restlet.data.MediaType;
 import org.restlet.ext.freemarker.TemplateRepresentation;
@@ -28,6 +29,13 @@ public class QMRFWelcomeResource extends ServerResource {
 	        if (getClientInfo().getUser()!=null) 
 	        	map.put("username", getClientInfo().getUser().getIdentifier());
 	        map.put("creator","IdeaConsult Ltd.");
+	        map.put(Resources.Config.qmrf_email.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_email.name()));
+	        map.put(Resources.Config.qmrf_editor.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_editor.name()));
+	        map.put(Resources.Config.qmrf_template.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_template.name()));
+	        map.put(Resources.Config.qmrf_manual.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_manual.name()));
+	        map.put(Resources.Config.qmrf_faq.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_faq.name()));
+	        map.put(Resources.Config.qmrf_oecd.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_oecd.name()));
+	        map.put(Resources.Config.qmrf_jrc.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_jrc.name()));
 	        return toRepresentation(map, "body-welcome.ftl", MediaType.TEXT_PLAIN);
 		} else {
 			//if no slash, all the styles etc. paths are broken...

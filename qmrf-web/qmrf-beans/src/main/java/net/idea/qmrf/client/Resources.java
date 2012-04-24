@@ -45,6 +45,12 @@ public class Resources {
 		secret,
 		insecure,
 		qmrf_email,
+		qmrf_editor,
+		qmrf_template,
+		qmrf_manual,
+		qmrf_faq,
+		qmrf_oecd,
+		qmrf_jrc,
 		sessiontimeout
 	}
 	
