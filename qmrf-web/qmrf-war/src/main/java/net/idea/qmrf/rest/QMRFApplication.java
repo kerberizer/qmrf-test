@@ -8,6 +8,7 @@ import net.idea.modbcum.i.config.Preferences;
 import net.idea.qmrf.aa.QMRFLoginFormResource;
 import net.idea.qmrf.aa.QMRFLoginPOSTResource;
 import net.idea.qmrf.aa.QMRFLogoutPOSTResource;
+import net.idea.qmrf.aa.UserAuthorizer;
 import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.task.QMRFAdminRouter;
@@ -138,8 +139,8 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		setCookieUserRouter.attach(Resources.protocol, protocolRouter);
 		setCookieUserRouter.attach(Resources.project, projectRouter);
 		setCookieUserRouter.attach(Resources.organisation, org_router);
-		setCookieUserRouter.attach(Resources.user, new UserRouter(getContext(),
-				protocols, org_router, projectRouter, alertRouter));
+		setCookieUserRouter.attach(Resources.user, createUserRouter(new UserRouter(getContext(),
+				protocols, org_router, projectRouter, alertRouter)));
 	
 
 		setCookieUserRouter.attach(Resources.endpoint,
@@ -325,7 +326,11 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		
 		return authz;
 	}
-	
+	protected Restlet createUserRouter(UserRouter userRouter) {
+		Authorizer authz = new UserAuthorizer();
+		authz.setNext(userRouter);
+		return authz;
+	}	
 	/**
 	 * Images, styles, icons Works if packaged as war only!
 	 * 
