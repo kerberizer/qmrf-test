@@ -409,8 +409,9 @@
 			curl -X POST -d "dbname=qmrf" http://host:port/{this-app}/admin/database  
 			-->
 			<qmrf.db.create.allow>true</qmrf.db.create.allow>	
-			<!-- Use OpenSSO service for authentication and authorisation - true or false  -->
-  			<qmrf_opensso_protected>false</qmrf_opensso_protected>
+			<!-- Whether to protect resources based on local users database. True by default. 
+			Consider changing only for testing purposes  -->
+  			<qmrf_protected>true</qmrf_protected>
   			<!-- File path to store attachments_ If notdefined will use the temp folder -->
   			<qmrf_attachments_dir></qmrf_attachments_dir>
   			<!-- #URI of Ambit web service to store and query structures and data via OpenTox REST API
@@ -418,8 +419,6 @@
 				 #If not defined, structure search will not be available 
   			 -->
 			<qmrf_ambit_service>http://localhost:8080/ambit2</qmrf_ambit_service>
-			<!-- If not OpenSSO protected, use fixed user/pass to allow POST/PUT/DELETE. GET is allowed to anybody.  -->
-			<qmrf_admin_password>admin</qmrf_admin_password>		
 			<!-- Default project for submitting new documents --> 
 			<qmrf_default_project>/project/G1</qmrf_default_project>
 			<!-- Default project for submitting new documents --> 

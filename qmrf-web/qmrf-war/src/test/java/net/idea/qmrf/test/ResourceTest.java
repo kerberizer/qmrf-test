@@ -70,7 +70,7 @@ public abstract class ResourceTest extends DbUnitTest {
         context.getParameters().add(Preferences.PASSWORD, getPWD());
         context.getParameters().add(Preferences.PORT, getPort());
         context.getParameters().add(Preferences.HOST, getHost());
-        context.getParameters().add(Resources.Config.qmrf_opensso_protected.name(), "false");
+        context.getParameters().add(Resources.Config.qmrf_protected.name(), "false");
         
         // Create a component
         component = new QMRFRESTComponent(context);

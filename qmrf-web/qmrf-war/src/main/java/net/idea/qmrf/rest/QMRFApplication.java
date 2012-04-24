@@ -208,7 +208,7 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 	 * ,"tomcat_users"); userAuthn.setNext(clazz); return userAuthn; }
 	 */
 	protected Filter createCookieAuthenticator(boolean optional) {
-		String secret = getProperty("secret");
+		String secret = getProperty(Resources.Config.secret.name());
 		CookieAuthenticator cookieAuth = new CookieAuthenticator(getContext(),
 				"tomcat_users", (secret==null?UUID.randomUUID().toString():secret).getBytes());
 
@@ -255,24 +255,7 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		return cookieAuth;
 	}
 
-	/*
-	 * MethodAuthorizer methodAuthorizer = new MethodAuthorizer();
-	 * methodAuthorizer.getAnonymousMethods().add(Method.GET);
-	 * methodAuthorizer.getAnonymousMethods().add(Method.POST);
-	 * methodAuthorizer.getAnonymousMethods().add(Method.PUT);
-	 * methodAuthorizer.getAnonymousMethods().add(Method.DELETE);
-	 */
-	protected Restlet createProtected(Restlet router, String prefix,
-			Authorizer authz) {
-		return router;
-		/*
-		 * Filter authN = new
-		 * ChallengeAuthenticatorDBLocal(getContext(),true,"conf/qmrf-db.pref"
-		 * ,"tomcat_users"); if (authz!=null) { //authz.setPrefix(prefix);
-		 * authN.setNext(authz); authz.setNext(router); } else {
-		 * authN.setNext(router); } return authN;
-		 */
-	}
+
 
 	/**
 	 * Resource /bookmark
@@ -326,10 +309,24 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		
 		return authz;
 	}
+	/**
+	 * Use {@link UserAuthorizer} unless explicitly qmrf_protected is explicitly set to false.
+	 * @param userRouter
+	 * @return
+	 */
 	protected Restlet createUserRouter(UserRouter userRouter) {
-		Authorizer authz = new UserAuthorizer();
-		authz.setNext(userRouter);
-		return authz;
+		String aa = getProperty(Resources.Config.qmrf_protected.name());
+		if (aa==null) aa = getContext().getParameters().getFirstValue(Resources.Config.qmrf_protected.name());
+		boolean aaenabled = true;
+		try {
+			if (aa!=null)
+				aaenabled = Boolean.parseBoolean(aa);
+		} catch (Exception x) {aaenabled = true;}
+		if (aaenabled) {
+			Authorizer authz = new UserAuthorizer();
+			authz.setNext(userRouter);
+			return authz;
+		} else return userRouter;
 	}	
 	/**
 	 * Images, styles, icons Works if packaged as war only!
