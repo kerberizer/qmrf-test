@@ -6,6 +6,10 @@ import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.aa.local.UserLoginFormResource;
 import net.idea.restnet.c.html.HTMLBeauty;
 
+import org.restlet.data.MediaType;
+import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
+import org.restlet.resource.ResourceException;
 import org.restlet.security.User;
 
 
@@ -18,4 +22,17 @@ public class QMRFLoginFormResource extends UserLoginFormResource<User> {
 	protected Reporter createHTMLReporter(boolean headles) {
 		return new QMRFLoginFormReporter(getRequest(),getDocumentation(),getHTMLBeauty());
 	}
+
+	@Override
+	protected Representation get(Variant variant) throws ResourceException {
+		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
+			User user = getRequest().getClientInfo().getUser();
+			if ((user!=null) && (user.getIdentifier()!=null)) {
+				 this.getResponse().redirectSeeOther(String.format("%s%s",getRequest().getRootRef(),Resources.myaccount));
+				 return null;
+			}	
+		}
+		return super.get(variant);
+	}
+
 }

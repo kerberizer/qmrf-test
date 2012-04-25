@@ -46,16 +46,16 @@ public class Alert_crud_test  extends CRUDTest<DBUser,DBAlert>  {
 
 	@Override
 	protected IQueryUpdate<DBUser,DBAlert> deleteQuery() throws Exception {
-		DBAlert ref = new DBAlert(3);
-		return new DeleteAlert(ref,null);
+		DBAlert ref = new DBAlert(1);
+		return new DeleteAlert(ref,new DBUser(3));
 	}
 
 	@Override
 	protected void deleteVerify(IQueryUpdate<DBUser,DBAlert> query)
 			throws Exception {
         IDatabaseConnection c = getConnection();	
-		ITable table = 	c.createQueryTable("EXPECTED","SELECT iduser,idquery FROM alert where iduser=3");
-		Assert.assertEquals(0,table.getRowCount());
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT idquery,iduser,idquery FROM alert where iduser=3");
+		Assert.assertEquals(1,table.getRowCount());
 		c.close();
 		
 	}

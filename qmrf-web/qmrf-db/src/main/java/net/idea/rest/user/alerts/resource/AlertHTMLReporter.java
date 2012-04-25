@@ -1,8 +1,11 @@
 package net.idea.rest.user.alerts.resource;
 
+import java.io.PrintWriter;
 import java.io.Writer;
+import java.sql.Date;
 
 import net.idea.modbcum.i.IQueryRetrieval;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.user.DBUser;
@@ -10,9 +13,9 @@ import net.idea.rest.user.alerts.db.DBAlert;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
-import net.toxbank.client.Resources;
 
 import org.restlet.Request;
+import org.restlet.data.Reference;
 
 public class AlertHTMLReporter extends QMRFHTMLReporter<DBAlert, IQueryRetrieval<DBAlert>> {
 	/**
@@ -40,7 +43,7 @@ public class AlertHTMLReporter extends QMRFHTMLReporter<DBAlert, IQueryRetrieval
 	
 	@Override
 	protected boolean printAsTable() {
-		return collapsed;
+		return !collapsed;
 	}
 	@Override
 	protected void printPageNavigator(IQueryRetrieval<DBAlert> query)
@@ -56,11 +59,13 @@ public class AlertHTMLReporter extends QMRFHTMLReporter<DBAlert, IQueryRetrieval
 			//output.write("<caption><h3>Users</h3></caption>\n");	
 			output.write("<thead>\n");	
 			output.write(String.format("<th>%s</th>", "Query"));
-			output.write(String.format("<th>%s</th>", "Frequency"));
-			output.write(String.format("<th>%s</th>", "Type"));
+			output.write(String.format("<th>%s</th>", "Saved on"));
+			output.write(String.format("<th>%s</th>", "Alert frequency"));
+			output.write(String.format("<th>%s</th>", "Search last sent on"));
+			output.write(String.format("<th>%s</th>", "Action"));
 			output.write("</thead>\n");
 			output.write("<tbody>\n");
-		}
+		} 
 	}
 	@Override
 	protected void printTable(Writer output, String uri, DBAlert alert) {
@@ -76,15 +81,33 @@ public class AlertHTMLReporter extends QMRFHTMLReporter<DBAlert, IQueryRetrieval
 	public String renderItem(DBAlert alert) {
 		StringBuilder rendering = new StringBuilder();
 
-		rendering.append(String.format("<td>%s</td>",alert.getQueryString()));
-
+		rendering.append(String.format("<td>%s</td>",alert.getVisibleQuery()));
+		rendering.append(String.format("<td>%s</td>",new Date(alert.getCreated())));
 		rendering.append(String.format("<td>%s</td>",alert.getRecurrenceFrequency()));
-		rendering.append(String.format("<td>%s</td>",alert.getType()));
-
-		
+		rendering.append(String.format("<td>%s</td>",alert.getSentAt()==0?"Never":new Date(alert.getSentAt())));
+		rendering.append(String.format("<td>%s&nbsp;%s</td>",getRunLink(alert),getDeleteLink(alert)));
 		return rendering.toString();
 	}
-	
+	protected String getRunLink(DBAlert alert) {
+		return String.format("<a href='%s%s'>Run search</a>",
+					uriReporter.getBaseReference(),alert.getRunnableQuery());
+	}
+	protected String getDeleteLink(DBAlert alert) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("<form action='%s%s%s/A%d?method=DELETE' method='POST'>");
+		stringBuilder.append("<input type='hidden' name='username' value='%s'>");
+		stringBuilder.append("<input title='Delete this alert' class='draw'");
+		stringBuilder.append("type='image' src='%s/images/script_delete.png' value='Delete'>");
+		stringBuilder.append("</form>");
+		
+		return String.format(stringBuilder.toString(), 
+				uriReporter.getBaseReference(),
+				Resources.myaccount,
+				Resources.alert,
+				alert.getID(),
+				uriReporter.getRequest().getClientInfo().getUser().getIdentifier(),
+				uriReporter.getBaseReference());
+	}	
 	
 	@Override
 	public void footer(Writer output, IQueryRetrieval<DBAlert> query) {
@@ -103,34 +126,16 @@ public class AlertHTMLReporter extends QMRFHTMLReporter<DBAlert, IQueryRetrieval
 	
 	protected void printForm(Writer output, String uri, DBAlert alert, boolean editable) {
 		try {
-			DBUser.fields[] fields = editable?entryFields:displayFields;
-			for (DBAlert._fields field : DBAlert._fields.values()) {
-				output.write("<tr bgcolor='FFFFFF'>\n");	
-				Object value = alert==null?null:field.getValue(alert);
+			output.write(
+			getHtmlBeauty().printWidget(alert.getVisibleQuery(), 
+					String.format("<table width='100%%'><tr><th width='25%%'>Saved on</th><td align='left' width='25%%'>%s</td><td align='right'>%s</td></tr><tr><th>Alert frequency</th><td >%s</td><td align='right'>%s</td></tr><tr><th>Search last sent on</th><td>%s</td></tr></table>",
+							new Date(alert.getCreated()),
+							getRunLink(alert),
+							alert.getRecurrenceFrequency(),
+							getDeleteLink(alert),
+							alert.getSentAt()==0?"Never":new Date(alert.getSentAt())
 
-				if (editable) {
-					value = field.getHTMLField(alert);
-				} else 
-					if (value==null) value = "";
-							
-				switch (field) {
-				case iduser: {
-					if (!editable)
-						output.write(String.format("<th>%s</th><td align='left'><a href='%s'>%s</a></td>\n",
-							field.toString(),
-							uri,
-							uri));		
-					break;
-				}	
-				default :
-					output.write(String.format("<th>%s</th><td align='left'>%s</td>\n",
-						field.toString(),value));
-				}
-							
-				output.write("</tr>\n");				
-			}
-			output.write("<tr bgcolor='FFFFFF'>\n");
-			output.write("</tr>\n");
+							)));
 			output.flush();
 		} catch (Exception x) {x.printStackTrace();} 
 	}	

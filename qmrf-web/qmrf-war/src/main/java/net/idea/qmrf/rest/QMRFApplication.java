@@ -123,15 +123,22 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 
 		setCookieUserRouter
 				.attach(Resources.login, QMRFLoginFormResource.class);
+		
+		AlertRouter alertRouter = new AlertRouter(getContext());
+		
+		MyRouter myAccountRouter = new MyRouter(getContext());
+		myAccountRouter.attachDefault(MyAccountResource.class);
+		myAccountRouter.attach(Resources.alert,alertRouter);
 		setCookieUserRouter
-				.attach(Resources.myaccount, MyAccountResource.class);
+				.attach(Resources.myaccount, myAccountRouter);
+		
 
 		/** QMRF documents **/
 		ProtocolRouter protocols = new ProtocolRouter(getContext());
 		OrganisationRouter org_router = new OrganisationRouter(getContext());
 		ProjectRouter projectRouter = new ProjectRouter(getContext());
 		Restlet protocolRouter;
-		AlertRouter alertRouter = new AlertRouter(getContext());
+		
 
 		
 		protocolRouter = protocols; // createProtectedResource(protocols,"protocol",new

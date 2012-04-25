@@ -1,11 +1,17 @@
 package net.idea.rest.user.alerts.db;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.user.DBUser;
 import net.toxbank.client.resource.Alert;
 import net.toxbank.client.resource.Query.QueryType;
+
+import org.restlet.data.Form;
+import org.restlet.data.Parameter;
+import org.restlet.data.Reference;
 
 public class DBAlert extends Alert<DBUser> {
 	/**
@@ -97,13 +103,34 @@ public class DBAlert extends Alert<DBUser> {
 			}
 			@Override
 			public void setParam(DBAlert alert, ResultSet rs) throws SQLException {
-				alert.setSentAt(rs.getLong(name()));
+				try {
+					Date date = rs.getDate(name());
+					alert.setSentAt(date.getTime());
+				} catch (Exception x) { alert.setSentAt(0L);}
 			}			
 			@Override
 			public Object getValue(DBAlert alert) {
 				return alert.getSentAt();
 			}
 		},		
+		created {
+			@Override
+			public void setValue(DBAlert alert, String value)
+					throws SQLException {
+				alert.setCreated(Long.parseLong(value));
+			}
+			@Override
+			public void setParam(DBAlert alert, ResultSet rs) throws SQLException {
+				try {
+					Date date = rs.getDate(name());
+					alert.setCreated(date.getTime());
+				} catch (Exception x) { alert.setCreated(0L);}
+			}			
+			@Override
+			public Object getValue(DBAlert alert) {
+				return alert.getCreated();
+			}
+		},			
 		iduser {
 			@Override
 			public void setValue(DBAlert alert, String value)
@@ -163,5 +190,24 @@ public class DBAlert extends Alert<DBUser> {
 	public void setID(int iD) {
 		ID = iD;
 	}
+	
+	public void setQueryString(Reference queryURI) {
+		Form form = queryURI.getQueryAsForm();
+		form.removeAll("page");
+		form.removeAll("pagesize");
+		super.setQueryString(form.getQueryString());
+	}
 
+	public String getVisibleQuery() {
+		Form form = new Form(getQueryString());
+		String option = form.getFirstValue("option");
+		String search = form.getFirstValue("search");
+		return String.format("%s %s",option==null?"Free text":option,search==null?"All":search);
+	}
+	
+	public String getRunnableQuery() {
+		Form form = new Form(getQueryString());
+		return String.format("%s?%s",Resources.protocol,form.getQueryString());
+	}
+	
 }

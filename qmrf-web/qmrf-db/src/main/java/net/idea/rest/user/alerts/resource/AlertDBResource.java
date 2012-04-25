@@ -92,7 +92,9 @@ public class AlertDBResource	extends QMRFQueryResource<ReadAlert,DBAlert> {
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless)
 			throws ResourceException {
-		return new AlertHTMLReporter(getRequest(),!singleItem,editable,getHTMLBeauty());
+		AlertHTMLReporter rep = new AlertHTMLReporter(getRequest(),true,editable,getHTMLBeauty());
+		rep.setHeadless(headless);
+		return rep;
 	}
 	
 	protected DBUser getUser(Object userKey) throws ResourceException {
@@ -102,7 +104,11 @@ public class AlertDBResource	extends QMRFQueryResource<ReadAlert,DBAlert> {
 				user= new DBUser(new Integer(Reference.decode(userKey.toString().substring(1))));
 			else
 				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid user id");
-		}	
+		} else if ((getRequest().getClientInfo().getUser()!=null) && 
+					(getRequest().getClientInfo().getUser().getIdentifier()!=null)) {
+			user = new DBUser();
+			user.setUserName(getRequest().getClientInfo().getUser().getIdentifier());
+		} else throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Empty usUSer");
 		return user;
 	}
 
@@ -214,8 +220,10 @@ public class AlertDBResource	extends QMRFQueryResource<ReadAlert,DBAlert> {
 		Object key = request.getAttributes().get(AlertDBResource.resourceKey);
 		Object userKey = request.getAttributes().get(UserDBResource.resourceKey);
 		if (Method.POST.equals(method)) {
-			if (userKey!=null) 
+			if ((userKey!=null)||((getRequest().getClientInfo().getUser()!=null) && 
+					(getRequest().getClientInfo().getUser().getIdentifier()!=null)) ) { 
 				if (key==null) return null;//post allowed only on /alert level, not on /user/id
+			}
 		} else {
 			if (key!=null) return super.createUpdateQuery(method, context, request, response);
 		}
