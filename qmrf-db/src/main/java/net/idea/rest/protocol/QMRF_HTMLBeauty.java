@@ -10,15 +10,18 @@ import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
+import net.idea.rest.user.alerts.db.DBAlert;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
+import net.toxbank.client.resource.Query;
 
 import org.restlet.Request;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.security.Role;
+import org.restlet.security.User;
 
 public class QMRF_HTMLBeauty extends HTMLBeauty {
 	
@@ -91,6 +94,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"}\n" +
 			"}</script>\n";	
 
+	final static String simpleToggleDivScript =
+			"<script type='text/javascript'>function toggleDivSimple(divId) {$('#'+divId).toggle();}</script>\n";
     // show the footer when the mouse is near
     final static String showFooterScript =
     	"<script type='text/javascript'>\n" +
@@ -144,12 +149,18 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"</li>";
 		
 	// log in/out link
-	final static String logInOutLinkTemplate =
+	final static String logInLinkTemplate =
 		"<li class='topLinks'>|</li>\n" +
 		"<li class='topLinks'>\n" +
 		"<a class='topLinks login' title='%s' href='%s%s'>%s</a>\n" +
 		"</li>\n";
 
+	final static String logOutLinkTemplate =
+		"<li class='topLinks'>|</li>\n" +
+		"<li class='topLinks'>\n" +
+		"%s\n" +
+		"</li>\n";
+	
 	// footer
 	final static String footerText =
 		"<div id='footer-out'>\n" +
@@ -339,19 +350,34 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			String logInOutLink = "";
 			
 			if (!getSearchURI().equals(Resources.login)) {
-				logInOutLink = String.format(logInOutLinkTemplate,
-					// Log in/out hint
-					request.getClientInfo().getUser()==null? 
-							"Log in here to submit new documents (only required for editors)"
-							:
-							String.format("You are currently logged in as \"%s\". Click here to log out.", request.getClientInfo().getUser()),
-					// Log in/out URL 1/2							
-					baseReference.toString(), 
-					 //Log in/out URL 2/2
-					Resources.login, 
-					// Log in/out text
-					request.getClientInfo().getUser()==null? 
-							"Log in":String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser()));
+				if (request.getClientInfo().getUser()==null) {
+					//login
+					logInOutLink = String.format(logInLinkTemplate,
+							// Log in/out hint
+							"Log in here to submit new documents (only required for editors)",
+							// Log in/out URL 1/2							
+							baseReference.toString(), 
+							 //Log in/out URL 2/2
+							Resources.login, 
+							// Log in/out text
+							"Log in");					
+				} else {
+					//logout
+					logInOutLink = String.format(logOutLinkTemplate,
+							getLogout(baseReference, request.getClientInfo().getUser()					
+									));
+					/*
+						// Log in/out hint
+						String.format("You are currently logged in as \"%s\". Click here to log out.", request.getClientInfo().getUser()),
+						// Log in/out URL 1/2							
+						baseReference.toString(), 
+						 //Log in/out URL 2/2
+						Resources.login, 
+						// Log in/out text
+						request.getClientInfo().getUser()==null? 
+								"Log in":String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser()));
+								*/
+				}
 			}
 			
 			w.write(String.format(
@@ -364,8 +390,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					baseReference.toString(),					
 					logInOutLink
 			));
-			
-
+			/*
+			TODO logout immediately 
+			if (request.getClientInfo().getUser()!=null) 
+				w.write(getLogout(baseReference));
+						*/
 			w.write(String.format(logoTopLeft, baseReference));
 			
 			w.write("</div>\n"); // header
@@ -405,6 +434,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						String.format("%s's profile and documents.", request.getClientInfo().getUser())
 				));
 			}
+		
 			
 			List<String> myProfile= new ArrayList<String>();
 			String unpublishedDoc = null;
@@ -436,6 +466,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			if (unpublishedDoc!=null) w.write(unpublishedDoc);
 			
+			//Saved search menu
+			w.write(getSavedSearchMenu(request));
+			
+
 			w.write("</ul>\n</div>\n"); // div id='menu'
 		
 			// Apply style for the hovered buttons sans (!) the currently selected one.
@@ -460,6 +494,42 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			*/
 
 		} // writeTopHeader()
+		protected static final String freq_hint = "Optional, if no alert frequency is selected, retrieve your saved search from the profile page.";
+		protected static final String alert_hint = "Save your search and get new search result e-mail notification";
+		protected String getSavedSearchMenu(Request request) {
+			if ((Resources.protocol.equals(getSearchURI())) &&
+				(request.getClientInfo().getUser()!=null) && (request.getClientInfo().getUser().getIdentifier()!=null) && 
+				(request.getResourceRef().getQuery()!=null)) {
+				StringBuilder w = new StringBuilder();
+				w.append(String.format("<li><a class='%s' title='%s, %s' href='#' onClick=\"javascript:toggleDiv('saveSearch');\">%s</a></li>\n",
+						"selectable",
+						request.getClientInfo().getUser(),
+						alert_hint,
+						"Save this search"
+						));
+				w.append("<div class=\"ui-widget-content ui-corner-all\" style='display: none;width:180px;' id='saveSearch'>");
+				w.append("<p>");
+				w.append(String.format("<form action='%s%s%s' method='POST'>",request.getRootRef(),Resources.myaccount,Resources.alert));
+				w.append(alert_hint);
+				w.append(String.format("<input type='hidden' name='%s' value='%s'/>",DBAlert._fields.name.name(),Resources.protocol));
+				w.append(String.format("<input type='hidden' name='%s' value='%s'/>",DBAlert._fields.query.name(),request.getResourceRef().getQuery()));
+				w.append(String.format("<input type='hidden' name='%s' value='%s'/>",DBAlert._fields.qformat.name(),Query.QueryType.FREETEXT.name()));
+				w.append(String.format("<input type='hidden' name='%s' value='%s'/>","username",request.getClientInfo().getUser()));
+				w.append(String.format("<br><label for='%s' title='%s'>Frequency of e-mail alert</label><select name='%s'>",DBAlert._fields.rfrequency.name(),freq_hint,DBAlert._fields.rfrequency.name()));
+				w.append("<option value=\"monthly\">Monthly</option>");
+				w.append("<option value=\"weekly\">Weekly</option>");
+				w.append("<option value=\"daily\">Daily</option>");				
+				w.append(String.format("<option value=\"\" title='%s'>Never</option>",freq_hint));
+				w.append("</select>");
+				w.append(String.format("<input type='submit' title='Save your search and get new search result e-mail notification. %s' value='Save'/>",freq_hint));
+				w.append("</form>");
+				w.append("</p>");
+				w.append("</div>");
+				return w.toString();
+			}
+			return "";
+			
+		}
 		protected String printMenuItem(String relativeURI,String title,String baseReference,String pagesize) {
 			return this.printMenuItem(relativeURI, title, baseReference, pagesize,"");
 		}
@@ -580,6 +650,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			writeTopHeader(w, title, request, meta,doc);
 			writeSearchForm(w, title, request, meta,null);
+			
 			w.write("<div id='content'>\n");
 		}
 		
@@ -774,4 +845,13 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 		}	
 		
+		protected String getLogout(Reference baseReference,User user) {
+			StringBuilder stringBuilder = new StringBuilder();
+			String redirect = Reference.encode(String.format("%s/",baseReference));
+			stringBuilder.append(String.format("<form class='topLinks login' action='%s/protected/signout?targetUri=%s' method='POST'>",baseReference,redirect));
+			stringBuilder.append(String.format("<input title='You are currently logged in as \"%s\". Click here to log out.' class='draw'",user.getIdentifier()));
+			stringBuilder.append(String.format(" type='submit' src='%s/images/key.png' value='Log out [%s]'>",baseReference,user.getIdentifier()));
+			stringBuilder.append("</form>");
+			return stringBuilder.toString();
+		}	
 }
