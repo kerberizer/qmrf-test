@@ -10,9 +10,9 @@ source `qmrf_documents-20120217.sql`;
 
 Please note that the file qmrf_documents-20120217.sql should contain the most recent dump of the old qmrf_documents database and should be located in the current folder.
 
-2) Create the new qmrf database, set up corresponding grants and create the tables that are required. Download the qmrf.sql script from:
+2) Create the new qmrf database, set up corresponding grants and create the tables that are required. Use the qmrf.sql script from MIGRATION directory. Alternatively, download the qmrf.sql script from:
 
-http://sourceforge.net/p/qmrf/code/125/tree/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/qmrf.sql?format=raw
+http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/qmrf.sql?format=raw
 
 Run the following commands in a mysql console:
 
@@ -24,9 +24,9 @@ source qmrf.sql;
 
 Please note that the file qmrf.sql should be located in the current folder.
 
-3) Migrate the content from the old database (qmrf_documents) into the new one (qmrf). Download the migrate.sql script from:
+3) Migrate the content from the old database (qmrf_documents) into the new one (qmrf).  Use the migrate.sql script from MIGRATION directory. Alternatively, download the migrate.sql script from:
 
-http://sourceforge.net/p/qmrf/code/125/tree/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/migrate.sql?format=raw
+http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/migrate.sql?format=raw
 
 Run the following commands in a mysql console:
 
@@ -54,7 +54,7 @@ GRANT ALL ON `tomcat_users`.* TO 'guest'@'localhost';
 
 Please note that the file tomcat_users.sql is provided in this archive and should be placed in the current folder.
 
-6) Deploy the qmrfdata.war in your Tomcat instance. Open the following URI in your browser:
+6) Deploy the qmrfdata.war in your Tomcat instance. The qmrfdata.war is in the WebApplications directory. Open the following URI in your browser:
 
 http://yourhost:port/qmrfdata/dataset
 
