@@ -149,16 +149,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"</li>";
 		
 	// log in/out link
-	final static String logInLinkTemplate =
+	final static String logInOutLinkTemplate =
 		"<li class='topLinks'>|</li>\n" +
 		"<li class='topLinks'>\n" +
 		"<a class='topLinks login' title='%s' href='%s%s'>%s</a>\n" +
-		"</li>\n";
-
-	final static String logOutLinkTemplate =
-		"<li class='topLinks'>|</li>\n" +
-		"<li class='topLinks'>\n" +
-		"%s\n" +
+		"%s" + // this is a placeholder for the logout form
 		"</li>\n";
 	
 	// footer
@@ -351,32 +346,31 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			if (!getSearchURI().equals(Resources.login)) {
 				if (request.getClientInfo().getUser()==null) {
-					//login
-					logInOutLink = String.format(logInLinkTemplate,
-							// Log in/out hint
+					// Log in
+					logInOutLink = String.format(logInOutLinkTemplate,
+							// Log in hint
 							"Log in here to submit new documents (only required for editors)",
-							// Log in/out URL 1/2							
-							baseReference.toString(), 
-							 //Log in/out URL 2/2
-							Resources.login, 
-							// Log in/out text
-							"Log in");					
+							// Log in URL 1/2							
+							baseReference.toString(),
+							// Log in URL 2/2
+							Resources.login,
+							// Log in text
+							"Log in",
+							// Since we're not logged in, the logout form is irrelevant
+							"");
 				} else {
-					//logout
-					logInOutLink = String.format(logOutLinkTemplate,
-							getLogout(baseReference, request.getClientInfo().getUser()					
-									));
-					/*
-						// Log in/out hint
-						String.format("You are currently logged in as \"%s\". Click here to log out.", request.getClientInfo().getUser()),
-						// Log in/out URL 1/2							
-						baseReference.toString(), 
-						 //Log in/out URL 2/2
-						Resources.login, 
-						// Log in/out text
-						request.getClientInfo().getUser()==null? 
-								"Log in":String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser()));
-								*/
+					// Log out
+					logInOutLink = String.format(logInOutLinkTemplate,
+							// Log out hint
+							String.format("You are currently logged in as \"%s\". Click here to log out.", request.getClientInfo().getUser()),
+							// Log out URL 1/2							
+							"",
+							// Log out URL 2/2
+							"javascript: document.forms[\"logoutForm\"].submit();",
+							// Log out text
+							String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser()),
+							// The log out form
+							getLogout(baseReference, request.getClientInfo().getUser()));
 				}
 			}
 			
@@ -845,13 +839,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 		}	
 		
-		protected String getLogout(Reference baseReference,User user) {
-			StringBuilder stringBuilder = new StringBuilder();
-			String redirect = Reference.encode(String.format("%s/",baseReference));
-			stringBuilder.append(String.format("<form class='topLinks login' action='%s/protected/signout?targetUri=%s' method='POST'>",baseReference,redirect));
-			stringBuilder.append(String.format("<input title='You are currently logged in as \"%s\". Click here to log out.' class='draw'",user.getIdentifier()));
-			stringBuilder.append(String.format(" type='submit' src='%s/images/key.png' value='Log out [%s]'>",baseReference,user.getIdentifier()));
-			stringBuilder.append("</form>");
-			return stringBuilder.toString();
+		protected String getLogout(Reference baseReference, User user) {
+			String redirect = Reference.encode(String.format("%s/", baseReference));
+			return String.format("<form id='logoutForm' action='%s/protected/signout?targetUri=%s' method='POST'></form>", baseReference, redirect);
 		}	
 }
