@@ -28,7 +28,7 @@ public class QMRFLoginFormResource extends UserLoginFormResource<User> {
 		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
 			User user = getRequest().getClientInfo().getUser();
 			if ((user!=null) && (user.getIdentifier()!=null)) {
-				 this.getResponse().redirectSeeOther(String.format("%s%s",getRequest().getRootRef(),Resources.myaccount));
+				 this.getResponse().redirectSeeOther(String.format("%s%s",getRequest().getRootRef(),Resources.protocol));
 				 return null;
 			}	
 		}
