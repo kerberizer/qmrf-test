@@ -485,11 +485,6 @@ td.qmrfNumber {
 	white-space: nowrap;
 }
 
-td.qmrfNumber div {
-	width: 130px;
-	height: 0;
-}
-
 td.qmrfDate {
 	white-space: nowrap;
 }
