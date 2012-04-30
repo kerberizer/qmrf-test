@@ -291,9 +291,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					)); 			
 			w.write(String.format("<title>%s</title>\n",title));
 			
-			// Initialize Google +1, FB, Twitter, Linked In buttons
+			// Initialize Google +1, Twitter and Linked In buttons; Facebook is initialized at the beginning of BODY
 			w.write(googlePlusInit);
-			w.write(facebookInit);
 			w.write(twitterInit);
 			w.write(linkedInInit);
 
@@ -337,6 +336,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			// HTML body begins here.
 			w.write("<body>\n");
+			
+			// Initialize Facebook button; Google +1, Twitter and Linked In are initialized in the HEAD
+			w.write(facebookInit);
 			
 			w.write("<div id='wrap'>\n");
 			
