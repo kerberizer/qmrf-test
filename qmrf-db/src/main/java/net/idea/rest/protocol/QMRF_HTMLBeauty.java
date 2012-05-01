@@ -81,6 +81,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	// LinkedIn
 	final static String linkedInInit = "<script src='http://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
 	
+	// ВКонтакте (VKontakte)
+	final static String vKontakteInit = "<script type=\"text/javascript\" src=\"http://vk.com/js/api/share.js?11\" charset=\"windows-1251\"></script>";
+	
 	// table row expander script
 	final static String toggleDivScript =
 			"<script type='text/javascript'>function toggleDiv(divId) {\n" +
@@ -291,10 +294,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					)); 			
 			w.write(String.format("<title>%s</title>\n",title));
 			
-			// Initialize Google +1, Twitter and Linked In buttons; Facebook is initialized at the beginning of BODY
+			// Initialize Google +1, Twitter, Linked In and VKontakte buttons; Facebook is initialized at the beginning of BODY
 			w.write(googlePlusInit);
 			w.write(twitterInit);
 			w.write(linkedInInit);
+			w.write(vKontakteInit);
 
 			w.write(meta);
 
@@ -337,7 +341,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// HTML body begins here.
 			w.write("<body>\n");
 			
-			// Initialize Facebook button; Google +1, Twitter and Linked In are initialized in the HEAD
+			// Initialize Facebook button; Google +1, Twitter, Linked In and VKontakte are initialized in the HEAD
 			w.write(facebookInit);
 			
 			w.write("<div id='wrap'>\n");
