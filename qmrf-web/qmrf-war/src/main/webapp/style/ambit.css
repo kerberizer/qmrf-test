@@ -513,7 +513,7 @@ div.socialPanel {
 }
 
 table.socialTable {
-	margin: 0;
+	margin: -8px auto -4px;
 }
 
 td.socialTool {

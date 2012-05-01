@@ -166,7 +166,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				output.write("<div class='socialPanel'><table class='socialTable'><tr><td class='socialTool'>\n"); // begin social
 
 				// Google +1
-				output.write(String.format("<g:plusone href='%s'></g:plusone>\n", uri));
+				output.write(String.format("<g:plusone size='medium' href='%s'></g:plusone>\n", uri));
 
 				output.write("</td><td class='socialTool'>"); // next cell
 
