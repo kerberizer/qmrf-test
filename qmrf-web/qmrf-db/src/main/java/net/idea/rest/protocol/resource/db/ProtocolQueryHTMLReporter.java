@@ -188,6 +188,13 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				// LinkedIn
 				output.write(String.format("<script type='IN/Share' data-url='%s' data-counter='right' data-showzero='true'></script>\n", uri));
 			
+				output.write("</td><td class='socialToolVK'>"); // next cell, but VKontakte requires special styling
+
+				// ВКонтакте (VKontakte)
+				output.write(String.format("<script type=\"text/javascript\"><!--\n" + 
+							"document.write(VK.Share.button({url: \"%s\"},{type: \"round\", text: \"Share this\"}));\n" +
+							"--></script>", uri));
+				
 				output.write("</td></tr></table></div>\n"); // end social
 
 			} // social IE7 if

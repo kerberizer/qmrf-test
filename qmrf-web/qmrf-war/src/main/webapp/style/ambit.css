@@ -513,19 +513,16 @@ div.socialPanel {
 }
 
 table.socialTable {
-	width: 100%;
 	margin: 0;
 }
 
 td.socialTool {
-	border: 1px dotted silver;
-	-webkit-border-radius: 5px;
-	-khtml-border-radius: 5px;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
-	text-align: center;
-	padding: 5px 5px 5px 20px;
-	width: 25%;
+	text-align: left;
+}
+
+td.socialToolVK {
+	text-align: left;
+	padding: 0 0 11px 20px;
 }
 
 div.loading {
