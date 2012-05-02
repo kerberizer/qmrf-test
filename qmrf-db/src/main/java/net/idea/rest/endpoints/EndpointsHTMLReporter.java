@@ -7,6 +7,7 @@ import java.io.Writer;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.rest.QMRFHTMLReporter;
+import net.idea.rest.endpoints.db.QueryOntology;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.reporters.DisplayMode;
@@ -105,7 +106,16 @@ public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporte
 		
 	}	
 	
+	public String up(D record) {
+		//if (count==1) return ""; 
+		
+		return String.format("%s%s",
+				uriReporter.getBaseReference(),
+				EndpointsResource.resource
+			);
 
+		
+	}	
 	@Override
 	public Object processItem(D record) throws AmbitException {
 
@@ -116,6 +126,12 @@ public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporte
 			if (((EndpointTest)record).getCode()!=null)
 				output.write(((EndpointTest)record).getCode());
 			output.write("</td>");
+			/*
+			output.write("<td>");
+			if ((record!=null)&&record.getReference()!=null)
+				output.write(String.format("<a href='%s'>%s</a>",up(record),"Up"));
+			output.write("</td>");
+			*/
 			output.write(String.format("<td>%s</td>",toURI(record)));
 			output.write("<td>");
 			output.write(String.format("<a href='%s%s?option=endpoint&search=%s'>%s</a>", 
@@ -143,6 +159,7 @@ public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporte
 			output.write("<table class='datatable'  cellpadding='0' border='0' width='100%' cellspacing='0'>\n");
 			output.write("<thead>\n");	
 			output.write(String.format("<th>%s</th>","Code"));
+			//output.write(String.format("<th>%s</th>","Category"));
 			output.write(String.format("<th>%s</th>","Name"));
 			output.write(String.format("<th>%s</th>","(Q)MRF documents"));
 			output.write("</thead>\n");
@@ -166,7 +183,47 @@ public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporte
 	@Override
 	protected void printPageNavigator(IQueryRetrieval<D> query)
 			throws Exception {
-
+		try {
+			String url = "<li><a class='%s' style='width: 25em;' href='%s%s/%s/%s' title='%s'>%s</a></li>";
+			output.write("<div><ul id='hnavlist'>");
+			output.write(String.format(url, 
+					query instanceof QueryOntology?"pselectable":"current",
+					uriReporter.getBaseReference(),
+					EndpointsResource.resource,
+					"All",
+					"",
+					"",
+					"All endpoints"));
+			if (query instanceof QueryOntology) {
+					EndpointTest et = ((QueryOntology<EndpointTest>)query).getValue();
+					/*
+					if (et.getReference()!=null)
+					output.write(String.format(url, 
+							"pselectable",
+							uriReporter.getBaseReference(),
+							EndpointsResource.resource,
+							"All",
+							Reference.encode(et.getTitle()),
+							et.getTitle(),
+							et.getTitle())
+							);
+							*/
+					
+					output.write(String.format(url, 
+							"current",
+							uriReporter.getBaseReference(),
+							EndpointsResource.resource,
+							"All",
+							Reference.encode(et.getName()),
+							et.getName(),
+							et.getName())
+							);
+			}
+			output.write("</ul></div><br>");
+			output.flush();
+		} catch (Exception x) {
+			
+		}
 	}
 	@Override
 	public void header(Writer w, IQueryRetrieval<D> query) {
