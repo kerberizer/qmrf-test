@@ -18,7 +18,7 @@
 			<li class='topLinks'>
 
 			<#if username??>
-				<a class='topLinks login' title='You are currently logged in as "${username}". Click here to log out.' href='javascript: document.forms["logoutForm"].submit();'>Log out [<b>${username}</b>]</a>			   
+				<a class='topLinks login' title='You are currently logged in as "${username}". Click here to log out.' href='#' onClick='document.forms["logoutForm"].submit(); return false;'>Log out [<b>${username}</b>]</a>			   
 				<form id='logoutForm' action='./protected/signout?targetUri=.' method='POST'></form>
 			<#else>
 				<a class='topLinks login' title='Log in here to submit new documents (only required for editors)' href='./login'>Log in</a>

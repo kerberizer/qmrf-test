@@ -99,6 +99,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 	final static String simpleToggleDivScript =
 			"<script type='text/javascript'>function toggleDivSimple(divId) {$('#'+divId).toggle();}</script>\n";
+	
     // show the footer when the mouse is near
     final static String showFooterScript =
     	"<script type='text/javascript'>\n" +
@@ -155,7 +156,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	final static String logInOutLinkTemplate =
 		"<li class='topLinks'>|</li>\n" +
 		"<li class='topLinks'>\n" +
-		"<a class='topLinks login' title='%s' href='%s%s'>%s</a>\n" +
+		"<a class='topLinks login' title='%s' href='%s%s' %s>%s</a>\n" +
 		"%s" + // this is a placeholder for the logout form
 		"</li>\n";
 	
@@ -356,23 +357,23 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					logInOutLink = String.format(logInOutLinkTemplate,
 							// Log in hint
 							"Log in here to submit new documents (only required for editors)",
-							// Log in URL 1/2							
-							baseReference.toString(),
-							// Log in URL 2/2
-							Resources.login,
+							// Log in URL
+							baseReference.toString(), Resources.login,
+							// onClick event (used when logging out, hence empty here)
+							"",
 							// Log in text
 							"Log in",
-							// Since we're not logged in, the logout form is irrelevant
+							// The log out form (empty here as we're not yet logged in)
 							"");
 				} else {
 					// Log out
 					logInOutLink = String.format(logInOutLinkTemplate,
 							// Log out hint
 							String.format("You are currently logged in as \"%s\". Click here to log out.", request.getClientInfo().getUser()),
-							// Log out URL 1/2							
-							"",
-							// Log out URL 2/2
-							"javascript: document.forms[\"logoutForm\"].submit();",
+							// Log out URL (empty anchor, because we use the form below with JS)
+							"#", "",
+							// onClick event used to submit the form below
+							"onClick='document.forms[\"logoutForm\"].submit(); return false;'",
 							// Log out text
 							String.format("Log out [<b>%s</b>]", request.getClientInfo().getUser()),
 							// The log out form
@@ -501,7 +502,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				(request.getClientInfo().getUser()!=null) && (request.getClientInfo().getUser().getIdentifier()!=null) && 
 				(request.getResourceRef().getQuery()!=null)) {
 				StringBuilder w = new StringBuilder();
-				w.append(String.format("<li><a class='%s' title='%s, %s' href='#' onClick=\"javascript:toggleDiv('saveSearch');\">%s</a></li>\n",
+				w.append(String.format("<li><a class='%s' title='%s, %s' href='#' onClick=\"toggleDiv('saveSearch'); return false;\">%s</a></li>\n",
 						"selectable",
 						request.getClientInfo().getUser(),
 						alert_hint,

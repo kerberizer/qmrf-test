@@ -69,7 +69,7 @@ public class QMRFStatusService extends StatusService {
 				} 
 				
 				String detailsDiv = details==null?"":
-					String.format("<a href=\"javascript:toggleDiv('%s');\" style=\"background-color: #fff; padding: 5px 10px;\">Details</a>\n",
+					String.format("<a href=\"#\" style=\"background-color: #fff; padding: 5px 10px;\" onClick=\"toggleDiv('%s'); return false;\">Details</a>\n",
 							"details");
 						
 				String errName = status.getName();
