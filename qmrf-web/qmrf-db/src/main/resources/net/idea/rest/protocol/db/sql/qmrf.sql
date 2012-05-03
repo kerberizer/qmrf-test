@@ -182,6 +182,20 @@ CREATE TABLE  `dictionary` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- -----------------------------------------------------
+-- Endpoints related to the QMRF document
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `protocol_endpoints`;
+CREATE TABLE  `protocol_endpoints` (
+  `idprotocol` int(10) unsigned NOT NULL,
+  `version` int(10) unsigned NOT NULL,
+  `idtemplate` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`idprotocol`,`version`,`idtemplate`) USING BTREE,
+  KEY `FK_protocol_template_2` (`idtemplate`),
+  CONSTRAINT `FK_protocol_template_1` FOREIGN KEY (`idprotocol`, `version`) REFERENCES `protocol` (`idprotocol`, `version`),
+  CONSTRAINT `FK_protocol_template_2` FOREIGN KEY (`idtemplate`) REFERENCES `template` (`idtemplate`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- -----------------------------------------------------
 -- Saved queries
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `alert`;
@@ -200,6 +214,8 @@ CREATE TABLE  `alert` (
   CONSTRAINT `FK_query_1` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
+
 -- -----------------------------------------------------
 -- DB schema version
 -- -----------------------------------------------------
@@ -211,7 +227,7 @@ CREATE TABLE  `version` (
   `comment` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`idmajor`,`idminor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-insert into version (idmajor,idminor,comment) values (2,3,"QMRF schema");
+insert into version (idmajor,idminor,comment) values (2,4,"QMRF schema");
 
 -- -----------------------------------------------------
 -- Create new protocol version

@@ -87,6 +87,21 @@ join qmrf_documents.attachments olda using(idqmrf);
 
 update qmrf.attachments set name = replace(name,"#","N");
 
+-- endpoints
+insert into protocol_endpoints
+select idprotocol,version,idtemplate,
+extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name'),concat(replace(template.code,"QMRF ","^"),substring(name,1,2))
+from protocol
+join template
+where
+extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') regexp
+concat(replace(template.code,"QMRF ","^"),substring(name,1,2))
+and
+template.code regexp "^QMRF"
+and
+extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') is not null
+order by idprotocol;
+
 -- attachments - to retrieve files from 
 -- SELECT concat("curl \"http://qsardb.jrc.it/qmrf/download_attachment.jsp?name=",replace(name," ","+"),"\" 1>  \"qmrf\\",type,"\\\"",name,"'")
 -- FROM qmrf_documents.attachments a
@@ -106,3 +121,4 @@ update qmrf.attachments set name = replace(name,"#","N");
 -- qmrf155_HAA training_40
 -- qmrf176_Molcode acute oral training_45
 -- qmrf333_Acute_toxicity_birds_#1_training_126
+
