@@ -39,8 +39,8 @@ public class DictionaryURIReporter<D extends Dictionary> extends QueryURIReporte
 			ref,
 			EndpointsResource.resource,
 			record.getReference()==null?"All":
-			Reference.encode(record.getTitle()),
-			Reference.encode(record.getName()),
+			Reference.encode(record.getTitle().replace("/", "_")),
+			Reference.encode(record.getName().replace("/", "_")),
 			getDelimiter()
 		);
 		

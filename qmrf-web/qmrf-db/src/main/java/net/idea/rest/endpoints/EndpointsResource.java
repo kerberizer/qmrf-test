@@ -131,13 +131,13 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 		if (key != null) {
 			QueryOntology q = new QueryOntology();
 			q.setIncludeParent(false);
-			q.setValue(key==null?null:new EndpointTest(Reference.decode(key.toString()),null));
+			q.setValue(key==null?null:new EndpointTest(Reference.decode(key.toString().replace("_", "/")),null));
 			return q;
 		} else {
 			key =  request.getAttributes().get(resourceParent);
 			DictionaryQuery qd = new DictionaryObjectQuery();
 			qd.setCondition(StringCondition.getInstance(StringCondition.C_EQ));
-			qd.setValue(key==null?null:Reference.decode(key.toString(),null));
+			qd.setValue(key==null?null:Reference.decode(key.toString().replace("_", "/"),null));
 			
 			return qd;
 		}
