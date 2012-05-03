@@ -89,8 +89,7 @@ update qmrf.attachments set name = replace(name,"#","N");
 
 -- endpoints
 insert into protocol_endpoints
-select idprotocol,version,idtemplate,
-extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name'),concat(replace(template.code,"QMRF ","^"),substring(name,1,2))
+select idprotocol,version,idtemplate
 from protocol
 join template
 where
