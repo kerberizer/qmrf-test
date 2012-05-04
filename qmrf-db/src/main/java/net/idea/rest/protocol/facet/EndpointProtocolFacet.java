@@ -4,6 +4,7 @@ import java.net.URLEncoder;
 
 import net.idea.modbcum.q.facet.PropertyDatasetFacet;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
 
 
 public class EndpointProtocolFacet extends PropertyDatasetFacet<String,String> {
@@ -22,12 +23,13 @@ public class EndpointProtocolFacet extends PropertyDatasetFacet<String,String> {
 	 */
 	@Override
 	public String getResultsURL(String... params) {
-		return String.format("%s%s?option=endpoint&condition=%s&%s=%s",
+		return 
+			   String.format("%s%s?option=%s&%s=%s",
 				(params.length>=1)?params[0]:"",
 				Resources.protocol,
-				URLEncoder.encode("="),
+				SearchMode.endpointcode,
 				"search",
-				URLEncoder.encode(getValue().toString())
+				getProperty2()==null?"undefined":URLEncoder.encode(getProperty2())
 				);
 	}
 

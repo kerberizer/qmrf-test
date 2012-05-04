@@ -1,16 +1,13 @@
 package net.idea.rest.protocol.db;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
-import net.idea.rest.protocol.DBProtocol;
-import net.idea.rest.protocol.db.ReadProtocol.fields;
+import net.idea.rest.endpoints.EndpointTest;
 
-public class ReadProtocolByEndpoint extends ReadProtocolAbstract<String> {
+public class ReadProtocolByEndpoint extends ReadProtocolAbstract<EndpointTest> {
 
 	/**
 	 * 
@@ -20,19 +17,28 @@ public class ReadProtocolByEndpoint extends ReadProtocolAbstract<String> {
 	 * 
 	 */
 
-	protected static String sql = String.format(ReadProtocol.sql_nokeywords,
-		"where ","published=true and trim(extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name')) %s ?");
+	protected static String sql_join = 	
+		"join protocol_endpoints using(idprotocol)\n join template using(idtemplate) where ";
+	protected static String sql_join_null = 	
+		"left join protocol_endpoints using(idprotocol) where ";
+	protected static String sql = String.format(ReadProtocol.sql_nokeywords,sql_join,
+			"published=true and code = ?");
+	protected static String sql_null = String.format(ReadProtocol.sql_nokeywords,sql_join_null,
+			"published=true and idtemplate is null");	
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();
-		if (getFieldname()!=null) 
-			params.add(new QueryParam<String>(String.class, getFieldname()));
-		else throw new AmbitException("No endpoint!");
+		if (getFieldname()!=null && getFieldname().getCode()!=null)
+			params.add(new QueryParam<String>(String.class, getFieldname().getCode()));
+
 		return params;
 	}
 
 	public String getSQL() throws AmbitException {
-		return String.format(sql,getCondition().getSQL());
+		if (getFieldname()!=null && getFieldname().getCode()!=null)
+			return sql;
+		else 
+			return sql_null;
 
 	}
 	

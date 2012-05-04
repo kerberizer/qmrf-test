@@ -6,7 +6,7 @@ import java.util.List;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 
-public class ReadProtocolByAuthor extends ReadProtocolByEndpointString {
+public class ReadProtocolByEndpointString extends ReadProtocolAbstract<String> {
 
 	/**
 	 * 
@@ -17,19 +17,20 @@ public class ReadProtocolByAuthor extends ReadProtocolByEndpointString {
 	 */
 
 	protected static String sql = String.format(ReadProtocol.sql_nokeywords,
-		"where ","published=true and extractvalue(abstract,'/QMRF/Catalogs/authors_catalog/author/@name') regexp ?");
+		"where ","published=true and trim(extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name')) %s ?");
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();
 		if (getFieldname()!=null) 
 			params.add(new QueryParam<String>(String.class, getFieldname()));
-		else throw new AmbitException("No author name!");
+		else throw new AmbitException("No endpoint!");
 		return params;
 	}
 
 	public String getSQL() throws AmbitException {
-		return sql;
+		return String.format(sql,getCondition().getSQL());
 
 	}
+	
 	
 }

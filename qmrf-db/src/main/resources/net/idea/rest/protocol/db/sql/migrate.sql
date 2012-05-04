@@ -94,9 +94,16 @@ from protocol
 join template
 where
 extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') regexp
-concat(replace(template.code,"QMRF ","^"),substring(name,1,2))
+concat(replace(replace(template.code,".","\\."),"QMRF ","^"))
 and
-template.code regexp "^QMRF"
+template.code regexp "^QMRF "
+and (code != "QMRF 1.")
+and (code != "QMRF 2.")
+and (code != "QMRF 3.")
+and (code != "QMRF 4.")
+and (code != "QMRF 5.")
+and (code != "QMRF 6.")
+and (code != "QMRF 7.")
 and
 extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') is not null
 order by idprotocol;

@@ -11,7 +11,7 @@ import net.idea.modbcum.i.query.QueryParam;
  * @author nina
  *
  */
-public class ReadProtocolByTextSearch extends ReadProtocolByEndpoint {
+public class ReadProtocolByTextSearch extends ReadProtocolByEndpointString {
 
 
 	/**

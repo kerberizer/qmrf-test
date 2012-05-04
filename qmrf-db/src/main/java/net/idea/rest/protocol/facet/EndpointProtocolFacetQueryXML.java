@@ -9,13 +9,17 @@ import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.modbcum.q.facet.AbstractFacetQuery;
 
-
 /**
  * Lists number of protocols, given endpoint and (optionally) a compound
  * @author nina
  * 
+select code,name,count(*) from protocol
+left join protocol_endpoints using(idprotocol)
+join template using(idtemplate)
+group by idtemplate
+order by template.code
  */
-public class EndpointProtocolFacetQuery extends AbstractFacetQuery<String,String,StringCondition,IFacet<String>> { 
+public class EndpointProtocolFacetQueryXML extends AbstractFacetQuery<String,String,StringCondition,IFacet<String>> { 
 									
 	/**
 	 * 
@@ -23,20 +27,21 @@ public class EndpointProtocolFacetQuery extends AbstractFacetQuery<String,String
 	private static final long serialVersionUID = -8340773122431657623L;
 	protected EndpointProtocolFacet record;
 	protected static String sql_protocol = 
-		"select concat(tp.code,tp.name),t.code,t.name,count(distinct(idprotocol)) from protocol\n"+
-		"left join protocol_endpoints using(idprotocol,version)\n"+
-		"left join template t using(idtemplate)\n"+
-		"left join dictionary d on d.idsubject=t.idtemplate\n"+
-		"left join template tp on d.idobject=tp.idtemplate\n"+
-		"where published = true\n"+
-		"group by t.idtemplate\n"+
-		"order by t.code\n";
+		"SELECT\n"+
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') g,\n"+
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@subgroup') sg,\n"+
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') n,\n"+
+		"count(idprotocol)\n"+
+		"FROM protocol where published=true\n"+
+		"group by extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name')\n"+
+		"order by g,n\n";
 	
+	//"comments regexp \"^http://www.opentox.org/echaEndpoints.owl\" \n"+
 	/**
 	 * 
 	 */
 
-	public EndpointProtocolFacetQuery(String url) {
+	public EndpointProtocolFacetQueryXML(String url) {
 		super(url);
 		setCondition(StringCondition.getInstance(StringCondition.C_STARTS_WITH));
 		record = new EndpointProtocolFacet(url);
@@ -77,10 +82,8 @@ public class EndpointProtocolFacetQuery extends AbstractFacetQuery<String,String
 			record.setCount(rs.getInt(4));
 			return record;
 		} catch (Exception x) {
-			record.setProperty1(null);
-			record.setProperty2(null);
-			record.setValue(null);
-			try { record.setCount(rs.getInt(4));} catch (Exception xx) {}
+			record.setValue(x.getMessage());
+			record.setCount(-1);
 			return record;
 		}
 	}

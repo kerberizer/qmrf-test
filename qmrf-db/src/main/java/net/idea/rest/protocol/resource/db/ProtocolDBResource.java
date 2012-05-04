@@ -15,12 +15,14 @@ import net.idea.rest.FreeMarkerApplicaton;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.db.exceptions.MethodNotAllowedException;
+import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.ReadProtocolByAuthor;
 import net.idea.rest.protocol.db.ReadProtocolByEndpoint;
+import net.idea.rest.protocol.db.ReadProtocolByEndpointString;
 import net.idea.rest.protocol.db.ReadProtocolByStructure;
 import net.idea.rest.protocol.db.ReadProtocolByTextSearch;
 import net.idea.rest.structure.resource.Structure;
@@ -70,6 +72,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		title,
 		text,
 		endpoint,
+		endpointcode,
 		author,
 		software,
 		descriptor,
@@ -311,12 +314,21 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					editable = showCreateLink;
 					singleItem = false;				
 					return (Q)query;
+				}		
+				case endpointcode: {
+					IQueryRetrieval<DBProtocol> query = new ReadProtocolByEndpoint();
+					EndpointTest endpointTest = new EndpointTest(null,null);
+					endpointTest.setCode("undefined".equals(search)?null:search.toString().trim());
+					((ReadProtocolByEndpoint)query).setFieldname(endpointTest);
+					editable = showCreateLink;
+					singleItem = false;				
+					return (Q)query;
 				}				
 				case endpoint: {
-					IQueryRetrieval<DBProtocol> query = new ReadProtocolByEndpoint();
+					IQueryRetrieval<DBProtocol> query = new ReadProtocolByEndpointString();
 					
-					((ReadProtocolByEndpoint)query).setFieldname(search.toString().trim());
-					((ReadProtocolByEndpoint)query).setCondition(c);
+					((ReadProtocolByEndpointString)query).setFieldname(search.toString().trim());
+					((ReadProtocolByEndpointString)query).setCondition(c);
 					editable = showCreateLink;
 					singleItem = false;				
 					return (Q)query;
