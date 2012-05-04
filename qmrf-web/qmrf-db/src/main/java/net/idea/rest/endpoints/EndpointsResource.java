@@ -37,7 +37,7 @@ import ambit2.base.data.Dictionary;
  */
 public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<IQueryRetrieval<D>, D> {
 	
-	public static String resource = "/endpoints";
+	public static String resource = "/catalog";
 	public static String resourceParent = "subject";
 	public static String resourceKey = "object";
 	public static String resourceID = String.format("/{%s}/{%s}",resourceParent,resourceKey);

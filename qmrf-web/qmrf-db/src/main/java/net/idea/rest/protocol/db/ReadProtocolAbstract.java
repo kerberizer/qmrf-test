@@ -54,7 +54,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		" %s %s order by idprotocol desc,version desc";	
 	*/
 	protected static String sql_nokeywords = 
-		"select idprotocol,version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
+		"select idprotocol,protocol.version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
 		"idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
 		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
