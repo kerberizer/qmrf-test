@@ -22,7 +22,7 @@ function runTask(modelURI, datasetURI, resultDOM, statusDOM, imgRunning, imgRead
 		if (request.readyState != 4) { return false; }
 		switch (request.status) {
 			case 200:
-				document.getElementById(resultDOM).innerHTML = request.responseText;
+				document.getElementById(resultDOM).href = request.responseText;
 				document.getElementById(statusDOM).src = imgReady;
 				document.getElementById(resultDOM).style.display = 'inline';
 				document.getElementById(statusDOM).style.display = 'inline';
@@ -33,14 +33,11 @@ function runTask(modelURI, datasetURI, resultDOM, statusDOM, imgRunning, imgRead
 				document.getElementById(statusDOM).src = imgRunning;
 				document.getElementById(statusDOM).style.display = 'inline';
 				break;
-			case 400:
-				document.getElementById(resultDOM).innerHTML = request.statusText;
+			default:
+				document.getElementById(resultDOM).innerHTML = request.status + ' ' + request.statusText;
 				document.getElementById(statusDOM).src = imgError;
 				document.getElementById(resultDOM).style.display = 'inline';
 				document.getElementById(statusDOM).style.display = 'inline';
-				break;
-			default:
-				alert('Unexpected HTTP response code returned.');
 				break;
 			}
 	};
@@ -61,7 +58,7 @@ function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError) {
 		if (request.readyState != 4) { return false; }
 		switch (request.status) {
 			case 200:
-				document.getElementById(resultDOM).innerHTML = request.responseText;
+				document.getElementById(resultDOM).href = request.responseText;
 				document.getElementById(statusDOM).src = imgReady;
 				document.getElementById(resultDOM).style.display = 'inline';
 				document.getElementById(statusDOM).style.display = 'inline';
@@ -72,14 +69,11 @@ function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError) {
 					checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError);
 				}, 3000);
 				break;
-			case 400:
-				document.getElementById(resultDOM).innerHTML = request.statusText;
+			default:
+				document.getElementById(resultDOM).innerHTML = request.status + ' ' + request.statusText;
 				document.getElementById(statusDOM).src = imgError;
 				document.getElementById(resultDOM).style.display = 'inline';
 				document.getElementById(statusDOM).style.display = 'inline';
-				break;
-			default:
-				alert('Unexpected HTTP response code returned.');
 				break;
 		}
 	};
