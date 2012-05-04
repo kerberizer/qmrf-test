@@ -8,6 +8,7 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.endpoints.db.QueryOntology;
+import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.reporters.DisplayMode;
@@ -134,10 +135,11 @@ public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporte
 			*/
 			output.write(String.format("<td>%s</td>",toURI(record)));
 			output.write("<td>");
-			output.write(String.format("<a href='%s%s?option=endpoint&search=%s'>%s</a>", 
+			output.write(String.format("<a href='%s%s?option=%s&search=%s'>%s</a>", 
 				getUriReporter().getBaseReference(),
 				Resources.protocol,
-				Reference.encode(record.getTemplate()),
+				SearchMode.endpointcode,
+				Reference.encode(((EndpointTest)record).getCode()),
 				"(Q)MRF documents"
 			));
 			
