@@ -355,6 +355,7 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		Directory jmolDir = new Directory(getContext(), "war:///jmol");
 		Directory jmeDir = new Directory(getContext(), "war:///jme");
 		Directory styleDir = new Directory(getContext(), "war:///style");
+		Directory scriptsDir = new Directory(getContext(), "war:///scripts");
 		Directory jquery = new Directory(getContext(), "war:///jquery");
 
 		router.attach("/meta/", metaDir);
@@ -363,6 +364,7 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		router.attach("/jme/", jmeDir);
 		router.attach("/jquery/", jquery);
 		router.attach("/style/", styleDir);
+		router.attach("/scripts/", scriptsDir);
 
 	}
 
