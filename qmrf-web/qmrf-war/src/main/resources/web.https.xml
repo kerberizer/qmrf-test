@@ -82,6 +82,7 @@
             <url-pattern>/js/*</url-pattern>
             <url-pattern>/jquery/*</url-pattern>
             <url-pattern>/jme/*</url-pattern>
+            <url-pattern>/scripts/*</url-pattern>
         </web-resource-collection>
         <user-data-constraint>
             <transport-guarantee>NONE</transport-guarantee>
