@@ -286,7 +286,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		try {
 			output.write("<tr>\n");	
 			if (details & collapsed)
-				output.write(String.format("<td id='%s_toggler' class='togglerPlus'>" +
+				output.write(String.format("<td id='%s_toggler' class='togglerPlus' title='Show/Hide details'>" +
 						"<script>\n" +
 						"$('#%s_toggler').one('click', function() { $('#%s_tabs').load('%s/chapters?headless=true&media=text/html'," +
 						"	function() { $('#%s .tabs').tabs({cache: true}); }); });\n" +
@@ -309,7 +309,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					"";
 					*/
 			
-			output.write(String.format("<td class='contentTable qmrfNumber'><a href='%s'>%s</a>&nbsp;%s</td>",
+			output.write(String.format("<td class='contentTable qmrfNumber' title='Show only this document'><a href='%s'>%s</a>&nbsp;%s</td>",
 						uri,
 						item.getVisibleIdentifier(),
 						""
