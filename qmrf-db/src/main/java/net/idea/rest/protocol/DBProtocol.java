@@ -70,7 +70,8 @@ public class DBProtocol extends Protocol {
 
 	@Override
 	public String toString() {
-		return String.format("<a href='%s'>%s</a>",getResourceURL(),getTitle()==null?getResourceURL():getTitle());
+		return getResourceURL()==null?getTitle()==null?"Document":getTitle():
+			String.format("<a href='%s'>%s</a>",getResourceURL(),getTitle()==null?getResourceURL():getTitle());
 	}
 	
 	public int getYear() {
