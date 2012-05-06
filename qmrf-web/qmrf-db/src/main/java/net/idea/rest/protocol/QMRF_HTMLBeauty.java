@@ -496,7 +496,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 		} // writeTopHeader()
 		protected static final String freq_hint = "Optional, if no alert frequency is selected, retrieve your saved search from the profile page.";
-		protected static final String alert_hint = "Save your search and get new search result e-mail notification";
+		protected static final String alert_hint = "Save your search and configure the frequency of e-mail update alerts";
 		protected String getSavedSearchMenu(Request request) {
 			if ((Resources.protocol.equals(getSearchURI())) &&
 				(request.getClientInfo().getUser()!=null) && (request.getClientInfo().getUser().getIdentifier()!=null) && 
@@ -522,7 +522,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				w.append("<option value=\"daily\">Daily</option>");				
 				w.append(String.format("<option value=\"\" title='%s'>Never</option>",freq_hint));
 				w.append("</select>");
-				w.append(String.format("<input type='submit' title='Save your search and get new search result e-mail notification. %s' value='Save'/>",freq_hint));
+				w.append(String.format("<input type='submit' title='%s. %s' value='Save'/>",alert_hint,freq_hint));
 				w.append("</form>");
 				w.append("</p>");
 				w.append("</div>");
