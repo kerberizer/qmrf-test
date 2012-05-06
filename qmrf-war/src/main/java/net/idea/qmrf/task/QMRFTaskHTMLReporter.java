@@ -86,7 +86,7 @@ public class QMRFTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERID> {
 								uri,baseReference,baseReference),
 				item.getName(),
 				item.isDone()?item.getUri().getUri():"", //href
-				TaskStatus.Completed.equals(status)?"Ready. Results available.":
+				TaskStatus.Completed.equals(item.getStatus())?"Ready. Results available.":
 				item.getStatus() , //status
 				baseReference,item.isDone()?item.getError()!=null?"cross.png":"tick.png":"progress.gif", //image
 				getErrorReport(item.getError())
