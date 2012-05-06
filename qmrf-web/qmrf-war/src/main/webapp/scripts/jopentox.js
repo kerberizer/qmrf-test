@@ -63,7 +63,8 @@ function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError) {
 				document.getElementById(resultDOM).style.display = 'inline';
 				document.getElementById(statusDOM).style.display = 'inline';
 				break;
-			case 201: // fall down
+			case 201:
+				taskURI = request.responseText; // and then fall down
 			case 202:
 				var taskTimer = window.setTimeout(function() {
 					checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError);
