@@ -94,7 +94,7 @@ from protocol
 join template
 where
 extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') regexp
-concat(replace(replace(template.code,".","\\."),"QMRF ","^"))
+concat(replace(replace(replace(template.code,".","\\."),"QMRF ","^")," ",""))
 and
 template.code regexp "^QMRF "
 and (code != "QMRF 1.")
