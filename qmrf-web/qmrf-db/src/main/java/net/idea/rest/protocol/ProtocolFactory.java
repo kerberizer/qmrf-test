@@ -112,6 +112,8 @@ public class ProtocolFactory {
 				        protocol.setAbstract(fi.getString(utf8));
 				    	QMRFObject qmrf = new QMRFObject();
 						qmrf.read(new StringReader(protocol.getAbstract()));
+						if (qmrf.getChapters().size()<10) 
+							throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid QMRF document!");
 						protocol.setTitle(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(0).getSubchapters().getItem(0)).getText()));
 						//protocol.setIdentifier(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(0)).getText()));
 						String keywords = QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(2)).getText());
