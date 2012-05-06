@@ -58,6 +58,7 @@ function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError) {
 		if (request.readyState != 4) { return false; }
 		switch (request.status) {
 			case 200:
+				document.getElementById(resultDOM).innerHTML = '<span title=\"' + request.status + ' ' + request.statusText + '\">Ready. Results available.</span>';
 				document.getElementById(resultDOM).href = request.responseText;
 				document.getElementById(statusDOM).src = imgReady;
 				document.getElementById(resultDOM).style.display = 'inline';
@@ -66,12 +67,14 @@ function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError) {
 			case 201:
 				taskURI = request.responseText; // and then fall down
 			case 202:
+				document.getElementById(resultDOM).innerHTML = '<span title=\'' + request.status + ' ' + request.statusText + '\'>Waiting ...</span>';
+				document.getElementById(resultDOM).href = request.responseText;
 				var taskTimer = window.setTimeout(function() {
 					checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError);
-				}, 3000);
+				}, 1000);
 				break;
 			default:
-				document.getElementById(resultDOM).innerHTML = request.status + ' ' + request.statusText;
+				document.getElementById(resultDOM).innerHTML = '<span title=\'' + request.status + ' ' + request.statusText + '\'>Error</span>';
 				document.getElementById(statusDOM).src = imgError;
 				document.getElementById(resultDOM).style.display = 'inline';
 				document.getElementById(statusDOM).style.display = 'inline';
