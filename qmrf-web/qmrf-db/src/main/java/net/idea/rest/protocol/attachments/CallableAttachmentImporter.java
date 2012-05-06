@@ -68,8 +68,10 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 	protected DBAttachment getTarget(Form input) throws Exception {
 		try {
 			RemoteTask task = remoteImport(attachment);
-			attachment.setImported(true);
-			return attachment;
+			if (task.isCompletedOK()) {
+				attachment.setImported(true);
+				return attachment;
+			} else throw task.getError();
 		} catch (Exception x) {
 			throw x;
 		}
@@ -123,7 +125,7 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 			}
 			
 		} catch (Exception x)  {
-			task.setError(x);
+			task.setError(new ResourceException(Status.SERVER_ERROR_BAD_GATEWAY,String.format("Error importing chemical structures dataset to %s",uri),x));
 		} finally {
 			try {client.getConnectionManager().shutdown();} catch (Exception x) {}
 		}
