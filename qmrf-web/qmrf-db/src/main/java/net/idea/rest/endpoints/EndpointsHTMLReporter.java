@@ -140,7 +140,7 @@ public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporte
 				Resources.protocol,
 				SearchMode.endpointcode,
 				Reference.encode(((EndpointTest)record).getCode()),
-				"(Q)MRF documents"
+				"QMRF documents"
 			));
 			
 			output.write("</td>");
@@ -163,7 +163,7 @@ public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporte
 			output.write(String.format("<th>%s</th>","Code"));
 			//output.write(String.format("<th>%s</th>","Category"));
 			output.write(String.format("<th>%s</th>","Name"));
-			output.write(String.format("<th>%s</th>","(Q)MRF documents"));
+			output.write(String.format("<th>%s</th>","QMRF documents"));
 			output.write("</thead>\n");
 			output.write("<tbody>\n");
 		} catch (Exception x) {

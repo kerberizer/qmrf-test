@@ -407,8 +407,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			//menu
 			String[][] menu = {
-					{ Resources.protocol, "Documents", "10", "All published QMRF documents" },
-					{ Resources.chemical, "Structures", "10", "Chemical structures search" },
+					{ Resources.protocol, "QMRF document search", "10", "Search all published QMRF documents" },
+					{ Resources.chemical, "Structures search", "10", "Search chemical structures by identifiers, similarity or substructure" },
 					{ Resources.endpoint, "Endpoints", null, "QMRF documents by endpoints" },
 			};
 
