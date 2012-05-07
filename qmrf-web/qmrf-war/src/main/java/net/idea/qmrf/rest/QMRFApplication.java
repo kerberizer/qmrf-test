@@ -169,6 +169,7 @@ public class QMRFApplication extends FreeMarkerApplicaton<String> {
 		endpointsRouter.attachDefault(EndpointsResource.class);
 		endpointsRouter.attach(EndpointsResource.resourceID,EndpointsResource.class);
 		endpointsRouter.attach(EndpointsResource.resourceKey,EndpointsResource.class);
+		endpointsRouter.attach(EndpointsResource.resourceTree, EndpointsResource.class);
 		setCookieUserRouter.attach(EndpointsResource.resource, endpointsRouter);
 		
 		router.attach(auth);

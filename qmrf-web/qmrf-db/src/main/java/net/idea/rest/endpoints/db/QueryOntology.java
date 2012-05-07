@@ -43,12 +43,34 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 		"join `template` `t2` on((`d`.`idobject` = `t2`.`idtemplate`)))\n"+
 		"where t2.name %s ?\n"
 		;
-	protected boolean includeParent = true;
-	public boolean isIncludeParent() {
+	
+	protected String sqlAll = 	
+		"select 2,t2.name,t1.name,t2.code as category,t1.code as code\n"+
+		"from ((`template` `t1`\n"+
+		"join `dictionary` `d` on((`t1`.`idtemplate` = `d`.`idsubject`)))\n"+
+		"join `template` `t2` on((`d`.`idobject` = `t2`.`idtemplate`)))\n"+
+		"where\n"+
+		"(\n"+
+		"t1.code regexp ?\n"+
+		"or t2.code regexp ?\n"+
+		"or t1.name regexp ?\n"+
+		"or t2.name regexp ?\n"+
+		")\n"+
+		"and relationship != \"same_as\"\n"+
+		"order by t1.idtemplate\n";
+
+	public enum RetrieveMode {
+		child,
+		childandarent,
+		all
+	}
+	protected RetrieveMode includeParent = RetrieveMode.child;
+	
+	public RetrieveMode getIncludeParent() {
 		return includeParent;
 	}
 
-	public void setIncludeParent(boolean includeParent) {
+	public void setIncludeParent(RetrieveMode includeParent) {
 		this.includeParent = includeParent;
 	}
 
@@ -70,18 +92,29 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params = new ArrayList<QueryParam>();
-		String value = getFieldname()?getValue().getTemplate():getValue().getParentTemplate();
-		if (includeParent)
+		if (RetrieveMode.all.equals(includeParent)) {
+			String pattern = getValue().getTemplate();
+			params.add(new QueryParam<String>(String.class, pattern));
+			params.add(new QueryParam<String>(String.class, pattern));
+			params.add(new QueryParam<String>(String.class, pattern));
+			params.add(new QueryParam<String>(String.class, pattern));
+		} else {
+			String value = getFieldname()?getValue().getTemplate():getValue().getParentTemplate();
+			if (RetrieveMode.childandarent.equals(includeParent))
+				params.add(new QueryParam<String>(String.class, value));
 			params.add(new QueryParam<String>(String.class, value));
-		params.add(new QueryParam<String>(String.class, value));
-		//params.add(new QueryParam<String>(String.class, value));		
+		}	
 		return params;
 	}
 
 	public String getSQL() throws AmbitException {
-		String value = getFieldname()?getValue().getTemplate():getValue().getParentTemplate();
-		String c = (value==null?"is":"=");
-		return String.format(includeParent?sqlParent+sqlChild:sqlChild,c,c,c);
+		if (RetrieveMode.all.equals(includeParent)) {
+			return sqlAll;
+		} else {
+			String value = getFieldname()?getValue().getTemplate():getValue().getParentTemplate();
+			String c = (value==null?"is":"=");
+			return String.format(RetrieveMode.childandarent.equals(includeParent)?sqlParent+sqlChild:sqlChild,c,c,c);
+		}
 	}
 
 	public D getObject(ResultSet rs) throws AmbitException {

@@ -8,6 +8,7 @@ import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.endpoints.db.DictionaryObjectQuery;
 import net.idea.rest.endpoints.db.DictionaryQuery;
 import net.idea.rest.endpoints.db.QueryOntology;
+import net.idea.rest.endpoints.db.QueryOntology.RetrieveMode;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -59,6 +60,7 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 		customizeVariants(new MediaType[] {
 				MediaType.TEXT_HTML,
 				MediaType.TEXT_URI_LIST,
+				MediaType.APPLICATION_JSON,
 				MediaType.APPLICATION_RDF_XML,
 				MediaType.APPLICATION_RDF_TURTLE,
 				MediaType.TEXT_RDF_N3,
@@ -95,7 +97,11 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 				r.setDelimiter("\n");
 				return new StringConvertor(	r,MediaType.TEXT_URI_LIST,filenamePrefix);
 				
-		} else 
+		} else if (variant.getMediaType().equals(MediaType.APPLICATION_JSON)) {
+				DictionaryJSONReporter r = new DictionaryJSONReporter();
+				return new StringConvertor(	r,MediaType.APPLICATION_JSON,filenamePrefix);
+				
+		} else 			
 			return new OutputWriterConvertor(
 					createHTMLReporter(headless)
 					,MediaType.TEXT_HTML);
@@ -104,7 +110,10 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless)
 			throws ResourceException {
-		return new EndpointsHTMLReporter(getRequest(),!isRecursive()?DisplayMode.table:DisplayMode.singleitem,getHTMLBeauty());
+		return new EndpointsHTMLReporter(getRequest(),
+				DisplayMode.table,
+				//!isRecursive()?DisplayMode.table:DisplayMode.singleitem,
+						getHTMLBeauty());
 	}
 	
 	@Override
@@ -115,22 +124,29 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 	@Override
 	protected IQueryRetrieval<D> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
+		String term = null;
 		try {
 			Form form = getResourceRef(getRequest()).getQueryAsForm();
-			form.getFirstValue(QueryResource.search_param);
+			term = form.getFirstValue("term");
+			if (term!=null) {
+				QueryOntology q = new QueryOntology();
+				q.setIncludeParent(RetrieveMode.all);
+				q.setValue(new EndpointTest(term,term));
+				return q;
+			}
 		} catch (Exception x) {
 			
 		}			
 		try {
 			Object view = request.getAttributes().get("tree");
-			setRecursive("tree".equals(view));	
+			setRecursive(view==null?false:"tree".equals(view));	
 		} catch (Exception x) {
 			setRecursive(false);
 		}		
 		Object key = request.getAttributes().get(resourceKey);
 		if (key != null) {
 			QueryOntology q = new QueryOntology();
-			q.setIncludeParent(false);
+			q.setIncludeParent(RetrieveMode.child);
 			q.setValue(key==null?null:new EndpointTest(Reference.decode(key.toString().replace("_", "/")),null));
 			return q;
 		} else {
