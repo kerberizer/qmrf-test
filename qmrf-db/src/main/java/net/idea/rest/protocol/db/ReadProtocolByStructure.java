@@ -35,7 +35,7 @@ public class ReadProtocolByStructure extends ReadProtocolAbstract<Structure> {
 	protected static String sql = 
 		"select protocol.idprotocol,protocol.version,protocol.title,protocol.qmrf_number,abstract as anabstract,iduser,\n"+
 		"summarySearchable,idproject,idorganisation,filename,template,protocol.updated,status,\n"+
-		"protocol.`created`,published\n"+
+		"protocol.`created`,published,extractvalue(abstract,'//keywords') as xmlkeywords\n"+
 		"from protocol,attachments a, `ambit2-qmrf`.src_dataset q\n"+
 		"join `ambit2-qmrf`.struc_dataset using(id_srcdataset)\n"+
 		"join `ambit2-qmrf`.structure using(idstructure)\n"+
