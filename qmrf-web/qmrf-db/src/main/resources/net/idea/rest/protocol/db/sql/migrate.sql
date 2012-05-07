@@ -87,7 +87,13 @@ join qmrf_documents.attachments olda using(idqmrf);
 
 update qmrf.attachments set name = replace(name,"#","N");
 
--- endpoints
+-- source template.sql;
+-- source dictionary.sql;
+
+------------------------------------------------------------------------------------------
+-- Automatically match endpoints from XML with endpoints, defined in the template table --
+------------------------------------------------------------------------------------------
+
 insert into protocol_endpoints
 select idprotocol,version,idtemplate
 from protocol
@@ -107,6 +113,19 @@ and (code != "QMRF 7.")
 and
 extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') is not null
 order by idprotocol;
+
+-----------------------------------------------
+-- Assign Others 6.6. to unmatched endpoints --
+-----------------------------------------------
+insert into protocol_endpoints
+SELECT  idprotocol,version,tid
+FROM protocol
+left join protocol_endpoints using(idprotocol,version)
+join
+(
+SELECT idtemplate as tid FROM template p where code regexp "QMRF 6. 6"
+) as t
+where idtemplate is null;
 
 -- attachments - to retrieve files from 
 -- SELECT concat("curl \"http://qsardb.jrc.it/qmrf/download_attachment.jsp?name=",replace(name," ","+"),"\" 1>  \"qmrf\\",type,"\\\"",name,"'")
