@@ -4,6 +4,7 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.FileResource;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.endpoints.db.DictionaryObjectQuery;
 import net.idea.rest.endpoints.db.DictionaryQuery;
@@ -13,7 +14,6 @@ import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.reporters.DisplayMode;
-import net.idea.restnet.db.QueryResource;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.db.convertors.OutputWriterConvertor;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
@@ -137,6 +137,13 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 		} catch (Exception x) {
 			
 		}			
+		Object protocol = request.getAttributes().get(FileResource.resourceKey);
+		if (protocol != null) {
+			QueryOntology q = new QueryOntology();
+			q.setIncludeParent(RetrieveMode.protocol);
+			q.setQmrf_number(protocol.toString());
+			return q;
+		}
 		try {
 			Object view = request.getAttributes().get("tree");
 			setRecursive(view==null?false:"tree".equals(view));	
