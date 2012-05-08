@@ -98,9 +98,13 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 			});
 			   builder.setEntityResolver(dtdresolver);
 		   }
-		   Document xmlDocument = builder.parse( new InputSource(new StringReader(xml)));
-		   
-		   return new DOMSource(xmlDocument);
+		   try {
+			   Document xmlDocument = builder.parse( new InputSource(new StringReader(xml)));
+			   
+			   return new DOMSource(xmlDocument);
+		   } catch (Exception x) {
+			   throw x;
+		   }
 	}
 	@Override
 	protected boolean printAsTable() {

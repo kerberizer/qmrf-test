@@ -28,6 +28,7 @@ import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 
 public class ProtocolFactory {
+	protected static final String msg_invalid_qmrf = "Invalid QMRF document!";
 	protected static final String utf8= "UTF-8";
 	public static DBProtocol getProtocol(DBProtocol protocol,
 				List<FileItem> items, 
@@ -111,15 +112,25 @@ public class ProtocolFactory {
 				        }
 				        protocol.setAbstract(fi.getString(utf8));
 				    	QMRFObject qmrf = new QMRFObject();
-						qmrf.read(new StringReader(protocol.getAbstract()));
+				    	try {
+				    		qmrf.read(new StringReader(protocol.getAbstract()));
+				    	} catch (Exception x) {
+				    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
+				    				String.format(msg_invalid_qmrf,x));
+				    	}
 						if (qmrf.getChapters().size()<10) 
-							throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid QMRF document!");
-						protocol.setTitle(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(0).getSubchapters().getItem(0)).getText()));
-						//protocol.setIdentifier(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(0)).getText()));
-						String keywords = QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(2)).getText());
-						String[] keyword = keywords.split(",");
-						for (String key:keyword) protocol.addKeyword(key);
-						qmrf.getCatalogs();
+							throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,msg_invalid_qmrf);
+						
+						try {
+							protocol.setTitle(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(0).getSubchapters().getItem(0)).getText()));
+							//protocol.setIdentifier(QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(0)).getText()));
+							String keywords = QMRFConverter.replaceTags(((QMRFSubChapterText)qmrf.getChapters().get(9).getSubchapters().getItem(2)).getText());
+							String[] keyword = keywords.split(",");
+							for (String key:keyword) protocol.addKeyword(key);
+						} catch (Exception x) {
+							throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,msg_invalid_qmrf,x);
+						}
+
 					}
 					
 					protocol.setDocument(null);
@@ -252,6 +263,8 @@ public class ProtocolFactory {
 					break;	
 				}				
 				} //switch
+			} catch (ResourceException x) {
+				throw x;
 			} catch (Exception x) {
 				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,x);
 			} 

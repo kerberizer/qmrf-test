@@ -888,8 +888,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					
 					content.append(_tdStart);
 					content.append(String.format("<p class='%s'><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"30\"></p>",
+							"box",
 							ReadProtocol.fields.filename.name(),
-							"QMRF XML","box"
+							"QMRF XML"
 					));					
 				
 					content.append(_tdEnd);			
@@ -899,8 +900,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				
 					content.append(_tdStart);
 					content.append(String.format("<p class='%s'><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"30\"></p>",
+								"box",
 								ReadProtocol.fields.filename.name(),
-								"QMRF XML","box"
+								"QMRF XML"
 						));
 					content.append("<p style='color:red'>Warning: Uploading will replace the current QMRF document content!</p>");
 					content.append(_tdEnd);		
