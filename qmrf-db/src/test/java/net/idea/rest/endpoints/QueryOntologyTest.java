@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import junit.framework.Assert;
 
 import net.idea.rest.endpoints.db.QueryOntology;
+import net.idea.rest.endpoints.db.QueryOntology.RetrieveMode;
 import net.idea.rest.protocol.db.test.QueryTest;
 import ambit2.base.data.Dictionary;
 
@@ -13,6 +14,7 @@ public class QueryOntologyTest extends QueryTest<QueryOntology> {
 	@Override
 	protected QueryOntology createQuery() throws Exception {
 		QueryOntology q = new QueryOntology();
+		q.setIncludeParent(RetrieveMode.childandarent);
 		q.setValue(new Dictionary("Physical Chemical Properties",null));
 		return q;
 	}
