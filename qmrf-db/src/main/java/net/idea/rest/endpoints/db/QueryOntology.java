@@ -58,20 +58,39 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 		")\n"+
 		"and relationship != \"same_as\"\n"+
 		"order by t1.idtemplate\n";
+	
+	protected String sqlProtocol = 	
+		"SELECT idprotocol,t2.name,t1.name,t2.code as category,t1.code as code FROM\n"+
+		"protocol\n"+
+		"left join protocol_endpoints using(idprotocol,version)\n"+
+		"left join template t1 using(idtemplate)\n"+
+		"left join dictionary d on t1.idtemplate=d.idsubject\n"+
+		"left join template t2 on t2.idtemplate=d.idobject\n"+
+		"where qmrf_number=?";
 
 	public enum RetrieveMode {
 		child,
 		childandarent,
-		all
+		all,
+		protocol
 	}
-	protected RetrieveMode includeParent = RetrieveMode.child;
+	protected RetrieveMode retrieveMode = RetrieveMode.child;
+	protected String qmrf_number = null;
 	
+	public String getQmrf_number() {
+		return qmrf_number;
+	}
+
+	public void setQmrf_number(String qmrf_number) {
+		this.qmrf_number = qmrf_number;
+	}
+
 	public RetrieveMode getIncludeParent() {
-		return includeParent;
+		return retrieveMode;
 	}
 
 	public void setIncludeParent(RetrieveMode includeParent) {
-		this.includeParent = includeParent;
+		this.retrieveMode = includeParent;
 	}
 
 	public QueryOntology(D dictionary) {
@@ -92,28 +111,40 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params = new ArrayList<QueryParam>();
-		if (RetrieveMode.all.equals(includeParent)) {
+		switch (retrieveMode) {
+		case all: {
 			String pattern = getValue().getTemplate();
 			params.add(new QueryParam<String>(String.class, pattern));
 			params.add(new QueryParam<String>(String.class, pattern));
 			params.add(new QueryParam<String>(String.class, pattern));
 			params.add(new QueryParam<String>(String.class, pattern));
-		} else {
+			break;
+		}
+		case protocol: {
+			params.add(new QueryParam<String>(String.class, getQmrf_number()));
+			break;
+		}
+		default: {
 			String value = getFieldname()?getValue().getTemplate():getValue().getParentTemplate();
-			if (RetrieveMode.childandarent.equals(includeParent))
+			if (RetrieveMode.childandarent.equals(retrieveMode))
 				params.add(new QueryParam<String>(String.class, value));
 			params.add(new QueryParam<String>(String.class, value));
 		}	
+		}
 		return params;
 	}
 
 	public String getSQL() throws AmbitException {
-		if (RetrieveMode.all.equals(includeParent)) {
+		switch (retrieveMode) {
+		case all: 
 			return sqlAll;
-		} else {
+		case protocol: 
+			return sqlProtocol;
+		default: {
 			String value = getFieldname()?getValue().getTemplate():getValue().getParentTemplate();
 			String c = (value==null?"is":"=");
-			return String.format(RetrieveMode.childandarent.equals(includeParent)?sqlParent+sqlChild:sqlChild,c,c,c);
+			return String.format(RetrieveMode.childandarent.equals(retrieveMode)?sqlParent+sqlChild:sqlChild,c,c,c);
+		}
 		}
 	}
 

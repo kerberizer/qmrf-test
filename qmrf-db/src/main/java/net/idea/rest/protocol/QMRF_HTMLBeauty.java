@@ -831,10 +831,21 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					break;
 				}
 				case publish : {
-									
+					
+					String protocolURI = String.format("%s%s/%s%s?media=application/json", baseReference,Resources.protocol,protocol.getIdentifier(),Resources.endpoint);
+
 					content.append("<th width='15%%'>Endpoint</th>");
 					content.append(_tdStart);
-					content.append("<input size='60' id=\"endpoint\">");
+					content.append(String.format("<input size='80' id=\"endpoint\">"));
+					content.append("<script>");
+					content.append(String.format("\n$(document).ready(function() {\n" +
+							"$.getJSON(\"%s\",\n"+
+					        "function(data){\n"+
+					        "  $.each(data, function(i,item){\n"+
+					        "   	$('#endpoint').val(item.value);\n"+
+					        "  });\n"+
+					        "});});\n",protocolURI));
+					content.append("</script>");					
 					content.append(String.format(		
 					"<script>\n"+
 					"$(function() {\n"+
