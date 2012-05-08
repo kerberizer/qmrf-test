@@ -41,6 +41,7 @@ import net.idea.rest.protocol.DBProtocol;
 public class DeleteProtocol extends AbstractObjectUpdate<DBProtocol> {
 
 	public static final String[] delete_sql = {
+		"delete a from protocol_endpoints a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=?",
 		"delete a from keywords a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=?",
 		"delete a from protocol_authors a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=?",
 		"delete from protocol where qmrf_number=?"
