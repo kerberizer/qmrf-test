@@ -161,7 +161,8 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 
 			// The social panel. Don't display on MSIE 7, because it breaks there. No surprise.
 			
-			if (!((QMRF_HTMLBeauty)htmlBeauty).isMsie7()) {
+			//share only if published. Also helps with embedding into /editor page, otherwise VKontakte breaks everything 
+			if (!((QMRF_HTMLBeauty)htmlBeauty).isMsie7() && item.isPublished()) {  
 			
 				output.write("<div class='socialPanel'><table class='socialTable'><tr><td class='socialTool'>\n"); // begin social
 
@@ -226,7 +227,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	@Override
 	protected void printUploadForm(Writer output, String uri, DBProtocol protocol) {
 		try {
-			output.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm("", uri, protocol,update_mode.attachments));
+			output.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm("", uri, protocol,update_mode.attachments,uriReporter.getBaseReference().toString()));
 		} catch (Exception x) {x.printStackTrace();} 
 		
 	}	
@@ -325,13 +326,14 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			
 			output.write(String.format("<td class='contentTable qmrfOwner'>%s</td>", owner));
 			
-			if (!item.isPublished()) {
+			//regular users should not modify anything
+			if (!item.isPublished() && isAdminOrEditor()) {
 				output.write(String.format("<td class='contentTableManageL'>%s</td>" +
 						"<td class='contentTableManageM'>%s</td>" +
 						"<td class='contentTableManageR'>%s</td>",
-						getPublishString(uriReporter.getRequest().getRootRef(), uri),
+						getPublishString(uriReporter.getRequest().getRootRef(), item),
 						getUpdateString(uriReporter.getRequest().getRootRef(), item),
-						getDeleteString(uriReporter.getRequest().getRootRef(), uri)
+						getDeleteString(uriReporter.getRequest().getRootRef(), item)
 				));
 			} else {
 				output.write(String.format("<td class='contentTableManageL'></td>" +
@@ -353,7 +355,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			x.printStackTrace();
 		} 
 	}
-
+	/*
 	protected String getPublishString(Reference baseRef, String uri) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<form action='%s?method=PUT' method='POST' ENCTYPE='multipart/form-data'>");
@@ -364,7 +366,18 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		
 		return String.format(stringBuilder.toString(), uri, baseRef);
 	}
-	
+	*/
+	protected String getPublishString(Reference baseRef, DBProtocol item) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("<form action='%s%s/%s' method='GET'>");
+		stringBuilder.append("<input type='hidden' name='mode' value='%s'>");
+		stringBuilder.append("<input title='Publish this document' class='draw' "); // cont'd
+		stringBuilder.append("type='image' src='%s/images/script_add.png' value='Publish'>");
+		stringBuilder.append("</form>");
+		
+		return String.format(stringBuilder.toString(), baseRef, Resources.editor, item.getIdentifier(), update_mode.publish.name(), baseRef);
+	}	
+	/*
 	protected String getDeleteString(Reference baseRef, String uri) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<form action='%s?method=DELETE' method='POST' ENCTYPE='multipart/form-data'>");
@@ -375,7 +388,18 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		
 		return String.format(stringBuilder.toString(), uri, baseRef);
 	}	
-
+	*/
+	protected String getDeleteString(Reference baseRef, DBProtocol item) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("<form action='%s%s/%s' method='GET'>");
+		stringBuilder.append("<input type='hidden' name='mode' value='%s'>");
+		stringBuilder.append("<input title='Delete this document' class='draw' "); // cont'd
+		stringBuilder.append("type='image' src='%s/images/script_delete.png' value='Delete'>");
+		stringBuilder.append("</form>");
+		
+		return String.format(stringBuilder.toString(), baseRef, Resources.editor, item.getIdentifier(), update_mode.delete.name(), baseRef);
+	}
+	
 	protected String getUpdateString(Reference baseRef, DBProtocol item) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<form action='%s%s/%s' method='GET'>");

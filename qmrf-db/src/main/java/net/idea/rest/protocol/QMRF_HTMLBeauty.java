@@ -2,7 +2,9 @@ package net.idea.rest.protocol;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import net.idea.qmrf.client.QMRFRoles;
@@ -184,6 +186,18 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	private boolean loadTabs;
 
 	public enum update_mode {
+		publish {
+			@Override
+			public String toString() {
+				return "Publish ";
+			}
+		},		
+		delete {
+			@Override
+			public String toString() {
+				return "Delete ";
+			}
+		},			
 		update {
 			@Override
 			public String toString() {
@@ -746,15 +760,16 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			return getPaging(page, start, last, pageSize);
 		}
 		
-		public String printUploadForm(String uri, DBProtocol protocol, update_mode mode) throws Exception {
-			return printUploadForm("",uri, protocol,mode);
+		public String printUploadForm(String uri, DBProtocol protocol, update_mode mode, String baseReference) throws Exception {
+			return printUploadForm("",uri, protocol,mode,baseReference);
 		}
-		public String printUploadForm(String action, String uri, DBProtocol protocol,update_mode mode) throws Exception {
+		public String printUploadForm(String action, String uri, DBProtocol protocol,update_mode mode, String baseReference) throws Exception {
 
 				StringBuilder content = new StringBuilder();
 				String form = null;
 				String header = null;
 				String hint = "<p>Upload a QMRF XML file, complying to <a href='http://qmrf.sf.net/qmrf.dtd' target='help'>QMRF DTD</a> schema. The QMRF Editor can be downloaded from <a href='http://qmrf.sf.net' target='help'>http://qmrf.sf.net</a>. </p> ";
+				String submit = "Upload";
 				switch (mode) {
 				case attachments: {
 					header = String.format("%s to <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getVisibleIdentifier());
@@ -764,9 +779,24 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				}
 				case update : {
 					header = String.format("%s QMRF XML file of <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getVisibleIdentifier());
-					form = String.format("<form method='%s' action=\"%s\" ENCTYPE=\"multipart/form-data\">","PUT",protocol.getResourceURL());
+					form = String.format("<form method='%s' action=\"%s?method=PUT\" ENCTYPE=\"multipart/form-data\">","POST",protocol.getResourceURL());
+					submit = "Update";
 					break;
 				}
+				case publish : {
+					header = String.format("%s QMRF document <a href='%s' target='_blank' title='%s'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier(),protocol.getVisibleIdentifier());
+					form = String.format("<form method='%s' action=\"%s?method=PUT\" ENCTYPE=\"multipart/form-data\">","POST",protocol.getResourceURL());
+					hint = "<p>This is under development, QMRF numbers are assigned automatically</p>";
+					submit = "Update";
+					break;
+				}	
+				case delete : {
+					header = String.format("%s QMRF document <a href='%s' target='_blank' title='%s'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier(),protocol.getVisibleIdentifier());
+					form = String.format("<form method='%s' action=\"%s?method=DELETE\" ENCTYPE=\"multipart/form-data\">","POST",protocol.getResourceURL());
+					hint = "<p style='color:red'>Do you really want to delete this document?</p>";
+					submit = "Confirm document removal";
+					break;
+				}					
 				case newdocument : {
 					
 					form = String.format("<form method='%s' action=\"%s\" ENCTYPE=\"multipart/form-data\">","POST",action);
@@ -775,10 +805,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				}
 				}
 				
-				content.append(printWidgetHeader(header));
-				content.append(printWidgetContentHeader(""));
+				//content.append(printWidgetHeader(header));
+				//content.append(printWidgetContentHeader(""));
+				content.append("<div class=\"ui-widget-content\">");
+				
 				content.append(form);
-				content.append(_tableStart);
+				content.append("<table width='100%%'>");
 				content.append(_trStart);
 				
 				try {
@@ -790,10 +822,48 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					content.append(String.format("<p><input type='hidden' name='%s' title='%s' value='%s' size=\"30\"></p>",
 							ReadProtocol.fields.project_uri.name(),"Project",protocol==null?"":protocol.getProject()==null?"":protocol.getProject().getResourceURL()));
 					} catch (Exception x) {x.printStackTrace(); /*ok, no defaults if anything goes wrong */ }	
-				//The XMLf
+
 				content.append(hint);
 				
 				switch (mode) {
+				case delete : {
+					content.append("<input type='hidden' name='published' value='false'>");
+					break;
+				}
+				case publish : {
+									
+					content.append("<th width='15%%'>Endpoint</th>");
+					content.append(_tdStart);
+					content.append("<input size='60' id=\"endpoint\">");
+					content.append(String.format(		
+					"<script>\n"+
+					"$(function() {\n"+
+						"$( \"#endpoint\" ).autocomplete({\n"+
+							"source: '%s/catalog?media=application/json',minLength:3\n"+
+						"});\n"+
+					"});\n"+
+					"</script>\n",baseReference));
+				
+					content.append(_tdEnd);
+					content.append(_trEnd); 
+					content.append(_trStart);						
+					content.append("<th width='15%%'>QMRF Number</th>");
+					content.append(_tdStart);
+					content.append(String.format("<strong>Q</strong>&nbsp;<input type='text' size='2' title='Year in YY format' value='%s'>",
+								new SimpleDateFormat("yy").format(new Date())));
+					content.append("&nbsp;-&nbsp;<input type='text' title='Endpoint'>");
+					content.append(String.format("&nbsp;-&nbsp;<input type='text' title='Sequential number of QMRF documents published in the specified year'>"));
+					content.append(_tdEnd); 
+					content.append(_trEnd); 
+					
+					content.append(_trStart);
+					content.append("<th width='15%%'>Published status</th>");
+					content.append(_tdStart);
+					content.append(ReadProtocol.fields.published.getHTMLField(protocol));
+					content.append(_tdEnd); 
+					content.append(_tdStart);content.append(_tdEnd); 
+					break;
+				}				
 				case attachments: {
 					for (attachment_type atype: attachment_type.values()) {
 						if (atype.ordinal() % 2 ==0) {
@@ -811,37 +881,59 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 								));
 						content.append(_tdEnd);
 					}
+					break;
+					
+				} 
+				case newdocument: {
+					
+					content.append(_tdStart);
+					content.append(String.format("<p class='%s'><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"30\"></p>",
+							ReadProtocol.fields.filename.name(),
+							"QMRF XML","box"
+					));					
 				
-				} default: {
+					content.append(_tdEnd);			
+					break;
+				}
+				case update: {
 				
 					content.append(_tdStart);
-					content.append(printWidget(String.format("%s QMRF XML file ",update_mode.attachments.equals(mode)?update_mode.update:mode.toString()), 
-						String.format("<p><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"30\"></p>",
+					content.append(String.format("<p class='%s'><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"30\"></p>",
 								ReadProtocol.fields.filename.name(),
-								"QMRF XML"),"box"
+								"QMRF XML","box"
 						));
-				
-					content.append(_tdEnd);					
+					content.append("<p style='color:red'>Warning: Uploading will replace the current QMRF document content!</p>");
+					content.append(_tdEnd);		
+					break;
 				}
 				}
 				content.append(_trEnd);
+				//content.append(_trStart);
+					
+				//content.append(_trEnd);
 				content.append(_trStart);
-				content.append("<td colspan='1'>");	
-				content.append(printWidget("Options",
-						String.format("<strong>%s</strong>%s",
-						"Publish immediately",	ReadProtocol.fields.published.getHTMLField(protocol)),"box"
-						));	
-				content.append("</td></tr>"); // </tr> ne e li izlishno tuk?					
-				content.append(_trEnd);
-				content.append(_trStart);
-				content.append("<td colspan='2' align='center'><input type='submit' id='submit' enabled='false' value='Upload'></td>");
+				content.append(String.format("<td colspan='2' align='center'><input type='submit' id='submit' enabled='false' value='%s'></td>",submit));
 //				content.append("<input type='submit' enabled='false' value='Submit'>");
 
 				content.append(_trEnd);
 				content.append(_tableEnd);
+				
+				
 				content.append("</form>");
+
+
 				content.append(printWidgetContentFooter());
-				content.append(printWidgetFooter());
+				//content.append(printWidgetFooter());
+				
+				
+				switch (mode) {
+				case newdocument: break;
+				default : {
+					content.append(String.format("<span id='%s'></span><script>$('#%s').load('%s%s/%s?headless=true');</script>", 
+							protocol.getIdentifier(),protocol.getIdentifier(),baseReference,Resources.protocol ,protocol.getIdentifier()));
+				}
+				}
+				
 				return	content.toString();
 
 		}	
