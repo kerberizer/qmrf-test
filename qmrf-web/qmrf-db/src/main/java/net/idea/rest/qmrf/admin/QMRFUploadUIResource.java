@@ -87,14 +87,18 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 					protocol = null;
 				}
 				try {
-					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,mode));
+					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,mode,request.getRootRef().toString()));
 				} catch (Exception x) {
 					x.printStackTrace();
 				}
 			}
 			@Override
 			protected String printPageNavigator() {
-				return "";
+				// want to mimic the paging style, probably could be done in a better way
+				return	String.format(
+						"<div style='background-color: #109DFF;font-weight:bold;border: 1px solid #109DFF;'><p style='color:#ffffff;'>%s QMRF document</p></div>\n",
+						mode.toString());
+			
 			}
 		};
 	}
