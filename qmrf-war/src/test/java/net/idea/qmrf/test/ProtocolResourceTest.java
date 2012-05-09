@@ -183,17 +183,19 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		String uri = String.format("http://localhost:%d%s/%s", port,
 										Resources.protocol, id2v2);
 		String newURI = createEntryFromMultipartWeb(new Reference(uri), Method.PUT);
-		String newQMRF = "Q12-171A-0001";
+		String newQMRF = "Q12-14-0001";
 		IDatabaseConnection c = getConnection();
 		ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM protocol");
 		Assert.assertEquals(5, table.getRowCount());
-		table = c
-				.createQueryTable(
-						"EXPECTED",
+		table = c.createQueryTable("EXPECTED",
 						"SELECT p.idprotocol,p.version,published,qmrf_number from protocol p where p.idprotocol=2 and version=2");
 		Assert.assertEquals(1, table.getRowCount());
 		Assert.assertEquals(Boolean.TRUE, table.getValue(0, "published"));
 		Assert.assertEquals(newQMRF, table.getValue(0, "qmrf_number"));
+		table = c.createQueryTable("EXPECTED",
+		"SELECT p.idprotocol,p.version,idtemplate from protocol_endpoints p where p.idprotocol=2 and version=2");
+		Assert.assertEquals(1, table.getRowCount());
+		Assert.assertNotNull(table.getValue(0, "idtemplate"));
 		c.close();
 
 		Assert.assertEquals(String.format("http://localhost:%d/protocol/%s",port,newQMRF),newURI);
@@ -318,6 +320,22 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 				values[i] = null;
 				break;
 			}
+			case endpoint: {
+				values[i] = "QMRF 1.4.";
+				break;
+			}
+			case endpointName: {
+				values[i] = "Vapour Pressure";
+				break;
+			}
+			case endpointParentName: {
+				values[i] = "Physical Chemical Properties";
+				break;
+			}			
+			case endpointParentCode: {
+				values[i] = "QMRF 1.";
+				break;
+			}					
 			case identifier: {
 				values[i] = "Q-1234-5678";
 				break;
