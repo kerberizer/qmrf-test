@@ -5,36 +5,76 @@ import java.util.List;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
-import net.idea.modbcum.q.update.AbstractObjectUpdate;
+import net.idea.modbcum.q.update.AbstractUpdate;
+import net.idea.rest.db.exceptions.InvalidEndpointException;
+import net.idea.rest.db.exceptions.InvalidProtocolException;
+import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.protocol.DBProtocol;
 
-public class PublishProtocol extends AbstractObjectUpdate<DBProtocol>{
+/**
+ * Expects:
+ * published : Boolean
+ * Endpoint code:
+ * Endpoint group
+ * Endpoint name
+ * idprotocol
+ * version 
+ * @author nina
+ *
+ */
+public class PublishProtocol extends AbstractUpdate<EndpointTest,DBProtocol>{
 	
 	public static final String[] publish_sql = new String[] { 
-		"update protocol set published=true, qmrf_number=\n"+
-		"(select concat(\"Q\",substr(year(now()),3,2),\"-\",p.endpoint,\"-\",lpad(n.nperyear,4,'0')) from\n"+
-		"(select count(idprotocol)+1 as nperyear from protocol where published=true and  year(updated)=year(now())) as n\n"+
-		"join (select\n"+
-		"concat(upper(substr(md5(trim(extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group'))),1,2)),\n"+
-		"upper(substr(md5(trim(extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name'))),1,2))) as endpoint\n"+
-		"from protocol where idprotocol=? and version=?) as p\n"+
-		") where idprotocol=? and version=? and published=false\n" 
+		"update protocol set \n" +
+		"qmrf_number=(select concat(\"Q\",substr(year(now()),3,2),'-',?,'-',lpad(n.nperyear,4,'0')) from\n" +
+		"(select count(idprotocol)+1 as nperyear from protocol where published=true and year(updated)=year(now())) as n),\n"+
+		"abstract=\n" +
+		"updatexml(updatexml(updatexml(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group',?),\n"+
+		"'/QMRF/Catalogs/endpoints_catalog/endpoint/@subgroup','subgroup=\"\"'),\n"+
+		"'/QMRF/Catalogs/endpoints_catalog/endpoint/@name',?)\n" +
+		"where idprotocol=? and version=? and published=false",
+		
+		"update protocol set published=?,abstract=updatexml(abstract,'//QMRF_number',concat('<QMRF_number chapter=\"10.1\"  name=\"QMRF number\">',qmrf_number,'</QMRF_number>')) where idprotocol=? and version=? and published=false",
+		
+		"delete from protocol_endpoints where idprotocol=? and version=?",
+		
+		"insert into protocol_endpoints select idprotocol,version,idtemplate\n"+
+		"from protocol join template where name = ? and code = ? and idprotocol=? and version=?"
+		
 	};
-
-	public PublishProtocol(DBProtocol ref) {
+	public PublishProtocol(EndpointTest endpoint,DBProtocol ref) {
 		super(ref);
+		setGroup(endpoint);
 	}
-	public PublishProtocol() {
-		this(null);
-	}			
+		
 	public List<QueryParam> getParameters(int index) throws AmbitException {
 		List<QueryParam> params1 = new ArrayList<QueryParam>();
-		if (getObject()==null) throw new AmbitException("Empty protocol");
-		if (getObject().getID()<=0) throw new AmbitException("Invalid document ID");
-		if (getObject().getVersion()<=0) throw new AmbitException("Invalid document version");
+		if (getObject()==null || (getObject().getID()<=0) || (getObject().getVersion()<=0)) 
+			throw new InvalidProtocolException();
 	
-		params1.add(ReadProtocol.fields.idprotocol.getParam(getObject()));
-		params1.add(ReadProtocol.fields.version.getParam(getObject()));
+		if (getGroup()==null 
+				|| (getGroup().getCode()==null) 
+				|| (getGroup().getName()==null) 
+				|| (getGroup().getParentCode()==null) 
+				|| (getGroup().getParentTemplate()==null)) throw new InvalidEndpointException();
+		
+		if (index==0) {
+			//code
+			String code = getGroup().getCode().replace("QMRF","").replace("OECD","").replace("EC","").replace(" ","");
+			String pcode = getGroup().getParentCode().replace("QMRF","").replace("OECD","").replace("EC","").replace(" ","");
+			params1.add(new QueryParam<String>(String.class, code.replace(".","")));
+			params1.add(new QueryParam<String>(String.class, String.format("group=\"%s%s\"",pcode,getGroup().getParentTemplate())));
+			params1.add(new QueryParam<String>(String.class, String.format("name=\"%s%s\"",code,getGroup().getName())));
+
+		} else if (index == 1) {
+			params1.add(ReadProtocol.fields.published.getParam(getObject()));			
+		} else if (index == 2) {
+			//none
+		} else if (index == 3) {
+			params1.add(new QueryParam<String>(String.class,getGroup().getName()));
+			params1.add(new QueryParam<String>(String.class,getGroup().getCode()));
+		}
+		
 		params1.add(ReadProtocol.fields.idprotocol.getParam(getObject()));
 		params1.add(ReadProtocol.fields.version.getParam(getObject()));
 		

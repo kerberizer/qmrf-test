@@ -13,6 +13,7 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
 import net.idea.rest.protocol.DBProtocol;
@@ -44,7 +45,11 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			fields.user_uri,
 			fields.author_uri,
 			fields.organisation_uri,
-			fields.project_uri
+			fields.project_uri,
+			fields.endpoint,
+			fields.endpointName,
+			fields.endpointParentCode,
+			fields.endpointParentName
 		};
 	public static final ReadProtocol.fields[] displayFields = new ReadProtocol.fields[] {
 			fields.idprotocol,
@@ -619,6 +624,106 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 				return String.format(" %s >= ? ",name());
 			}
 		},		
+		endpoint {
+			@Override
+			public Object getValue(DBProtocol protocol) {
+				return protocol.getEndpoint()==null?null:protocol.getEndpoint().getCode();
+			}
+			@Override
+			public String toString() {
+				return "Endpoint code";
+			}
+			@Override
+			public QueryParam getParam(DBProtocol protocol) {
+				return protocol.getEndpoint()==null?null:
+					   new QueryParam<String>(String.class,protocol.getEndpoint().getCode());
+			}
+			@Override
+			public void setParam(DBProtocol protocol, ResultSet rs)
+					throws SQLException {
+				if (protocol.getEndpoint()==null) protocol.setEndpoint(new EndpointTest(null,null));
+				protocol.getEndpoint().setCode(rs.getString("code"));
+			}
+			@Override
+			public String getCondition() {
+				return " code = ? ";
+			}
+		},	
+		endpointName {
+			@Override
+			public Object getValue(DBProtocol protocol) {
+				return protocol.getEndpoint()==null?null:protocol.getEndpoint().getName();
+			}
+			@Override
+			public String toString() {
+				return "Endpoint name";
+			}
+			@Override
+			public QueryParam getParam(DBProtocol protocol) {
+				return protocol.getEndpoint()==null?null:
+					   new QueryParam<String>(String.class,protocol.getEndpoint().getName());
+			}
+			@Override
+			public String getCondition() {
+				return " name = ? ";
+			}
+			@Override
+			public void setParam(DBProtocol protocol, ResultSet rs)
+					throws SQLException {
+				if (protocol.getEndpoint()==null) protocol.setEndpoint(new EndpointTest(null,null));
+				protocol.getEndpoint().setCode(rs.getString("name"));
+			}			
+		},		
+		endpointParentCode {
+			@Override
+			public Object getValue(DBProtocol protocol) {
+				return protocol.getEndpoint()==null?null:protocol.getEndpoint().getParentCode();
+			}
+			@Override
+			public String toString() {
+				return "Endpoint name";
+			}
+			@Override
+			public QueryParam getParam(DBProtocol protocol) {
+				return protocol.getEndpoint()==null?null:
+					   new QueryParam<String>(String.class,protocol.getEndpoint().getParentCode());
+			}
+			@Override
+			public void setParam(DBProtocol protocol, ResultSet rs)
+					throws SQLException {
+				if (protocol.getEndpoint()==null) protocol.setEndpoint(new EndpointTest(null,null));
+				protocol.getEndpoint().setCode(rs.getString("parentcode"));
+			}
+			@Override
+			public String getCondition() {
+				return " category = ? ";
+			}
+		},				
+		endpointParentName {
+			@Override
+			public Object getValue(DBProtocol protocol) {
+				return protocol.getEndpoint()==null?null:protocol.getEndpoint().getParentTemplate();
+			}
+			@Override
+			public String toString() {
+				return "Endpoint name";
+			}
+			@Override
+			public QueryParam getParam(DBProtocol protocol) {
+				return protocol.getEndpoint()==null?null:
+					   new QueryParam<String>(String.class,protocol.getEndpoint().getParentTemplate());
+			}
+			@Override
+			public void setParam(DBProtocol protocol, ResultSet rs)
+					throws SQLException {
+				if (protocol.getEndpoint()==null) protocol.setEndpoint(new EndpointTest(null,null));
+				protocol.getEndpoint().setCode(rs.getString("parentname"));
+			}
+			@Override
+			public String getCondition() {
+				return " name = ? ";
+			}
+		},			
 		published {
 			@Override
 			public Object getValue(DBProtocol protocol) {
@@ -645,11 +750,11 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 				return Boolean.class;
 			}
 			public String getHTMLField(DBProtocol protocol) {
-				Object value = getValue(protocol);
-				return String.format("<input name='%s' type='checkbox' title='%s' value='%s'>\n",
+				return String.format("<input name='%s' type='checkbox' title='%s' %s value='%s'>\n",
 						name(),
 						getDescription(),
-						value==null?"":value.toString());
+						(protocol.isPublished()!=null)&&protocol.isPublished()?"checked":"",
+						"on");
 			}			
 		},		
 		allowReadByUser {

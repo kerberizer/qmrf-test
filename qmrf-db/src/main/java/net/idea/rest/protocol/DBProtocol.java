@@ -6,10 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.toxbank.client.resource.Protocol;
-
-import org.apache.commons.codec.binary.Base32;
 
 
 
@@ -23,6 +22,15 @@ public class DBProtocol extends Protocol {
 	protected int ID;
 	protected int year;
 	public static final String QMRFNUMBER = "qmrf_number";
+	protected EndpointTest endpoint;
+	
+	public EndpointTest getEndpoint() {
+		return endpoint;
+	}
+
+	public void setEndpoint(EndpointTest endpoint) {
+		this.endpoint = endpoint;
+	}
 
 	protected List<DBAttachment> attachments;
 //	public static String prefix = "QMRF";

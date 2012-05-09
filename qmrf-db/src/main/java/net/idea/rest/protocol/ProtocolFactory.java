@@ -9,6 +9,7 @@ import java.util.List;
 import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
 import net.idea.qmrf.converters.QMRFConverter;
+import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
 import net.idea.rest.protocol.CallableProtocolUpload.UpdateMode;
@@ -227,6 +228,34 @@ public class ProtocolFactory {
 						} catch (Exception x) { }
 						break;	
 				}
+				case endpoint: {
+					try {
+						if (protocol.getEndpoint()==null) protocol.setEndpoint(new EndpointTest(null,null));
+						protocol.getEndpoint().setCode(fi.getString(utf8));
+					} catch (Exception x) { }
+					break;					
+				}	
+				case endpointName: {
+					try {
+						if (protocol.getEndpoint()==null) protocol.setEndpoint(new EndpointTest(null,null));
+						protocol.getEndpoint().setName(fi.getString(utf8));
+					} catch (Exception x) { }
+					break;					
+				}		
+				case endpointParentCode: {
+					try {
+						if (protocol.getEndpoint()==null) protocol.setEndpoint(new EndpointTest(null,null));
+						protocol.getEndpoint().setParentCode(fi.getString(utf8));
+					} catch (Exception x) { }
+					break;					
+				}					
+				case endpointParentName: {
+					try {
+						if (protocol.getEndpoint()==null) protocol.setEndpoint(new EndpointTest(null,null));
+						protocol.getEndpoint().setParentTemplate(fi.getString(utf8));
+					} catch (Exception x) { }
+					break;					
+				}				
 				case allowReadByUser: {
 					String s = fi.getString(utf8);
 					if ((s!=null) && !"".equals(s))

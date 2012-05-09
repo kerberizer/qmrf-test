@@ -83,6 +83,7 @@ public abstract class DictionaryQuery<T extends Dictionary> extends AbstractQuer
 		try {
 			EndpointTest var = new EndpointTest(rs.getString(2),rs.getString(1),rs.getString(3));
 			var.setCode(rs.getString("code"));
+			var.setParentCode(rs.getString("category"));
 			return (T) var;
 		} catch (SQLException x) {
 			throw new AmbitException(x);

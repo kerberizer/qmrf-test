@@ -43,6 +43,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"<script type='text/javascript' src='%s/jquery/jquery-ui-1.8.18.custom.min.js'></script>\n",
 		"<script type='text/javascript' charset='utf8' src='%s/jquery/jquery.dataTables-1.9.0.min.js'></script>\n",
 		"<script type='text/javascript' src='%s/scripts/jopentox.js'></script>\n",
+		//"<script type='text/javascript' src='%s/scripts/jendpoints.js'></script>\n",
 		"<script type='text/javascript' src='%s/jme/jme.js'></script>\n"
 	};
 	
@@ -786,8 +787,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				case publish : {
 					header = String.format("%s QMRF document <a href='%s' target='_blank' title='%s'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier(),protocol.getVisibleIdentifier());
 					form = String.format("<form method='%s' action=\"%s?method=PUT\" ENCTYPE=\"multipart/form-data\">","POST",protocol.getResourceURL());
-					hint = "<p>This is under development, QMRF numbers are assigned automatically</p>";
-					submit = "Update";
+					hint = "<p>Please verify the endpoint. The endpoint should be assigned in order to publish the document.</p>";
+					submit = "Publish";
 					break;
 				}	
 				case delete : {
@@ -836,43 +837,61 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 					content.append("<th width='15%%'>Endpoint</th>");
 					content.append(_tdStart);
-					content.append(String.format("<input size='80' id=\"endpoint\">"));
-					content.append("<script>");
-					content.append(String.format("\n$(document).ready(function() {\n" +
-							"$.getJSON(\"%s\",\n"+
-					        "function(data){\n"+
-					        "  $.each(data, function(i,item){\n"+
-					        "   	$('#endpoint').val(item.value);\n"+
-					        "  });\n"+
-					        "});});\n",protocolURI));
-					content.append("</script>");					
+					content.append(String.format("<input type='text' readonly size='15' id='%s' name='%s'>",ReadProtocol.fields.endpointParentCode.name(),ReadProtocol.fields.endpointParentCode.name()));
+					content.append(String.format("<input type='text' readonly size='75' id='%s' name='%s'><br>",ReadProtocol.fields.endpointParentName.name(),ReadProtocol.fields.endpointParentName.name()));
+					content.append(String.format("<input type='text' size='75' title = 'Start writing here to get list of endpoints. The rest of the fields will be automatically filled in.' id='%s' name='%s'>","endpoint","endpoint"));
+
+					
 					content.append(String.format(		
 					"<script>\n"+
 					"$(function() {\n"+
-						"$( \"#endpoint\" ).autocomplete({\n"+
-							"source: '%s/catalog?media=application/json',minLength:3\n"+
-						"});\n"+
-					"});\n"+
-					"</script>\n",baseReference));
 				
+						"$( \"#endpoint\" ).each(function() {\n" +
+						"var autoCompleteElement = this;\n"+
+						"var formElementName = $(this).attr('name');\n"+
+						"var hiddenElementID  = formElementName + '_autocomplete_hidden';\n"+
+						"$(this).attr('name', formElementName + 'Name');\n"+
+						"$(this).before(\"<input type='text' size='15' readonly name=\" + formElementName + \" id=\" + hiddenElementID + \" />\");\n"+
+						"$(this).autocomplete({source:'%s/catalog?media=application/json', \n"+
+						"	select: function(event, ui) {\n"+
+						"		var selectedObj = ui.item;\n"+
+						"		$(autoCompleteElement).val(selectedObj.name);\n"+
+						"		$('#'+hiddenElementID).val(selectedObj.code);\n"+
+						"   	$('#endpointParentCode').val(selectedObj.parentCode);\n"+
+						"   	$('#endpointParentName').val(selectedObj.parentName);\n"+			
+						"		return false;\n"+
+						"	}\n"+
+						"});\n"+
+						"});\n"+
+						//load the current value
+						"$.getJSON(\"%s\",\n"+
+				        "function(data){\n"+
+				        "  $.each(data, function(i,item){\n"+
+				        "   	$('#endpoint_autocomplete_hidden').val(item.code);\n"+
+				        "   	$('#endpoint').val(item.name);\n"+
+				        "   	$('#endpointParentCode').val(item.parentCode);\n"+
+				        "   	$('#endpointParentName').val(item.parentName);\n"+
+				        "  });\n"+
+				        "});\n" +							
+					"});\n"+
+					"</script>\n",baseReference,protocolURI));
+					
 					content.append(_tdEnd);
 					content.append(_trEnd); 
 					content.append(_trStart);						
 					content.append("<th width='15%%'>QMRF Number</th>");
-					content.append(_tdStart);
+					content.append("<th>");
+					content.append(String.format("Q%s-%s-%s",new SimpleDateFormat("yy").format(new Date()),
+								"endpoint","number of QMRF documents published in the specified year"));
+					/*
 					content.append(String.format("<strong>Q</strong>&nbsp;<input type='text' size='2' title='Year in YY format' value='%s'>",
 								new SimpleDateFormat("yy").format(new Date())));
-					content.append("&nbsp;-&nbsp;<input type='text' title='Endpoint'>");
+					content.append("&nbsp;-&nbsp;endpoint");
 					content.append(String.format("&nbsp;-&nbsp;<input type='text' title='Sequential number of QMRF documents published in the specified year'>"));
-					content.append(_tdEnd); 
-					content.append(_trEnd); 
-					
-					content.append(_trStart);
-					content.append("<th width='15%%'>Published status</th>");
-					content.append(_tdStart);
-					content.append(ReadProtocol.fields.published.getHTMLField(protocol));
-					content.append(_tdEnd); 
-					content.append(_tdStart);content.append(_tdEnd); 
+					*/
+					content.append("<br><input type='hidden' value='true' name='published'>");					
+					content.append("</th>"); 
+
 					break;
 				}				
 				case attachments: {

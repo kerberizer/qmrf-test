@@ -152,6 +152,7 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 		try {
 			EndpointTest result = new EndpointTest(rs.getString(3),rs.getString(2));
 			result.setCode(rs.getString("code"));
+			result.setParentCode(rs.getString("category"));
 			return (D)result;
 		} catch (SQLException x) {
 			throw new AmbitException(x);

@@ -400,8 +400,8 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 
 				UpdateProtocol q = new UpdateProtocol(protocol);
 				exec.process(q);
-				if ((protocol.isPublished()!=null) && protocol.isPublished()) {
-					PublishProtocol pq = new PublishProtocol(protocol);
+				if ((protocol.isPublished()!=null) && protocol.isPublished() && (protocol.getEndpoint()!=null)) {
+					PublishProtocol pq = new PublishProtocol(protocol.getEndpoint(),protocol);
 					exec.process(pq);
 					retrieveProtocolIdentifier(protocol,connection);
 				}
