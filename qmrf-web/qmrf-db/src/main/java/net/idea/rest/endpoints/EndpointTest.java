@@ -8,6 +8,14 @@ public class EndpointTest extends Dictionary {
 	 */
 	private static final long serialVersionUID = -5987449761837302780L;
 	protected String code;
+	protected String parentCode;
+	public String getParentCode() {
+		return parentCode;
+	}
+
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
+	}
 	protected int id;
 	
 	public int getId() {

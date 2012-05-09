@@ -36,6 +36,7 @@ import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.qmrf.converters.QMRFConverter;
+import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
 import net.idea.rest.protocol.DBProtocol;
@@ -200,16 +201,25 @@ public final class Protocol_crud_test<T extends Object>  extends CRUDTest<T,DBPr
 		DBProtocol ref = new DBProtocol(); //id2v1);
 		ref.setID(2);
 		ref.setVersion(1);
-		return (IQueryUpdate<T,DBProtocol>)new PublishProtocol(ref);
+		ref.setPublished(true);
+		EndpointTest endpoint = new EndpointTest("Vapour Pressure", "Physical Chemical Properties");
+		endpoint.setCode("QMRF 1.4.");
+		endpoint.setParentCode("QMRF 1.");
+		return (IQueryUpdate<T,DBProtocol>)new PublishProtocol(endpoint,ref);
 	}
 
 	protected void publishVerify(IQueryUpdate<T,DBProtocol> query)
 			throws Exception {
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED",
-					"SELECT idprotocol,version,qmrf_number,published FROM protocol where idprotocol=2 and version=1");
+					"SELECT idprotocol,version,qmrf_number,published,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') g,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') n,extractvalue(abstract,\"//QMRF_number\") qxml FROM protocol where idprotocol=2 and version=1");
 		Assert.assertEquals(Boolean.TRUE,table.getValue(0,"published"));
-		Assert.assertEquals("Q12-295A-0001",table.getValue(0,"qmrf_number"));
+		Assert.assertEquals("1.Physical Chemical Properties",table.getValue(0,"g"));
+		Assert.assertEquals("1.4.Vapour Pressure",table.getValue(0,"n"));
+		Assert.assertEquals("Q12-14-0001",table.getValue(0,"qxml"));
+		Assert.assertEquals("Q12-14-0001",table.getValue(0,"qmrf_number"));
+		table = 	c.createQueryTable("EXPECTED","SELECT idprotocol,version,idtemplate from protocol_endpoints where idprotocol=2 and version=1 and idtemplate=10");
+		Assert.assertEquals(1,table.getRowCount());
 		c.close();
 	}
 }
