@@ -3,13 +3,14 @@
 <user/>
 <organisation/>
 <project/>
+<template/>
 <protocol/>
 <protocol_authors/>
+<protocol_endpoints/>
 <attachments/>
 <keywords/>
 <user_organisation/>
 <user_project/>
-<template/>
 <dictionary/>
 <alert/>
 </dataset>
