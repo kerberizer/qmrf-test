@@ -28,6 +28,7 @@ import net.idea.ambit.qmrf.swing.QMRFSubChapterTextEditor;
 import net.idea.ambit.qmrf.xml.XMLException;
 import net.idea.qmrf.converters.QMRFConverter;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -50,7 +51,7 @@ public class QMRFSubChapterText extends AbstractQMRFChapter {
 	}
     public synchronized String getText() {
     	if (cleanTags) {
-    		return QMRFConverter.replaceTags(text).replace("  ", " ").trim();
+    		return QMRFConverter.replaceTags(StringEscapeUtils.unescapeHtml(text)).replace("  ", " ").trim();
     	} else
     		return text;
     }
