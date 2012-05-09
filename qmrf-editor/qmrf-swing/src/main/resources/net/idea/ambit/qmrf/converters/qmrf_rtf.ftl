@@ -14,7 +14,7 @@ since RTF is white-space sensitive (except for newlines).
 <@top.top_last></@top.top_last><#t>
 \pard\par<#t>
 <#list qmrf.chapters as chapter><#t>
-	<@rtf.H2>${chapter.chapter}.${chapter.title}</@rtf.H2><@rtf.newline/><#t>
+	<@rtf.H2><@rtf.bold>${chapter.chapter}.${chapter.title}</@rtf.bold></@rtf.H2><@rtf.newline/><#t>
 	<#list chapter.subchapters.iterator as subchapter><#t>
 	  	<@rtf.big><@rtf.bold>${subchapter.chapter}.${subchapter.title}</@rtf.bold></@rtf.big><@rtf.newline/><#t>
 	      <@rtf.newline/><#t>	  	
