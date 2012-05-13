@@ -87,12 +87,14 @@ join qmrf_documents.attachments olda using(idqmrf);
 
 update qmrf.attachments set name = replace(name,"#","N");
 
--- source template.sql;
--- source dictionary.sql;
+-- ----------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------
+source template.sql;
+source dictionary.sql;
+
+-- ----------------------------------------------------------------------------------------
 -- Automatically match endpoints from XML with endpoints, defined in the template table --
-------------------------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------------------
 
 insert into protocol_endpoints
 select idprotocol,version,idtemplate
@@ -114,9 +116,9 @@ and
 extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') is not null
 order by idprotocol;
 
------------------------------------------------
+-- ---------------------------------------------
 -- Assign Others 6.6. to unmatched endpoints --
------------------------------------------------
+-- ---------------------------------------------
 insert into protocol_endpoints
 SELECT  idprotocol,version,tid
 FROM protocol
