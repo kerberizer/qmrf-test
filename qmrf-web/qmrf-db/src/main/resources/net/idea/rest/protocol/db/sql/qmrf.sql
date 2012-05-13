@@ -161,13 +161,13 @@ CREATE TABLE  `keywords` (
 DROP TABLE IF EXISTS `template`;
 CREATE TABLE  `template` (
   `idtemplate` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `code` varchar(16) COLLATE utf8_bin DEFAULT NULL,
-  `uri` text COLLATE utf8_bin,
+  `name` varchar(255) DEFAULT NULL COLLATE utf8_general_ci,
+  `code` varchar(16) DEFAULT NULL COLLATE utf8_general_ci,
+  `uri` text CHARACTER SET utf8 COLLATE utf8_general_ci,
   PRIMARY KEY (`idtemplate`),
   UNIQUE KEY `template_list_index4157` (`name`,`code`) USING BTREE,
   KEY `Index_3` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -----------------------------------------------------
 -- Endpoints hierarchy
