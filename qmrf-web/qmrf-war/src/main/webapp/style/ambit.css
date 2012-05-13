@@ -796,3 +796,10 @@ div.pusher {
 	background-color: #0065A2;
 	text-align: center;
 }
+
+/* jQuery UI autocomplete */
+
+.ui-menu-item a {
+	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif !important;
+	font-size: 8pt !important;
+}
