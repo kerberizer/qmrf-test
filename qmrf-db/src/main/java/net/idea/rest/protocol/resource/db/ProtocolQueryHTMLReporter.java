@@ -192,9 +192,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 				output.write("</td><td class='socialToolVK'>"); // next cell, but VKontakte requires special styling
 
 				// ВКонтакте (VKontakte)
-				output.write(String.format("<script type=\"text/javascript\"><!--\n" + 
-							"document.write(VK.Share.button({url: \"%s\"},{type: \"round\", text: \"Share this\"}));\n" +
-							"--></script>", uri));
+				// Disabled for the time being, as there are issues with it.
+				//output.write(String.format("<script type=\"text/javascript\"><!--\n" + 
+				//			"document.write(VK.Share.button({url: \"%s\"},{type: \"round\", text: \"Share this\"}));\n" +
+				//			"--></script>", uri));
 				
 				output.write("</td></tr></table></div>\n"); // end social
 

@@ -85,7 +85,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	final static String linkedInInit = "<script src='https://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
 	
 	// ВКонтакте (VKontakte)
-	final static String vKontakteInit = "<script type=\"text/javascript\" src=\"https://vk.com/js/api/share.js?11\" charset=\"windows-1251\"></script>";
+	// Disabled for the time being, as there are issues with it.
+	//final static String vKontakteInit = "<script type=\"text/javascript\" src=\"https://vk.com/js/api/share.js?11\" charset=\"windows-1251\"></script>";
 	
 	// table row expander script
 	final static String toggleDivScript =
@@ -314,7 +315,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(googlePlusInit);
 			w.write(twitterInit);
 			w.write(linkedInInit);
-			w.write(vKontakteInit);
+			// Disabled for the time being, as there are issues with it.
+			//w.write(vKontakteInit);
 
 			w.write(meta);
 
