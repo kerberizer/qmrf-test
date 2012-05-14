@@ -24,9 +24,11 @@ source qmrf.sql;
 
 Please note that the file qmrf.sql should be located in the current folder.
 
-3) Migrate the content from the old database (qmrf_documents) into the new one (qmrf).  Use the migrate.sql script from MIGRATION directory. Alternatively, download the migrate.sql script from:
+3) Migrate the content from the old database (qmrf_documents) into the new one (qmrf).  Use the migrate.sql script from MIGRATION directory. Alternatively, download the migrate.sql, dictionary.sql, and template.sql scripts from:
 
 http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/migrate.sql?format=raw
+http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/dictionary.sql?format=raw
+http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/template.sql?format=raw
 
 Run the following commands in a mysql console:
 
@@ -34,7 +36,7 @@ $mysql -uroot -p
 use qmrf;
 source migrate.sql;
 
-Please note that the file migrate.sql should be located in the current folder.
+Please note that all the three files -- migrate.sql, dictionary.sql, and template.sql -- should be located in the current folder and that only 'source migrate.sql;' is run, i.e. do not run 'source dictionary.sql;', etc. 
 
 4) Create the chemical structures database, populate it with data and set up associated grants. Run the following commands in a mysql console:
 
