@@ -35,7 +35,7 @@ Create the new 'qmrf' database, set up the corresponding grants, and
 create the tables that are required. Use the 'qmrf.sql' script from the
 MIGRATION directory. Alternatively, download the script from:
 
-http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/qmrf.sql?format=raw
+http://qmrf.sf.net/downloads/qmrf.sql
 
 Run the following commands in a MySQL console (again, you can start the
 console by typing 'mysql -uroot -p', without the quotes, on the command
@@ -59,9 +59,9 @@ new one, 'qmrf'. Use the 'migrate.sql' script from MIGRATION directory.
 Alternatively, download the 'migrate.sql', 'dictionary.sql', and
 'template.sql' scripts from:
 
-http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/migrate.sql?format=raw
-http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/dictionary.sql?format=raw
-http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web/qmrf-db/src/main/resources/net/idea/rest/protocol/db/sql/template.sql?format=raw
+http://qmrf.sf.net/downloads/migrate.sql
+http://qmrf.sf.net/downloads/dictionary.sql
+http://qmrf.sf.net/downloads/template.sql
 
 Run the following commands in a MySQL console:
 
