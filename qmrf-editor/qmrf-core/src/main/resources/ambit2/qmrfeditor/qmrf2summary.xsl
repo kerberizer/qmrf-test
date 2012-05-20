@@ -735,8 +735,10 @@
 
 <xsl:template match="publication_ref"> 
 	<li>
+	<span style='text-align:left'>
 	<xsl:value-of select="id(@idref)/@title" disable-output-escaping="yes"/>
 	<xsl:text> </xsl:text><xsl:call-template name="print_href"/>
+	</span>
 	</li>
 </xsl:template>
 
