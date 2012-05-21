@@ -28,20 +28,26 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 
 import javax.swing.JTextPane;
 
-public class PatchedTextPane extends JTextPane
-{
+import net.idea.qmrf.converters.QMRFConverter;
+
+public class PatchedTextPane extends JTextPane {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -127884166854024049L;
 	/**
 	 * This one can paste also from Word 2000 etc. 
 	 * Strange tags and comments are removed.
 	 */
+	@Override
 	public void paste()
 	{
 		Clipboard clipboard = getToolkit().getSystemClipboard();
@@ -55,11 +61,8 @@ public class PatchedTextPane extends JTextPane
 			public DataFlavor[] getTransferDataFlavors()
 			{
 				DataFlavor[] flavors = content.getTransferDataFlavors();
-				ArrayList myFlavorList = new ArrayList(flavors.length);
+				ArrayList<DataFlavor> myFlavorList = new ArrayList<DataFlavor>(flavors.length);
 				try {
-					DataFlavor df_unicode = new DataFlavor("text/plain; class=java.io.InputStream; charset=unicode");
-					DataFlavor df_utf8 = new DataFlavor("text/plain; class=java.io.InputStream; charset=UTF-8");
-				
 					for (int i = 0; i < flavors.length; i++)
 					{
 						DataFlavor flavor = flavors[i];
@@ -67,8 +70,9 @@ public class PatchedTextPane extends JTextPane
 						//String s = "text/plain; class=String; charset=UTF-8";
 
 						try {
-							if ( flavors[i].equals(df_unicode) || flavors[i].equals(df_utf8)
-									 ) {  
+							if ( flavor.getPrimaryType().equals("text") &&
+								 (flavor.getSubType().equals("html") || flavor.getSubType().equals("plain")))  {
+
 								myFlavorList.add(flavor);
 													
 							} 
@@ -97,12 +101,25 @@ public class PatchedTextPane extends JTextPane
 			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
 			{
 				String mimeType = flavor.getMimeType();
-				if (mimeType.indexOf("String") < 0) /*|| mimeType.indexOf("html") < 0)*/
-				{
+				System.out.println(mimeType);
+				
+				if ( flavor.getPrimaryType().equals("text") &&
+						 (flavor.getSubType().equals("html") || flavor.getSubType().equals("plain")))  {
+
 					Object o = content.getTransferData(flavor);
 					
 					if (o instanceof InputStream) {
 						
+						String result = QMRFConverter.htmlBoning((InputStream)o);
+						
+						((InputStream)o).close();
+						return result;
+					} else if (o instanceof Reader) {
+						String result = QMRFConverter.htmlBoning((Reader)o);
+						
+						((Reader)o).close();
+						return new StringReader(result);
+						/*
 						BufferedReader reader = new BufferedReader(new InputStreamReader((InputStream)o,"UTF-8"));
 	        			String line;
 	        			StringBuffer b = new StringBuffer();
@@ -110,7 +127,10 @@ public class PatchedTextPane extends JTextPane
 	        		         b.append(line);
 	        		    } 
 	        			reader.close();
+	        			
+	        			
 	        			return b.toString();
+	        			*/
 					} else return o;	
 				}
 				else
