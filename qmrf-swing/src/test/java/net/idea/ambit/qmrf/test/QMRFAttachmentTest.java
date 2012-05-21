@@ -42,6 +42,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import junit.framework.Assert;
+import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.attachments.QMRFAttachment;
 
 import org.junit.Test;
@@ -59,7 +60,7 @@ public class QMRFAttachmentTest {
 			a.setEmbedded(true);
 			a.setContent(null);
 			
-			URL url = getClass().getClassLoader().getResource("ambit\\ui\\images\\search.png");
+			URL url = QMRFObject.class.getResource("ambit\\ui\\images\\search.png");
 
 			a.setUrl(url.toString());
 			
