@@ -43,10 +43,10 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 			
 			((AttachmentURIReporter)uriReporter).setPrefix(String.format("%s/%s",Resources.protocol,qmrf));
 			setTitle(String.format("<a href='%s%s/%s'>%s</a> attachment",request.getRootRef(),Resources.protocol,qmrf,protocol.getVisibleIdentifier()));
-			uploadUI = String.format("<a href='%s%s/%s' target='upload'>%s</a>",request.getRootRef(),Resources.editor,qmrf,"Add attachment(s)");
+			uploadUI = String.format("<a href='%s%s/%s'>%s</a>",request.getRootRef(),Resources.editor,qmrf,"Add attachment(s)");
 		} else {
 			setTitle("Attachment");
-			uploadUI = String.format("<a href='%s%s'  target='upload'>%s</a>",request.getRootRef(),Resources.editor,"Add new QMRF");
+			uploadUI = String.format("<a href='%s%s'>%s</a>",request.getRootRef(),Resources.editor,"Add new QMRF");
 		}
 	}
 	@Override
@@ -75,7 +75,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 					);
 		
 		datasets.append(String.format("<td align='left'>%s</td>", attachment.getType()));
-		datasets.append(String.format("<td align='left'><a href='%s?media=%s' target='_attachment' title='%s %s'>Download</a></td>",
+		datasets.append(String.format("<td align='left'><a href='%s?media=%s' title='%s %s'>Download</a></td>",
 				uri,
 				Reference.encode(attachment.getMediaType()),
 				attachment.getTitle(),attachment.getMediaType()
@@ -93,7 +93,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 						uriReporter.getBaseReference(),Resources.dataset,
 						attachment.getID());
 						
-				datasets.append(String.format("<td align='left' ><a href='%s' target='_structure'>Browse structures</a></td>",
+				datasets.append(String.format("<td align='left' ><a href='%s'>Browse structures</a></td>",
 						datasetURI));
 
 			} else {

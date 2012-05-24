@@ -85,7 +85,7 @@ public class QMRFStatusService extends StatusService {
 				w.write(
 						String.format(		
 						"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
-						"<div class=\"ui-widget-header ui-corner-top\"><p>Error <a href='%s' target='help'>%s</a></p></div>\n"+
+						"<div class=\"ui-widget-header ui-corner-top\"><p>Error <a href='%s'>%s</a></p></div>\n"+
 						"<div class=\"ui-widget-content ui-corner-bottom \">\n"+
 						"<p><label title='%s'>%s</label></p><p>"+
 						"%s\n"+	

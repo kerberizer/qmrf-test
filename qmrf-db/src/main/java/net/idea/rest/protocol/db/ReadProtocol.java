@@ -255,7 +255,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			}
 			@Override
 			public String getHelp(String uri) {
-				return String.format("<a href='%s%s' target='Users'>Users list</a>",uri,Resources.user);
+				return String.format("<a href='%s%s'>Users list</a>",uri,Resources.user);
 			}
 		
 		},			
@@ -337,7 +337,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			}
 			@Override
 			public String getHelp(String uri) {
-				return String.format("<a href='%s%s' target='projects'>Projects list</a>",uri,Resources.project);
+				return String.format("<a href='%s%s'>Projects list</a>",uri,Resources.project);
 			}
 		},		
 		project {
@@ -452,7 +452,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			}
 			@Override
 			public String getHelp(String uri) {
-				return String.format("<a href='%s%s' target='organisations'>Organisations list</a>",uri,Resources.organisation);
+				return String.format("<a href='%s%s' >Organisations list</a>",uri,Resources.organisation);
 			}
 		},			
 		author_uri {
@@ -475,7 +475,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 
 			@Override
 			public String getHelp(String uri) {
-				return String.format("<a href='%s%s' target='Users'>Authors list</a>",uri,Resources.user);
+				return String.format("<a href='%s%s'>Authors list</a>",uri,Resources.user);
 			}
 		
 		},		
