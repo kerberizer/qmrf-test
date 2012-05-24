@@ -775,26 +775,26 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				String submit = "Upload";
 				switch (mode) {
 				case attachments: {
-					header = String.format("%s to <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getVisibleIdentifier());
+					header = String.format("%s to <a href='%s' >%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getVisibleIdentifier());
 					form = String.format("<form method='%s' action=\"%s\" ENCTYPE=\"multipart/form-data\">","POST",action);
 					hint = "<p>All files are optional, you could select any combination of attachment type(s) to upload.</p>";
 					break;
 				}
 				case update : {
-					header = String.format("%s QMRF XML file of <a href='%s' target='_blank'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getVisibleIdentifier());
+					header = String.format("%s QMRF XML file of <a href='%s' >%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getVisibleIdentifier());
 					form = String.format("<form method='%s' action=\"%s?method=PUT\" ENCTYPE=\"multipart/form-data\">","POST",protocol.getResourceURL());
 					submit = "Update";
 					break;
 				}
 				case publish : {
-					header = String.format("%s QMRF document <a href='%s' target='_blank' title='%s'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier(),protocol.getVisibleIdentifier());
+					header = String.format("%s QMRF document <a href='%s' title='%s'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier(),protocol.getVisibleIdentifier());
 					form = String.format("<form method='%s' action=\"%s?method=PUT\" ENCTYPE=\"multipart/form-data\">","POST",protocol.getResourceURL());
 					hint = "<p>Please verify the endpoint. The endpoint should be assigned in order to publish the document.</p>";
 					submit = "Publish";
 					break;
 				}	
 				case delete : {
-					header = String.format("%s QMRF document <a href='%s' target='_blank' title='%s'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier(),protocol.getVisibleIdentifier());
+					header = String.format("%s QMRF document <a href='%s'  title='%s'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier(),protocol.getVisibleIdentifier());
 					form = String.format("<form method='%s' action=\"%s?method=DELETE\" ENCTYPE=\"multipart/form-data\">","POST",protocol.getResourceURL());
 					hint = "<p style='color:red'>Do you really want to delete this document?</p>";
 					submit = "Confirm document removal";

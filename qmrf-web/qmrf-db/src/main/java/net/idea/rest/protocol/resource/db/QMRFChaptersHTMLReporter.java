@@ -167,7 +167,7 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 			}
 			System.err.println(System.currentTimeMillis()-now);
 			if (!plainHtmlHeader) {
-				String uploadUI = String.format("<a href='%s%s/%s' target='upload' title='Upload training and test datasets and related documents''>%s</a>",
+				String uploadUI = String.format("<a href='%s%s/%s' title='Upload training and test datasets and related documents''>%s</a>",
 						uriReporter.getBaseReference(),Resources.editor,item.getIdentifier(),"Add attachment(s)");
 				output.write(String.format("<div id='Attachments'><span class='summary'>N/A<br>%s</span></div>",uploadUI));
 			}

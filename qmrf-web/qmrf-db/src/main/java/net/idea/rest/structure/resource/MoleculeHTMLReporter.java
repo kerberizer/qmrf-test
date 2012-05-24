@@ -66,7 +66,7 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 		} catch (Exception x) {}
 		//TODO smarts highlight
 		String structure = 	String.format(
-					"<div class='structureright'><a href='%s%s%s%s%s%s%s' target='molecule'>" +
+					"<div class='structureright'><a href='%s%s%s%s%s%s%s' >" +
 					"<img src='%s?media=%s&w=150&h=150' alt='%s' title='%s' width='150' height='150'></a><br>%s\n</div>\n",
 					baseReference,
 					Resources.chemical,

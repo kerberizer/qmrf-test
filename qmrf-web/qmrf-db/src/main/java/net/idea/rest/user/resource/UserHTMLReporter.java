@@ -188,7 +188,7 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			item.getFirstname(),
 			item.getLastname(),
 			item.getUserName()==null?"":
-				String.format("<br>[<a href='%s%s/U%d' target='user'>%s</a>]",
+				String.format("<br>[<a href='%s%s/U%d'>%s</a>]",
 					uriReporter.getBaseReference(),
 					Resources.user,
 					item.getID(),
@@ -199,7 +199,7 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 		rendering.append(String.format("<td>%s%s</td>",
 			item.getOrganisations()==null?"":item.getOrganisations().get(0).getTitle(),
 			item.getHomepage()==null?"":
-				String.format("<br><a href='%s' target='_blank'>%s</a>",
+				String.format("<br><a href='%s'>%s</a>",
 					item.getHomepage(),
 					item.getHomepage()
 				)							
@@ -209,19 +209,6 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			item.getEmail()==null?"":
 				String.format("<a href='mailto:%s'>%s</a>",URLEncoder.encode(item.getEmail()), item.getEmail())
 		));
-		
-		/*
-		rendering.append(String.format("<td>%s</td>",
-			item.getUserName()==null?"":
-				String.format("<a href='%s%s/U%d' target='user'>%s</a>",
-						uriReporter.getBaseReference(),
-						Resources.user,
-						item.getID(),
-						item.getUserName()
-				)
-		));
-		*/
-		
 		rendering.append(String.format("<td>%s</td>", item.getKeywords()==null?"":item.getKeywords()));
 		rendering.append(String.format("<td>%s</td>", item.isReviewer()?"Yes":""));
 		
