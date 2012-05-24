@@ -170,7 +170,8 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		title {
 			@Override
 			public QueryParam getParam(DBProtocol protocol) {
-				return new QueryParam<String>(String.class, (String)getValue(protocol));
+				String title = getValue(protocol).toString();
+				return new QueryParam<String>(String.class, title.length()>255?title.substring(0,254):title);
 			}			
 			@Override
 			public void setParam(DBProtocol protocol, ResultSet rs) throws SQLException {
