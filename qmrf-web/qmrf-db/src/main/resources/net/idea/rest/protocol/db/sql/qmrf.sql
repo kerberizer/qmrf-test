@@ -247,29 +247,44 @@ CREATE PROCEDURE createProtocolVersion(
 begin
     DECLARE no_more_rows BOOLEAN;
     DECLARE pid INT;
-    DECLARE pversion INT;
+    --
     DECLARE protocols CURSOR FOR
-    select max(version)+1,idprotocol,pversion from protocol where idprotocol in (select idprotocol from protocol where qmrf_number=protocol_qmrf_number) LIMIT 1;
+    	select max(version)+1,idprotocol from protocol where qmrf_number=protocol_qmrf_number LIMIT 1;
+    	
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET no_more_rows = TRUE;
-
+    
     OPEN protocols;
     the_loop: LOOP
 
-	  FETCH protocols into version_new,pid,pversion;
+	  FETCH protocols into version_new,pid;
 	  IF no_more_rows THEN
 		  CLOSE protocols;
 		  LEAVE the_loop;
   	END IF;
+        
+    -- update published status of the old version to archived
 
   	-- create new version
     insert into protocol (idprotocol,version,title,qmrf_number,abstract,iduser,summarySearchable,idproject,idorganisation,filename,status,created,published_status)
     select idprotocol,version_new,ifnull(title_new,title),new_qmrf_number,ifnull(abstract_new,abstract),iduser,summarySearchable,idproject,idorganisation,null,status,now(),published_status 
     from protocol where qmrf_number=protocol_qmrf_number;
-    -- update published status of the old version to archived
-    update protocol set published_status='archived' where idprotocol=pid and version=pversion;
+	
    	-- copy authors
-    -- insert into protocol_authors
-    -- select idprotocol,version_new,iduser from protocol_authors where idprotocol=protocol_id and version=version_id;
+    insert into protocol_authors (idprotocol,version,iduser)
+    select idprotocol,version_new,protocol_authors.iduser from protocol_authors join protocol using(idprotocol,version) where  qmrf_number=protocol_qmrf_number;
+
+   	-- copy endpoints
+    insert into protocol_endpoints (idprotocol,version,idtemplate)
+    select idprotocol,version_new,idtemplate from protocol_endpoints join protocol using(idprotocol,version) where  qmrf_number=protocol_qmrf_number;
+    
+   	-- copy keywords
+    insert into keywords (idprotocol,version,keywords)
+    select idprotocol,version_new,keywords from keywords join protocol using(idprotocol,version) where  qmrf_number=protocol_qmrf_number;    
+    
+	-- move the qmrf number to the new version; replace the old one with qmrfnumber-vXX
+    update protocol set published_status='archived',qmrf_number=concat(protocol_qmrf_number,"-v",version) where qmrf_number=protocol_qmrf_number;
+    update protocol set qmrf_number=protocol_qmrf_number where idprotocol=pid and version=version_new;
+
 
     END LOOP the_loop;
 

@@ -217,7 +217,13 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			public String toString() {
 				return "Upload new ";
 			}	
-		};
+		},
+		newversion {
+			@Override
+			public String toString() {
+				return "New version ";
+			}
+		}		
 	}
 
 	protected String condition;
@@ -786,6 +792,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					submit = "Update";
 					break;
 				}
+				case newversion : {
+					header = String.format("%s QMRF XML file of <a href='%s' >%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getVisibleIdentifier());
+					form = String.format("<form method='POST' action=\"%s%s\" ENCTYPE=\"multipart/form-data\">",protocol.getResourceURL(),Resources.versions);
+					submit = "Create new version";
+					break;
+				}				
 				case publish : {
 					header = String.format("%s QMRF document <a href='%s' title='%s'>%s</a>",mode.toString(),protocol.getResourceURL(),protocol.getIdentifier(),protocol.getVisibleIdentifier());
 					form = String.format("<form method='%s' action=\"%s?method=PUT\" ENCTYPE=\"multipart/form-data\">","POST",protocol.getResourceURL());
@@ -940,6 +952,18 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					content.append(_tdEnd);		
 					break;
 				}
+				case newversion: {
+					
+					content.append(_tdStart);
+					content.append(String.format("<p class='%s'><input type=\"file\" class='multi max-1' accept='xml' name=\"%s\" title='%s' size=\"30\"></p>",
+								"box",
+								ReadProtocol.fields.filename.name(),
+								"QMRF XML"
+						));
+					content.append("<p style='color:red'>New document version will be created and assigned the same QMRF number.<br>The old version will be assigned <i>archived</i> status and will not be visible in published documents!</p>");
+					content.append(_tdEnd);		
+					break;
+				}				
 				}
 				content.append(_trEnd);
 				//content.append(_trStart);
