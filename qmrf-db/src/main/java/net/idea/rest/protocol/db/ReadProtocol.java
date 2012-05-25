@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
+import net.idea.qmrf.client.PublishedStatus;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.groups.DBOrganisation;
@@ -41,7 +42,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			fields.title,
 			fields.filename,
 			fields.identifier,
-			fields.published,
+			fields.published_status,
 			fields.user_uri,
 			fields.author_uri,
 			fields.organisation_uri,
@@ -55,7 +56,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			fields.idprotocol,
 			fields.identifier,
 			fields.version,
-			fields.published,
+			fields.published_status,
 			fields.created,
 			fields.updated,
 			fields.filename,
@@ -725,7 +726,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 				return " name = ? ";
 			}
 		},			
-		published {
+		published_status {
 			@Override
 			public Object getValue(DBProtocol protocol) {
 				return protocol==null||protocol.isPublished()==null?null:protocol.isPublished();
@@ -736,7 +737,8 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			}
 			@Override
 			public QueryParam getParam(DBProtocol protocol) {
-				return new QueryParam<Boolean>(Boolean.class,protocol==null || (protocol.isPublished()==null) ?Boolean.FALSE:new Boolean(protocol.isPublished()));
+				return new QueryParam<String>(String.class,protocol==null || (protocol.getPublishedStatus().name()==null) ?
+							PublishedStatus.draft.name():protocol.getPublishedStatus().name());
 			}
 			@Override
 			public String getCondition() {
@@ -744,7 +746,12 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			}
 			@Override
 			public void setParam(DBProtocol protocol, ResultSet rs) throws SQLException {
-				protocol.setPublished(rs.getBoolean(name()));
+				try {
+					protocol.setPublishedStatus(PublishedStatus.valueOf(rs.getString(name())));
+				} catch (Exception x) {
+					x.printStackTrace();
+					protocol.setPublished(false);
+				}
 			}
 			@Override
 			public Class getClassType(DBProtocol protocol) {
@@ -841,7 +848,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		fields.filename,
 		fields.xmlkeywords,
 		fields.status,
-		fields.published
+		fields.published_status
 		
 		//ReadProtocol.fields.accesslevel
 	};	
@@ -889,8 +896,8 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 
 	public String getSQL() throws AmbitException {
 		
-		String publishedOnly = getShowUnpublished()?"":" and published=1";
-		if (onlyUnpublished) publishedOnly = " and published=0";
+		String publishedOnly = getShowUnpublished()?"":" and published_status = 'published'";
+		if (onlyUnpublished) publishedOnly = " and published != 'published'";
 		String byUser = null;
 		if ((getFieldname()!=null) && (getFieldname().getID()>0)) byUser = fields.iduser.getCondition();
 		
@@ -921,12 +928,12 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		} 
 		String sql = onlyUnpublished?
 				String.format(sql_nokeywords,
-						"where",byUser==null?"published=0":String.format("%s %s",byUser,publishedOnly))
+						"where",byUser==null?"published_status!='published'":String.format("%s %s",byUser,publishedOnly))
 				:getShowUnpublished()?
 				String.format(sql_nokeywords,
 						"where",byUser==null?"":byUser):
 				String.format(sql_nokeywords,
-						"where",byUser==null?"published=1":String.format("%s %s",byUser,publishedOnly)); //published only
+						"where",byUser==null?"published_status='published'":String.format("%s %s",byUser,publishedOnly)); //published only
 		return sql;
 	}
 

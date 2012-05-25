@@ -8,6 +8,7 @@ import java.util.List;
 
 import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
+import net.idea.qmrf.client.PublishedStatus;
 import net.idea.qmrf.converters.QMRFConverter;
 import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.groups.DBOrganisation;
@@ -61,7 +62,7 @@ public class ProtocolFactory {
 						protocol.setIdentifier(s);
 					break;
 				}
-				case published: {
+				case published_status: {
 					String s = fi.getString(utf8);
 					if (s==null)  {protocol.setPublished(false); break;}
 					s = s.toLowerCase();
@@ -70,6 +71,7 @@ public class ProtocolFactory {
 						else if ("".equals(s)) {protocol.setPublished(false); break;}
 						else if ("true".equals(s)) {protocol.setPublished(true);  break;}
 						else if ("false".equals(s)) {protocol.setPublished(false); break;}
+						else protocol.setPublishedStatus(PublishedStatus.valueOf(s));
 					} catch (Exception x) { 
 						protocol.setPublished(false);
 					}

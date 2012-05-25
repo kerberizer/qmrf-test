@@ -22,9 +22,9 @@ public class ReadProtocolByEndpoint extends ReadProtocolAbstract<EndpointTest> {
 	protected static String sql_join_null = 	
 		"left join protocol_endpoints using(idprotocol) where ";
 	protected static String sql = String.format(ReadProtocol.sql_nokeywords,sql_join,
-			"published=true and code = ?");
+			"published_status='published' and code = ?");
 	protected static String sql_null = String.format(ReadProtocol.sql_nokeywords,sql_join_null,
-			"published=true and idtemplate is null");	
+			"published_status='published' and idtemplate is null");	
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();

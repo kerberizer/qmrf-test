@@ -11,6 +11,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.conditions.EQCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
+import net.idea.qmrf.client.PublishedStatus;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.db.ReadProtocol;
@@ -36,7 +37,7 @@ public class ReadAttachment extends AbstractQuery<DBProtocol, DBAttachment, EQCo
 		id_srcdataset
 	}
 	protected static String sql = 
-		"SELECT idprotocol,version,qmrf_number,protocol.created,idattachment,type,a.name,`format`,description,a1.name is not null as imported,id_srcdataset,published,title FROM protocol\n" +
+		"SELECT idprotocol,version,qmrf_number,protocol.created,idattachment,type,a.name,`format`,description,a1.name is not null as imported,id_srcdataset,published_status,title FROM protocol\n" +
 		"join attachments a using(idprotocol,version)\n" +
 		"left join `ambit2-qmrf`.src_dataset a1 using(name) where %s ";
 	protected static String where_protocol = "protocol.qmrf_number=?";
@@ -133,7 +134,12 @@ and idchemical=282
 				try {
 					protocol.setID(rs.getInt(ReadProtocol.fields.idprotocol.name()));
 					protocol.setVersion(rs.getInt(ReadProtocol.fields.version.name()));
-					protocol.setPublished(rs.getBoolean(ReadProtocol.fields.published.name()));
+					try {
+						protocol.setPublishedStatus(PublishedStatus.valueOf(rs.getString(ReadProtocol.fields.published_status.name())));
+					} catch (Exception x) {
+						x.printStackTrace();
+						protocol.setPublished(false);	
+					}
 					protocol.setTitle(rs.getString(ReadProtocol.fields.title.name()));
 					protocol.setIdentifier(rs.getString("qmrf_number"));
 					Timestamp ts = rs.getTimestamp(ReadProtocol.fields.created.name());

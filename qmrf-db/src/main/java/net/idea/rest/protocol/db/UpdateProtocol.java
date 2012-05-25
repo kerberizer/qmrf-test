@@ -55,7 +55,7 @@ public class UpdateProtocol extends AbstractObjectUpdate<DBProtocol>{
 			ReadProtocol.fields.iduser,
 			ReadProtocol.fields.status
 	};
-	public static final String update_sql = "update protocol set updated=now(),%s where idprotocol=? and version=? and published=false";
+	public static final String update_sql = "update protocol set updated=now(),%s where idprotocol=? and version=? and published_status!='published'";
 
 
 	public UpdateProtocol(DBProtocol ref) {

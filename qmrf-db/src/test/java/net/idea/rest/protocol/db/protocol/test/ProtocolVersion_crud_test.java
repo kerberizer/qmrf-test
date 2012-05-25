@@ -1,7 +1,5 @@
 package net.idea.rest.protocol.db.protocol.test;
 
-import java.util.UUID;
-
 import junit.framework.Assert;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.rest.protocol.DBProtocol;
@@ -27,7 +25,7 @@ public class ProtocolVersion_crud_test<T extends Object>  extends CRUDTest<T,DBP
 			throws Exception {
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED",
-				String.format("SELECT idprotocol,version,published,title FROM protocol where idprotocol=2"));
+				String.format("SELECT idprotocol,version,published_status,title FROM protocol where idprotocol=2"));
 		
 		Assert.assertEquals(3,table.getRowCount());
 		c.close();	

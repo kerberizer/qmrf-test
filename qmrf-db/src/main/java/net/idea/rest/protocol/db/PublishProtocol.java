@@ -27,14 +27,14 @@ public class PublishProtocol extends AbstractUpdate<EndpointTest,DBProtocol>{
 	public static final String[] publish_sql = new String[] { 
 		"update protocol set \n" +
 		"qmrf_number=(select concat(\"Q\",substr(year(now()),3,2),'-',?,'-',lpad(n.nperyear,4,'0')) from\n" +
-		"(select count(idprotocol)+1 as nperyear from protocol where published=true and year(updated)=year(now())) as n),\n"+
+		"(select count(idprotocol)+1 as nperyear from protocol where published_status='published' and year(updated)=year(now())) as n),\n"+
 		"abstract=\n" +
 		"updatexml(updatexml(updatexml(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group',?),\n"+
 		"'/QMRF/Catalogs/endpoints_catalog/endpoint/@subgroup','subgroup=\"\"'),\n"+
 		"'/QMRF/Catalogs/endpoints_catalog/endpoint/@name',?)\n" +
-		"where idprotocol=? and version=? and published=false",
+		"where idprotocol=? and version=? and published_status!='published'",
 		
-		"update protocol set published=?,abstract=updatexml(abstract,'//QMRF_number',concat('<QMRF_number chapter=\"10.1\"  name=\"QMRF number\">',qmrf_number,'</QMRF_number>')) where idprotocol=? and version=? and published=false",
+		"update protocol set published_status=?,abstract=updatexml(abstract,'//QMRF_number',concat('<QMRF_number chapter=\"10.1\"  name=\"QMRF number\">',qmrf_number,'</QMRF_number>')) where idprotocol=? and version=? and published_status!='published'",
 		
 		"delete from protocol_endpoints where idprotocol=? and version=?",
 		
@@ -67,7 +67,7 @@ public class PublishProtocol extends AbstractUpdate<EndpointTest,DBProtocol>{
 			params1.add(new QueryParam<String>(String.class, String.format("name=\"%s%s\"",code,getGroup().getName())));
 
 		} else if (index == 1) {
-			params1.add(ReadProtocol.fields.published.getParam(getObject()));			
+			params1.add(ReadProtocol.fields.published_status.getParam(getObject()));			
 		} else if (index == 2) {
 			//none
 		} else if (index == 3) {
@@ -82,6 +82,7 @@ public class PublishProtocol extends AbstractUpdate<EndpointTest,DBProtocol>{
 		
 	}
 	public String[] getSQL() throws AmbitException {
+		
 		return publish_sql;
 	}
 	public void setID(int index, int id) {

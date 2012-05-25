@@ -27,10 +27,10 @@ import org.restlet.security.User;
 
 public class QMRF_HTMLBeauty extends HTMLBeauty {
 	
-	final static String qmrfEditorDownloadLink = "http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe";
-	final static String qmrfEditorEmail = "JRC-IHCP-COMPUTOX@ec.europa.eu";
-	final static String QMRF_title = "(Q)SAR Model Reporting Format Inventory";
-	final static String[] css = new String[] {
+	private final static String qmrfEditorDownloadLink = "http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe";
+	private final static String qmrfEditorEmail = "JRC-IHCP-COMPUTOX@ec.europa.eu";
+	private final static String QMRF_title = "(Q)SAR Model Reporting Format Inventory";
+	private final static String[] css = new String[] {
 		"<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">\n",
 		"<!--[if IE 7]><link rel='stylesheet' type='text/css' media='all' href='%s/style/ambit-msie7.css'><![endif]-->",
 		"<link href=\"%s/style/jquery-ui-1.8.18.custom.css\" rel=\"stylesheet\" type=\"text/css\">\n",
@@ -38,7 +38,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"<link href=\"%s/images/favicon.ico\" rel=\"shortcut icon\" type=\"image/ico\">\n"
 	};
 
-	final static String[] js = new String[] {
+	private final static String[] js = new String[] {
 		"<script type='text/javascript' src='%s/jquery/jquery-1.7.1.min.js'></script>\n",
 		"<script type='text/javascript' src='%s/jquery/jquery-ui-1.8.18.custom.min.js'></script>\n",
 		"<script type='text/javascript' charset='utf8' src='%s/jquery/jquery.dataTables-1.9.0.min.js'></script>\n",
@@ -48,14 +48,14 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	};
 	
 	//meta
-	final static String[] metaTag = new String[] {
+	private final static String[] metaTag = new String[] {
 		"<meta name=\"robots\" content=\"index,follow\"><META NAME=\"GOOGLEBOT\" CONTENT=\"index,FOLLOW\">\n",
 		"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n",
 		"<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n"
 	};
 	
 	// Google +1 buttons
-	final static String googlePlusInit =
+	private final static String googlePlusInit =
 		"<script type='text/javascript'>" +
 		"(function() {" +
 		"var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;" +
@@ -65,7 +65,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"</script>";
 
 	// Facebook JavaScript SDK
-	final static String facebookInit =
+	private final static String facebookInit =
 			"<div id=\"fb-root\"></div>\n" +
 			"<script>(function(d, s, id) {\n" +
 			"var js, fjs = d.getElementsByTagName(s)[0];\n" +
@@ -76,20 +76,20 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"}(document, 'script', 'facebook-jssdk'));</script>\n";
 	
 	// Twitter JS
-	final static String twitterInit =
+	private final static String twitterInit =
 			"<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id))" +
 			"{js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";" +
 			"fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>\n";
 
 	// LinkedIn
-	final static String linkedInInit = "<script src='https://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
+	private final static String linkedInInit = "<script src='https://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
 	
 	// ВКонтакте (VKontakte)
 	// Disabled for the time being, as there are issues with it.
 	//final static String vKontakteInit = "<script type=\"text/javascript\" src=\"https://vk.com/js/api/share.js?11\" charset=\"windows-1251\"></script>";
 	
 	// table row expander script
-	final static String toggleDivScript =
+	private final static String toggleDivScript =
 			"<script type='text/javascript'>function toggleDiv(divId) {\n" +
 			"$('#'+divId).toggle();\n" +
 			"if ($('#'+divId+'_toggler').hasClass('togglerPlus')) {\n" +
@@ -101,11 +101,11 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"}\n" +
 			"}</script>\n";	
 
-	final static String simpleToggleDivScript =
+	private final static String simpleToggleDivScript =
 			"<script type='text/javascript'>function toggleDivSimple(divId) {$('#'+divId).toggle();}</script>\n";
 	
     // show the footer when the mouse is near
-    final static String showFooterScript =
+	private final static String showFooterScript =
     	"<script type='text/javascript'>\n" +
     		"$(document).ready( function () {\n" +
     			"$('div#footer-in').mouseenter( function () {\n" +
@@ -118,20 +118,20 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
     	"</script>\n";
 	
 	// the JRC IHCP logo
-	final static String logoTopLeft =
+	private final static String logoTopLeft =
 			"<a href='http://ihcp.jrc.ec.europa.eu/'>\n" +
 			"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.png' alt='JRC IHCP logo'>\n" +
 			"</a>\n";
 	
 	// menu mouseover effect
-	final static String menuMouseOverScript =
+	private final static String menuMouseOverScript =
 		"<script>\n" +
 		"$('a.selectable').mouseover(function () { $(this).addClass('hovered');    } );\n" +
 		"$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );\n" +
 		"</script>\n";
 
 	// top links
-	final static String topLinks =
+	private final static String topLinks =
 		"<ul class='topLinks'>\n" +
 			"<li class='topLinks'>\n" +
 				"<a class='topLinks download' href='%s'>Download QMRF Editor</a>\n" +
@@ -148,7 +148,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"</ul>\n";
 	
 	// home menu option
-	final static String homeMenuOption =
+	private final static String homeMenuOption =
 		"<li>" +
 			"<a class='selectable' title='Go to the welcome page' href='%s'>" +
 				"<img class='logo_home_menu' src='%s/images/logo_menu.png'>" +
@@ -157,7 +157,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"</li>";
 		
 	// log in/out link
-	final static String logInOutLinkTemplate =
+	private final static String logInOutLinkTemplate =
 		"<li class='topLinks'>|</li>\n" +
 		"<li class='topLinks'>\n" +
 		"<a class='topLinks login' title='%s' href='%s%s' %s>%s</a>\n" +
@@ -165,7 +165,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"</li>\n";
 	
 	// footer
-	final static String footerText =
+	private final static String footerText =
 		"<div id='footer-out'>\n" +
 		"<div id='footer-in'>\n" +
 		"<div id='footer'>\n" +
@@ -176,14 +176,14 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"</div>\n" +
 		"</div>\n";
 
-	final static String _trStart = "<tr>\n";
-	final static String _trEnd = "</tr>\n";
-	final static String _tdStart = "<td>";
-	final static String _tdEnd = "</td>";
-	final static String _tableStart = "<table>\n";
-	final static String _tableEnd = "</table>\n";
-	final static String _divStart = "\n<div>\n";
-	final static String _divEnd = "\n</div>\n";
+	private final static String _trStart = "<tr>\n";
+	private final static String _trEnd = "</tr>\n";
+	private final static String _tdStart = "<td>";
+	private final static String _tdEnd = "</td>";
+	private final static String _tableStart = "<table>\n";
+	private final static String _tableEnd = "</table>\n";
+	private final static String _divStart = "\n<div>\n";
+	private final static String _divEnd = "\n</div>\n";
 	
 	private boolean loadTabs;
 
@@ -830,7 +830,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				
 				switch (mode) {
 				case delete : {
-					content.append("<input type='hidden' name='published' value='false'>");
+					content.append("<input type='hidden' name='published_status' value='deleted'>");
 					break;
 				}
 				case publish : {
@@ -891,7 +891,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					content.append("&nbsp;-&nbsp;endpoint");
 					content.append(String.format("&nbsp;-&nbsp;<input type='text' title='Sequential number of QMRF documents published in the specified year'>"));
 					*/
-					content.append("<br><input type='hidden' value='true' name='published'>");					
+					content.append("<br><input type='hidden' value='published' name='published_status'>");					
 					content.append("</th>"); 
 
 					break;

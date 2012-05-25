@@ -32,7 +32,7 @@ public class EndpointProtocolFacetQueryXML extends AbstractFacetQuery<String,Str
 		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@subgroup') sg,\n"+
 		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') n,\n"+
 		"count(idprotocol)\n"+
-		"FROM protocol where published=true\n"+
+		"FROM protocol where published_status='published'\n"+
 		"group by extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name')\n"+
 		"order by g,n\n";
 	

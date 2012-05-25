@@ -5,11 +5,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hp.hpl.jena.ontology.OntDocumentManager.ReadFailureHandler;
+
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.conditions.EQCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
+import net.idea.qmrf.client.PublishedStatus;
 import net.idea.rest.protocol.DBProtocol;
 import net.toxbank.client.policy.AccessRights;
 import net.toxbank.client.policy.PolicyRule;
@@ -45,7 +48,7 @@ public class ReadProtocolAccessLocal extends AbstractQuery<DBProtocol, String, E
 	}
 
 	public String getSQL() throws AmbitException {
-		return "select idprotocol,version,published,iduser,username from protocol join user using(iduser) where qmrf_number=?";
+		return "select idprotocol,version,published_status,iduser,username from protocol join user using(iduser) where qmrf_number=?";
 	}
 	/**
 	 * If found, will return true always. 
@@ -53,7 +56,11 @@ public class ReadProtocolAccessLocal extends AbstractQuery<DBProtocol, String, E
 	public AccessRights getObject(ResultSet rs) throws AmbitException {
 		try {
 			boolean sameUsername = getValue().equals(rs.getString("username"));
-			boolean published = rs.getBoolean("published");
+			PublishedStatus publishedStatus = PublishedStatus.draft;
+			try {
+				publishedStatus = PublishedStatus.valueOf(rs.getString(ReadProtocol.fields.published_status.name()));
+			} catch (Exception x) {}
+			boolean published = PublishedStatus.published == publishedStatus;
 			User user = new User();
 			user.setUserName(getValue());
 			return new AccessRights(null,

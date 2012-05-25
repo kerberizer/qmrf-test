@@ -132,8 +132,10 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected void printHTML(Writer output, String uri, DBProtocol item, boolean hidden) throws Exception {
 		output.write(String.format("<div id='%s' class='documentheader' style='display: %s;''>",item.getIdentifier(),hidden?"none":""));
 		if (!hidden) {
-			output.write(String.format("<a href='%s'>%s</a>&nbsp;<label>%s</label>&nbsp;<br>%s",
-						uri,ReadProtocol.fields.identifier.getValue(item),item.getTitle(),printDownloadLinks(uri)));
+			output.write(String.format("<a href='%s'>%s</a>&nbsp;<textarea>%s</textarea>&nbsp;<br>%s",
+						uri,ReadProtocol.fields.identifier.getValue(item),"XXX" 
+						//item.getTitle()
+						,printDownloadLinks(uri)));
 		}
 		output.write("<div class='accordion'>");
 		//tabs
@@ -262,7 +264,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			MediaType mime = mimes[i];
 				
 			b.append(String.format(
-					"<a href=\"%s%s?media=%s\" target='_blank'><img src=\"%s/images/%s\" alt=\"%s\" title=\"%s\" border=\"0\"/></a>\n",
+					"<a href=\"%s%s?media=%s\"><img src=\"%s/images/%s\" alt=\"%s\" title=\"%s\" border=\"0\"/></a>\n",
 					uri,
 					Resources.document,
 					Reference.encode(mime.toString()),
@@ -356,18 +358,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			x.printStackTrace();
 		} 
 	}
-	/*
-	protected String getPublishString(Reference baseRef, String uri) {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("<form action='%s?method=PUT' method='POST' ENCTYPE='multipart/form-data'>");
-		stringBuilder.append("<input type='hidden' name='published' value='true'>");
-		stringBuilder.append("<input title='Publish this document' class='draw' "); // cont'd
-		stringBuilder.append("type='image' src='%s/images/script_add.png' value='Publish'>");
-		stringBuilder.append("</form>");
-		
-		return String.format(stringBuilder.toString(), uri, baseRef);
-	}
-	*/
+
 	protected String getPublishString(Reference baseRef, DBProtocol item) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<form action='%s%s/%s' method='GET'>");
@@ -378,18 +369,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		
 		return String.format(stringBuilder.toString(), baseRef, Resources.editor, item.getIdentifier(), update_mode.publish.name(), baseRef);
 	}	
-	/*
-	protected String getDeleteString(Reference baseRef, String uri) {
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("<form action='%s?method=DELETE' method='POST' ENCTYPE='multipart/form-data'>");
-		stringBuilder.append("<input type='hidden' name='published' value='true'>");
-		stringBuilder.append("<input title='Delete this document' class='draw'");
-		stringBuilder.append("type='image' src='%s/images/script_delete.png' value='Delete'>");
-		stringBuilder.append("</form>");
-		
-		return String.format(stringBuilder.toString(), uri, baseRef);
-	}	
-	*/
+	
 	protected String getDeleteString(Reference baseRef, DBProtocol item) {
 		StringBuilder stringBuilder = new StringBuilder();
 		stringBuilder.append("<form action='%s%s/%s' method='GET'>");

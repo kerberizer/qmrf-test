@@ -19,7 +19,7 @@ public class ReadProtocolByTextSearch extends ReadProtocolByEndpointString {
 	 */
 	private static final long serialVersionUID = -5128395204960444566L;
 	protected static String sql = String.format(ReadProtocol.sql_withkeywords,
-					"where ","published=true and match (keywords.keywords) against (?)");
+					"where ","published_status='published' and match (keywords.keywords) against (?)");
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();

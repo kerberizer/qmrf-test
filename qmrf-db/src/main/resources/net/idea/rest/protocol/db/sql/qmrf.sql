@@ -97,7 +97,7 @@ CREATE TABLE  `protocol` (
   `status` enum('RESEARCH','SOP') NOT NULL DEFAULT 'RESEARCH' COMMENT 'Research or Standard Operating Procedure',
   `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Last updated',
   `created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `published` tinyint(1) NOT NULL DEFAULT '0',
+  `published_status` enum('draft','submitted','under_review','returned_for_revision','review_completed','published','archived','deleted') NOT NULL DEFAULT 'draft',
   PRIMARY KEY (`idprotocol`,`version`) USING BTREE,
   UNIQUE KEY `qmrf_number` (`qmrf_number`),
   KEY `Index_3` (`title`),
@@ -105,10 +105,12 @@ CREATE TABLE  `protocol` (
   KEY `FK_protocol_2` (`idorganisation`),
   KEY `FK_protocol_3` (`iduser`),
   KEY `updated` (`updated`),
+  KEY `Index_8` (`published_status`),
   CONSTRAINT `FK_protocol_1` FOREIGN KEY (`idproject`) REFERENCES `project` (`idproject`),
   CONSTRAINT `FK_protocol_2` FOREIGN KEY (`idorganisation`) REFERENCES `organisation` (`idorganisation`),
   CONSTRAINT `FK_protocol_3` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
 -- -----------------------------------------------------
 -- Protocol authors
 -- -----------------------------------------------------
@@ -229,7 +231,7 @@ CREATE TABLE  `version` (
   `comment` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`idmajor`,`idminor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-insert into version (idmajor,idminor,comment) values (2,4,"QMRF schema");
+insert into version (idmajor,idminor,comment) values (2,5,"QMRF schema");
 
 -- -----------------------------------------------------
 -- Create new protocol version
@@ -244,23 +246,27 @@ CREATE PROCEDURE createProtocolVersion(
                 OUT version_new INT)
 begin
     DECLARE no_more_rows BOOLEAN;
+    DECLARE pid INT;
+    DECLARE pversion INT;
     DECLARE protocols CURSOR FOR
-    select max(version)+1 from protocol where idprotocol in (select idprotocol from protocol where qmrf_number=protocol_qmrf_number) LIMIT 1;
+    select max(version)+1,idprotocol,pversion from protocol where idprotocol in (select idprotocol from protocol where qmrf_number=protocol_qmrf_number) LIMIT 1;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET no_more_rows = TRUE;
 
     OPEN protocols;
     the_loop: LOOP
 
-	  FETCH protocols into version_new;
+	  FETCH protocols into version_new,pid,pversion;
 	  IF no_more_rows THEN
 		  CLOSE protocols;
 		  LEAVE the_loop;
   	END IF;
 
   	-- create new version
-    insert into protocol (idprotocol,version,title,qmrf_number,abstract,iduser,summarySearchable,idproject,idorganisation,filename,status,created)
-    select idprotocol,version_new,ifnull(title_new,title),new_qmrf_number,ifnull(abstract_new,abstract),iduser,summarySearchable,idproject,idorganisation,null,status,now() 
+    insert into protocol (idprotocol,version,title,qmrf_number,abstract,iduser,summarySearchable,idproject,idorganisation,filename,status,created,published_status)
+    select idprotocol,version_new,ifnull(title_new,title),new_qmrf_number,ifnull(abstract_new,abstract),iduser,summarySearchable,idproject,idorganisation,null,status,now(),published_status 
     from protocol where qmrf_number=protocol_qmrf_number;
+    -- update published status of the old version to archived
+    update protocol set published_status='archived' where idprotocol=pid and version=pversion;
    	-- copy authors
     -- insert into protocol_authors
     -- select idprotocol,version_new,iduser from protocol_authors where idprotocol=protocol_id and version=version_id;
