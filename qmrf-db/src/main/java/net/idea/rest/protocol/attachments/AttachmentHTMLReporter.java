@@ -24,6 +24,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	 * 
 	 */
 	private static final long serialVersionUID = -5453025922862783009L;
+	protected String documentUI;
 	protected String uploadUI;
 	protected String allAttachmentsUI;
 
@@ -52,11 +53,15 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 					request.getRootRef(),Resources.editor,qmrf,"Add attachment(s)");
 			allAttachmentsUI = String.format("<a class='current' style='width: 15em;' href='%s%s/%s%s'>%s</a>",
 					request.getRootRef(),Resources.protocol,qmrf,Resources.attachment,"Browse all attachments"
+					);			
+			documentUI = String.format("<a class='pselectable' style='width: 15em;' href='%s%s/%s'>Document</a>",
+					request.getRootRef(),Resources.protocol,qmrf
 					);				
 		} else {
 			setTitle("Attachment");
 			uploadUI = String.format("<a href='%s%s'>%s</a>",request.getRootRef(),Resources.editor,"Add new QMRF");
 			allAttachmentsUI = null;
+			documentUI = null;
 		}
 	}
 	@Override
@@ -71,6 +76,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 		try {
 			String url = "<li>%s</li>";
 			output.write("<div><ul id='hnavlist'>");
+			if (documentUI!=null) output.write(String.format(url,documentUI));
 			if (allAttachmentsUI!=null) output.write(String.format(url,allAttachmentsUI));
 			output.write(String.format(url,uploadUI));
 			output.write("</ul></div><br>");
