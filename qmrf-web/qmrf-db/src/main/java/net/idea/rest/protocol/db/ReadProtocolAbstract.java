@@ -39,7 +39,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"select idprotocol,version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
 		"idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
-		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
+		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status\n" +
 		"from protocol join user using(iduser)\n" +
 		"left join keywords using(idprotocol,version) %s %s";
 
@@ -49,7 +49,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"select idprotocol,version,protocol.title,qmrf_number,%s as anabstract,iduser,summarySearchable,",qmrfNumber) +
 		"idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
-		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
+		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status\n" +
 		"from protocol join user using(iduser)\n" +
 		" %s %s order by idprotocol desc,version desc";	
 	*/
@@ -57,7 +57,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"select idprotocol,protocol.version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
 		"idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
-		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published\n" +
+		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status\n" +
 		"from protocol join user using(iduser)\n" +
 		" %s %s order by idprotocol desc,version desc";		
 	

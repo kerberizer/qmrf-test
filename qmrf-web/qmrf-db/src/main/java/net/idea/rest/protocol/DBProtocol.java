@@ -6,12 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import net.idea.qmrf.client.PublishedStatus;
 import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.toxbank.client.resource.Protocol;
-
-
-
 
 public class DBProtocol extends Protocol {
 
@@ -23,7 +21,9 @@ public class DBProtocol extends Protocol {
 	protected int year;
 	public static final String QMRFNUMBER = "qmrf_number";
 	protected EndpointTest endpoint;
-	
+	protected PublishedStatus publishedStatus = PublishedStatus.draft;
+
+
 	public EndpointTest getEndpoint() {
 		return endpoint;
 	}
@@ -67,7 +67,9 @@ public class DBProtocol extends Protocol {
 	
 
 	public String getVisibleIdentifier() {
-		return ((isPublished()!=null)&&isPublished())?(getIdentifier()==null?"QMRF NOT ASSIGNED!":getIdentifier()):"DRAFT";
+		return ((publishedStatus!=null)&&PublishedStatus.published==publishedStatus)?
+					(getIdentifier()==null?"QMRF NOT ASSIGNED!":getIdentifier()):
+					getPublishedStatus().name().toUpperCase();
 	}
 	public int getID() {
 		return ID;
@@ -113,4 +115,20 @@ public class DBProtocol extends Protocol {
 		*/
 	}
 
+	@Override
+	public Boolean isPublished() {
+		return PublishedStatus.published==publishedStatus;
+	}
+	@Override
+	public void setPublished(Boolean isPublished) {
+		publishedStatus = isPublished?PublishedStatus.published:PublishedStatus.draft;
+	}
+	
+	public PublishedStatus getPublishedStatus() {
+		return publishedStatus;
+	}
+
+	public void setPublishedStatus(PublishedStatus publishedStatus) {
+		this.publishedStatus = publishedStatus;
+	}
 }

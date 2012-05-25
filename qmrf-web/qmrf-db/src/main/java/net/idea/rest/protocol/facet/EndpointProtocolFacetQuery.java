@@ -28,7 +28,7 @@ public class EndpointProtocolFacetQuery extends AbstractFacetQuery<String,String
 		"left join template t using(idtemplate)\n"+
 		"left join dictionary d on d.idsubject=t.idtemplate\n"+
 		"left join template tp on d.idobject=tp.idtemplate\n"+
-		"where published = true\n"+
+		"where published_status = 'published'\n"+
 		"group by t.idtemplate\n"+
 		"order by t.code\n";
 	

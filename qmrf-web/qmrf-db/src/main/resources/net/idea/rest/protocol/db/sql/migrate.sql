@@ -34,7 +34,7 @@ SELECT iduser,idorganisation,1 FROM `user` join organisation on user.institute=o
 insert into protocol
 SELECT ifnull(idqmrf_origin,idqmrf),version,ifnull(qmrf_title,uuid()),ifnull(qmrf_number,uuid()),xml,true,
 u.iduser,
-1,idorganisation,qmrf_number,null,"RESEARCH",updated,updated,status='published'
+1,idorganisation,qmrf_number,null,"RESEARCH",updated,updated,replace(status," ","_")
 FROM qmrf_documents.documents docs, qmrf.`user` u, qmrf.`user_organisation` org
 where
 docs.user_name=u.username

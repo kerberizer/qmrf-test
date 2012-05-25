@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.idea.qmrf.client.PublishedStatus;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
@@ -188,9 +189,11 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM protocol");
 		Assert.assertEquals(5, table.getRowCount());
 		table = c.createQueryTable("EXPECTED",
-						"SELECT p.idprotocol,p.version,published,qmrf_number from protocol p where p.idprotocol=2 and version=2");
+						"SELECT p.idprotocol,p.version,published_status,qmrf_number from protocol p where p.idprotocol=2 and version=2");
 		Assert.assertEquals(1, table.getRowCount());
-		Assert.assertEquals(Boolean.TRUE, table.getValue(0, "published"));
+		Assert.assertEquals(PublishedStatus.published.name(), 
+				table.getValue(0, ReadProtocol.fields.published_status.name())
+				);
 		Assert.assertEquals(newQMRF, table.getValue(0, "qmrf_number"));
 		table = c.createQueryTable("EXPECTED",
 		"SELECT p.idprotocol,p.version,idtemplate from protocol_endpoints p where p.idprotocol=2 and version=2");
@@ -211,7 +214,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		table = c
 				.createQueryTable(
 						"EXPECTED",
-						"SELECT p.idprotocol,p.version,filename,title,abstract,qmrf_number,published from protocol p where p.idprotocol=2 order by version");
+						"SELECT p.idprotocol,p.version,filename,title,abstract,qmrf_number,published_status from protocol p where p.idprotocol=2 order by version");
 		Assert.assertEquals(3, table.getRowCount());
 		Assert.assertEquals(new BigInteger("1"), table.getValue(0, "version"));
 		Assert.assertEquals(new BigInteger("2"), table.getValue(1, "version"));
@@ -220,7 +223,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(2, "title"));
 		Assert.assertNotNull(table.getValue(2, "abstract"));
 		Assert.assertNotSame("Q-1234-5678", table.getValue(0, "qmrf_number"));
-		Assert.assertEquals(Boolean.FALSE, table.getValue(0, "published"));
+		Assert.assertEquals(PublishedStatus.draft.name(), table.getValue(0, ReadProtocol.fields.published_status.name()));
 		c.close();
 	}
 
@@ -312,8 +315,8 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 				values[i] = null;
 				break;
 			}
-			case published: {
-				values[i] = Boolean.TRUE.toString();
+			case published_status: {
+				values[i] = PublishedStatus.published.name();
 				break;
 			}
 			case title: {

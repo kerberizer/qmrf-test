@@ -35,6 +35,7 @@ import junit.framework.Assert;
 import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
 import net.idea.modbcum.i.query.IQueryUpdate;
+import net.idea.qmrf.client.PublishedStatus;
 import net.idea.qmrf.converters.QMRFConverter;
 import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.groups.DBOrganisation;
@@ -43,6 +44,7 @@ import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.CreateProtocol;
 import net.idea.rest.protocol.db.DeleteProtocol;
 import net.idea.rest.protocol.db.PublishProtocol;
+import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.UpdateProtocol;
 import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.user.DBUser;
@@ -96,11 +98,13 @@ public final class Protocol_crud_test<T extends Object>  extends CRUDTest<T,DBPr
 			throws Exception {
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED",
-				String.format("SELECT idprotocol,version,published,title,qmrf_number FROM protocol where idprotocol=2 and version=1"));
+				String.format("SELECT idprotocol,version,published_status,title,qmrf_number FROM protocol where idprotocol=2 and version=1"));
 		
 		Assert.assertEquals(1,table.getRowCount());
 		//we ignore the published flag here! There is a special PublishProtocol query
-		Assert.assertEquals(Boolean.FALSE,table.getValue(0,"published"));
+		Assert.assertEquals(Boolean.FALSE,
+					(Boolean)(PublishedStatus.published==table.getValue(0,ReadProtocol.fields.published_status.name()))
+					);
 		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(0,"title"));
 		//we change the identifier only on publishing
 		Assert.assertEquals("8f0aba27-862e-11e1-ba85-00ff3739b863",table.getValue(0,"qmrf_number"));
@@ -212,8 +216,11 @@ public final class Protocol_crud_test<T extends Object>  extends CRUDTest<T,DBPr
 			throws Exception {
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED",
-					"SELECT idprotocol,version,qmrf_number,published,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') g,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') n,extractvalue(abstract,\"//QMRF_number\") qxml FROM protocol where idprotocol=2 and version=1");
-		Assert.assertEquals(Boolean.TRUE,table.getValue(0,"published"));
+					"SELECT idprotocol,version,qmrf_number,published_status,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') g,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') n,extractvalue(abstract,\"//QMRF_number\") qxml FROM protocol where idprotocol=2 and version=1");
+		
+		Assert.assertEquals(PublishedStatus.published.name(),
+				table.getValue(0,ReadProtocol.fields.published_status.name())
+				);
 		Assert.assertEquals("1.Physical Chemical Properties",table.getValue(0,"g"));
 		Assert.assertEquals("1.4.Vapour Pressure",table.getValue(0,"n"));
 		Assert.assertEquals("Q12-14-0001",table.getValue(0,"qxml"));
