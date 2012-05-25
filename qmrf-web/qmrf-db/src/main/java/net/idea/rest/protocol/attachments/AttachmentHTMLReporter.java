@@ -5,6 +5,9 @@ import java.io.Writer;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFHTMLReporter;
+import net.idea.rest.endpoints.EndpointTest;
+import net.idea.rest.endpoints.EndpointsResource;
+import net.idea.rest.endpoints.db.QueryOntology;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
@@ -22,6 +25,8 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	 */
 	private static final long serialVersionUID = -5453025922862783009L;
 	protected String uploadUI;
+	protected String allAttachmentsUI;
+
 	protected boolean showDataset= false;
 	
 	public boolean isShowDataset() {
@@ -43,10 +48,15 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 			
 			((AttachmentURIReporter)uriReporter).setPrefix(String.format("%s/%s",Resources.protocol,qmrf));
 			setTitle(String.format("<a href='%s%s/%s'>%s</a> attachment",request.getRootRef(),Resources.protocol,qmrf,protocol.getVisibleIdentifier()));
-			uploadUI = String.format("<a href='%s%s/%s'>%s</a>",request.getRootRef(),Resources.editor,qmrf,"Add attachment(s)");
+			uploadUI = String.format("<a class='pselectable' style='width: 15em;' href='%s%s/%s'>%s</a>",
+					request.getRootRef(),Resources.editor,qmrf,"Add attachment(s)");
+			allAttachmentsUI = String.format("<a class='current' style='width: 15em;' href='%s%s/%s%s'>%s</a>",
+					request.getRootRef(),Resources.protocol,qmrf,Resources.attachment,"Browse all attachments"
+					);				
 		} else {
 			setTitle("Attachment");
 			uploadUI = String.format("<a href='%s%s'>%s</a>",request.getRootRef(),Resources.editor,"Add new QMRF");
+			allAttachmentsUI = null;
 		}
 	}
 	@Override
@@ -58,8 +68,17 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	@Override
 	protected void printPageNavigator(IQueryRetrieval<DBAttachment> query)
 			throws Exception {
-
-	}
+		try {
+			String url = "<li>%s</li>";
+			output.write("<div><ul id='hnavlist'>");
+			if (allAttachmentsUI!=null) output.write(String.format(url,allAttachmentsUI));
+			output.write(String.format(url,uploadUI));
+			output.write("</ul></div><br>");
+			output.flush();
+		} catch (Exception x) {
+			
+		}
+	}	
 	@Override
 	protected boolean printAsTable() {
 		return true;
@@ -68,12 +87,16 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 
 		String uri = uriReporter.getURI(attachment);
 		StringBuilder datasets = new StringBuilder();
-		datasets.append("<tr>");
-		
-		datasets.append(String.format("<th>%s</th>",
-					attachment.getDescription())
-					);
-		
+		datasets.append("<tr><th>");
+		if (headless) 
+			datasets.append(attachment.getDescription());
+		else
+			datasets.append(String.format("<a href='%s/A%d'>%s</a>",
+					"attachment",
+					attachment.getID(),
+					attachment.getDescription()
+					));
+		datasets.append("</th>");
 		datasets.append(String.format("<td align='left'>%s</td>", attachment.getType()));
 		datasets.append(String.format("<td align='left'><a href='%s?media=%s' title='%s %s'>Download</a></td>",
 				uri,
@@ -111,7 +134,7 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 	@Override
 	public void footer(Writer output, IQueryRetrieval<DBAttachment> query) {
 		try {
-			if (uploadUI!=null)	output.write(uploadUI);
+			if (uploadUI!=null && headless)	output.write(uploadUI);
 			output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetContentFooter());
 			
 					
