@@ -329,17 +329,34 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			
 			output.write(String.format("<td class='contentTable qmrfOwner'>%s</td>", owner));
 			
-			//regular users should not modify anything
-			if (!item.isPublished() && isAdminOrEditor()) {
-				output.write(String.format("<td class='contentTableManageL'>%s</td>" +
+
+			/**
+			 * 
+			 */
+			if (isAdminOrEditor()) {
+				/**
+				 * If published, don't show "publish" link
+				 */
+				output.write(String.format("<td class='contentTableManageL'>%s</td>",
+						item.isPublished()?"":
+						getPublishString(uriReporter.getRequest().getRootRef(), item)
+				));		
+				/**
+				 * Published docs could be modified, but it results in creating a new version
+				 */
+				output.write(String.format(
 						"<td class='contentTableManageM'>%s</td>" +
 						"<td class='contentTableManageR'>%s</td>",
-						getPublishString(uriReporter.getRequest().getRootRef(), item),
-						getUpdateString(uriReporter.getRequest().getRootRef(), item),
+						item.isPublished()?
+								getNewVersionString(uriReporter.getRequest().getRootRef(), item):
+								getUpdateString(uriReporter.getRequest().getRootRef(), item),
 						getDeleteString(uriReporter.getRequest().getRootRef(), item)
 				));
 			} else {
-				output.write(String.format("<td class='contentTableManageL'></td>" +
+				/**
+				 * 	 regular users should not modify anything.
+				 */
+ 				output.write(String.format("<td class='contentTableManageL'></td>" +
 						"<td class='contentTableManageM'></td>" +
 						"<td class='contentTableManageR'></td>"
 				));
@@ -391,4 +408,14 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		
 		return String.format(stringBuilder.toString(), baseRef, Resources.editor, item.getIdentifier(), update_mode.update.name(), baseRef);
 	}		
+	protected String getNewVersionString(Reference baseRef, DBProtocol item) {
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("<form action='%s%s/%s' method='GET'>");
+		stringBuilder.append("<input type='hidden' name='mode' value='%s'>");
+		stringBuilder.append("<input title='Create new version of this document' class='draw' "); // cont'd
+		stringBuilder.append("type='image' src='%s/images/script_edit.png' value='New version'>");
+		stringBuilder.append("</form>");
+		
+		return String.format(stringBuilder.toString(), baseRef, Resources.editor, item.getIdentifier(), update_mode.newversion.name(), baseRef);
+	}	
 }
