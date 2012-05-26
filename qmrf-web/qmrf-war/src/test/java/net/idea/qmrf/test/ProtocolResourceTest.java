@@ -11,7 +11,6 @@ import java.util.List;
 import junit.framework.Assert;
 import net.idea.qmrf.client.PublishedStatus;
 import net.idea.qmrf.client.Resources;
-import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.cli.task.RemoteTask;
 import net.idea.restnet.i.tools.DownloadTool;
@@ -20,6 +19,7 @@ import net.toxbank.client.resource.Protocol;
 import net.toxbank.client.resource.Protocol.STATUS;
 
 import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.tools.ant.types.resources.PropertyResource;
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.junit.Test;
@@ -42,6 +42,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 	protected static String id2v1 = "8f0aba27-862e-11e1-ba85-00ff3739b863";
 	protected static String id2v2 = "8f0afddb-862e-11e1-ba85-00ff3739b863";
+	protected static String id119v1 = "Q2-10-14-119";
 	@Override
 	protected boolean isAAEnabled() {
 		return false;
@@ -207,23 +208,26 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 
 	@Test
 	public void testCreateVersionEntryFromMultipartWeb() throws Exception {
-		String url = createEntryFromMultipartWeb(new Reference(getTestURI()	+ Resources.versions));
+		String url = createEntryFromMultipartWeb(new Reference(String.format(
+				"http://localhost:%d%s/%s%s", port,
+				Resources.protocol, id119v1 , Resources.versions)));
 		IDatabaseConnection c = getConnection();
 		ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM protocol");
 		Assert.assertEquals(6, table.getRowCount());
 		table = c
 				.createQueryTable(
 						"EXPECTED",
-						"SELECT p.idprotocol,p.version,filename,title,abstract,qmrf_number,published_status from protocol p where p.idprotocol=2 order by version");
-		Assert.assertEquals(3, table.getRowCount());
+						"SELECT p.idprotocol,p.version,filename,title,abstract,qmrf_number,published_status from protocol p where p.idprotocol=119 order by version");
+		Assert.assertEquals(2, table.getRowCount());
 		Assert.assertEquals(new BigInteger("1"), table.getValue(0, "version"));
 		Assert.assertEquals(new BigInteger("2"), table.getValue(1, "version"));
-		Assert.assertEquals(new BigInteger("3"), table.getValue(2, "version"));
 		Assert.assertNotSame(getTestURI(), url);
-		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(2, "title"));
-		Assert.assertNotNull(table.getValue(2, "abstract"));
-		Assert.assertNotSame("Q-1234-5678", table.getValue(0, "qmrf_number"));
-		Assert.assertEquals(PublishedStatus.draft.name(), table.getValue(0, ReadProtocol.fields.published_status.name()));
+		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(1, "title"));
+		Assert.assertNotNull(table.getValue(1, "abstract"));
+		Assert.assertNotSame("Q2-10-14-119-v1", table.getValue(0, "qmrf_number"));
+		Assert.assertNotSame("Q2-10-14-119", table.getValue(1, "qmrf_number"));
+		Assert.assertEquals(PublishedStatus.archived.name(), table.getValue(0, ReadProtocol.fields.published_status.name()));
+		Assert.assertEquals(PublishedStatus.published.name(), table.getValue(1, ReadProtocol.fields.published_status.name()));
 		c.close();
 	}
 
