@@ -156,17 +156,17 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		IDatabaseConnection c = getConnection();
 		ITable table = c
 				.createQueryTable("EXPECTED",
-						"SELECT idprotocol,version FROM protocol where idprotocol=2 and version=2");
-		Assert.assertEquals(new BigInteger("2"),table.getValue(0, "idprotocol"));
+						"SELECT idprotocol,version FROM protocol where idprotocol=121 and version=1");
+		Assert.assertEquals(new BigInteger("121"),table.getValue(0, "idprotocol"));
 		c.close();
 		String org = String.format("http://localhost:%d%s/%s", port,
-				Resources.protocol, id2v2);
+				Resources.protocol, "Q8-10-13-121");
 		RemoteTask task = testAsyncPoll(new Reference(org),	MediaType.TEXT_URI_LIST, null, Method.DELETE);
 		Assert.assertEquals(Status.SUCCESS_OK.getCode(), task.getStatus());
 		// Assert.assertNull(task.getResult());
 		c = getConnection();
 		table = c.createQueryTable("EXPECTED",
-				"SELECT * FROM protocol where idprotocol=2 and version=2");
+				"SELECT * FROM protocol where idprotocol=121 and version=1");
 		Assert.assertEquals(0, table.getRowCount());
 		c.close();
 	}

@@ -291,3 +291,23 @@ begin
 end $$
 
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- Only documents with 'deleted' status are physically deleted.
+-- Documents with non-deleted status are only assigned 'deleted' status
+-- -----------------------------------------------------
+DROP PROCEDURE IF EXISTS `deleteProtocol`;
+DELIMITER $$
+CREATE PROCEDURE deleteProtocol(IN protocol_qmrf_number VARCHAR(36))
+begin
+	delete a from protocol_endpoints a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=protocol_qmrf_number and published_status='deleted';
+	delete a from keywords a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=protocol_qmrf_number and published_status='deleted';
+	delete a from protocol_authors a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=protocol_qmrf_number and published_status='deleted';
+	delete a from attachments a, protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=protocol_qmrf_number and published_status='deleted'; 
+   	DELETE from protocol where qmrf_number=protocol_qmrf_number and published_status='deleted';
+   
+	-- otherwise	
+   	UPDATE protocol set published_status='deleted' where qmrf_number=protocol_qmrf_number and published_status!='deleted';
+end $$
+
+DELIMITER ;

@@ -29,24 +29,25 @@
 
 package net.idea.rest.protocol.db;
 
+import java.sql.CallableStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.idea.modbcum.i.IStoredProcStatement;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.update.AbstractObjectUpdate;
 import net.idea.rest.protocol.DBProtocol;
 
+/**
+ * 
+ * @author nina
+ *
+ */
+public class DeleteProtocol extends AbstractObjectUpdate<DBProtocol> implements IStoredProcStatement {
 
-public class DeleteProtocol extends AbstractObjectUpdate<DBProtocol> {
-
-	public static final String[] delete_sql = {
-		"delete a from protocol_endpoints a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=?",
-		"delete a from keywords a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=?",
-		"delete a from protocol_authors a,protocol p where a.idprotocol=p.idprotocol and a.version=p.version and qmrf_number=?",
-		"delete from protocol where qmrf_number=?"
-		};
-
+	protected String[] delete_sql = {"{CALL deleteProtocol(?)}"};
 	public DeleteProtocol(DBProtocol ref) {
 		super(ref);
 	}
@@ -67,5 +68,16 @@ public class DeleteProtocol extends AbstractObjectUpdate<DBProtocol> {
 	}
 	public void setID(int index, int id) {
 			
+	}
+	
+	@Override
+	public boolean isStoredProcedure() {
+		return true;
+	}
+	@Override
+	public void getStoredProcedureOutVars(CallableStatement statement)
+			throws SQLException {
+		
+		
 	}
 }
