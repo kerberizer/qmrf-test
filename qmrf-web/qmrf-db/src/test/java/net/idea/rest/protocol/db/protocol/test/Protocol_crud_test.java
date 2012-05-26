@@ -111,10 +111,36 @@ public final class Protocol_crud_test<T extends Object>  extends CRUDTest<T,DBPr
 	
 		c.close();	
 	}
+	
+	@Test
+	public void testMarkAsDeleted() throws Exception {
+		IQueryUpdate<T,DBProtocol> query = markAsDeletedQuery();
+		setUpDatabase(dbFile);
+		IDatabaseConnection c = getConnection();
+		executor.setConnection(c.getConnection());
+		executor.open();
+		Assert.assertTrue(executor.process(query)>=1);
+		markAsDeleteVerify(query);
+		c.close();
+	}
 
+	protected IQueryUpdate<T,DBProtocol> markAsDeletedQuery() throws Exception {
+		DBProtocol ref = new DBProtocol(id2v1);
+		return ( IQueryUpdate<T,DBProtocol>)new DeleteProtocol(ref);
+	}
+	
+	protected void markAsDeleteVerify(IQueryUpdate<T,DBProtocol> query)
+			throws Exception {
+        IDatabaseConnection c = getConnection();	
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT idprotocol,published_status FROM protocol where idprotocol=2 and version=1");
+		Assert.assertEquals(1,table.getRowCount());
+		Assert.assertEquals(PublishedStatus.deleted.name(),table.getValue(0,ReadProtocol.fields.published_status.name()));
+		c.close();
+		
+	}	
 	@Override
 	protected IQueryUpdate<T,DBProtocol> deleteQuery() throws Exception {
-		DBProtocol ref = new DBProtocol(id2v1);
+		DBProtocol ref = new DBProtocol("Q8-10-13-121");
 		return ( IQueryUpdate<T,DBProtocol>)new DeleteProtocol(ref);
 	}
 
@@ -122,7 +148,7 @@ public final class Protocol_crud_test<T extends Object>  extends CRUDTest<T,DBPr
 	protected void deleteVerify(IQueryUpdate<T,DBProtocol> query)
 			throws Exception {
         IDatabaseConnection c = getConnection();	
-		ITable table = 	c.createQueryTable("EXPECTED","SELECT idprotocol FROM protocol where idprotocol=2 and version=1");
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT idprotocol FROM protocol where idprotocol=121 and version=1");
 		Assert.assertEquals(0,table.getRowCount());
 		c.close();
 		
