@@ -249,7 +249,7 @@ begin
     DECLARE pid INT;
     --
     DECLARE protocols CURSOR FOR
-    	select max(version)+1,idprotocol from protocol where qmrf_number=protocol_qmrf_number LIMIT 1;
+    	select max(version)+1,idprotocol from protocol where idprotocol in (select idprotocol from protocol where qmrf_number=protocol_qmrf_number) LIMIT 1;
     	
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET no_more_rows = TRUE;
     
@@ -282,7 +282,7 @@ begin
     select idprotocol,version_new,keywords from keywords join protocol using(idprotocol,version) where  qmrf_number=protocol_qmrf_number;    
     
 	-- move the qmrf number to the new version; replace the old one with qmrfnumber-vXX
-    update protocol set published_status='archived',qmrf_number=concat(protocol_qmrf_number,"-v",version) where qmrf_number=protocol_qmrf_number;
+    update protocol set published_status='archived',qmrf_number=concat(left(protocol_qmrf_number,36-(length(version)+2)),"-v",version) where qmrf_number=protocol_qmrf_number;
     update protocol set qmrf_number=protocol_qmrf_number where idprotocol=pid and version=version_new;
 
 
