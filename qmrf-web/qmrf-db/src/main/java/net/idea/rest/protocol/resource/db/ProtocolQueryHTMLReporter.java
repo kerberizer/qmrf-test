@@ -130,7 +130,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	}
 
 	protected void printHTML(Writer output, String uri, DBProtocol item, boolean hidden) throws Exception {
-		output.write(String.format("<div id='%s' class='documentheader' style='display: %s;''>",item.getIdentifier(),hidden?"none":""));
+		output.write(String.format("<div id='%s' class='documentheader' style='display: %s;''>",item.getIdentifier(),hidden?"none":"inline-block"));
 		if (!hidden) {
 			output.write(String.format("<a href='%s'>%s</a>&nbsp;<textarea>%s</textarea>&nbsp;<br>%s",
 						uri,ReadProtocol.fields.identifier.getValue(item),"XXX" 
@@ -159,7 +159,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 
 	        
 			output.write(String.format(
-			"<div id='%s' style='display: %s;'>\n", item.getIdentifier(), hidden?"none":"block"));
+			"<div id='%s' style='display: %s;'>\n", item.getIdentifier(), hidden?"none":"inline-block"));
 
 			// The social panel. Don't display on MSIE 7, because it breaks there. No surprise.
 			
