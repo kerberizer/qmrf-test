@@ -159,7 +159,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 
 	        
 			output.write(String.format(
-			"<div id='%s' style='display: %s;'>\n", item.getIdentifier(), hidden?"none":""));
+			"<div id='%s' style='display: %s;'>\n", item.getIdentifier(), hidden?"none":"block"));
 
 			// The social panel. Don't display on MSIE 7, because it breaks there. No surprise.
 			
