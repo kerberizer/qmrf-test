@@ -75,7 +75,7 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 					item.idstructure>0?Resources.structure:"",
 					item.idstructure>0?"/":"",
 					item.idstructure>0?Integer.toString(item.idstructure):"",
-					item.getResourceURL(),
+					item.getResourceIdentifier(),
 					Reference.encode("image/png"),
 					item.cas==null?"":item.cas,
 					item.name==null?"":item.name,

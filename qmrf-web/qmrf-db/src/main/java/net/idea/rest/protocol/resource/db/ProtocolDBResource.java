@@ -366,7 +366,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			if ((structure!=null) && structure.toString().startsWith("http")) {
 				IQueryRetrieval<DBProtocol> query = new ReadProtocolByStructure();
 				Structure record = new Structure();
-				record.setResourceURL(new URL(structure.toString()));
+				record.setResourceIdentifier(new URL(structure.toString()));
 
 				Object[] ids = record.parseURI(new Reference(getQueryService()));
 				record.setIdchemical((Integer)ids[0]);

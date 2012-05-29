@@ -9,10 +9,10 @@ import java.net.URL;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.idea.opentox.cli.task.RemoteTask;
 import net.idea.qmrf.client.PublishedStatus;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.db.ReadProtocol;
-import net.idea.restnet.cli.task.RemoteTask;
 import net.idea.restnet.i.tools.DownloadTool;
 import net.toxbank.client.io.rdf.ProtocolIO;
 import net.toxbank.client.resource.Protocol;

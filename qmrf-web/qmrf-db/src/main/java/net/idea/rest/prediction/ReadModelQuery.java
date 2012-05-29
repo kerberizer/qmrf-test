@@ -10,10 +10,10 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.conditions.EQCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
+import net.idea.opentox.cli.algorithm.Algorithm;
+import net.idea.opentox.cli.dataset.Dataset;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol.fields;
-import net.idea.restnet.cli.algorithm.Algorithm;
-import net.idea.restnet.cli.dataset.Dataset;
 
 public class ReadModelQuery extends AbstractQuery<DBProtocol, Algorithm, EQCondition, DBModel>  implements IQueryRetrieval<DBModel> {
 
@@ -72,7 +72,7 @@ public class ReadModelQuery extends AbstractQuery<DBProtocol, Algorithm, EQCondi
 			params.add(fields.identifier.getParam(getFieldname()));
 		} 
 		if (getValue()!=null)
-			params.add(new QueryParam<String>(String.class, getValue().getResourceURL().toExternalForm()));
+			params.add(new QueryParam<String>(String.class, getValue().getResourceIdentifier().toExternalForm()));
 		if (params.size()==0) throw new AmbitException("No protocol or attachment id");
 		return params;
 	}
@@ -86,10 +86,10 @@ public class ReadModelQuery extends AbstractQuery<DBProtocol, Algorithm, EQCondi
 		try {
 				DBModel model = new DBModel();
 				model.setID(rs.getInt("idmodel"));
-				model.setResourceURL(new URL(String.format("%s/%d", modelRoot,model.getID())));
+				model.setResourceIdentifier(new URL(String.format("%s/%d", modelRoot,model.getID())));
 				model.setAlgorithm(getValue());
 				Dataset dataset = new Dataset();
-				dataset.setResourceURL(new URL(rs.getString("dataset")));
+				dataset.setResourceIdentifier(new URL(rs.getString("dataset")));
 				model.setTrainingDataset(dataset);
 				return model;
 

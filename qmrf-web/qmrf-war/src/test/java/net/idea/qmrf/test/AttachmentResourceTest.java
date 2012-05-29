@@ -10,11 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.idea.opentox.cli.task.RemoteTask;
 import net.idea.qmrf.client.Resources;
-import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
-import net.idea.restnet.cli.task.RemoteTask;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;

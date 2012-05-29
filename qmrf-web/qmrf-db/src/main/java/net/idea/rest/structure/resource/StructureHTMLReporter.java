@@ -65,7 +65,7 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 		
 		String protocolURI = String.format(
 				"<a href=\"%s%s?structure=%s&headless=true&details=false&media=text/html\" title=\"QMRF documents\">QMRF documents</a>",
-				getRequest().getRootRef(),Resources.protocol,Reference.encode(item.getResourceURL().toString()));
+				getRequest().getRootRef(),Resources.protocol,Reference.encode(item.getResourceIdentifier().toString()));
 		
 		String moleculeURI = String.format(
 				"<a href=\"%s%s/%d?headless=true&details=false&media=text/html\" title=\"Molecule\">Molecule</a>",
@@ -123,7 +123,7 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 							getRequest().getRootRef(),Resources.chemical,item.getIdchemical(),model.getID());
 			String uri = String.format(
 					"<a href=\"%s\" title=\"%s\">%s</a>",
-					datasetURI,model.getAlgorithm().getResourceURL(),"Predictions");
+					datasetURI,model.getAlgorithm().getResourceIdentifier(),"Predictions");
 			return String.format("<li>%s<span></span></li>\n",uri);
 		} else return "";
 		

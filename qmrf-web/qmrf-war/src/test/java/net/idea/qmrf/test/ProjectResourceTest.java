@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
+import net.idea.opentox.cli.task.RemoteTask;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.groups.DBGroup;
 import net.idea.rest.groups.db.ReadProject;
-import net.idea.restnet.cli.task.RemoteTask;
 import net.toxbank.client.io.rdf.ProjectIO;
 import net.toxbank.client.resource.Project;
 
