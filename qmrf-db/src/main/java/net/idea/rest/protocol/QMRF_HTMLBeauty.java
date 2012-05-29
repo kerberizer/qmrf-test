@@ -318,9 +318,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write(String.format("<title>%s</title>\n",title));
 			
 			// Initialize Google +1, Twitter, Linked In and VKontakte buttons; Facebook is initialized at the beginning of BODY
-			w.write(googlePlusInit);
-			w.write(twitterInit);
-			w.write(linkedInInit);
+			// But don't load if Microsoft IE 7 is detected, because this produces JS parsing errors.
+			if (!isMsie7()) {
+				w.write(googlePlusInit);
+				w.write(twitterInit);
+				w.write(linkedInInit);
+			}
 			// Disabled for the time being, as there are issues with it.
 			//w.write(vKontakteInit);
 
@@ -366,7 +369,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("<body>\n");
 			
 			// Initialize Facebook button; Google +1, Twitter, Linked In and VKontakte are initialized in the HEAD
-			w.write(facebookInit);
+			// But don't load if Microsoft IE 7 is detected, because this produces JS parsing errors.
+			if (!isMsie7()) w.write(facebookInit);
 			
 			w.write("<div id='wrap'>\n");
 			
