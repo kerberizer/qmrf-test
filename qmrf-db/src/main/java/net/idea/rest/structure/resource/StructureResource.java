@@ -341,7 +341,7 @@ class PropertiesIterator extends CSVFeatureValuesIterator<Structure> {
 				// String[] v = value.split("|");
 				switch (title) {
 				case Compound: {
-					r.setResourceURL(new URL(value));
+					r.setResourceIdentifier(new URL(value));
 					break;
 				}
 				case CASRN: {

@@ -12,12 +12,12 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import junit.framework.Assert;
 import net.idea.modbcum.i.config.Preferences;
+import net.idea.opentox.cli.task.RemoteTask;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.rest.QMRFRESTComponent;
 import net.idea.rest.protocol.db.test.DbUnitTest;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.task.ClientResourceWrapper;
-import net.idea.restnet.cli.task.RemoteTask;
 import net.idea.restnet.rdf.ns.OT;
 
 import org.apache.http.HttpEntity;

@@ -18,7 +18,8 @@
   	<junit.version>4.8.1</junit.version>
 	<restlet.version>2.0-M6</restlet.version>
 	<modbcum.version>0.0.3-SNAPSHOT</modbcum.version>
-	<restnet.version>0.0.6-SNAPSHOT</restnet.version>
+	<restnet.version>0.0.7-SNAPSHOT</restnet.version>
+	<opentoxcli.version>1.0.0-SNAPSHOT</opentoxcli.version>
   </properties>
  <issueManagement>
   	<system></system>
@@ -33,6 +34,14 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+	<dependency>
+  	    	<groupId>ambit</groupId>
+  	    	<artifactId>opentox-client</artifactId>
+  	    	<version>${opentoxcli.version}</version>
+  	    	<type>jar</type>
+  	    	<scope>compile</scope>
+  	    </dependency>
+  	        
   <dependency>
   <groupId>net.ideaconsult.restnet</groupId>
   <artifactId>restnet-i</artifactId>

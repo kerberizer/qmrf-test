@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.idea.modbcum.i.query.IQueryUpdate;
+import net.idea.opentox.cli.task.FibonacciSequence;
+import net.idea.opentox.cli.task.RemoteTask;
 import net.idea.rest.protocol.attachments.db.UpdateAttachment;
-import net.idea.restnet.cli.task.FibonacciSequence;
-import net.idea.restnet.cli.task.RemoteTask;
 import net.idea.restnet.db.update.CallableDBUpdateTask;
 
 import org.apache.http.HttpEntity;

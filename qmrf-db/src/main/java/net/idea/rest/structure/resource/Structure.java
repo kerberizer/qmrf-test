@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
-import net.idea.restnet.cli.AbstractClient;
-import net.idea.restnet.cli.IAbstractResource;
+import net.idea.opentox.cli.AbstractClient;
+import net.idea.opentox.cli.IIdentifiableResource;
 import net.toxbank.client.resource.Protocol;
 
 import org.apache.http.HttpStatus;
@@ -16,7 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.restlet.data.Reference;
 import org.restlet.resource.ResourceException;
 
-public class Structure implements IAbstractResource, Serializable {
+public class Structure implements IIdentifiableResource<URL>, Serializable {
 	/**
 	 * 
 	 */
@@ -73,7 +73,7 @@ public class Structure implements IAbstractResource, Serializable {
 		}
 	}	
 	public Structure(URL resourceURL) {
-		setResourceURL(resourceURL);
+		setResourceIdentifier(resourceURL);
 	}
 
 	public Structure() {
@@ -168,7 +168,7 @@ public class Structure implements IAbstractResource, Serializable {
 	}
 	
 	public Object[] parseURI(Reference baseReference)  {
-		return OpenTox.URI.conformer.getIds(getResourceURL().toString(),baseReference);
+		return OpenTox.URI.conformer.getIds(getResourceIdentifier().toString(),baseReference);
 
 	}
 	
@@ -182,11 +182,13 @@ public class Structure implements IAbstractResource, Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public void setResourceURL(URL resourceURL) {
+	@Override
+	public void setResourceIdentifier(URL resourceURL) {
 		this.resourceURL = resourceURL;
 	}
 
-	public URL getResourceURL() {
+	@Override
+	public URL getResourceIdentifier() {
 		return resourceURL;
 	}
 	

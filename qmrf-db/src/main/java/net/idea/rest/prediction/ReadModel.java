@@ -10,9 +10,9 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.conditions.EQCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
+import net.idea.opentox.cli.algorithm.Algorithm;
+import net.idea.opentox.cli.dataset.Dataset;
 import net.idea.rest.protocol.DBProtocol;
-import net.idea.restnet.cli.algorithm.Algorithm;
-import net.idea.restnet.cli.dataset.Dataset;
 
 public class ReadModel  extends AbstractQuery<DBProtocol, DBModel, EQCondition, DBModel>  implements IQueryRetrieval<DBModel> {
 
@@ -76,12 +76,12 @@ public class ReadModel  extends AbstractQuery<DBProtocol, DBModel, EQCondition, 
 		try {
 				DBModel model = new DBModel();
 				model.setID(rs.getInt("idmodel"));
-				model.setResourceURL(new URL(String.format("%s/%d", modelRoot,model.getID())));
+				model.setResourceIdentifier(new URL(String.format("%s/%d", modelRoot,model.getID())));
 				Algorithm algorithm = new Algorithm();
-				algorithm.setResourceURL(new URL(rs.getString("algorithm")));
+				algorithm.setResourceIdentifier(new URL(rs.getString("algorithm")));
 				model.setAlgorithm(algorithm);
 				Dataset dataset = new Dataset();
-				dataset.setResourceURL(new URL(rs.getString("dataset")));
+				dataset.setResourceIdentifier(new URL(rs.getString("dataset")));
 				model.setTrainingDataset(dataset);
 				return model;
 
