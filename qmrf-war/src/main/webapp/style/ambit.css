@@ -89,6 +89,8 @@ h1 {
 	margin: auto 5px auto 200px;
 	text-align: left;
 	position: relative;
+	/* Important for MSIE 7 */
+	min-height: 0;
 }
 
 #footer {
