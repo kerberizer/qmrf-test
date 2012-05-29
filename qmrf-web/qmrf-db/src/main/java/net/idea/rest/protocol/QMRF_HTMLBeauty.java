@@ -348,8 +348,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			w.write(String.format("<script>$(function() {$( \".datatable\" ).dataTable({%s });});</script>",dtableOptions));
 			
-			// Don't style the submit button with jQ if the browser is MSIE 7.
-			if (!isMsie7()) w.write("<script>$(function() {$(\"#submit\").button();});</script>");
+			w.write("<script>$(function() {$(\"#submit\").button();});</script>");
 			
 			// The next line is commented, because we MUST NOT initialise any div-tabs before they get populated.
 			// But this is only true for documents, as the rest of the resources are loaded the usual way.
@@ -502,12 +501,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		
 			// Apply style for the hovered buttons sans (!) the currently selected one.
 			// There are better ways to do it, but this should be okay for now.
-			// However, this breaks MSIE 7. Moreover, this browser gets crazy even if
-			// the change is implemented purely with simple CSS a:hover, and for this
-			// reason, we simply disable the mousever effect for it.
-			if (!isMsie7()) {
-				w.write(menuMouseOverScript);
-			}
+			w.write(menuMouseOverScript);
 				
 			//followed by the search form
 			
@@ -721,15 +715,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 			// Apply style for the hovered buttons sans (!) the currently selected one.
 			// There are better ways to do it, but this should be okay for now.
-			// However, this breaks MSIE 7. Moreover, this browser gets crazy even if
-			// the change is implemented purely with simple CSS a:hover, and for this
-			// reason, we simply disable the mousever effect for it.
-			if (!isMsie7()) {
-				b.append("<script>\n");
-				b.append("$('a.pselectable').mouseover(function () { $(this).addClass('phovered');    } );\n");
-				b.append("$('a.pselectable').mouseout(function  () { $(this).removeClass('phovered'); } );\n");
-				b.append("</script>\n");
-			}
+			b.append("<script>\n");
+			b.append("$('a.pselectable').mouseover(function () { $(this).addClass('phovered');    } );\n");
+			b.append("$('a.pselectable').mouseout(function  () { $(this).removeClass('phovered'); } );\n");
+			b.append("</script>\n");
 
 			return b.toString();
 		}
