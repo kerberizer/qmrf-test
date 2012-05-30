@@ -214,11 +214,17 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			if (!hidden) {
 				output.write(String.format(
 						"<script>\n" +
-						"$('#%s_tabs').load('%s/chapters?headless=true&media=text/html'," +
-						"	function() { $('#%s .tabs').tabs('destroy').tabs({cache: true}); });\n" +				
-						"</script>",item.getIdentifier(),uri,item.getIdentifier(),item.getIdentifier()));
-				
+						"$('#%s_tabs').load('%s/chapters?headless=true&media=text/html', function() {\n" +
+						"\t$('#%s .tabs').tabs('destroy').tabs({cache: true});\n" +
+						"});\n" +				
+						"</script>",
+						item.getIdentifier(),
+						uri,
+						item.getIdentifier(),
+						item.getIdentifier()
+				));
 			}
+		
 		} catch (Exception x) {
 			x.printStackTrace();
 		} finally {
