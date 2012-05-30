@@ -4,7 +4,7 @@ This CSS stylesheet contains overrides for the Microsoft Internet Explorer famil
 The contents of this file are in the public domain. If this is not applicable, the contents are
 licensed under the 2-clause license BSD license ("Simplified BSD License" or "FreeBSD License").
 
-This file has been created on 2012-04-09 by Luchesar V. ILIEV, IDEAconsult Ltd., http://i.dea.is/
+Created on 2012-04-09 by Luchesar V. ILIEV, IDEAconsult Ltd., http://www.ideaconsult.net/
 */
 
 @CHARSET "UTF-8";
@@ -47,4 +47,8 @@ img.logo_home_menu {
 	top: -8px;
 	left: 25px;
 	border: 0;
+}
+
+.ui-tabs li a {
+	font-size: 7pt !important;
 }
