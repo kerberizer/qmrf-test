@@ -96,7 +96,7 @@
         
 <!--catalogs -->
 <xsl:template match="/">
-  <html>
+  <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
   	<title><xsl:value-of select="@name"/></title>
   	<xsl:text>&#10;</xsl:text>
