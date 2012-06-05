@@ -1,7 +1,7 @@
 /*
-Copyright (C) 2005-2008  
+Copyright (C) 2005-2012  
 
-Contact: nina@acad.bg
+Contact: www.ideaconsult.net
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public License
@@ -22,11 +22,13 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 */
 
+
 package net.idea.ambit.qmrf.swing;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.net.URLEncoder;
 import java.util.StringTokenizer;
 
 import javax.swing.BorderFactory;
@@ -106,11 +108,13 @@ public class QMRFWelcomePanel extends JPanel implements IAmbitEditor<QMRFObject>
         add(createText(html+QMRFObject.getBackground()));
         //add(createText(html+"Please, try to fill in the fields of the QMRF for the model of interest. If the field is not pertinent with the model you are describing, or if you cannot provide the requested information, please answer \"no information available\". The set of information that you provide will be used to facilitate regulatory considerations of (Q)SARs. For this purpose, the structure of the QMRF is devised to reflect as much as possible the OECD principles for the validation, for regulatory purposes, of (Q)SAR models. You are invited to consult the OECD \"Guidance Document on the Validation of (Quantitative) Structure-Activity Relationship Models\" that can aid you in filling in a number of fields of the QMRF</html>"));
         
-        
+        final String _email = "JRC-IHCP-COMPUTOX@ec.europa.eu";
         add(createLabel("<html><b>Submission Procedure</b></html>"));
-        add(createText(html+
-        	"If you wish to submit the QMRF for inclusion in the JRC QSAR Model Database, please save your QMRF as xml file and send to JRC-IHCP-COMPUTOX@ec.europa.eu"
+        add(createText(
+        		String.format("%s If you wish to submit the QMRF for inclusion in the JRC QSAR Model Database, please save your QMRF as xml file and send to <a href=\"mailto:%s?subject=%s\">%s</a></html>",
+        		html,_email,URLEncoder.encode("QMRF document submission"),_email)
         	));
+        
         /*
         add(createLabel("<html><b>Disclaimer</b></html>"));
         add(createText("The JRC accepts no liability for the use of any information obtained from the QRF and related documentation. This is not the final version of the QRF which is still under development. It is likely that newer versions will be released soon. Please, check the JRC website for the latest version available.."));

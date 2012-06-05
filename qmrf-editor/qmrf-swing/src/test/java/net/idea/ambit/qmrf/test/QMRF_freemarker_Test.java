@@ -21,7 +21,6 @@ import org.junit.Test;
 import com.joliciel.freemarker.rtf.RtfConverter;
 
 import freemarker.cache.ClassTemplateLoader;
-import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
 import freemarker.core.Environment;
@@ -59,6 +58,8 @@ public class QMRF_freemarker_Test {
 		w.flush();  
 	}
 	
+
+
 	@Test
     public void testQMRF_RTF() throws Exception {
 
@@ -81,8 +82,39 @@ public class QMRF_freemarker_Test {
         out.close();
     }
 	
+	
+    public void testQMRF_MSWORD() throws Exception {
+
+        Template temp = cfg.getTemplate("qmrf_rtf.ftl", Locale.UK);
+
+        Map model = new HashMap();
+        // make sure you add the RtfConverter, since this will be needed to escape interpolations as Rtf
+        model.put("RtfConverter", new RtfConverter());
+        QMRFObject qmrf = getQMRF_MSWORD();
+        qmrf.setCleanTags(true);
+        model.put("qmrf", qmrf);
+
+     
+        /* Merge data model with template */
+        File result = new File("mstest.rtf");
+        System.out.println(result.getAbsolutePath());
+        Writer out = new FileWriter(result);
+        temp.process(model, out);
+        out.flush();
+        out.close();
+    }
 	public QMRFObject getQMRF() throws Exception {
 		URL url = getClass().getClassLoader().getResource("net/idea/ambit/qmrf/QMRF-NEW.xml");
+		QMRFObject qmrf = new QMRFObject();
+		
+		FileInputStream in = new FileInputStream(new File(url.getFile()));
+		qmrf.transform_and_read(new InputStreamReader(in,"UTF-8"),true);
+		in.close();
+		return qmrf;
+	}
+	
+	public QMRFObject getQMRF_MSWORD() throws Exception {
+		URL url = getClass().getClassLoader().getResource("net/idea/ambit/qmrf/_QMRF-NEW1.xml");
 		QMRFObject qmrf = new QMRFObject();
 		
 		FileInputStream in = new FileInputStream(new File(url.getFile()));

@@ -1,7 +1,7 @@
 /*
-Copyright (C) 2005-2006  
+Copyright (C) 2005-2012  
 
-Contact: nina@acad.bg
+Contact: www.ideaconsult.net
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public License
@@ -27,9 +27,11 @@ package net.idea.ambit.qmrf.swing;
 import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -158,6 +160,14 @@ public class QMRFEditor extends CoreApp implements Observer {
         if (qmrfData.getQmrf().isModified()) b.append( " *");
 	    mainFrame.setTitle( b.toString());
 	    
+	}
+	
+	@Override
+	protected ImageIcon getIcon() {
+		URL iconURL = QMRFEditor.class.getClassLoader().getResource("ambit/ui/images/qmrf.png");
+		if (iconURL != null) {
+			return new ImageIcon(iconURL);
+		} else return null;
 	}
 }
 
