@@ -1,3 +1,27 @@
+/*
+Copyright (C) 2005-2012  
+
+Contact: www.ideaconsult.net
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+All we ask is that proper credit is given for our work, which includes
+- but is not limited to - adding the above copyright notice to the beginning
+of your source code files, and to any copyright notice that you may distribute
+with programs based on this work.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+*/
+
 package net.idea.ambit.qmrf.swing;
 
 import java.awt.Container;
@@ -51,11 +75,14 @@ public class QMRFURIOpenAction extends QMRFAction {
 		}
 		String uri = JOptionPane.showInputDialog(null, "Type the internet address of QMRF document:","", 1);
 		try {
-     		getQMRFData().getQmrf().setSource(uri);
-			getQMRFData().getQmrf().readURI(new URI(uri));
-			getQMRFData().getQmrf().setModified(true);
-     		getQMRFData().getQmrf().setNotModified();
-      		getQMRFData().getJobStatus().setMessage(String.format("%s loaded.", uri));
+			if (uri!=null && !"".equals(uri.trim())) {
+				uri = uri.trim();
+	     		getQMRFData().getQmrf().setSource(uri);
+				getQMRFData().getQmrf().readURI(new URI(uri));
+				getQMRFData().getQmrf().setModified(true);
+	     		getQMRFData().getQmrf().setNotModified();
+	      		getQMRFData().getJobStatus().setMessage(String.format("%s loaded.", uri));
+			} else throw new Exception("Please enter a valid URL");
 		} catch (MalformedURLException x) {
     		JOptionPane.showMessageDialog(mainFrame,
     				x.getMessage(),
