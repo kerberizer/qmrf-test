@@ -1,7 +1,27 @@
-/**
- * Created on 2005-1-18
- *
- */
+/*
+Copyright (C) 2005-2012  
+
+Contact: www.ideaconsult.net
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+All we ask is that proper credit is given for our work, which includes
+- but is not limited to - adding the above copyright notice to the beginning
+of your source code files, and to any copyright notice that you may distribute
+with programs based on this work.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
+*/
+
 package net.idea.ambit.swing.common;
 
 import java.awt.BorderLayout;
@@ -285,32 +305,15 @@ abstract public class CoreApp implements ActionListener {
 	protected String getAboutString(String packageName) {
 		StringBuilder b = new StringBuilder();
     	Package self = Package.getPackage(packageName);
-    	b.append("<html>");
-    	b.append("<b>");
-    	b.append(self.getImplementationTitle());
-    	b.append(" ");
-    	b.append(self.getImplementationVersion());    	
-    	b.append("</b>");
-    	b.append("<br>");
-    	b.append("Developed by ");
-    	b.append("<i>");
-    	b.append(self.getImplementationVendor());
-    	b.append("</i>");
-    	b.append("<br>");    	
-    	b.append("on behalf of ");
-    	b.append("<i>");    	
-    	b.append(self.getSpecificationVendor());
-    	b.append("</i>");
-        b.append("</html>");		
-        return b.toString();
+    	return String.format("<html><b>%s %s</b><br>Developed by <i>%s</i><br>on behalf of <i>%s</i></html>",
+    			self.getImplementationTitle(),
+    			self.getImplementationVersion(),    	
+    			self.getImplementationVendor(),
+    			self.getSpecificationVendor());
 	}
 	public static String getTitle(String packageName) {
-		StringBuilder b = new StringBuilder();
     	Package self = Package.getPackage(packageName);
-    	b.append(self.getImplementationTitle());
-    	b.append(" ");
-    	b.append(self.getImplementationVersion());    	
-        return b.toString();
+        return String.format("%s %s",self.getImplementationTitle(),self.getImplementationVersion());
 	}	
 }
 
