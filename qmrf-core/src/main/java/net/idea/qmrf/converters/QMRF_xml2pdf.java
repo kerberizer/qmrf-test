@@ -1,7 +1,7 @@
 /*
-Copyright (C) 2005-2007
+Copyright (C) 2005-2012  
 
-Contact: nina@acad.bg
+Contact: www.ideaconsult.net
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public License
@@ -20,7 +20,8 @@ GNU Lesser General Public License for more details.
 You should have received a copy of the GNU Lesser General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
- */
+*/
+
 
 package net.idea.qmrf.converters;
 
