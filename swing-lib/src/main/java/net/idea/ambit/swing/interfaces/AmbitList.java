@@ -138,7 +138,7 @@ public class AmbitList<T extends AmbitObject> extends AmbitObject {
 	}
 	public boolean save(OutputStream out) throws AmbitIOException{
 		DataOutputStream ds = new DataOutputStream(out);
-		StringBuffer buf = new StringBuffer();
+
 		try { 
 			for (int i = 0; i < list.size(); i++) {
 				ds.writeBytes(getItem(i).toString());

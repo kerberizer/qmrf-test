@@ -54,7 +54,7 @@ public class EditorPanel extends JPanel {
         super(new BorderLayout());
         setEditor(editor);
         setFocusable(false);
-        setPreferredSize(new Dimension(200,200));
+        setPreferredSize(new Dimension(400,400));
         setBorder(BorderFactory.createLineBorder(AmbitColors.BrightClr));
     }	
 	@Override

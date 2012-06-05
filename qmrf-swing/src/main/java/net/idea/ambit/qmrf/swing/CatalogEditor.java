@@ -46,10 +46,14 @@ import net.idea.ambit.swing.common.AmbitListTableModelNew;
 import net.idea.ambit.swing.interfaces.AmbitList;
 
 public class CatalogEditor extends AmbitListEditor {
-    public CatalogEditor(Catalog list,
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 8732874314217208404L;
+	public CatalogEditor(Catalog list,
             boolean searchPanel,Dimension dimension) {
         super(list,false,"",dimension);
-        setPreferredSize(new Dimension(450,250));
+        setPreferredSize(new Dimension(450,450));
     }
     @Override
     protected JComponent createListPanel(AmbitList list, boolean searchPanel,Dimension dimension) {

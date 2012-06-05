@@ -72,7 +72,8 @@ public class Catalog extends AmbitList<CatalogEntry> implements InterfaceQMRF, I
 		{"name","url","description","contact","number","id"},
 		{"definition","description","publication_ref","id"},
 		{"name","units","description","publication_ref","id"},
-		{"group","subgroup","name","id"},
+		//{"group","subgroup","name","id"},
+		{"group","name","id"},
 		{"title","url","id"},
 		{"name","affiliation","contact","url","email","number","id"}
 	};    	
@@ -212,7 +213,7 @@ public class Catalog extends AmbitList<CatalogEntry> implements InterfaceQMRF, I
     }
     @Override
     public IAmbitEditor editor(boolean editable) {
-    	CatalogEditor e = new CatalogEditor(this,true,new Dimension(200,80));
+    	CatalogEditor e = new CatalogEditor(this,true,new Dimension(400,250));
         e.setNoDataText("Click on <+> to add a new item");
         e.setEditable(editable);
         return e;

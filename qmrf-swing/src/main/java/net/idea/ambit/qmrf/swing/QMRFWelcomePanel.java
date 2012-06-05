@@ -96,7 +96,9 @@ public class QMRFWelcomePanel extends JPanel implements IAmbitEditor<QMRFObject>
         add(new JScrollPane(centerPanel));
         setBackground(Color.white);
         
-        add(createLabel("<html><b>Background</b></html>"));
+        final String _label = "<html><b>Background</b></html>";
+        
+        add(createLabel(_label));
         
         //String html = "<html><font color=\"#2059c9\" face=\"" + getFont().getFontName() + "\">";
         //String html="<html><font face=\"" + getFont().getFontName() + "\">";
@@ -107,7 +109,7 @@ public class QMRFWelcomePanel extends JPanel implements IAmbitEditor<QMRFObject>
         
         add(createLabel("<html><b>Submission Procedure</b></html>"));
         add(createText(html+
-        	"If you wish to submit the QMRF for inclusion in the JRC QSAR Model Database, please save your QMRF as xml file and upload it by the on-line submission procedure"
+        	"If you wish to submit the QMRF for inclusion in the JRC QSAR Model Database, please save your QMRF as xml file and send to JRC-IHCP-COMPUTOX@ec.europa.eu"
         	));
         /*
         add(createLabel("<html><b>Disclaimer</b></html>"));
