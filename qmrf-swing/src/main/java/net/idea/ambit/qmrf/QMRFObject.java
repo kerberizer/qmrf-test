@@ -142,8 +142,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	
 	protected static final String[] attrNames = {"name","version","author","date","contact","email","url"};
 	protected String[] attrValues = {"(Q)SAR Model Reporting Format",
-			"1.2","European Chemicals Bureau","July 2007",
-//			"European Chemicals Bureau, IHCP, Joint Research Centre, European Commission",
+			"1.3","Joint Research Centre, European Commission","May 2012",
 			"EUROPEAN COMMISSION, DIRECTORATE GENERAL, JOINT RESEARCH CENTRE, Institute for Health and Consumer Protection, Toxicology and Chemical Substances Unit",
 			"JRC-IHCP-COMPUTOX@ec.europa.eu","http://ihcp.jrc.ec.europa.eu/our_labs/computational_toxicology"};	
     
