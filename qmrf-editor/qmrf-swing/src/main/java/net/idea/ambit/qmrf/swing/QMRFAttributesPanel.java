@@ -45,6 +45,10 @@ import ambit2.base.exceptions.AmbitException;
 import ambit2.base.interfaces.IAmbitEditor;
 
 public class QMRFAttributesPanel extends JPanel implements IAmbitEditor<QMRFAttributes>, FocusListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	protected boolean editable = true;
 	protected QMRFAttributes attributes;
 	protected JTextField[] field;
@@ -76,7 +80,7 @@ public class QMRFAttributesPanel extends JPanel implements IAmbitEditor<QMRFAttr
         setLayout(layout);
         setBackground(Color.white);
         field = new JTextField[fields.size()];
-        Dimension mind = new Dimension(100,18);
+        Dimension mind = new Dimension(200,18);
         Dimension maxd = new Dimension(Integer.MAX_VALUE,18);
         
         int h = 0;
@@ -104,7 +108,7 @@ public class QMRFAttributesPanel extends JPanel implements IAmbitEditor<QMRFAttr
         Dimension d = new Dimension(Integer.MAX_VALUE,h+6);
         //setPreferredSize(d);
          * */
-        Dimension md = new Dimension(100,h+10);
+        Dimension md = new Dimension(400,h+10);
         setMinimumSize(md);
         setPreferredSize(md);
 

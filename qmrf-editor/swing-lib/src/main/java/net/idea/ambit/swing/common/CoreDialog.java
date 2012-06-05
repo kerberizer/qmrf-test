@@ -31,6 +31,10 @@ import javax.swing.JPanel;
  * <b>Modified</b> 2005-4-7
  */
 public abstract  class CoreDialog extends JDialog {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8281042988604048591L;
 	protected JButton cancelButton, okButton;
 	protected JPanel buttonPane; 
 	
@@ -199,7 +203,7 @@ public abstract  class CoreDialog extends JDialog {
 		buttonPane.add(okButton);
 		buttonPane.add(Box.createRigidArea(new Dimension(10, 0)));
 		buttonPane.add(cancelButton);		
-		buttonPane.setPreferredSize(new Dimension(200,48));
+		buttonPane.setPreferredSize(new Dimension(400,48));
 //		Put everything together, using the content pane's BorderLayout.
 		Container contentPane = getContentPane();
 		contentPane.add(buttonPane, BorderLayout.SOUTH);

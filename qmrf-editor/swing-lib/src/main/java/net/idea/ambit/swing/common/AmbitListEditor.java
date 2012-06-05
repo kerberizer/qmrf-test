@@ -55,28 +55,37 @@ import net.idea.ambit.swing.interfaces.IAmbitSearchable;
 
 
 public class AmbitListEditor extends AmbitListOneItemEditor {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7511329130352779651L;
+	/**
+	 * 
+	 */
+	private static int default_h = 250;
+	private static int default_w = 300;
 	protected JSplitPane splitPane;
 	protected JTable table;
 	protected AmbitListTableModelNew model;
 	
 	public AmbitListEditor() {
-		this(null,false,"",new Dimension(300,200));
+		this(null,false,"",new Dimension(default_w,default_h));
 	}
 	public AmbitListEditor(AmbitList list, boolean searchPanel) {
-		this(list,searchPanel,"",new Dimension(300,200));
+		this(list,searchPanel,"",new Dimension(default_w,default_h));
 	}
 	public AmbitListEditor(AmbitList list, boolean searchPanel,Dimension dimension) {
 		this(list,searchPanel,"",dimension);
 	}	
 	public AmbitListEditor(AmbitList list, boolean searchPanel, String title) {
-		this(list,JSplitPane.VERTICAL_SPLIT,searchPanel,title,new Dimension(300,200));
+		this(list,JSplitPane.VERTICAL_SPLIT,searchPanel,title,new Dimension(default_w,default_h));
 	}
 	
 	public AmbitListEditor(AmbitList list, boolean searchPanel, String title,Dimension dimension) {
 		this(list,JSplitPane.VERTICAL_SPLIT,searchPanel,title,dimension);
 	}
 	public AmbitListEditor(AmbitList list,int newOrientation, boolean searchPanel) {
-		this(list,newOrientation,searchPanel,"",new Dimension(300,200));
+		this(list,newOrientation,searchPanel,"",new Dimension(default_w,default_h));
 	}
 	public AmbitListEditor(AmbitList list,int newOrientation, boolean searchPanel,Dimension dimension) {
 		this(list,newOrientation,searchPanel,"",dimension);
