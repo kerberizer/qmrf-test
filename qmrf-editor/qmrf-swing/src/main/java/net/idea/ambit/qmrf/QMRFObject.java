@@ -818,7 +818,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     			HttpEntity entity  = response.getEntity();
     			in = entity.getContent();
     			if (response.getStatusLine().getStatusCode()== HttpStatus.SC_OK) {
-    				read(new InputStreamReader(in,"UTF-8"));
+        			transform_and_read(new InputStreamReader(in,"UTF-8"),true);    				
     	        	System.out.println(String.format("Reading %s completed.", remoteFile));
 
     			} else 	
