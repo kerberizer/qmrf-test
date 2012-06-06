@@ -33,6 +33,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.PatternSyntaxException;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
@@ -44,10 +45,13 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+import javax.swing.RowSorter;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import net.idea.ambit.swing.actions.AbstractActionWithTooltip;
 import net.idea.ambit.swing.interfaces.AmbitList;
@@ -134,6 +138,10 @@ public class AmbitListEditor extends AmbitListOneItemEditor {
 	protected JComponent createListPanel(AmbitList list, boolean searchPanel,Dimension dimension) {
 		model = createTableModel(list);
 		table = new JTable(model, createColumnsModel(model));
+	    //sort is new in Java 6
+		final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+        table.setRowSorter(sorter);
+          
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setToolTipText("Click to see item details");
 		table.setPreferredScrollableViewportSize(dimension);
@@ -169,40 +177,40 @@ public class AmbitListEditor extends AmbitListOneItemEditor {
 
 		
         JComponent c = null;
-        if (searchPanel) c = createSearchPanel();
+        if (searchPanel) c = createSearchPanel(sorter);
 		if (c == null)
 			return sp;
 		else {
 			c.setMinimumSize(new Dimension(60,24));
 			c.setPreferredSize(new Dimension(120,24));
 			JPanel p = new JPanel(new BorderLayout());
-			p.add(c,BorderLayout.NORTH);
+			p.add(c,BorderLayout.SOUTH);
 			p.add(sp,BorderLayout.CENTER);
             p.setBackground(Color.white);
 			return p;
 		}
 	}
 	
-	public JComponent createSearchPanel() {
+	public JComponent createSearchPanel(final TableRowSorter<TableModel> sorter) {
 		if (list instanceof IAmbitSearchable) {
 			JToolBar b = new JToolBar();
-			b.setFloatable(true);
-			final JFormattedTextField field = new JFormattedTextField();
-			field.setToolTipText("Enter text to search within the list.");
-			b.add(field);
-			final AbstractAction search = new AbstractActionWithTooltip("Find",
-					UITools.createImageIcon("ambit/ui/images/search.png"),"Search within this catalog") {
+			b.setFloatable(false);
+			final JFormattedTextField filter = new JFormattedTextField();
+			filter.setToolTipText("Enter text to filter rows");
+			b.add(filter);
+			final AbstractAction search = new AbstractActionWithTooltip("Filter",
+					UITools.createImageIcon("ambit/ui/images/search.png"),"Display only filtered rows") {
 				public void actionPerformed(ActionEvent e) {
-					try {
-					int found = ((IAmbitSearchable) list).search(field.getText(),false);
-					if (found >=0)
-						selectItem(found, false);
-					else 
-						selectItem(-1, false);
-					} catch (Exception x) {
-						x.printStackTrace();
-					}
-	
+					 String text = filter.getText();
+		               if (text.length() == 0) {
+		                 sorter.setRowFilter(null);
+		               } else {
+		                 try {
+		                   sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text));
+		                 } catch (PatternSyntaxException pse) {
+		                   System.err.println("Bad regex pattern");
+		                 }
+		               }
 				}
 			};
 			b.add(search);
@@ -214,7 +222,7 @@ public class AmbitListEditor extends AmbitListOneItemEditor {
 				}
 			});
 			*/
-			field.addKeyListener(new KeyAdapter() {
+			filter.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
 					 int keyCode = e.getKeyCode();
