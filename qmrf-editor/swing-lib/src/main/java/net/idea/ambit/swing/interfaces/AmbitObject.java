@@ -236,4 +236,11 @@ public class AmbitObject implements  AmbitInterface,IReadWriteStream {
 		this.selected = selected;
 		setModified(true);
 	}
+	
+	public static String toCamelCase(String value) {
+		StringBuilder b = new StringBuilder();
+		b.append(value.substring(0, 1).toUpperCase());
+        b.append(value.substring(1).toLowerCase());
+        return b.toString();
+	}
 }
