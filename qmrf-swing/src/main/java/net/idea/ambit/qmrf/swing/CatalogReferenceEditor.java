@@ -45,12 +45,7 @@ public class CatalogReferenceEditor extends CatalogEditor {
 	 * 
 	 */
 	private static final long serialVersionUID = 1792610661338754378L;
-	/*
-	public CatalogReferenceEditor(CatalogReference list, boolean editable) {
-		super(list,editable);
-		setPreferredSize(new Dimension(200,300));
-	}
-	*/
+
 	public CatalogReferenceEditor(CatalogReference list,
 			boolean searchPanel) {
 		super(list,false,new Dimension(200,58));

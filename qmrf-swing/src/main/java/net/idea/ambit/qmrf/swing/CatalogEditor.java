@@ -48,7 +48,7 @@ public class CatalogEditor extends AmbitListEditor {
 	private static final long serialVersionUID = 8732874314217208404L;
 	public CatalogEditor(Catalog list,
             boolean searchPanel,Dimension dimension) {
-        super(list,false,"",dimension);
+        super(list,searchPanel,"",dimension);
         setPreferredSize(new Dimension(450,450));
     }
     @Override
