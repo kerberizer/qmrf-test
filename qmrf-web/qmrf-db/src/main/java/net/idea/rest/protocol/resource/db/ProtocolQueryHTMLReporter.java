@@ -211,6 +211,9 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			
 			output.write("\n</div>\n"); //tabs
 			
+			output.write(String.format("<div class='tabs2top'><a href='#toploc_%s'><span class='upArrow'>&Delta;</span>&nbsp;TOP&nbsp;<span class='upArrow'>&Delta;</span></a></div>",
+						item.getIdentifier()));
+			
 			if (!hidden) {
 				output.write(String.format(
 						"<script>\n" +
@@ -319,7 +322,8 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					"";
 					*/
 			
-			output.write(String.format("<td class='contentTable qmrfNumber' title='Show only this document'><a href='%s'>%s</a>&nbsp;%s</td>",
+			output.write(String.format("<td class='contentTable qmrfNumber' title='Show only this document'><a name='toploc_%s'></a><a href='%s'>%s</a>&nbsp;%s</td>",
+						item.getIdentifier(),
 						uri,
 						item.getVisibleIdentifier(),
 						""
