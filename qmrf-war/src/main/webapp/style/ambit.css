@@ -533,6 +533,18 @@ div.loading {
 	text-align: center;
 }
 
+div.tabs2top {
+	position: relative;
+	top: -15px;
+	height: 0;
+	width: 100%;
+	text-align: center;
+}
+
+span.upArrow {
+	font-size: 6pt;
+}
+
 label {
 	COLOR: #516373;
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif;
