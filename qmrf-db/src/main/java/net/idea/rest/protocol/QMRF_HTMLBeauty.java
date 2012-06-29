@@ -117,6 +117,25 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
     		"});\n" +
     	"</script>\n";
 	
+	// initialize the toTop link and show it when the contents are scrolled down enough
+	private final static String showToTopLink =
+		"<script type='text/javascript'>\n" +
+			"$(document).ready( function () {\n" +
+				"$('#toTop').click( function () {\n" +
+					"$('html, body').animate({scrollTop: '0'}, 1000);" +
+				"});" +
+				"$(window).scroll( function () {\n" +
+					"var h = $('#header').height();\n" +
+					"var p = $(window).scrollTop();\n" +
+					"if ( p > (h + 100) ) {" +
+						"$('#toTop').stop().animate({left: '-5px'}, 'fast');" +
+					"} else if ( p < (h + 50) ) {" +
+						"$('#toTop').stop().animate({left: '-30px'}, 'slow');" +
+					"}" +
+				"});\n" +
+			"});\n" +
+		"</script>\n";
+	
 	// the JRC IHCP logo
 	private final static String logoTopLeft =
 			"<a href='http://ihcp.jrc.ec.europa.eu/'>\n" +
@@ -163,7 +182,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"<a class='topLinks login' title='%s' href='%s%s' %s>%s</a>\n" +
 		"%s" + // this is a placeholder for the logout form
 		"</li>\n";
-	
+
 	// footer
 	private final static String footerText =
 		"<div id='footer-out'>\n" +
@@ -176,6 +195,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"</div>\n" +
 		"</div>\n";
 
+	// toTop
+	private final static String toTopLink =
+		"<div id='toTop'>\n" +
+		"&Delta;<br>&Delta;<br>&Delta;\n" +
+		"</div>\n";
+		
 	private final static String _trStart = "<tr>\n";
 	private final static String _trEnd = "</tr>\n";
 	private final static String _tdStart = "<td>";
@@ -360,6 +385,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			// Show the footer when the mouse gets near it.
 			w.write(showFooterScript);
+			
+			// Show the to top link when the contents are scrolled down enough.
+			w.write(showToTopLink);
 			
 			// HEAD ends here.
 			w.write("</head>\n");
@@ -580,6 +608,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			//footer
 			
 			output.write(footerText);
+			
+			// to top link (invisible in the beginning, scripted to show up on scroll down)
+			output.write(toTopLink);
 			
 			output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
 			output.write("\n</body>");
