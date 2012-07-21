@@ -161,7 +161,7 @@ Tomcat should have read and write access to this folder.
 #If not defined correctly, query by structure will not be available
 qmrf_ambit_service=http://qsardb.jrc.it/qmrfdata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Replace this with 'http://YOURHOST:YOURPORT/qmrfdata/', without the
+Replace this with 'http://YOURHOST:YOURPORT/qmrfdata', without the
 quotes, where YOURHOST is the fully qualified domain name of the host
 running the Tomcat instance in which the qmrfdata web application has
 been deployed, and YOURPORT is the port Tomcat is listening to.
