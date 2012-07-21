@@ -87,6 +87,8 @@ Run the following commands in a MySQL console:
 ---8<------------------------------------------------------------------
 source ambit2-qmrf.sql;
 GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'localhost';
+GRANT execute on PROCEDURE `ambit2-qmrf`.findByProperty to guest@127.0.0.1;
+GRANT execute on PROCEDURE `ambit2-qmrf`.findByProperty to guest@localhost;
 ---8<------------------------------------------------------------------
 
 NOTICE: The file 'ambit2-qmrf.sql' is provided in this archive and
