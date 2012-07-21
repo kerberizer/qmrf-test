@@ -168,7 +168,10 @@ public class Structure implements IIdentifiableResource<URL>, Serializable {
 	}
 	
 	public Object[] parseURI(Reference baseReference)  {
-		return OpenTox.URI.conformer.getIds(getResourceIdentifier().toString(),baseReference);
+		if (getResourceIdentifier().toString().indexOf("conformer")>0)
+			return OpenTox.URI.conformer.getIds(getResourceIdentifier().toString(),baseReference);
+		else //smth wrong with parsing compound uris
+			return OpenTox.URI.conformer.getIds(getResourceIdentifier().toString()+"/conformer/0",baseReference);
 
 	}
 	
@@ -206,7 +209,8 @@ public class Structure implements IIdentifiableResource<URL>, Serializable {
 					Object[] ids = struc.parseURI(queryURI);
 					if (ids[0]!=null) struc.setIdchemical((Integer) ids[0]);
 					if (ids[1]!=null) struc.setIdstructure((Integer) ids[1]);
-				} catch (Exception x) {}
+				} catch (Exception x) {
+				}
 				records.add(struc);
 			}
 			return records;
