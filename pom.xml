@@ -17,9 +17,9 @@
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   	<junit.version>4.8.1</junit.version>
 	<restlet.version>2.0-M6</restlet.version>
-	<modbcum.version>0.0.3-SNAPSHOT</modbcum.version>
-	<restnet.version>0.0.7-SNAPSHOT</restnet.version>
-	<opentoxcli.version>1.0.0-SNAPSHOT</opentoxcli.version>
+	<modbcum.version>0.0.3</modbcum.version>
+	<restnet.version>0.0.7</restnet.version>
+	<opentoxcli.version>1.0.0</opentoxcli.version>
   </properties>
  <issueManagement>
   	<system></system>
