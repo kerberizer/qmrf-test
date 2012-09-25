@@ -3,7 +3,7 @@
   <parent>
     <artifactId>qmrf-rest</artifactId>
     <groupId>net.idea</groupId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
   </parent>
   <groupId>net.idea</groupId>
   <artifactId>qmrf-resource</artifactId>
