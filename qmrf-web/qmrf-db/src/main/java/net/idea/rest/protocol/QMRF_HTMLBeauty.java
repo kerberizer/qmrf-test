@@ -29,6 +29,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	
 	private final static String qmrfEditorDownloadLink = "http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe";
 	private final static String qmrfEditorEmail = "JRC-IHCP-COMPUTOX@ec.europa.eu";
+	private final static String qmrfHelpURL = "http://qmrf.sf.net/";
 	private final static String QMRF_title = "(Q)SAR Model Reporting Format Inventory";
 	private final static String[] css = new String[] {
 		"<link href=\"%s/style/ambit.css\" rel=\"stylesheet\" type=\"text/css\">\n",
@@ -442,7 +443,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					//Sumbit QMRF by e-mail
 					qmrfEditorEmail, 
 					// Help
-					baseReference.toString(),					
+					qmrfHelpURL,					
 					logInOutLink
 			));
 			/*
