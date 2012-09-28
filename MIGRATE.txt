@@ -20,7 +20,7 @@ commands in a MySQL console (you can start the console by typing
 create database qmrf_documents;
 GRANT ALL ON `qmrf_documents`.* TO 'guest'@'localhost';
 use qmrf_documents;
-source `qmrf_documents-20120217.sql`;
+source qmrf_documents-20120217.sql;
 ---8<------------------------------------------------------------------
 
 NOTICE: The file 'qmrf_documents-20120217.sql' should contain the most
