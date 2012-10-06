@@ -94,7 +94,9 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		customizeVariants(new MediaType[] {
 				MediaType.TEXT_HTML,
 				MediaType.APPLICATION_XML,
+				MediaType.APPLICATION_JSON,
 				MediaType.TEXT_URI_LIST,
+				MediaType.TEXT_CSV,
 				MediaType.APPLICATION_RDF_XML,
 				MediaType.APPLICATION_RDF_TURTLE,
 				MediaType.TEXT_RDF_N3,
@@ -114,7 +116,17 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				return new StringConvertor(	
 						new ProtocolQueryURIReporter(getRequest())
 						,MediaType.TEXT_URI_LIST,filenamePrefix);
-				
+		} else if (variant.getMediaType().equals(MediaType.APPLICATION_JSON)) {
+			String queryService = ((TaskApplication) getApplication())
+									.getProperty(Resources.Config.qmrf_ambit_service.name());
+			ProtocolJSONReporter r = new ProtocolJSONReporter(getRequest(),queryService);
+			return new StringConvertor(	r,MediaType.APPLICATION_JSON,filenamePrefix);
+		} else if (variant.getMediaType().equals(MediaType.TEXT_CSV)) {
+			String queryService = ((TaskApplication) getApplication())
+									.getProperty(Resources.Config.qmrf_ambit_service.name());
+			ProtocolCSVReporter r = new ProtocolCSVReporter(getRequest(),variant.getMediaType(),queryService);
+			return new StringConvertor(	r,MediaType.TEXT_CSV,filenamePrefix);
+											
 		} else if (variant.getMediaType().equals(MediaType.APPLICATION_RDF_XML) ||
 					variant.getMediaType().equals(MediaType.APPLICATION_RDF_TURTLE) ||
 					variant.getMediaType().equals(MediaType.TEXT_RDF_N3) ||

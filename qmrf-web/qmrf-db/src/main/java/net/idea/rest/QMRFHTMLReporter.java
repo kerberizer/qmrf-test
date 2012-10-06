@@ -108,7 +108,13 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	@Override
 	public void footer(Writer output, Q query) {
 		try {
-			if (printAsTable()) output.write("</table>\n");	
+			if (printAsTable()) {
+				output.write("</table>\n");
+				output.write("<div style='float:right; width:100%; align:center; margin:20px 0 0 0;'>\n");
+				output.write("<p>Download as&nbsp;");
+				output.write(printDownloadLinks(uriReporter.getRequest().getResourceRef()));
+				output.write("</p></div>");
+			}
 			
 			if (!headless && (record==(query.getPage()*query.getPageSize()))) {
 				if (((QMRF_HTMLBeauty)htmlBeauty).getSearchQuery()==null) {
@@ -132,7 +138,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	abstract protected void printForm(Writer output, String uri, T item, boolean editable);
 	
 
-	protected String printDownloadLinks(String uri) throws Exception {
+	protected String printDownloadLinks(Reference uri) throws Exception {
 		StringBuilder b = new StringBuilder();
 		MediaType[] mimes = {
 				MediaType.TEXT_CSV			
@@ -147,11 +153,11 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		};			
 		for (int i=0;i<mimes.length;i++) {
 			MediaType mime = mimes[i];
-				
+			Reference downloadURI = uri.clone();
+			downloadURI.addQueryParameter("media", mime.toString());
 			b.append(String.format(
-					"<a href=\"%s?media=%s\"><img src=\"%s/images/%s\" alt=\"%s\" title=\"%s\" border=\"0\"/></a>\n",
-					uri,
-					Reference.encode(mime.toString()),
+					"<a href=\"%s\"><img src=\"%s/images/%s\" alt=\"%s\" title=\"%s\" border=\"0\"/></a>\n",
+					downloadURI,
 					getUriReporter().getBaseReference().toString(),
 					image[i],
 					mime,
