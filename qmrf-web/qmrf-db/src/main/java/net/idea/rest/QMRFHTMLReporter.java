@@ -13,6 +13,7 @@ import net.idea.restnet.db.aalocal.DBRole;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
 import org.restlet.Request;
+import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 
 public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends QueryHTMLReporter<T,Q>  {
@@ -129,4 +130,34 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 	abstract protected void printTableHeader(Writer output) throws Exception;
 	abstract protected void printTable(Writer output, String uri, T item);
 	abstract protected void printForm(Writer output, String uri, T item, boolean editable);
+	
+
+	protected String printDownloadLinks(String uri) throws Exception {
+		StringBuilder b = new StringBuilder();
+		MediaType[] mimes = {
+				MediaType.TEXT_CSV			
+		};
+		
+		String[] image = {
+				"excel.png"
+		};	
+		
+		String[] description = {
+				"Download as MS Excel"
+		};			
+		for (int i=0;i<mimes.length;i++) {
+			MediaType mime = mimes[i];
+				
+			b.append(String.format(
+					"<a href=\"%s?media=%s\"><img src=\"%s/images/%s\" alt=\"%s\" title=\"%s\" border=\"0\"/></a>\n",
+					uri,
+					Reference.encode(mime.toString()),
+					getUriReporter().getBaseReference().toString(),
+					image[i],
+					mime,
+					description[i]
+					));
+		}
+		return b.toString();
+	}
 }

@@ -19,6 +19,7 @@ import net.idea.restnet.db.convertors.RDFJenaConvertor;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 import net.toxbank.client.io.rdf.TOXBANK;
+import net.toxbank.client.resource.Group;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -51,13 +52,16 @@ public abstract class GroupDBResource<G extends IDBGroup>	extends QMRFQueryResou
 				return new StringConvertor(	
 						new GroupQueryURIReporter(getRequest())
 						,MediaType.TEXT_URI_LIST,filenamePrefix);
-				
+		} else if (variant.getMediaType().equals(MediaType.TEXT_CSV)) {
+			return new OutputWriterConvertor(
+					new GroupCSVReporter<IQueryRetrieval<Group>>(getRequest().getResourceRef()),
+					MediaType.TEXT_CSV);
+		
 		} else if (variant.getMediaType().equals(MediaType.APPLICATION_RDF_XML) ||
 					variant.getMediaType().equals(MediaType.APPLICATION_RDF_TURTLE) ||
 					variant.getMediaType().equals(MediaType.TEXT_RDF_N3) ||
 					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES) ||
-					variant.getMediaType().equals(MediaType.APPLICATION_JSON) ||
-					variant.getMediaType().equals(MediaType.TEXT_CSV) 
+					variant.getMediaType().equals(MediaType.APPLICATION_JSON)  
 					
 					) {
 				return new RDFJenaConvertor<IDBGroup, IQueryRetrieval<IDBGroup>>(
