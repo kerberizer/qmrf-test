@@ -105,10 +105,6 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 		try {
 			if (printAsTable()) {
 				output.write("</tbody></table></div>\n");	
-				output.write("<div style='float:right; width:100%; align:center; margin:20px 0 0 0;'>\n");
-				output.write("<p>Download as&nbsp;");
-				output.write(printDownloadLinks(uriReporter.getRequest().getResourceRef().toString()));
-				output.write("</p></div>");
 			}
 		} catch (Exception x) {}
 		if (!headless)

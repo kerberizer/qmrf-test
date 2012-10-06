@@ -60,7 +60,7 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 				
 				output.write("<div style='float:right; width:100%; align:center; margin:20px 0 0 0;'>\n");
 				output.write("<p>Download as&nbsp;");
-				output.write(printDownloadLinks(uriReporter.getRequest().getResourceRef().toString()));
+				output.write(printDownloadLinks(uriReporter.getRequest().getResourceRef()));
 				output.write("</p></div>");
 				
 			}

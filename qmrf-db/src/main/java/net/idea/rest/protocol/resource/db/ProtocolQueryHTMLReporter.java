@@ -135,7 +135,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			output.write(String.format("<a href='%s'>%s</a>&nbsp;<textarea>%s</textarea>&nbsp;<br>%s",
 						uri,ReadProtocol.fields.identifier.getValue(item),"XXX" 
 						//item.getTitle()
-						,printDownloadLinks(uri)));
+						,printItemDownloadLinks(uri)));
 		}
 		output.write("<div class='accordion'>");
 		//tabs
@@ -153,7 +153,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 					"<div class='structureright'><a href='%s'>%s</a><br>%s\n</div>\n",
 					uri,
 					item.getIdentifier(),
-					printDownloadLinks(uri)
+					printItemDownloadLinks(uri)
 					);
 			
 
@@ -244,7 +244,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		
 	}	
 	
-	protected String printDownloadLinks(String uri) throws Exception {
+	protected String printItemDownloadLinks(String uri) throws Exception {
 		StringBuilder b = new StringBuilder();
 		MediaType[] mimes = {
 				MediaType.APPLICATION_PDF,
@@ -331,7 +331,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			
 			output.write(String.format("<td class='contentTable qmrfTitle'>%s</td>", item.getTitle()));
 			output.write(String.format("<td class='contentTable qmrfDate'>%s</td>", simpleDateFormat.format(new Date(item.getTimeModified()))));
-			output.write(String.format("<td class='contentTable qmrfDownloadLinks'>%s</td>", printDownloadLinks(uri)));
+			output.write(String.format("<td class='contentTable qmrfDownloadLinks'>%s</td>", printItemDownloadLinks(uri)));
 			
 			String owner = !item.isPublished() || isAdminOrEditor()?
 							String.format("%s %s",item.getOwner().getFirstname()==null?"":item.getOwner().getFirstname(),
@@ -428,4 +428,5 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 		
 		return String.format(stringBuilder.toString(), baseRef, Resources.editor, item.getIdentifier(), update_mode.newversion.name(), baseRef);
 	}	
+	
 }
