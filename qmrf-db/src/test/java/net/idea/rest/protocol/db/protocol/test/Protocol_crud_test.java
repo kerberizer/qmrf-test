@@ -105,7 +105,7 @@ public final class Protocol_crud_test<T extends Object>  extends CRUDTest<T,DBPr
 		Assert.assertEquals(Boolean.FALSE,
 					(Boolean)(PublishedStatus.published==table.getValue(0,ReadProtocol.fields.published_status.name()))
 					);
-		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(0,"title"));
+		Assert.assertEquals("Nonlinear QSAR: artificial neural network for the Daphnia magna reproduction test",table.getValue(0,"title"));
 		//we change the identifier only on publishing
 		Assert.assertEquals("8f0aba27-862e-11e1-ba85-00ff3739b863",table.getValue(0,"qmrf_number"));
 	

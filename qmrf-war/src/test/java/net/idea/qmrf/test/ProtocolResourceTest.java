@@ -222,7 +222,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		Assert.assertEquals(new BigInteger("1"), table.getValue(0, "version"));
 		Assert.assertEquals(new BigInteger("2"), table.getValue(1, "version"));
 		Assert.assertNotSame(getTestURI(), url);
-		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(1, "title"));
+		Assert.assertEquals("Nonlinear QSAR: artificial neural network for the Daphnia magna reproduction test",table.getValue(1, "title"));
 		Assert.assertNotNull(table.getValue(1, "abstract"));
 		Assert.assertNotSame("Q2-10-14-119-v1", table.getValue(0, "qmrf_number"));
 		Assert.assertNotSame("Q2-10-14-119", table.getValue(1, "qmrf_number"));
@@ -251,7 +251,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		//Assert.assertEquals(new BigInteger("3"), table.getValue(0, "iduser"));
 		Assert.assertEquals(new BigInteger("88"), table.getValue(0, "iduser"));
 		Assert.assertEquals(STATUS.RESEARCH.toString(), table.getValue(0, "status"));
-		Assert.assertEquals("QSAR for acute toxicity to fish (Danio rerio)",table.getValue(0, "title"));
+		Assert.assertEquals("Nonlinear QSAR: artificial neural network for the Daphnia magna reproduction test",table.getValue(0, "title"));
 		Assert.assertNotNull(table.getValue(0, "abstract"));
 		Assert.assertNotSame("Q-1234-5678", table.getValue(0, "qmrf_number"));
 		c.close();
