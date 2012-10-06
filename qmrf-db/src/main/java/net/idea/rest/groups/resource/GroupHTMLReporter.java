@@ -55,7 +55,17 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 	@Override
 	public void footer(Writer output, IQueryRetrieval<IDBGroup> query) {
 		try {
-			if (printAsTable()) output.write("</table></div>\n");	
+			if (printAsTable()) {
+				output.write("</table></div>\n");
+				
+				output.write("<div style='float:right; width:100%; align:center; margin:20px 0 0 0;'>\n");
+				output.write("<p>Download as&nbsp;");
+				output.write(printDownloadLinks(uriReporter.getRequest().getResourceRef().toString()));
+				output.write("</p></div>");
+				
+			}
+			
+			
 			if (htmlBeauty == null) htmlBeauty = new HTMLBeauty();
 			htmlBeauty.writeHTMLFooter(output, "", uriReporter.getRequest());			
 

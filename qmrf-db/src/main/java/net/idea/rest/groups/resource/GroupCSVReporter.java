@@ -1,4 +1,4 @@
-package net.idea.rest.user.resource;
+package net.idea.rest.groups.resource;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -6,20 +6,13 @@ import java.io.Writer;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
 import net.idea.modbcum.r.QueryReporter;
-import net.idea.rest.user.DBUser;
+import net.toxbank.client.resource.Group;
 
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.data.Reference;
 
-/**
- *   <authors_catalog>
-    	
- * @author nina
- *
- * @param <Q>
- */
-public class UserXMLReporter <Q extends IQueryRetrieval<DBUser>>  extends QueryReporter<DBUser,Q,Writer>  {
+public class GroupCSVReporter<Q extends IQueryRetrieval<Group>>  extends QueryReporter<Group,Q,Writer>  {
 	/**
 	 * 
 	 */
@@ -36,24 +29,20 @@ public class UserXMLReporter <Q extends IQueryRetrieval<DBUser>>  extends QueryR
 	public Reference getBaseReference() {
 		return baseReference;
 	}
-	protected UserXMLReporter(Reference baseRef) {
+	protected GroupCSVReporter(Reference baseRef) {
 		this.baseReference = baseRef;
 	}
-	public UserXMLReporter(Request request) {
+	public GroupCSVReporter(Request request) {
 		this(request==null?null:request.getRootRef());
 		setRequest(request);
 	}	
-	protected UserXMLReporter() {
+	protected GroupCSVReporter() {
 	}	
 	@Override
-	public Object processItem(DBUser item) throws Exception {
+	public Object processItem(Group item) throws Exception {
 		try {
-			output.write(String.format("\t<author id='id%d' name='%s %s %s' affiliation='%s' contact='%s' url='%s' email='%s' number='%d'/>\r\n",
-					item.getID(),
-					item.getTitle(),item.getFirstname(),item.getLastname(),
-					"","","",
-					item.getEmail()==null?"":item.getEmail(),
-					item.getID()
+			output.write(String.format("%s\r\n",
+					item.getTitle()
 					));
 			output.flush();
 		} catch (IOException x) {
@@ -62,17 +51,10 @@ public class UserXMLReporter <Q extends IQueryRetrieval<DBUser>>  extends QueryR
 		return null;
 	}	
 
-	public void footer(Writer output, Q query) {
-		try {
-			output.write("\r\n</authors_catalog>\r\n");
-		} catch (Exception x) {
-			
-		}		
-	};
+	public void footer(Writer output, Q query) {};
 	public void header(Writer output, Q query) {
 		try {
-			output.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n");
-			output.write("<authors_catalog>\r\n");
+			output.write("Title\r\n");
 		} catch (Exception x) {
 			
 		}
@@ -88,6 +70,6 @@ public class UserXMLReporter <Q extends IQueryRetrieval<DBUser>>  extends QueryR
 	}
 	@Override
 	public String getFileExtension() {
-		return "xml";
+		return "csv";
 	}
 }
