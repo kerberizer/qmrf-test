@@ -87,7 +87,7 @@ CREATE TABLE  `protocol` (
   `version` int(10) unsigned NOT NULL DEFAULT '1' COMMENT 'Version',
   `title` varchar(255) NOT NULL COMMENT 'Title',
   `qmrf_number` varchar(36) NOT NULL COMMENT 'QMRF Number',
-  `abstract` text,
+  `abstract` longtext,
   `summarySearchable` tinyint(1) NOT NULL DEFAULT '1',
   `iduser` int(10) unsigned NOT NULL COMMENT 'Link to user table',
   `idproject` int(10) unsigned NOT NULL COMMENT 'Link to projects table',
@@ -109,7 +109,7 @@ CREATE TABLE  `protocol` (
   CONSTRAINT `FK_protocol_1` FOREIGN KEY (`idproject`) REFERENCES `project` (`idproject`),
   CONSTRAINT `FK_protocol_2` FOREIGN KEY (`idorganisation`) REFERENCES `organisation` (`idorganisation`),
   CONSTRAINT `FK_protocol_3` FOREIGN KEY (`iduser`) REFERENCES `user` (`iduser`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- -----------------------------------------------------
 -- Protocol authors
@@ -231,7 +231,7 @@ CREATE TABLE  `version` (
   `comment` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`idmajor`,`idminor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-insert into version (idmajor,idminor,comment) values (2,5,"QMRF schema");
+insert into version (idmajor,idminor,comment) values (2,6,"QMRF schema");
 
 -- -----------------------------------------------------
 -- Create new protocol version
@@ -242,7 +242,7 @@ CREATE PROCEDURE createProtocolVersion(
                 IN protocol_qmrf_number VARCHAR(36),
                 IN new_qmrf_number VARCHAR(36),
                 IN title_new VARCHAR(255),
-                IN abstract_new TEXT,
+                IN abstract_new LONGTEXT,
                 OUT version_new INT)
 begin
     DECLARE no_more_rows BOOLEAN;
