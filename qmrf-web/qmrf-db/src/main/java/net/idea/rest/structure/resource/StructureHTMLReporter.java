@@ -260,6 +260,21 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 				String.format("<img title='%s' alt='%s' border='1' width='150' height='150' src='%s/depict/cdk/any?search=%s&media=%s&w=150&h=150' onError=\"hideDiv('querypic')\">",
 						getSearchQuery(),getSearchQuery(),
 						 queryService,Reference.encode(searchQuery),Reference.encode("image/png"));
+		
+		final double[] thresholds = new double[] {0.9,0.8,0.7,0.6,0.5};
+		StringBuilder threshold_option = new StringBuilder();
+		threshold_option.append("<select title ='Tanimoto similarity threshold' name='threshold'>");
+		double left   = Double.MAX_VALUE;
+		if (threshold == null) threshold = 0.9;
+		for (int i=0; i < thresholds.length;i++) {
+			threshold_option.append(String.format("\n<option value='%3.1f' %s>%3.1f</option>", 
+					thresholds[i], 
+					(threshold<left) && (threshold>=thresholds[i])?"selected":"", 
+					thresholds[i]));
+			left = thresholds[i];
+		}
+		threshold_option.append("\n</select>\n");
+		
 			return
 		   String.format(		
 		   "<div class='search ui-widget'>\n"+
@@ -274,7 +289,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   "<tr><td colspan='2'><input %s type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>\n"+
 		   "<tr><td><input %s type='radio' name='option' value='similarity' title='Enter SMILES or draw structure'>Similarity</td>\n"+
 		   "<td align='left'>\n"+
-		   "<select title ='Tanimoto similarity threshold' name='threshold'><option value='0.9' checked>0.9</option><option value='0.8'>0.8</option><option value='0.7'>0.7</option><option value='0.6'>0.6</option><option value='0.5'>0.5</option></select>\n"+
+		   "\n%s\n"+
 		   "</td></tr>\n"+
 		   "<tr><td colspan='2'><input %s type='radio' name='option' value='smarts' title='Enter or draw a SMARTS query' size='20'>Substructure</td></tr>\n"+
 		   "<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n"+
@@ -297,6 +312,7 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		   hint,
 		   SearchMode.auto.equals(option)?"checked":"",
 		   SearchMode.similarity.equals(option)?"checked":"",
+		   threshold_option,
 		   SearchMode.smarts.equals(option)?"checked":"",
 		   pageSize,
 		   imgURI
