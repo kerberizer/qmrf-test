@@ -13,6 +13,7 @@
 		<div>
 		<table id='protocols'  cellpadding='0' border='0' width='100%' cellspacing='0'>
 		<thead>
+		<th></th>		
 		<th>QMRF Number</th>
 		<th>Title</th>
 		<th>Endpoint</th>

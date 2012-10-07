@@ -1,22 +1,47 @@
 <script type="text/javascript">
 $(document).ready(function() {
-	$('#protocols').dataTable( {
+	var oTable = $('#protocols').dataTable( {
 		"sAjaxDataProp" : "qmrf",
 		"bProcessing": true,
 		"bServerSide": false,
 		"bStateSave": true,
 		"sAjaxSource": "${qmrf_request}",
 		"aoColumns": [
-				{ "mDataProp": "identifier" , "asSorting": [ "asc", "desc" ],
+				{ //0
+					"aTargets": [ 0 ],	
+					"sClass" : "center",
+					"bSortable" : false,
+					"mDataProp" : null,
+					sWidth : "16px",
+					"bUseRendered" : "true",
+					"fnRender" : function(o,val) {
+							return "<img src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'>";
+					},
+				},			              
+				{ "mDataProp": "identifier" , "asSorting": [ "asc", "desc" ], "aTargets": [ 1 ],	
+				  sWidth : "20%",
  			      "fnRender": function ( o, val ) {
           				return "<a href='"+o.aData["uri"] + "'>" + o.aData["identifier"] + "</a>";
         			}
 				},
-				{ "mDataProp": "title" , "asSorting": [ "asc", "desc" ]
+				{ "mDataProp": "title" , "asSorting": [ "asc", "desc" ], "aTargets": [ 2 ]
 				},
-				{ "mDataProp": "endpoint.code" , "asSorting": [ "asc", "desc" ], "bSearchable" : true	},
-				{ "mDataProp": "updated", "asSorting": [ "asc", "desc" ] },
-				{ "mDataProp": "owner.username" , "asSorting": [ "asc", "desc" ] }
+				{ "mDataProp": "endpoint.code" , 
+				  "asSorting": [ "asc", "desc" ], 
+				  "bSearchable" : true, 
+				  "aTargets": [ 3 ],
+				  sWidth : "10%"
+			    },
+				{ "mDataProp": "updated", 
+				  "asSorting": [ "asc", "desc" ],
+				  "aTargets": [ 4 ],
+				  sWidth : "10%"
+				},
+				{ "mDataProp": "owner.username" , 
+				  "asSorting": [ "asc", "desc" ], 
+				  "aTargets": [ 5 ],
+				  sWidth : "10%" 
+			   }
 			],
 		"bJQueryUI" : true,
 		"bPaginate" : true,
@@ -37,10 +62,53 @@ $(document).ready(function() {
 		},		
 		*/
 		"oLanguage": {
-	            "sProcessing": "<img src='images/progress.gif' border='0'>"
+	            "sProcessing": "<img src='/qmrf/images/progress.gif' border='0'>"
 	    }
 	
 	} );
+	
+	$('#protocols tbody td img').live(
+			'click',
+			function() {
+				var nTr = $(this).parents('tr')[0];
+				if (oTable.fnIsOpen(nTr)) {
+					this.src = "/qmrf/images/zoom_in.png";
+					this.alt = "Zoom in";
+					this.title='Click to show QMRF document details';
+					oTable.fnClose(nTr);
+				} else {
+				    this.alt = "Zoom out";
+					this.src = "/qmrf/images/zoom_out.png";
+					this.title='Click to close QMRF document details panel';
+					var id = 'values'+getID();
+					oTable.fnOpen(nTr, fnFormatDetails(nTr,id),	'details');
+											       
+				}
+		});
+	
+	function getID() {
+		   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+	}	
+	
+	/* Formating function for row details */
+	function fnFormatDetails(nTr, id) {
+		var qmrfDocument = oTable.fnGetData(nTr);
+		var sOut = "<span id='" + id + "'></span>";
+
+	      $.ajax({
+	          dataType: "html",
+	          url: qmrfDocument.uri + "/chapters?headless=true&media=text%2Fhtml",
+	          success: function(data, status, xhr) {
+	        	  $('span#' + id ).replaceWith(data);
+	          },
+	          error: function(xhr, status, err) { 
+	          },
+	          complete: function(xhr, status) { 
+	          }
+	       });
+	      
+		return sOut;
+	}
 } );
 
 function cmp2image(val) {
