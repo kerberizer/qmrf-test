@@ -1,6 +1,8 @@
 package net.idea.rest;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
@@ -16,7 +18,10 @@ import net.idea.restnet.i.task.Task;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
 import org.restlet.data.Form;
+import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
+import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends Serializable> extends QueryResource<Q,T>{
@@ -96,5 +101,26 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 		
 	}
 	
+	
+	@Override
+	protected Representation getHTMLByTemplate(Variant variant) throws ResourceException {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (getClientInfo().getUser()!=null) 
+        	map.put("username", getClientInfo().getUser().getIdentifier());
+        map.put("creator","IdeaConsult Ltd.");
+        map.put(Resources.Config.qmrf_email.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_email.name()));
+        map.put(Resources.Config.qmrf_editor.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_editor.name()));
+        map.put(Resources.Config.qmrf_template.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_template.name()));
+        map.put(Resources.Config.qmrf_manual.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_manual.name()));
+        map.put(Resources.Config.qmrf_faq.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_faq.name()));
+        map.put(Resources.Config.qmrf_oecd.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_oecd.name()));
+        map.put(Resources.Config.qmrf_jrc.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_jrc.name()));
+        map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
+        getRequest().getResourceRef().addQueryParameter("media", MediaType.APPLICATION_JSON.toString());
+        map.put("qmrf_request",getRequest().getResourceRef().toString());
+
+        return toRepresentation(map, getTemplateName(), MediaType.TEXT_PLAIN);
+	}
+
 	
 }
