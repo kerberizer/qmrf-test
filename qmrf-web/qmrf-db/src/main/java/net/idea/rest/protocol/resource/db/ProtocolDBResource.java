@@ -85,7 +85,22 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	protected boolean details = true;
 	protected Object structure;
 
+	public ProtocolDBResource() {
+		super();
+		setHtmlbyTemplate(false);
+	}
 	
+
+	@Override
+	public String getTemplateName() {
+		return singleItem?"protocols_body.ftl":"protocols_body.ftl";
+	}
+	
+	@Override
+	public boolean isHtmlbyTemplate() {
+		// TODO Auto-generated method stub
+		return singleItem || headless?false:htmlbyTemplate;
+	}
 	
 	@Override
 	protected void doInit() throws ResourceException {
@@ -107,6 +122,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				MediaType.APPLICATION_JAVA_OBJECT
 		});		
 	}
+	
 
 	@Override
 	public RepresentationConvertor createConvertor(Variant variant)
@@ -509,4 +525,5 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		taskCreator.getProcessors().setAbortOnError(true);
 		return taskCreator;
 	}
+
 }

@@ -83,13 +83,13 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 	@Override
 	public void header(Writer output, IQueryRetrieval<DBProtocol> query) {
 		try {
-			output.write("{\"qmrf\": [\n");
+			output.write("{\"qmrf\": [");
 		} catch (Exception x) {}
 		
 	}
 	
-	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"identifier\": \"%s\",\n\t\"title\": \"%s\",\n\t\"endpoint\": {\n\t\t\"code\" :null, \"name\" :null\n\t},\n\t\"updated\": \"%s\",\n\t\"owner\": {\n\t\t\"uri\" :\"%s\",\n\t\t\"username\": \"%s\"\n\t}";
-	private static String formatAttachments =  ",\n\t\"%s\": {\n\t\t\"dataset\": {\"uri\": \"%s/dataset/%d\", \"structure\": null}\n\t}";
+	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"identifier\": \"%s\",\n\t\"title\": \"%s\",\n\t\"endpoint\": {\n\t\t\"code\" :null, \"name\" :null\n\t},\n\t\"submitted\": \"%s\",\n\t\"updated\": \"%s\",\n\t\"owner\": {\n\t\t\"uri\" :\"%s\",\n\t\t\"username\": \"%s\"\n\t}";
+	private static String formatAttachments =  "\n\t\t{\n\t\t\"uri\":\"%s\",\n\t\t\"title\":\"%s\",\n\t\t\"description\":\"%s\",\n\t\t\"type\":\"%s\",\n\t\t\t\"dataset\": {\"uri\": \"%s/dataset/%d\", \"structure\": null}\n\t\t}";
 		
 	@Override
 	public Object processItem(DBProtocol item) throws Exception {
@@ -108,23 +108,33 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 			getOutput().write(String.format(format,
 					uri,
 					item.getVisibleIdentifier(),
-					item.getTitle(),
+					item.getTitle().replace("\n", " ").replace("\r", " "),
+					dateFormat.format(new Date(item.getSubmissionDate())),
 					dateFormat.format(new Date(item.getTimeModified())),
 					item.getOwner().getResourceURL(),
 					item.getOwner().getUserName()
 					));
-			if (item.getAttachments()!=null)
-				for (DBAttachment attachment : item.getAttachments()) {
+			if (item.getAttachments()!=null){
+				getOutput().write(",\n\t\"attachments\": [");
+				for (int na = 0; na < item.getAttachments().size(); na++) {
+
+					DBAttachment attachment = item.getAttachments().get(na);
+					if (na>0)
+						getOutput().write(",");
 					getOutput().write(String.format(formatAttachments,
-							attachment.getType().toString(),
+							attachment.getResourceURL(),
+							attachment.getTitle(),
+							attachment.getDescription(),
+							attachment.getMediaType().toString(),
 							queryService,
 							attachment.getIdquerydatabase()));
 				}			
+				getOutput().write("\n\t]\n");
+			}
 		//	\"substrate\":{\"uri\":\"%s\"},\n\"product\":{\"uri\":%s%s%s}			
 			getOutput().write("\n}");
 			comma = ",";
 		} catch (Exception x) {
-			
 		}
 		return item;
 	}
