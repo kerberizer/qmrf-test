@@ -1,7 +1,7 @@
 package net.idea.rest;
 
 import net.idea.ambit.qmrf.converters.QMRF_xml2rtf;
-import net.idea.restnet.c.TaskApplication;
+import net.idea.restnet.c.freemarker.FreeMarkerApplicaton;
 
 import org.restlet.ext.freemarker.ContextTemplateLoader;
 
@@ -13,20 +13,11 @@ import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 
-public class FreeMarkerApplicaton<USERID> extends TaskApplication<USERID> {
-	   private Configuration configuration;
-	   
+public class QMRFFreeMarkerApplicaton<USERID> extends FreeMarkerApplicaton<USERID> {
 
-	    
-		public Configuration getConfiguration() {
-			return configuration;
-		}
-
-		public void setConfiguration(Configuration configuration) {
-			this.configuration = configuration;
-		}
-		protected void initFreeMarkerConfiguration() {
-			configuration = new Configuration();
+	@Override
+	protected void initFreeMarkerConfiguration() {
+			setConfiguration(new Configuration());
 			
 	        ContextTemplateLoader templatesLoader = new ContextTemplateLoader(getContext(),"war:///WEB-INF/templates/");
 	        //configuration.setTemplateLoader(loader);
@@ -34,7 +25,7 @@ public class FreeMarkerApplicaton<USERID> extends TaskApplication<USERID> {
 	        ClassTemplateLoader qmrf = new ClassTemplateLoader(QMRF_xml2rtf.class, ""); // don't forget this to access rtf.ftl
 	        TemplateLoader[] loaders = new TemplateLoader[] { templatesLoader, ctl ,qmrf};
 	        MultiTemplateLoader mtl = new MultiTemplateLoader(loaders);
-	        configuration.setTemplateLoader(mtl);
-	        configuration.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER); 
+	        getConfiguration().setTemplateLoader(mtl);
+	        getConfiguration().setObjectWrapper(ObjectWrapper.BEANS_WRAPPER); 
 		}
 }
