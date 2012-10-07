@@ -14,7 +14,7 @@ import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.task.QMRFAdminRouter;
 import net.idea.qmrf.task.QMRFEditorRouter;
 import net.idea.qmrf.task.QMRFTaskRouter;
-import net.idea.rest.FreeMarkerApplicaton;
+import net.idea.rest.QMRFFreeMarkerApplicaton;
 import net.idea.rest.endpoints.EndpointsResource;
 import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
@@ -59,7 +59,7 @@ import org.restlet.service.TunnelService;
  * @author nina
  * 
  */
-public class QMRFApplication extends FreeMarkerApplicaton<String> {
+public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 	/** The Freemarker's configuration. */
  
 
