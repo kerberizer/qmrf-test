@@ -108,7 +108,7 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 			getOutput().write(String.format(format,
 					uri,
 					item.getVisibleIdentifier(),
-					item.getTitle().replace("\n", " ").replace("\r", " "),
+					item.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
 					dateFormat.format(new Date(item.getSubmissionDate())),
 					dateFormat.format(new Date(item.getTimeModified())),
 					item.getOwner().getResourceURL(),
@@ -123,9 +123,9 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 						getOutput().write(",");
 					getOutput().write(String.format(formatAttachments,
 							attachment.getResourceURL(),
-							attachment.getTitle(),
-							attachment.getDescription(),
-							attachment.getMediaType().toString(),
+							attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
+							attachment.getDescription().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
+							attachment.getType().toString(),
 							queryService,
 							attachment.getIdquerydatabase()));
 				}			

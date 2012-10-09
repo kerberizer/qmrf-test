@@ -13,12 +13,14 @@
 		<div>
 		<table id='protocols'  cellpadding='0' border='0' width='100%' cellspacing='0'>
 		<thead>
-		<th></th>		
-		<th>QMRF Number</th>
-		<th>Title</th>
-		<th>Endpoint</th>
-		<th>Last updated</th>
-		<th>Owner</th>
+		<th ></th>		
+		<th class='contentTable'>QMRF Number</th>
+		<th class='contentTable qmrfTitle'>Title</th>
+		<th class='contentTable'>Endpoint</th>
+		<th class='contentTable qmrfDate'>Last updated</th>
+		<th class='contentTable qmrfDownloadLinks'>Download</th>
+		<th class='contentTable qmrfOwner' id='ownerHeader'></th>
+		<th class='contentTable' id='manageHeader'></th>
 		</thead>
 		<tbody></tbody>
 		</table>
