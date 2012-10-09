@@ -107,6 +107,15 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
         Map<String, Object> map = new HashMap<String, Object>();
         if (getClientInfo().getUser()!=null) 
         	map.put("username", getClientInfo().getUser().getIdentifier());
+	map.put("managerRole", "false");
+	map.put("editorRole", "false");
+	if ((getClientInfo()!=null)&& (getClientInfo().getRoles()!=null)) {
+		if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.managerRole)>=0)
+			map.put("managerRole", "true");
+		if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.editorRole)>=0)
+			map.put("editorRole", "true");
+	}
+
         map.put("creator","IdeaConsult Ltd.");
         map.put(Resources.Config.qmrf_email.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_email.name()));
         map.put(Resources.Config.qmrf_editor.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_editor.name()));
@@ -117,6 +126,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
         map.put(Resources.Config.qmrf_jrc.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_jrc.name()));
         map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
         getRequest().getResourceRef().addQueryParameter("media", MediaType.APPLICATION_JSON.toString());
+	//todo remove paging
         map.put("qmrf_request",getRequest().getResourceRef().toString());
 
         return toRepresentation(map, getTemplateName(), MediaType.TEXT_PLAIN);

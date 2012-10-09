@@ -87,7 +87,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 
 	public ProtocolDBResource() {
 		super();
-		setHtmlbyTemplate(false);
+		setHtmlbyTemplate(true);
 	}
 	
 
