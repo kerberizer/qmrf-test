@@ -104,16 +104,21 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 	
 	@Override
 	protected Representation getHTMLByTemplate(Variant variant) throws ResourceException {
+		
+		getHTMLBeauty();
         Map<String, Object> map = new HashMap<String, Object>();
-        if (getClientInfo().getUser()!=null) 
-        	map.put("username", getClientInfo().getUser().getIdentifier());
+
 	map.put("managerRole", "false");
 	map.put("editorRole", "false");
-	if ((getClientInfo()!=null)&& (getClientInfo().getRoles()!=null)) {
-		if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.managerRole)>=0)
-			map.put("managerRole", "true");
-		if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.editorRole)>=0)
-			map.put("editorRole", "true");
+	if (getClientInfo()!=null) {
+		if (getClientInfo().getUser()!=null)
+			map.put("username", getClientInfo().getUser().getIdentifier());
+		if (getClientInfo().getRoles()!=null) {
+			if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.managerRole)>=0)
+				map.put("managerRole", "true");
+			if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.editorRole)>=0)
+				map.put("editorRole", "true");
+		}
 	}
 
         map.put("creator","IdeaConsult Ltd.");
@@ -124,6 +129,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
         map.put(Resources.Config.qmrf_faq.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_faq.name()));
         map.put(Resources.Config.qmrf_oecd.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_oecd.name()));
         map.put(Resources.Config.qmrf_jrc.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_jrc.name()));
+        map.put("searchURI",htmlBeauty==null || htmlBeauty.getSearchURI()==null?"":htmlBeauty.getSearchURI());
         map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
         //remove paging
         Form query = getRequest().getResourceRef().getQueryAsForm();
