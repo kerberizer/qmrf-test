@@ -14,6 +14,25 @@ $(document).ready(function() {
 		"bServerSide": false,
 		"bStateSave": true,
 		"sAjaxSource": "${qmrf_request_json}&" + new Date().getTime() ,
+		"fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
+		      oSettings.jqXHR = $.ajax( {
+		        "dataType": 'json',
+		        "type": "GET",
+		        "url": sSource,
+		        "data": aoData,
+		        statusCode: {
+		            404: function() {
+		            	oSettings.oLanguage.sLoadingRecords  = xhr.statusText;
+		            }
+		        },
+		        "error" : function( xhr, textStatus, error ) {
+		        	oSettings.oApi._fnProcessingDisplay( oSettings, false );
+		        },		        
+		        "success": fnCallback,
+
+		      } );
+		},
+
 		"aoColumns": [
 				{ //0
 					"aTargets": [ 0 ],	
@@ -94,7 +113,8 @@ $(document).ready(function() {
 		},		
 		*/
 		"oLanguage": {
-	            "sProcessing": "<img src='/qmrf/images/progress.gif' border='0'>"
+	            "sProcessing": "<img src='/qmrf/images/progress.gif' border='0'>",
+	            "sLoadingRecords": "No records found."
 	    }	
 	} );
 	
