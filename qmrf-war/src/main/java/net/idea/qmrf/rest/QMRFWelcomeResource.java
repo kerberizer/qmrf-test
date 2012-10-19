@@ -24,7 +24,6 @@ public class QMRFWelcomeResource extends ServerResource {
 
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-		//if (getRequest().getResourceRef().toString().equals(String.format("%s/",getRequest().getRootRef()))) {
 	        Map<String, Object> map = new HashMap<String, Object>();
 	        if (getClientInfo().getUser()!=null) 
 	        	map.put("username", getClientInfo().getUser().getIdentifier());
@@ -38,11 +37,6 @@ public class QMRFWelcomeResource extends ServerResource {
 	        map.put(Resources.Config.qmrf_jrc.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_jrc.name()));
 	        map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
 	        return toRepresentation(map, "body-welcome.ftl", MediaType.TEXT_PLAIN);
-		//} else {
-			//if no slash, all the styles etc. paths are broken...
-		//	redirectSeeOther(String.format("%s/",getRequest().getRootRef()));
-		//	return null;
-		//}
 	}
 	
 
