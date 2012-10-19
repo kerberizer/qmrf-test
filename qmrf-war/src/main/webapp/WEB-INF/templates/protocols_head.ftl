@@ -13,7 +13,7 @@ $(document).ready(function() {
 		"bProcessing": true,
 		"bServerSide": false,
 		"bStateSave": true,
-		"sAjaxSource": "${qmrf_request}&" + new Date().getTime() ,
+		"sAjaxSource": "${qmrf_request_json}&" + new Date().getTime() ,
 		"aoColumns": [
 				{ //0
 					"aTargets": [ 0 ],	

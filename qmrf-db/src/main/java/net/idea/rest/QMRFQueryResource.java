@@ -125,9 +125,20 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
         map.put(Resources.Config.qmrf_oecd.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_oecd.name()));
         map.put(Resources.Config.qmrf_jrc.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_jrc.name()));
         map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
-        getRequest().getResourceRef().addQueryParameter("media", MediaType.APPLICATION_JSON.toString());
-	//todo remove paging
+        //remove paging
+        Form query = getRequest().getResourceRef().getQueryAsForm();
+        query.removeAll("page");query.removeAll("pagesize");query.removeAll("max");query.removeAll("media");
+        Reference r = getRequest().getResourceRef().clone();
+        r.setQuery(query.getQueryString());
         map.put("qmrf_request",getRequest().getResourceRef().toString());
+        //json
+        query.removeAll("media");query.add("media", MediaType.APPLICATION_JSON.toString());
+        r.setQuery(query.getQueryString());
+        map.put("qmrf_request_json",r.toString());
+        //csv
+        query.removeAll("media");query.add("media", MediaType.TEXT_CSV.toString());
+        r.setQuery(query.getQueryString());
+        map.put("qmrf_request_csv",r.toString());
 
         return toRepresentation(map, getTemplateName(), MediaType.TEXT_PLAIN);
 	}
