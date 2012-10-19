@@ -3,7 +3,9 @@ package net.idea.rest.protocol.resource.db;
 import java.io.File;
 import java.net.URL;
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.idea.modbcum.i.IQueryObject;
 import net.idea.modbcum.i.IQueryRetrieval;
@@ -260,6 +262,30 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		}			
 	}
 	
+	protected Map<String,Object> query2map(Request request) {
+		Form form = request.getResourceRef().getQueryAsForm();
+		Map<String,Object> map = new HashMap<String,Object>();
+		try {
+			map.put("search",form.getFirstValue("search").toString());
+		} catch (Exception x) {	}		
+		try {
+			map.put("structure",form.getFirstValue("structure").toString());
+		} catch (Exception x) {}
+		try {
+			map.put("option",SearchMode.valueOf(form.getFirstValue("option").toLowerCase()).name());
+		} catch (Exception x) {
+			map.put("option",SearchMode.text.name());
+		}			
+		return map;
+	}
+	
+	@Override
+	protected Map<String, Object> getMap(Variant variant)
+			throws ResourceException {
+		Map<String, Object> map =  super.getMap(variant);
+		map.put("query", query2map(getRequest()));
+		return map;
+	}
 	@Override
 	protected Q createQuery(Context context, Request request, Response response)
 			throws ResourceException {
