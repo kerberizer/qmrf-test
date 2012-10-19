@@ -136,7 +136,9 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
         query.removeAll("page");query.removeAll("pagesize");query.removeAll("max");query.removeAll("media");
         Reference r = getRequest().getResourceRef().clone();
         r.setQuery(query.getQueryString());
-        map.put("qmrf_request",getRequest().getResourceRef().toString());
+        map.put("qmrf_request",r.toString()) ;
+        if (query.size()>0)
+        	map.put("qmrf_query",query.getQueryString()) ;
         //json
         query.removeAll("media");query.add("media", MediaType.APPLICATION_JSON.toString());
         r.setQuery(query.getQueryString());
