@@ -4,9 +4,11 @@
 $(document).ready(function() {
 	$.ajaxSetup({cache:false});//while dev
 	//headers
-	var isAdmin = "${editorRole}" || "${managerRole}";
-	$('#protocols .qmrfOwner').html(function() { return isAdmin=="true"?"Owner":""; });
-	$('#protocols #manageHeader').html(function() { return isAdmin=="true"?"Manage":""; });
+	var isAdmin = ${editorRole};
+
+	console.log(isAdmin);
+	$('#protocols .qmrfOwner').html(function() { return isAdmin?"Owner":""; });
+	$('#protocols #manageHeader').html(function() { return isAdmin?"Manage":""; });
 	
 	var oTable = $('#protocols').dataTable( {
 		"sAjaxDataProp" : "qmrf",
@@ -68,6 +70,7 @@ $(document).ready(function() {
 				  sWidth : "10%"
 				},
 				{ "mDataProp": null, bSortable: false,"bUseRendered" : "true",
+					"aTargets": [ 5 ],
 				    "fnRender": function ( o, val ) {
 			    	 var sOut = 
 			    	 "<span>"+
@@ -80,19 +83,22 @@ $(document).ready(function() {
 	        	   },
 	        	   sWidth : "80px" 
 				},
-				{ "mDataProp": "owner.username" , 
-				  "asSorting": [ "asc", "desc" ], 
+				{ "mDataProp": "owner.username","bUseRendered" : "true",
+				  sWidth : "5%",
 				  "aTargets": [ 6 ],
-				  sWidth : "10%",
-				  "bVisible": false
-			   },
-				{ "mDataProp": null, bSortable: false,
-				      "fnRender": function ( o, val ) {
-	          				return isAdmin=="true"?"TODO: Manage links":"";
-	        			},
-	        	   "sWidth" : "5%",
-	     		   "bVisible" : function(o,val) { return isAdmin;}
-				},			   
+				  "fnRender": function ( o, val ) {
+						 return isAdmin?val:"";
+				  },
+				  "bVisible" : isAdmin
+			    },
+				{ "mDataProp": null,"bUseRendered" : "true",
+				  sWidth : "5%",
+				  "aTargets": [ 7 ],
+				  "fnRender": function ( o, val ) {
+					 return isAdmin?"TODO: Manage links":"";
+				  },
+				  "bVisible" : isAdmin
+				}		   
 			],
 		"bJQueryUI" : true,
 		"bPaginate" : true,
