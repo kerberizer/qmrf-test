@@ -101,54 +101,55 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 		
 	}
 	
+	protected Map<String, Object> getMap(Variant variant) throws ResourceException {
+		   Map<String, Object> map = new HashMap<String, Object>();
+
+			map.put("managerRole", "false");
+			map.put("editorRole", "false");
+			if (getClientInfo()!=null) {
+				if (getClientInfo().getUser()!=null)
+					map.put("username", getClientInfo().getUser().getIdentifier());
+				if (getClientInfo().getRoles()!=null) {
+					if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.managerRole)>=0)
+						map.put("managerRole", "true");
+					if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.editorRole)>=0)
+						map.put("editorRole", "true");
+				}
+			}
+
+		        map.put("creator","IdeaConsult Ltd.");
+		        map.put(Resources.Config.qmrf_email.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_email.name()));
+		        map.put(Resources.Config.qmrf_editor.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_editor.name()));
+		        map.put(Resources.Config.qmrf_template.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_template.name()));
+		        map.put(Resources.Config.qmrf_manual.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_manual.name()));
+		        map.put(Resources.Config.qmrf_faq.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_faq.name()));
+		        map.put(Resources.Config.qmrf_oecd.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_oecd.name()));
+		        map.put(Resources.Config.qmrf_jrc.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_jrc.name()));
+		        map.put("searchURI",htmlBeauty==null || htmlBeauty.getSearchURI()==null?"":htmlBeauty.getSearchURI());
+		        map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
+		        //remove paging
+		        Form query = getRequest().getResourceRef().getQueryAsForm();
+		        query.removeAll("page");query.removeAll("pagesize");query.removeAll("max");query.removeAll("media");
+		        Reference r = getRequest().getResourceRef().clone();
+		        r.setQuery(query.getQueryString());
+		        map.put("qmrf_request",r.toString()) ;
+		        if (query.size()>0)
+		        	map.put("qmrf_query",query.getQueryString()) ;
+		        //json
+		        query.removeAll("media");query.add("media", MediaType.APPLICATION_JSON.toString());
+		        r.setQuery(query.getQueryString());
+		        map.put("qmrf_request_json",r.toString());
+		        //csv
+		        query.removeAll("media");query.add("media", MediaType.TEXT_CSV.toString());
+		        r.setQuery(query.getQueryString());
+		        map.put("qmrf_request_csv",r.toString());
+		        return map;
+	}
 	
 	@Override
 	protected Representation getHTMLByTemplate(Variant variant) throws ResourceException {
-		
 		getHTMLBeauty();
-        Map<String, Object> map = new HashMap<String, Object>();
-
-	map.put("managerRole", "false");
-	map.put("editorRole", "false");
-	if (getClientInfo()!=null) {
-		if (getClientInfo().getUser()!=null)
-			map.put("username", getClientInfo().getUser().getIdentifier());
-		if (getClientInfo().getRoles()!=null) {
-			if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.managerRole)>=0)
-				map.put("managerRole", "true");
-			if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.editorRole)>=0)
-				map.put("editorRole", "true");
-		}
-	}
-
-        map.put("creator","IdeaConsult Ltd.");
-        map.put(Resources.Config.qmrf_email.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_email.name()));
-        map.put(Resources.Config.qmrf_editor.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_editor.name()));
-        map.put(Resources.Config.qmrf_template.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_template.name()));
-        map.put(Resources.Config.qmrf_manual.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_manual.name()));
-        map.put(Resources.Config.qmrf_faq.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_faq.name()));
-        map.put(Resources.Config.qmrf_oecd.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_oecd.name()));
-        map.put(Resources.Config.qmrf_jrc.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_jrc.name()));
-        map.put("searchURI",htmlBeauty==null || htmlBeauty.getSearchURI()==null?"":htmlBeauty.getSearchURI());
-        map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
-        //remove paging
-        Form query = getRequest().getResourceRef().getQueryAsForm();
-        query.removeAll("page");query.removeAll("pagesize");query.removeAll("max");query.removeAll("media");
-        Reference r = getRequest().getResourceRef().clone();
-        r.setQuery(query.getQueryString());
-        map.put("qmrf_request",r.toString()) ;
-        if (query.size()>0)
-        	map.put("qmrf_query",query.getQueryString()) ;
-        //json
-        query.removeAll("media");query.add("media", MediaType.APPLICATION_JSON.toString());
-        r.setQuery(query.getQueryString());
-        map.put("qmrf_request_json",r.toString());
-        //csv
-        query.removeAll("media");query.add("media", MediaType.TEXT_CSV.toString());
-        r.setQuery(query.getQueryString());
-        map.put("qmrf_request_csv",r.toString());
-
-        return toRepresentation(map, getTemplateName(), MediaType.TEXT_PLAIN);
+        return toRepresentation(getMap(variant), getTemplateName(), MediaType.TEXT_PLAIN);
 	}
 
 	
