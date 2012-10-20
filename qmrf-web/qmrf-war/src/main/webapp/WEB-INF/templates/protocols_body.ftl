@@ -20,7 +20,7 @@
 		<th class='contentTable qmrfDate'>Last updated</th>
 		<th class='contentTable qmrfDownloadLinks'>Download</th>
 		<th class='contentTable qmrfOwner' id='ownerHeader'></th>
-		<th class='contentTable' id='manageHeader'></th>
+		<th class='contentTable ' id='manageHeader'></th>
 		</thead>
 		<tbody></tbody>
 		</table>
