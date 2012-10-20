@@ -14,7 +14,7 @@ $(document).ready(function() {
 		"sAjaxDataProp" : "qmrf",
 		"bProcessing": true,
 		"bServerSide": false,
-		"bStateSave": true,
+		"bStateSave": false, //if true, controlling the last two columns visibility behaves weird!
 		"sAjaxSource": "${qmrf_request_json}&" + new Date().getTime() ,
 		"fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
 		      oSettings.jqXHR = $.ajax( {
