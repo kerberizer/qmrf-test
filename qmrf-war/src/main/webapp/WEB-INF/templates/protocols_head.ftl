@@ -6,7 +6,6 @@ $(document).ready(function() {
 	//headers
 	var isAdmin = ${editorRole};
 
-	console.log(isAdmin);
 	$('#protocols .qmrfOwner').html(function() { return isAdmin?"Owner":""; });
 	$('#protocols #manageHeader').html(function() { return isAdmin?"Manage":""; });
 	
@@ -44,7 +43,7 @@ $(document).ready(function() {
 					sWidth : "32px",
 					"bUseRendered" : "true",
 					"fnRender" : function(o,val) {
-							return "<span class='zoom'><img src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'></span>";
+							return "<span class='zoom'><img border='0' src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'></span>";
 					},
 				},			              
 				{ "mDataProp": null , "asSorting": [ "asc", "desc" ], "aTargets": [ 1 ], bUseRendered:true,	
@@ -74,10 +73,10 @@ $(document).ready(function() {
 				    "fnRender": function ( o, val ) {
 			    	 var sOut = 
 			    	 "<span>"+
-			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Fpdf'><img src='/qmrf/images/pdf.png' title='Download as PDF'></a>&nbsp;"+
-			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Fexcel'><img src='/qmrf/images/excel.png' title='Download as MS Excel'></a>&nbsp;"+
-			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Frtf'><img src='/qmrf/images/word.png' title='Download as Rich Text Format (RTF)'></a>&nbsp;"+
-			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Fxml'><img src='/qmrf/images/xml.png' title='Download as QMRF XML'></a>&nbsp;"+
+			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Fpdf'><img border='0' src='/qmrf/images/pdf.png' title='Download as PDF'></a>&nbsp;"+
+			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Fexcel'><img border='0' src='/qmrf/images/excel.png' title='Download as MS Excel'></a>&nbsp;"+
+			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Frtf'><img border='0' src='/qmrf/images/word.png' title='Download as Rich Text Format (RTF)'></a>&nbsp;"+
+			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Fxml'><img border='0' src='/qmrf/images/xml.png' title='Download as QMRF XML'></a>&nbsp;"+
 			    	 "</span>";
 			    	 return sOut;
 	        	   },
@@ -100,7 +99,6 @@ $(document).ready(function() {
 			      sWidth : "60px", 
 				  "aTargets": [ 7 ],
 				  "fnRender": function ( o, val ) {
-					 console.log(o.aData["identifier"]);
 					 return isAdmin?
 							 publishString(o.aData["identifier"],o.aData["published"]) + 
 							 updateString(o.aData["identifier"],o.aData["published"]) + 
@@ -183,14 +181,14 @@ $(document).ready(function() {
 		if (isPublished) return "<span style='width:16px;'>&nbsp;</span>";
 		var sOut = "";
 		sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=publish'>";
-		sOut += "<img  src='/qmrf/images/script_add.png'  title='Publish this document' alt='Publish'>";
+		sOut += "<img border='0' src='/qmrf/images/script_add.png'  title='Publish this document' alt='Publish'>";
 		sOut += "</a> ";
 		return sOut;
 	}
 	function deleteString(qmrf_id) {
 		var sOut = "";
 		sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=delete'>";
-		sOut += "<img  src='/qmrf/images/script_delete.png'  title='Delete this document' alt='Delete'>";
+		sOut += "<img border='0' src='/qmrf/images/script_delete.png'  title='Delete this document' alt='Delete'>";
 		sOut += "</a> ";
 		return sOut;
 	}
@@ -198,11 +196,11 @@ $(document).ready(function() {
 		var sOut = "";
 		if (isPublished) {
 			sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=newversion'>";
-			sOut += "<img  src='/qmrf/images/script_edit.png'  title='Create new version of this document' alt='New version'>";
+			sOut += "<img border='0'  src='/qmrf/images/script_edit.png'  title='Create new version of this document' alt='New version'>";
 			sOut += "</a> ";
 		} else {
 			sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=update'>";
-			sOut += "<img  src='/qmrf/images/script_edit.png'  title='Update this document' alt='Update'>";
+			sOut += "<img border='0' src='/qmrf/images/script_edit.png'  title='Update this document' alt='Update'>";
 			sOut += "</a> ";			
 		}
 		return sOut;
