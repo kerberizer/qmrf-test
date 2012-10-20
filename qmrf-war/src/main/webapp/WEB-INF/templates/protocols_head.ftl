@@ -35,7 +35,7 @@ $(document).ready(function() {
 		      } );
 		},
 
-		"aoColumns": [
+		"aoColumnDefs": [
 				{ //0
 					"aTargets": [ 0 ],	
 					"sClass" : "center",
@@ -47,7 +47,7 @@ $(document).ready(function() {
 							return "<span class='zoom'><img src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'></span>";
 					},
 				},			              
-				{ "mDataProp": "identifier" , "asSorting": [ "asc", "desc" ], "aTargets": [ 1 ],	
+				{ "mDataProp": null , "asSorting": [ "asc", "desc" ], "aTargets": [ 1 ], bUseRendered:true,	
 				  sWidth : "15%",
  			      "fnRender": function ( o, val ) {
           				return "<a href='"+o.aData["uri"] + "'>" + o.aData["identifier"] + "</a>";
@@ -83,22 +83,31 @@ $(document).ready(function() {
 	        	   },
 	        	   sWidth : "80px" 
 				},
-				{ "mDataProp": "owner.username","bUseRendered" : "true",
+				{ "mDataProp": null,"bUseRendered" : "true",
 				  sWidth : "5%",
 				  "aTargets": [ 6 ],
 				  "fnRender": function ( o, val ) {
-						 return isAdmin?val:"";
+						 return isAdmin?
+							 "<a href='" + o.aData["owner"]["uri"] + "' target='user'>" +
+							 o.aData["owner"]["firstname"] + " " + o.aData["owner"]["lastname"] +
+						     "</a>"
+						     :"";
 				  },
 				  "bVisible" : isAdmin
 			    },
 				{ "mDataProp": null,"bUseRendered" : "true",
-				  sWidth : "5%",
+			      sWidth : "60px", 
 				  "aTargets": [ 7 ],
 				  "fnRender": function ( o, val ) {
-					 return isAdmin?"TODO: Manage links":"";
+					 console.log(o.aData["identifier"]);
+					 return isAdmin?
+							 publishString(o.aData["identifier"],o.aData["published"]) + 
+							 updateString(o.aData["identifier"],o.aData["published"]) + 
+							 deleteString(o.aData["identifier"]) 
+							 :"";
 				  },
 				  "bVisible" : isAdmin
-				}		   
+				}
 			],
 		"bJQueryUI" : true,
 		"bPaginate" : true,
@@ -168,6 +177,35 @@ $(document).ready(function() {
 	       });
 		return sOut;
 	}
+
+	function publishString(qmrf_id,isPublished) {
+		if (isPublished) return "<span style='width:16px;'>&nbsp;</span>";
+		var sOut = "";
+		sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=publish'>";
+		sOut += "<img  src='/qmrf/images/script_add.png'  title='Publish this document' alt='Publish'>";
+		sOut += "</a> ";
+		return sOut;
+	}
+	function deleteString(qmrf_id) {
+		var sOut = "";
+		sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=delete'>";
+		sOut += "<img  src='/qmrf/images/script_delete.png'  title='Delete this document' alt='Delete'>";
+		sOut += "</a> ";
+		return sOut;
+	}
+	function updateString(qmrf_id,isPublished) {
+		var sOut = "";
+		if (isPublished) {
+			sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=newversion'>";
+			sOut += "<img  src='/qmrf/images/script_edit.png'  title='Create new version of this document' alt='New version'>";
+			sOut += "</a> ";
+		} else {
+			sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=update'>";
+			sOut += "<img  src='/qmrf/images/script_edit.png'  title='Update this document' alt='Update'>";
+			sOut += "</a> ";			
+		}
+		return sOut;
+	}	
 
 } );
 
