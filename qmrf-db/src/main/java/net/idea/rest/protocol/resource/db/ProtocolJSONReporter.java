@@ -113,9 +113,9 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 					dateFormat.format(new Date(item.getSubmissionDate())),
 					dateFormat.format(new Date(item.getTimeModified())),
 					item.getOwner().getResourceURL(),
-					item.getOwner().getUserName(),
-					item.getOwner().getFirstname(),
-					item.getOwner().getLastname()
+					item.getOwner().getUserName()==null?"":item.getOwner().getUserName(),
+					item.getOwner().getFirstname()==null?"":item.getOwner().getFirstname(),
+					item.getOwner().getLastname()==null?"":item.getOwner().getLastname()
 					));
 			if (item.getAttachments()!=null){
 				getOutput().write(",\n\t\"attachments\": [");

@@ -87,11 +87,12 @@ $(document).ready(function() {
 				  sWidth : "5%",
 				  "aTargets": [ 6 ],
 				  "fnRender": function ( o, val ) {
-						 return isAdmin?
-							 "<a href='" + o.aData["owner"]["uri"] + "' target='user'>" +
-							 o.aData["owner"]["firstname"] + " " + o.aData["owner"]["lastname"] +
-						     "</a>"
-						     :"";
+					     if (isAdmin) {
+					    	 var printName = (o.aData["owner"]["firstname"]=="") && (o.aData["owner"]["lastname"] == "")?
+					    			 (o.aData["owner"]["username"]==""?"Owner":o.aData["owner"]["username"]):
+					    			 o.aData["owner"]["firstname"] + " " + o.aData["owner"]["lastname"];	 
+							 return "<a href='" + o.aData["owner"]["uri"] + "' target='user'>" + printName+  "</a>";
+					     } else return "";
 				  },
 				  "bVisible" : isAdmin
 			    },
