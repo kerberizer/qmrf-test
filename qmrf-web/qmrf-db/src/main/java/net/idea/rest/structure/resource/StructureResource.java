@@ -5,14 +5,17 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.prediction.DBModel;
 import net.idea.rest.prediction.ReadModel;
 import net.idea.rest.prediction.ReadModelQuery;
@@ -29,6 +32,7 @@ import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Form;
+import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
@@ -42,15 +46,65 @@ public class StructureResource extends CatalogResource<Structure> {
 	
 	public StructureResource() {
 		super();
-		queryService = ((TaskApplication) getApplication())
-				.getProperty(Resources.Config.qmrf_ambit_service.name());
+		queryService = 
+			//"http://ambit.uni-plovdiv.bg:8080/qmrfdata";
+			((TaskApplication) getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name());
 	}
 
 	public enum SearchMode {
 		auto, similarity, smarts
 	}
 	
+	@Override
+	protected void doInit() throws ResourceException {
+		super.doInit();
+		htmlbyTemplate = true;
+	}
 	
+	@Override
+	public String getTemplateName() {
+		return "structures_body.ftl";
+	}
+	
+	@Override
+	protected void configureTemplateMap(Map<String, Object> map) {
+		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
+		Reference query = getSearchReference(getContext(),getRequest(),getResponse(),parameters);
+		query.addQueryParameter("media",MediaType.APPLICATION_JAVASCRIPT.toString());
+		map.put("qmrf_request_jsonp",query.toString());
+	
+		map.put("managerRole", "false");
+		map.put("editorRole", "false");
+		if (getClientInfo()!=null) {
+			if (getClientInfo().getUser()!=null)
+				map.put("username", getClientInfo().getUser().getIdentifier());
+			if (getClientInfo().getRoles()!=null) {
+				if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.managerRole)>=0)
+					map.put("managerRole", "true");
+				if (getClientInfo().getRoles().indexOf(QMRFHTMLReporter.editorRole)>=0)
+					map.put("editorRole", "true");
+			}
+		}
+		map.put("creator","Ideaconsult Ltd.");
+	    map.put("qmrf_root",getRequest().getRootRef());
+	    map.put("searchURI",htmlBeauty==null || htmlBeauty.getSearchURI()==null?"":htmlBeauty.getSearchURI());
+	    map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
+	    
+	    map.put("query", query2map(parameters));
+	}
+	
+	
+	protected Map<String,Object> query2map(StructureHTMLBeauty parameters) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		try {
+			map.put("search",parameters.getSearchQuery());
+		} catch (Exception x) {	}		
+		try {
+			map.put("option",parameters.getOption().name().toLowerCase());
+		} catch (Exception x) {}
+		
+		return map;
+	}
 	protected void parseParameters(Context context, Request request,Response response) throws ResourceException {
 		Form form = request.getResourceRef().getQueryAsForm();
 		
@@ -107,21 +161,10 @@ public class StructureResource extends CatalogResource<Structure> {
 				parameters.setModels(verifyModels(models));
 		} catch (Exception x) { parameters.setModels(null); x.printStackTrace();}
 	}
-	/*
-	protected String name2Structure(String name) {
-		try {
-			if (nameToStructure == null) nameToStructure = NameToStructure.getInstance();
-			return nameToStructure.parseToSmiles(name);
-		} catch (Exception x) {
-			return null;
-		}
-	}
-	*/
-	@Override
-	protected Iterator<Structure> createQuery(Context context, Request request,
-			Response response) throws ResourceException {
+
+	protected Reference getSearchReference(Context context, Request request,
+			Response response,StructureHTMLBeauty parameters) throws ResourceException {
 		parseParameters(context,request,response);
-		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
 		Reference ref = null;
 		try {
 			ref = new Reference(String.format("%s/query/compound/search/all",
@@ -147,6 +190,22 @@ public class StructureResource extends CatalogResource<Structure> {
 			ref.addQueryParameter("page", Integer.toString(parameters.getPage()));
 			if (parameters.getSearchQuery() != null)
 				ref.addQueryParameter(QueryResource.search_param, parameters.getSearchQuery());
+			return ref;
+		} catch (ResourceException x) {
+			throw x;
+		} catch (Exception x) {
+			throw createException(Status.CLIENT_ERROR_BAD_REQUEST,  parameters.getSearchQuery(),
+					parameters.option, ref.toString(), x);
+		}
+	}
+	
+	@Override
+	protected Iterator<Structure> createQuery(Context context, Request request,
+			Response response) throws ResourceException {
+		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
+		Reference ref = getSearchReference(context,request,response,parameters);
+		try {
+		
 
 			try {
 				List<Structure> records = Structure.retrieveStructures(
