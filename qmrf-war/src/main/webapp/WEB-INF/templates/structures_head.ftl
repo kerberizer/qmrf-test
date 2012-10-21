@@ -3,7 +3,7 @@ $(document).ready(function() {
 	$.ajaxSetup({cache:false});//while dev
 	
 	var url = "${qmrf_request_jsonp}";
-  		//"http://localhost:8080/ambit2/query/similarity?search=c1ccccc1Cl&threshold=0.5&media=application%2Fx-javascript";
+
   	var oTable = defineTable(url);
     <!-- Details panel -->	
 	$('#structures tbody td .zoom img').live(
@@ -32,7 +32,7 @@ $(document).ready(function() {
 		/* Formating function for row details */
 	function fnFormatDetails(nTr, id) {
 		var obj = oTable.fnGetData(nTr);
-		var sOut = '<div class="ui-widget" id="' + id + '">';
+		var sOut = '<div class="ui-widget-content ui-corner-all" id="' + id + '">';
 		sOut = sOut + "<div id='" + id + "_qmrf' >Please wait while QMRF documents list is loading...</div>";
 		sOut += "</div>";	
 
@@ -80,6 +80,7 @@ function defineTable(url) {
 				  "bSearchable" : true,
 				  "bUseRendered" : false,
 				  "bSortable" : true,
+				  "sHeight" : "160px",
 				  "fnRender" : function(o,val) {
 						var cmpURI = val;
 						if (val.indexOf("/conformer")>=0) {
@@ -90,14 +91,37 @@ function defineTable(url) {
 						//} else {
 						//		cmpURI = opentox["model_uri"] + "?dataset_uri=" + cmpURI + "&media=image/png";
 						//}
-						return '<a href="'+val+'" title="'+cmpURI+'"><img border="0" src="'+cmpURI+'&w=150&h=150"></a>';
+						return '<a href="'+val+'" title="'+cmpURI+'"><img class="ui-widget-content" border="0" src="'+cmpURI+'&w=150&h=150"></a>';
 				  }
 				},
 				{ "mDataProp": "compound.name" , "asSorting": [ "asc", "desc" ],
-				  "aTargets": [ 1 ],
+				  "aTargets": [ 2 ],
 				  "bSearchable" : true,
 				  "bSortable" : true	
-				}
+				},
+				{ "mDataProp": "compound.cas" , "asSorting": [ "asc", "desc" ],
+					  "aTargets": [ 3 ],
+					  "bSearchable" : true,
+					  "bSortable" : true	
+				},				
+				{ "mDataProp": "compound.metric" , "asSorting": [ "asc", "desc" ],
+				  "aTargets": [ 4 ],
+				  "bSearchable" : true,
+				  "bSortable" : true,
+				  "bVisible"  : '${query.option!""}' == 'similarity'
+				},
+				{ "mDataProp": "compound.URI" , "asSorting": [ "asc", "desc" ],
+					  "aTargets": [ 5 ],
+					  "bSearchable" : true,
+					  "bSortable" : true,
+					  "bUseRendered" : false,
+					  "fnRender" : function(o,val) {
+							var uri = encodeURIComponent(val);
+							var qmrf_query = "/qmrf/protocol?structure=" + uri + "&media=text%2Fcsv";
+							return '<a href="'+qmrf_query+'" title="Download the QMRF list as CSV"><img class="draw" border="0" src="/qmrf/images/excel.png"> Download as CSV</a>';
+					  }
+	
+					}	
 			],
 		"bJQueryUI" : true,
 		"bPaginate" : true,
@@ -116,7 +140,7 @@ function defineTable(url) {
 		        "cache": false,
 		        "error" : function( xhr, textStatus, error ) {
 		        	oSettings.oApi._fnProcessingDisplay( oSettings, false );
-		        }		        
+		        }
 		      } );
 		},
 		"oLanguage": {
