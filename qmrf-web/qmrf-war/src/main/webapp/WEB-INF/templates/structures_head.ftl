@@ -32,25 +32,22 @@ $(document).ready(function() {
 		/* Formating function for row details */
 	function fnFormatDetails(nTr, id) {
 		var obj = oTable.fnGetData(nTr);
-		var sOut = '<div id="' + id + '" style="display: block;">';
-		sOut = sOut + "<div id='" + id + "_tabs' class='tabs'>Please wait while QMRF documents list is loading...</div>";
-		sOut += obj["compound"]["URI"];
+		var sOut = '<div class="ui-widget" id="' + id + '">';
+		sOut = sOut + "<div id='" + id + "_qmrf' >Please wait while QMRF documents list is loading...</div>";
 		sOut += "</div>";	
 
 		var uri = encodeURIComponent(obj["compound"]["URI"]);
 		var qmrf_query = "/qmrf/protocol?structure=" + uri + "&headless=true&details=false&media=text%2Fhtml&"+ new Date().getTime();
 
-		console.log(qmrf_query);
-		
 	      $.ajax({
 	          dataType: "html",
 	          url: qmrf_query,
 	          success: function(data, status, xhr) {
-	        	  $( id ).html(data);
+	        	  $('div#' + id + '_qmrf').html(data);
 	          },
-	          error: function(xhr, status, err) { 
+	          error: function(xhr, status, err) {
 	          },
-	          complete: function(xhr, status) { 
+	          complete: function(xhr, status) {
 	          }
 	       });
 	       
@@ -93,7 +90,7 @@ function defineTable(url) {
 						//} else {
 						//		cmpURI = opentox["model_uri"] + "?dataset_uri=" + cmpURI + "&media=image/png";
 						//}
-						return '<a href="'+val+'" title="'+cmpURI+'"><img src="'+cmpURI+'&w=150&h=150"></a>';
+						return '<a href="'+val+'" title="'+cmpURI+'"><img border="0" src="'+cmpURI+'&w=150&h=150"></a>';
 				  }
 				},
 				{ "mDataProp": "compound.name" , "asSorting": [ "asc", "desc" ],
