@@ -1,4 +1,5 @@
 Manifest-version: 1.0
+Name: net/idea/ambit/qmrf
 Package-Title: net.idea.ambit.qmrf.swing
 Main-Class: net.idea.ambit.qmrf.swing.QMRFEditor
 Specification-Title: QMRF editor
@@ -7,5 +8,5 @@ Specification-Version: 2007
 Package-Version: ${project.version}
 Package-Vendor: Ideaconsult Ltd.
 Implementation-Title: QMRF Editor
-Implementation-Version: ${buildNumber}
-Implementation-Vendor: Ideaconsult Ltd
+Implementation-Version: build${buildNumber}
+Implementation-Vendor: Ideaconsult Ltd.
