@@ -13,8 +13,12 @@
 		<div>
 		<table class='compoundtable' id='structures'  cellpadding='0' border='0' width='100%' cellspacing='0'>
 		<thead>
+		<th></th>
 		<th>Structure</th>
 		<th>Name</th>
+		<th>CAS</th>
+		<th>Similarity</th>
+		<th>QMRF</th>
 		</thead>
 		<tbody></tbody>
 		</table>
