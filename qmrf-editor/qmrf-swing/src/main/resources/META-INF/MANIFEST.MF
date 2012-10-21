@@ -7,5 +7,5 @@ Specification-Version: 2007
 Package-Version: ${project.version}
 Package-Vendor: Ideaconsult Ltd.
 Implementation-Title: QMRF Editor
-Implementation-Version: ${project.version}
+Implementation-Version: ${buildNumber}
 Implementation-Vendor: Ideaconsult Ltd
