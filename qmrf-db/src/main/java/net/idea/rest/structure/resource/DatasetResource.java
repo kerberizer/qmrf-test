@@ -10,6 +10,7 @@ import net.idea.modbcum.p.QueryExecutor;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.restnet.db.DBConnection;
+import net.idea.restnet.db.QueryResource;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -20,6 +21,11 @@ import org.restlet.resource.ResourceException;
 
 public class DatasetResource extends StructureResource {
 	public static String datasetKey = "datasetKey";
+	
+	public DatasetResource() {
+		super();
+		htmlbyTemplate = false;
+	}
 	
 	@Override	
 	protected Iterator<Structure> createQuery(Context context, Request request,

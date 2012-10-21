@@ -49,17 +49,17 @@ public class StructureResource extends CatalogResource<Structure> {
 		queryService = 
 			//"http://ambit.uni-plovdiv.bg:8080/qmrfdata";
 			((TaskApplication) getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name());
+		htmlbyTemplate = true;
 	}
 
+	@Override
+	public boolean isHtmlbyTemplate() {
+		return headless?false:super.isHtmlbyTemplate();
+	}
 	public enum SearchMode {
 		auto, similarity, smarts
 	}
 	
-	@Override
-	protected void doInit() throws ResourceException {
-		super.doInit();
-		htmlbyTemplate = true;
-	}
 	
 	@Override
 	public String getTemplateName() {
