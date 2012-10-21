@@ -109,7 +109,39 @@
 					</#if>
 				</div>
 				</div>
-			</#if>
+			<#else> <#if s["/chemical"]??>
+				<#assign s = { query.option!"default":"checked"} >
+				<!-- different title if attachment -->
+				<#assign search_title = "Structure search">
+				<#assign hint = "Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.">
+				<#assign s = { query.option!"default":"checked"} >
+				
+				<div class='search ui-widget'>
+				<p title='${hint}'>${search_title}</p>
+				<form method='GET' action='/qmrf/chemical'>
+				<table width='200px'>
+				<tr><td colspan='2' align='center'><input type='button' class='draw' tabindex='0' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor("${qmrf_root}");'></td></tr>
+		   
+		   		<tr><td colspan='2' align='center'><input type='text' name='search' size='20' value='${query.search!""}' tabindex='1' title='${hint}'></td></tr>
+				<tr><td colspan='2'><input input ${s["auto"]!""} type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>
+		   		<tr><td><input input ${s["similarity"]!""} type='radio' name='option' value='similarity' title='Enter SMILES or draw structure'>Similarity</td>
+				<td align='left'>
+		   		thresholdoptions
+		   		</td></tr>
+		   		<tr><td colspan='2'><input ${s["smarts"]!""} type='radio' name='option' value='smarts' title='Enter or draw a SMARTS query' size='20'>Substructure</td></tr>
+		   		<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value=''></td></tr>
+		   		<tr><td colspan='2' align='center'><input tabindex='2' id='submit' type='submit' value='Search'/></td></tr>	   
+				<input type='hidden' name='structure' value='${query.structure!""}'>
+				</table>
+				</form> 
+				&nbsp;
+				<div id='querypic' class='structureright'>
+					<#if structure??>
+						???
+					</#if>
+				</div>
+				</div>			
+			</#if></#if>
 			
 		<#else>  <!-- Front page -->
 			<ul id='navmenu'>
