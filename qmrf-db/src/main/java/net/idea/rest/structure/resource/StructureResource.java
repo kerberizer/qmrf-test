@@ -56,7 +56,7 @@ public class StructureResource extends CatalogResource<Structure> {
 
 	@Override
 	public boolean isHtmlbyTemplate() {
-		return headless?false:super.isHtmlbyTemplate();
+		return singleItem?false:headless?false:super.isHtmlbyTemplate();
 	}
 	public enum SearchMode {
 		auto, similarity, smarts
