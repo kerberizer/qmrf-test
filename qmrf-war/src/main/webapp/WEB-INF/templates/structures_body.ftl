@@ -1,6 +1,7 @@
 <#include "/html.ftl" >
 <head>
 <#include "/head.ftl" >
+<script type='text/javascript' src='/qmrf/jme/jme.js'></script>
 <#include "/structures_head.ftl" >
 </head>
 <body>
