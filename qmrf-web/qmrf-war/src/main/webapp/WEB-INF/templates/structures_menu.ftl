@@ -6,7 +6,8 @@
 				
 				<div class='search ui-widget'>
 				<p title='${hint}'>${search_title}</p>
-				<form method='GET' action='/qmrf/chemical'>
+				<form method='GET' name='form'  action='/qmrf/chemical'>
+				<input type='hidden' name='type' value='smiles'>
 				<table width='200px'>
 				<tr><td colspan='2' align='center'><input type='button' class='draw' tabindex='0' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor("${qmrf_root}");'></td></tr>
 		   
