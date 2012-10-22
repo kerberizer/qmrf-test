@@ -3,6 +3,7 @@ package net.idea.rest.structure.resource;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +44,7 @@ public class StructureResource extends CatalogResource<Structure> {
 	protected String queryService;
 	protected boolean singleItem = false;
 	protected HTMLBeauty htmlBeauty = null;
+	protected DecimalFormat trf = new DecimalFormat( "#0.00" );
 	
 	public StructureResource() {
 		super();
@@ -102,6 +104,9 @@ public class StructureResource extends CatalogResource<Structure> {
 		try {
 			map.put("option",parameters.getOption().name().toLowerCase());
 		} catch (Exception x) {}
+		try {
+			map.put("threshold",parameters.getThreshold());
+		} catch (Exception x) {}		
 		
 		return map;
 	}

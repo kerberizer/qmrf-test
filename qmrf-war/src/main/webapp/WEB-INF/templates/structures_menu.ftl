@@ -14,7 +14,20 @@
 				<tr><td colspan='2'><input input ${s["auto"]!""} type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>
 		   		<tr><td><input input ${s["similarity"]!""} type='radio' name='option' value='similarity' title='Enter SMILES or draw structure'>Similarity</td>
 				<td align='left'>
-		   		thresholdoptions
+		   		<select title ='Tanimoto similarity threshold' name='threshold'>
+		   		<#assign seq = [0.95,0.9,0.85,0.8,0.75,0.7,0.65,0.6,0.55,0.5]>
+				<#list seq as x>
+					<#if query.threshold??>
+						<#if query.threshold == x>
+							<option value='${x}' selected>${x}</option>
+						<#else>
+							<option value='${x}'>${x}</option>							
+						</#if>
+					<#else>
+						<option value='${x}'>${x}</option>
+					</#if>
+				</#list>  
+		   		</select>
 		   		</td></tr>
 		   		<tr><td colspan='2'><input ${s["smarts"]!""} type='radio' name='option' value='smarts' title='Enter or draw a SMARTS query' size='20'>Substructure</td></tr>
 		   		<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value=''></td></tr>
