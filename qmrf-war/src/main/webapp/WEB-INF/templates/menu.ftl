@@ -52,96 +52,17 @@
 					
 			<!-- save search widget only in case of query -->			
 			<#if qmrf_query??><#if username??><#if s["/protocol"]??>
-				<#assign freq_hint='Optional, if no alert frequency is selected, retrieve your saved search from the profile page.'>
-				<#assign alert_hint='Save your search and configure the frequency of e-mail update alerts.'>
-				
-				<li><a class='selectable' title='${username}, ${alert_hint}' href='#' onClick="toggleDiv('saveSearch'); return false;">Save this search</a></li>
-	
-				<div class="ui-widget-content ui-corner-all" style='display: none;width:180px;' id='saveSearch'>
-				<p>
-				<form action='/qmrf/myaccount/alert' method='POST'>
-					${alert_hint}
-					<input type='hidden' name='name' value='/protocol'/>
-					<input type='hidden' name='query' value='${qmrf_query}'/>
-					<input type='hidden' name='qformat' value='FREETEXT'/>
-					<input type='hidden' name='username' value='${username}'/>
-					<br>
-					<label for='rfrequency' title='${freq_hint}'>Frequency of e-mail alert</label>
-					<select name='rfrequency'>;
-					  <option value="monthly">Monthly</option>
-					  <option value="weekly">Weekly</option>
-					  <option value="daily">Daily</option>				
-					  <option value="" title='${freq_hint}'>Never</option>
-				    </select>
-					<input type='submit' title='${alert_hint} ${freq_hint}' value='Save'/>
-				</form>
-				</p>
-				</div>
+				<#include "/alerts_menu.ftl" >
 			</#if></#if></#if>
 			<!-- end saved search -->	
 			
 			<!-- search menu -->
 			<#if s["/protocol"]??>
-				
-				<#assign search_title = "Search all published QMRF documents">
-				<#assign s = { query.option!"default":"checked"} >
-				
-				<div class='search ui-widget'>
-				<p title=''>${search_title}</p>
-				<form method='GET' action='/qmrf/protocol'>
-				<table width='200px'>
-				<tr><td colspan='2'><input type='text' name='search' size='20' value='${query.search!""}' tabindex='0' title='Enter search query'></td></tr>
-				<tr><td colspan='2'><input ${s["title"]!""} tabindex='1' type='radio' value='title' name='option' title='Title' size='20'>Title</td></tr>
-				<tr><td colspan='2'><input ${s["text"]!""} tabindex='1' type='radio' value='text' name='option' title='Free text search' size='20'>Free text</td></tr>
-				<tr><td><input ${s["endpoint"]!""} type='radio' tabindex='2' name='option' value='endpoint' title='Search by endpoint'>Endpoint</td>
-				<tr><td colspan='2'><input ${s["author"]!""} tabindex='3' type='radio' value='author' name='option' title='Search by author' size='20'>Author</td></tr>
-				<tr><td><input ${s["qmrfnumber"]!""} type='radio' tabindex='4' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF number</td>
-				<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value=''></td></tr>
-				<input type='hidden' name='structure' value='${query.structure!""}'>
-				<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='4' value='Search'/></td></tr>
-				</table>
-				</form> 
-				&nbsp;
-				<div class='structureright'>
-					<#if structure??>
-						<img border='0' title='Showing QMRF documents for this chemical' width='150' height='150' src='${structure}?media=image%2Fpng&w=150&h=150'>
-						<br>Showing QMRF documents
-					</#if>
-				</div>
-				</div>
+				<#include "/protocols_menu.ftl" >
 			<#else> <#if s["/chemical"]??>
-				<#assign s = { query.option!"default":"checked"} >
-				<!-- different title if attachment -->
-				<#assign search_title = "Structure search">
-				<#assign hint = "Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.">
-				<#assign s = { query.option!"default":"checked"} >
-				
-				<div class='search ui-widget'>
-				<p title='${hint}'>${search_title}</p>
-				<form method='GET' action='/qmrf/chemical'>
-				<table width='200px'>
-				<tr><td colspan='2' align='center'><input type='button' class='draw' tabindex='0' value='Draw (sub)structure' title='Launches structure diagram editor' onClick='startEditor("${qmrf_root}");'></td></tr>
-		   
-		   		<tr><td colspan='2' align='center'><input type='text' name='search' size='20' value='${query.search!""}' tabindex='1' title='${hint}'></td></tr>
-				<tr><td colspan='2'><input input ${s["auto"]!""} type='radio' value='auto' name='option' title='Exact structure or search by identifier' size='20'>Auto</td></tr>
-		   		<tr><td><input input ${s["similarity"]!""} type='radio' name='option' value='similarity' title='Enter SMILES or draw structure'>Similarity</td>
-				<td align='left'>
-		   		thresholdoptions
-		   		</td></tr>
-		   		<tr><td colspan='2'><input ${s["smarts"]!""} type='radio' name='option' value='smarts' title='Enter or draw a SMARTS query' size='20'>Substructure</td></tr>
-		   		<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value=''></td></tr>
-		   		<tr><td colspan='2' align='center'><input tabindex='2' id='submit' type='submit' value='Search'/></td></tr>	   
-				<input type='hidden' name='structure' value='${query.structure!""}'>
-				</table>
-				</form> 
-				&nbsp;
-				<div id='querypic' class='structureright'>
-					<#if structure??>
-						???
-					</#if>
-				</div>
-				</div>			
-			</#if></#if>
+				<#include "/structures_menu.ftl" >
+				</#if>
+			</#if>
 			
 		<#else>  <!-- Front page -->
 			<ul id='navmenu'>
