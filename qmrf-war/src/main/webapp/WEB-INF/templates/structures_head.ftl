@@ -1,3 +1,4 @@
+<script type='text/javascript' src='/qmrf/scripts/jcompound.js'></script>
 <script type="text/javascript">
 $(document).ready(function() {
 	$.ajaxSetup({cache:false});//while dev
@@ -97,15 +98,47 @@ function defineTable(url) {
 				{ "mDataProp": "compound.name" , "asSorting": [ "asc", "desc" ],
 				  "aTargets": [ 2 ],
 				  "bSearchable" : true,
-				  "bSortable" : true	
+				  "bSortable" : true,
+				  "bUseRendered" : true,
+				  "fnRender" : function(o,val) {
+		    			var sOut = "";
+						$.each(o.aData.lookup["names"], function(index, value) { 
+						  if (o.aData.values[value] != undefined) {
+							  sOut += o.aData.values[value];
+						  	  sOut += "<br>";
+						  }
+						});
+						return sOut;
+				  },
+				  "bVisible" : function(o,val) {
+					  return true;
+					  //(o.aData["lookup"]["names"] != undefined) && (o.aData["lookup"]["names"].length > 0);
+				  } 
 				},
 				{ "mDataProp": "compound.cas" , "asSorting": [ "asc", "desc" ],
 					  "aTargets": [ 3 ],
 					  "bSearchable" : true,
-					  "bSortable" : true	
+					  "bSortable" : true,
+					  "bUseRendered" : "true",
+					  "fnRender" : function(o,val) {
+			    			var sOut = "";
+							$.each(o.aData.lookup["cas"], function(index, value) { 
+							  if (o.aData.values[value] != undefined) {
+//								  if (o.aData.values[value].indexOf(".")<0) {
+								  	sOut += o.aData.values[value];
+//							  	  }
+							  }
+							});
+							return sOut;
+					  },
+					  "bVisible" : function(o,val) {
+						  return true;
+					  } 
 				},				
 				{ "mDataProp": "compound.metric" , "asSorting": [ "asc", "desc" ],
 				  "aTargets": [ 4 ],
+				  "sTitle" : "Similarity",
+				  "sClass" : "similarity",
 				  "bSearchable" : true,
 				  "bSortable" : true,
 				  "bVisible"  : '${query.option!""}' == 'similarity'
@@ -136,7 +169,10 @@ function defineTable(url) {
 		        "data": aoData,
 		        "dataType": "jsonp", 
 		        "contentType" : "application/x-javascript",
-		        "success": fnCallback,
+		        "success": function(json) {
+		        	identifiers(json);
+		        	fnCallback(json);
+		        },
 		        "cache": false,
 		        "error" : function( xhr, textStatus, error ) {
 		        	oSettings.oApi._fnProcessingDisplay( oSettings, false );
