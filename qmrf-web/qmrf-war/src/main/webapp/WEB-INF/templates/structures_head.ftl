@@ -6,7 +6,7 @@ $(document).ready(function() {
 	
 	var url = "${qmrf_request_jsonp}";
 
-  	var oTable = defineStructuresTable(url);
+  	var oTable = defineStructuresTable(url,'${query.option!""}' == 'similarity');
     <!-- Details panel -->	
 	$('#structures tbody td .zoomstruc img').live(
 			'click',
