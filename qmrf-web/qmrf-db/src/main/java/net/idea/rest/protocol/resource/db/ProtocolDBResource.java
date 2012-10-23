@@ -258,7 +258,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		try {
 			queryObject.setPageSize(Long.parseLong(pageSize));
 		} catch (Exception x) {
-			queryObject.setPageSize(10);
+			queryObject.setPageSize(100);
 		}			
 	}
 	
@@ -276,6 +276,12 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} catch (Exception x) {
 			map.put("option",SearchMode.text.name());
 		}			
+		try {
+			map.put("pagesize",form.getFirstValue("pagesize").toString());
+		} catch (Exception x) { }
+		try {
+			map.put("page",form.getFirstValue("page").toString());
+		} catch (Exception x) {}					
 		return map;
 	}
 	
