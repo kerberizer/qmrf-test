@@ -1,4 +1,4 @@
-function defineStructuresTable(url, similarity) {
+function defineStructuresTable(url, query_service, similarity) {
 
 	
 	var oTable = $('#structures').dataTable( {
@@ -34,6 +34,9 @@ function defineStructuresTable(url, similarity) {
 						//} else {
 						//		cmpURI = opentox["model_uri"] + "?dataset_uri=" + cmpURI + "&media=image/png";
 						//}
+								/*
+"<a href=\"%s%s/%d?headless=true&details=false&media=text/html\" title=\"Molecule\">Molecule</a>", 
+								 */
 						return '<img class="ui-widget-content" title="'+val+'" border="0" src="'+cmpURI+'&w=150&h=150">';
 				  }
 				},
@@ -42,8 +45,11 @@ function defineStructuresTable(url, similarity) {
 				  "bSearchable" : true,
 				  "bSortable" : true,
 				  "bUseRendered" : false,
+				  "sClass" : "names",	
 				  "fnRender" : function(o,val) {
-					    return formatValues(o.aData,"names");
+					  	if ((val === undefined) || (val == ""))
+					  		return formatValues(o.aData,"names");
+					  	else return val;
 				  },
 				  "bVisible" : true
 				},
@@ -53,22 +59,16 @@ function defineStructuresTable(url, similarity) {
 					  "bSortable" : true,
 					  "bUseRendered" : false,
 					  "sWidth" : "10%",
+					  "sClass" : "cas",	
 					  "fnRender" : function(o,val) {
-						   return formatValues(o.aData,"cas");
+						  	if ((val === undefined) || (val == ""))
+						  		return formatValues(o.aData,"cas");
+						  	else return val;						  
 					  },
 					  "bVisible" : true
 				},				
-				{ "mDataProp": "compound.metric" , "asSorting": [ "asc", "desc" ],
-				  "aTargets": [ 4 ],
-				  "sTitle" : "Similarity",
-				  "sClass" : "similarity",
-				  "bSearchable" : true,
-				  "bSortable" : true,
-				  "sWidth" : "5%",
-				  "bVisible"  : similarity
-				},
 				{ "mDataProp": "compound.URI" , "asSorting": [ "asc", "desc" ],
-					  "aTargets": [ 5 ],
+					  "aTargets": [ 4 ],
 					  "bSearchable" : false,
 					  "bSortable" : false,
 					  "bUseRendered" : false,
@@ -78,8 +78,53 @@ function defineStructuresTable(url, similarity) {
 							var qmrf_query = "/qmrf/protocol?structure=" + uri + "&media=text%2Fcsv";
 							return '<a href="'+qmrf_query+'" title="Download the QMRF list as CSV"><img class="draw" border="0" src="/qmrf/images/excel.png"></a>';
 					  }
-	
-					}	
+				},
+				{ "mDataProp": "compound.metric" , "asSorting": [ "asc", "desc" ],
+						  "aTargets": [ 5 ],
+						  "sTitle" : "Similarity",
+						  "sClass" : "similarity",
+						  "bSearchable" : true,
+						  "bSortable" : true,
+						  "sWidth" : "5%",
+						  "bVisible"  : similarity
+				},
+				{ "mDataProp": null , "asSorting": [ "asc", "desc" ],
+					  "aTargets": [ 6 ],
+					  "bSearchable" : true,
+					  "bSortable" : true,
+					  "bUseRendered" : true,
+					  "fnRender" : function(o,val) {
+						  	if ((val === undefined) || (val == ""))
+						  		return formatValues(o.aData,"smiles");
+						  	else return val;						  
+					  },
+					  "bVisible" : false
+				},		
+				{ "mDataProp": null , "asSorting": [ "asc", "desc" ],
+					  "aTargets": [ 7 ],
+					  "bSearchable" : true,
+					  "bSortable" : true,
+					  "bUseRendered" : true,
+					  "fnRender" : function(o,val) {
+						  	if ((val === undefined) || (val == ""))
+						  		return formatValues(o.aData,"inchi");
+						  	else return val;						  
+					  },
+					  "bVisible" : false
+				},	
+				{ "mDataProp": null , "asSorting": [ "asc", "desc" ],
+					  "sClass" : "inchikey",	
+					  "aTargets": [ 8 ],
+					  "bSearchable" : true,
+					  "bSortable" : true,
+					  "bUseRendered" : true,
+					  "fnRender" : function(o,val) {
+						  	if ((val === undefined) || (val == ""))
+						  		return formatValues(o.aData,"inchikey");
+						  	else return val;						  
+					  },
+					  "bVisible" : false
+				}							
 			],
 		"bJQueryUI" : true,
 		"bPaginate" : true,
@@ -107,7 +152,34 @@ function defineStructuresTable(url, similarity) {
 		"oLanguage": {
 	            "sProcessing": "<img src='/qmrf/images/progress.gif' border='0'>",
 	            "sLoadingRecords": "No records found."
-	    }	     
+	    },
+		"fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+			//retrieve identifiers
+			id_uri = query_service + "/query/compound/url/all?search=" + encodeURIComponent(aData.compound.URI) + "?max=1&media=application%2Fx-javascript";
+			$.ajax({
+			         dataType: "jsonp",
+			         url: id_uri,
+			         success: function(data, status, xhr) {
+			        	identifiers(data);
+			        	$.each(data.dataEntry,function(index, entry) {
+				        	aData.compound.name = formatValues(entry,"names");
+				        	$('td:eq(2)', nRow).html(aData.compound.name);
+				        	aData.compound.cas = formatValues(entry,"cas");
+				        	$('td:eq(3)', nRow).html(aData.compound.cas);
+				        	aData.compound['smiles'] = formatValues(entry,"smiles");
+				        	$('td:eq(6)', nRow).html(aData.compound['smiles']);
+				        	aData.compound['inchi'] = formatValues(entry,"inchi");
+				        	$('td:eq(7)', nRow).html(aData.compound['inchi']);
+				        	aData.compound['inchikey'] = formatValues(entry,"inchikey");
+				        	$('td:eq(8)', nRow).html(aData.compound['inchikey']);
+			        	});
+
+			         },
+			         error: function(xhr, status, err) { },
+			         complete: function(xhr, status) { }
+			});
+			
+		}
 	} );
 	return oTable;
 }

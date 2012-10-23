@@ -7,23 +7,31 @@ function identifiers(opentox) {
 		cas    : [],
 		names  : [],
 		einecs : [],
-	    reachdate : []
+	    reachdate : [],
+		smiles : [],
+		inchi : [],
+		inchikey : []
 	};
 	//names
-	var count = [0,0,0,0,6];
-	//opentox['feature'].sort(function(a,b){return a['order'] -b['order']});
-	
+
     $.each(opentox.feature, function(k, value) {
     		if (value.sameAs == "http://www.opentox.org/api/1.1#IUPACName") {
-    			if (opentox.feature[k]) { lookup.names.push(k); count[0]++; }
+    			if (opentox.feature[k]) { lookup.names.push(k); }
     		} else if (value.sameAs == "http://www.opentox.org/api/1.1#ChemicalName") {
-	        	if (opentox.feature[k]) { lookup.names.push(k); count[0]++; }
+	        	if (opentox.feature[k]) { lookup.names.push(k);  }
 	        } else if (value.sameAs == "http://www.opentox.org/api/1.1#CASRN") { 
-	        	if (opentox.feature[k]) { lookup.cas.push(k); count[1]++;  }
+	        	if (opentox.feature[k]) { lookup.cas.push(k);   }
 	        } else if (value.sameAs == "http://www.opentox.org/api/1.1#EINECS") { 
-	        	if (opentox.feature[k]) {lookup.einecs.push(k); count[2]++;  }	        
+	        	if (opentox.feature[k]) {lookup.einecs.push(k);   }	        
 	        } else if (value.sameAs == "http://www.opentox.org/api/1.1#REACHRegistrationDate") { 
-	        	if (opentox.feature[k]) {lookup.reachdate.push(k); count[3]++;  }
+	        	if (opentox.feature[k]) {lookup.reachdate.push(k);   }
+	        } else if (value.sameAs == "http://www.opentox.org/api/1.1#SMILES") { 
+	        	if (opentox.feature[k]) {lookup.smiles.push(k);   }
+	        } else if (value.sameAs == "http://www.opentox.org/api/1.1#InChI") { 
+	        	if (opentox.feature[k]) {lookup.inchi.push(k);   }
+	        } else if (value.sameAs == "http://www.opentox.org/api/1.1#InChIKey") { 
+	        	if (opentox.feature[k]) {lookup.inchikey.push(k);   }	        
+	        	/*
 	        } else {
 	        	//console.log(k);
 	        	count[4]++;
@@ -36,9 +44,8 @@ function identifiers(opentox) {
 					var source = opentox.feature[k]["source"]["type"];
 					if (source=="Algorithm" || source=="Model") { thclass += " calculated"; visible |= opentox["showCalculated"]; }	
 	        	}
+	        	*/
 	        }
-	        //be quick, we only need something to display in the table, detailed info will be on expand
-	        //if (count[0]>0 && count[1]>0 && count[2]>0 && count[3]>0) 	return;
 	    });
     
     	$.each(opentox.dataEntry, function(k, value) {

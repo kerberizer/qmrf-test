@@ -18,8 +18,11 @@
 		<th>Structure</th>
 		<th>Name</th>
 		<th>CAS</th>
-		<th>Similarity</th>
 		<th>QMRF documents</th>
+		<th>Similarity</th>
+		<th>SMILES</th>
+		<th>InChI</th>
+		<th>InChI Key</th>		
 		</thead>
 		<tbody></tbody>
 		</table>
