@@ -46,7 +46,8 @@ $(document).ready(function() {
 							return "<span class='zoom'><img border='0' src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'></span>";
 					},
 				},			              
-				{ "mDataProp": null , "asSorting": [ "asc", "desc" ], "aTargets": [ 1 ], bUseRendered:true,	
+				{ "mDataProp": "identifier" , "asSorting": [ "asc", "desc" ], "aTargets": [ 1 ], bUseRendered:false,	
+				  "bSortable" : true,
 				  sWidth : "15%",
  			      "fnRender": function ( o, val ) {
           				return "<a href='"+o.aData["uri"] + "'>" + o.aData["identifier"] + "</a>";
