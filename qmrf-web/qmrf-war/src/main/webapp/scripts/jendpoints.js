@@ -1,6 +1,6 @@
 function defineEndpointsTable(url) {
 
-	
+	var facet = getEndpointsFacet(); 
 	var oTable = $('#endpoints').dataTable( {
 		"bProcessing": true,
 		"bServerSide": false,
@@ -14,7 +14,12 @@ function defineEndpointsTable(url) {
 					"mDataProp" : null,
 					sWidth : "32px",
 					"fnRender" : function(o,val) {
-							return "<span class='zoomqmrf'><img border='0' src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'></span>";
+						 var count = facet[o.aData["name"]];	
+						 if (count == null) return "";
+						 else {
+							 if ((o.aData["parentName"] == "") && (o.aData["name"]=="Other")) return ""; //workaround
+							 return "<span class='zoomqmrf'><img border='0' src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'></span>";
+						 }
 					}
 				},			
 				{ "mDataProp": "code" , "asSorting": [ "asc", "desc" ],
@@ -28,11 +33,27 @@ function defineEndpointsTable(url) {
 				  "aTargets": [ 2 ],
 				  "bSearchable" : true,
 				  "bSortable" : true,
+				  "bUseRendered" : false,
 				  "fnRender" : function(o,val) {
 					  var parent = o.aData["parentName"] == ""?"All":encodeURIComponent(o.aData["parentName"]);	
 					  return "<a href='/qmrf/catalog/"+ parent +"/"+ encodeURIComponent(o.aData["name"]) +"'>" + o.aData["name"] + "</a>";
 				  }
-				}					
+				},
+				{ //0
+					"aTargets": [ 3 ],	
+					"sClass" : "center",
+					"bSortable" : false,
+					"bSearchable" : false,
+					"mDataProp" : null,
+					"bUseRendered" : true,
+					sWidth : "32px",
+					"fnRender" : function(o,val) {
+						 var count = facet[o.aData["name"]];	
+						 if (count == null) return "";
+						 else 
+						 return count;
+					}
+				}				
 			],
 		"bJQueryUI" : true,
 		"bPaginate" : true,
@@ -90,4 +111,23 @@ function fnEndpointQMRFList(oTable, nTr, id) {
 function getID() {
 	   return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
 }	
+
+function getEndpointsFacet() {
+	var facet = {};	
+    $.ajax({
+        dataType: "json",
+        async: false,
+        url: "/qmrf/endpoint?media=application/json",
+        success: function(data, status, xhr) {
+        	$.each(data["facet"],function(index, entry) {
+        		facet[entry["value"]] = entry["count"]; 
+        	});
+        },
+        error: function(xhr, status, err) {
+        },
+        complete: function(xhr, status) {
+        }
+     });
+    return facet;
+}
 
