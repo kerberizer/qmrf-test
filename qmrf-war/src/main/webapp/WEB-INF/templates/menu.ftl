@@ -23,8 +23,8 @@
 				Home
 			</a></li>
 								
-			<li><a class='selectable ${s["/protocol"]!""}' title='Search all published QMRF documents' href='/qmrf/protocol'>QMRF document search</a></li>
-			<li><a class='selectable ${s["/chemical"]!""}' title='Search chemical structures by identifiers, similarity or substructure' href='/qmrf/chemical'>Structures search</a></li>
+			<li><a class='selectable ${s["/protocol"]!""}' title='Search all published QMRF documents' href='/qmrf/protocol?pagesize=100'>QMRF document search</a></li>
+			<li><a class='selectable ${s["/chemical"]!""}' title='Search chemical structures by identifiers, similarity or substructure' href='/qmrf/chemical?pagesize=100'>Structures search</a></li>
 			<li><a class='selectable ${s["/endpoint"]!""}' title='QMRF documents by endpoints' href='/qmrf/endpoint'>Endpoints</a></li>					
 				
 			<#if username??>
@@ -66,7 +66,7 @@
 			
 		<#else>  <!-- Front page -->
 			<ul id='navmenu'>
-			<li><a class='selectable enter_qmrf' title='Click here to enter the QMRF inventory' href='/qmrf/protocol'>
+			<li><a class='selectable enter_qmrf' title='Click here to enter the QMRF inventory' href='/qmrf/protocol?pagesize=100'>
 				<img class='w_logo_inventory' src='/qmrf/images/logo_menu.png'>
 				Access
 			</a></li>

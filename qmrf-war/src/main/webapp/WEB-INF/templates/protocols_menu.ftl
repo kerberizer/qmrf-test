@@ -11,7 +11,7 @@
 				<tr><td><input ${s["endpoint"]!""} type='radio' tabindex='2' name='option' value='endpoint' title='Search by endpoint'>Endpoint</td>
 				<tr><td colspan='2'><input ${s["author"]!""} tabindex='3' type='radio' value='author' name='option' title='Search by author' size='20'>Author</td></tr>
 				<tr><td><input ${s["qmrfnumber"]!""} type='radio' tabindex='4' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF number</td>
-				<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value=''></td></tr>
+				<tr><td>Max number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='${query.pagesize!"100"}'></td></tr>
 				<input type='hidden' name='structure' value='${query.structure!""}'>
 				<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='4' value='Search'/></td></tr>
 				</table>

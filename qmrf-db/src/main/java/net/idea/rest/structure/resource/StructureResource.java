@@ -107,7 +107,15 @@ public class StructureResource extends CatalogResource<Structure> {
 		try {
 			map.put("threshold",parameters.getThreshold());
 		} catch (Exception x) {}		
-		
+		try {
+			map.put("dataset",parameters.getDatasets());
+		} catch (Exception x) {}	
+		try {
+			map.put("model",parameters.getModels());
+		} catch (Exception x) {}			
+		try {
+			map.put("pagesize",parameters.getPageSize());
+		} catch (Exception x) {}		
 		return map;
 	}
 	protected void parseParameters(Context context, Request request,Response response) throws ResourceException {

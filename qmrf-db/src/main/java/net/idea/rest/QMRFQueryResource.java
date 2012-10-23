@@ -129,7 +129,8 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 		        map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
 		        //remove paging
 		        Form query = getRequest().getResourceRef().getQueryAsForm();
-		        query.removeAll("page");query.removeAll("pagesize");query.removeAll("max");query.removeAll("media");
+		        //query.removeAll("page");query.removeAll("pagesize");query.removeAll("max");
+		        query.removeAll("media");
 		        Reference r = getRequest().getResourceRef().clone();
 		        r.setQuery(query.getQueryString());
 		        map.put("qmrf_request",r.toString()) ;
