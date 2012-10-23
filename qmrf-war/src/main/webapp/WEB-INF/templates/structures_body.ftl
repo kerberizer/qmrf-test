@@ -19,7 +19,7 @@
 		<th>Name</th>
 		<th>CAS</th>
 		<th>Similarity</th>
-		<th>QMRF</th>
+		<th>QMRF documents</th>
 		</thead>
 		<tbody></tbody>
 		</table>

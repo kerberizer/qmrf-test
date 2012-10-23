@@ -1,4 +1,4 @@
-function defineStructuresTable(url) {
+function defineStructuresTable(url, similarity) {
 
 	
 	var oTable = $('#structures').dataTable( {
@@ -22,7 +22,8 @@ function defineStructuresTable(url) {
 				  "bSearchable" : true,
 				  "bUseRendered" : false,
 				  "bSortable" : true,
-				  "sHeight" : "160px",
+				  "sHeight" : "155px",
+				  "sWidth" : "155px",
 				  "fnRender" : function(o,val) {
 						var cmpURI = val;
 						if (val.indexOf("/conformer")>=0) {
@@ -33,7 +34,7 @@ function defineStructuresTable(url) {
 						//} else {
 						//		cmpURI = opentox["model_uri"] + "?dataset_uri=" + cmpURI + "&media=image/png";
 						//}
-						return '<a href="'+val+'" title="'+cmpURI+'"><img class="ui-widget-content" border="0" src="'+cmpURI+'&w=150&h=150"></a>';
+						return '<img class="ui-widget-content" title="'+val+'" border="0" src="'+cmpURI+'&w=150&h=150">';
 				  }
 				},
 				{ "mDataProp": "compound.name" , "asSorting": [ "asc", "desc" ],
@@ -42,14 +43,7 @@ function defineStructuresTable(url) {
 				  "bSortable" : true,
 				  "bUseRendered" : false,
 				  "fnRender" : function(o,val) {
-		    			var sOut = "";
-						$.each(o.aData.lookup["names"], function(index, value) { 
-						  if (o.aData.values[value] != undefined) {
-							  sOut += o.aData.values[value];
-						  }
-						});
-						return sOut;
-						
+					    return formatValues(o.aData,"names");
 				  },
 				  "bVisible" : true
 				},
@@ -58,16 +52,9 @@ function defineStructuresTable(url) {
 					  "bSearchable" : true,
 					  "bSortable" : true,
 					  "bUseRendered" : false,
+					  "sWidth" : "10%",
 					  "fnRender" : function(o,val) {
-			    			var sOut = "";
-							$.each(o.aData.lookup["cas"], function(index, value) { 
-							  if (o.aData.values[value] != undefined) {
-//								  if (o.aData.values[value].indexOf(".")<0) {
-								  	sOut += o.aData.values[value];
-//							  	  }
-							  }
-							});
-							return sOut;
+						   return formatValues(o.aData,"cas");
 					  },
 					  "bVisible" : true
 				},				
@@ -77,17 +64,19 @@ function defineStructuresTable(url) {
 				  "sClass" : "similarity",
 				  "bSearchable" : true,
 				  "bSortable" : true,
-				  "bVisible"  : '${query.option!""}' == 'similarity'
+				  "sWidth" : "5%",
+				  "bVisible"  : similarity
 				},
 				{ "mDataProp": "compound.URI" , "asSorting": [ "asc", "desc" ],
 					  "aTargets": [ 5 ],
-					  "bSearchable" : true,
-					  "bSortable" : true,
+					  "bSearchable" : false,
+					  "bSortable" : false,
 					  "bUseRendered" : false,
+					  "sWidth" : "5%",
 					  "fnRender" : function(o,val) {
 							var uri = encodeURIComponent(val);
 							var qmrf_query = "/qmrf/protocol?structure=" + uri + "&media=text%2Fcsv";
-							return '<a href="'+qmrf_query+'" title="Download the QMRF list as CSV"><img class="draw" border="0" src="/qmrf/images/excel.png"> Download as CSV</a>';
+							return '<a href="'+qmrf_query+'" title="Download the QMRF list as CSV"><img class="draw" border="0" src="/qmrf/images/excel.png"></a>';
 					  }
 	
 					}	
@@ -150,5 +139,22 @@ function fnStructureQMRFList(oTable, nTr, id) {
           }
        });
        
+	return sOut;
+}
+
+
+function formatValues(dataEntry,tag) {
+	var sOut = "";
+	$.each(dataEntry.lookup[tag], function(index, value) { 
+	  if (dataEntry.values[value] != undefined) {
+		  $.each(dataEntry.values[value].split("|"), function (index, v) {
+			  if (v.indexOf(".mol")==-1) {
+				sOut += v;
+			  	sOut += "<br>";
+		  	  }
+		  });
+		  //sOut += dataEntry.values[value];
+	  }
+	});
 	return sOut;
 }
