@@ -79,14 +79,10 @@ public final class User_crud_test  extends CRUDTest<Object,DBUser>  {
 	}
 
 	@Override
-	public void testUpdate() throws Exception {
-		//TODO Not implemented
-	}
-	@Override
 	protected IQueryUpdate<Object,DBUser> updateQuery() throws Exception {
 		DBUser ref = new DBUser();
 		ref.setLastname("NEW");
-		ref.setID(2);
+		ref.setID(3);
 
 		return new UpdateUser(ref);
 	}

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.idea.modbcum.i.query.QueryParam;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.user.alerts.db.DBAlert;
@@ -26,6 +27,9 @@ public class DBUser extends User {
 			@Override
 			public Object getValue(DBUser user) {
 				return user==null?null:user.getID();
+			}
+			public QueryParam getParam(DBUser user) {
+				return new QueryParam<Integer>(Integer.class, user==null?null:user.getID());
 			}
 		},
 		username {
@@ -71,6 +75,9 @@ public class DBUser extends User {
 			public Object getValue(DBUser user) {
 				return user==null?null:user.isReviewer();
 			}			
+			public QueryParam getParam(DBUser user) {
+				return new QueryParam<Boolean>(Boolean.class, user==null?null:user.isReviewer());
+			}
 		},				
 		homepage {
 			@Override
@@ -81,7 +88,11 @@ public class DBUser extends User {
 			public String toString() {
 				return "WWW";
 			}
+
 		};
+		public QueryParam getParam(DBUser user) {
+			return new QueryParam<String>(String.class, getValue(user).toString());
+		}
 		public String getHTMLField(DBUser protocol) {
 			Object value = getValue(protocol);
 			return String.format("<input name='%s' type='text' size='40' value='%s'>\n",
@@ -94,6 +105,9 @@ public class DBUser extends User {
 		public String getDescription() { return toString();}
 		public Object getValue(DBUser user) {
 			return null;
+		}
+		public String getSQL() { 
+			return String.format("%s = ?", name() );
 		}
 	}
 	protected int id=-1;
