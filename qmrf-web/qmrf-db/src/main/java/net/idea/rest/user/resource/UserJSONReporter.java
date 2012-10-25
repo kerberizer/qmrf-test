@@ -2,12 +2,20 @@ package net.idea.rest.user.resource;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URL;
 
+import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
+import net.idea.modbcum.p.DefaultAmbitProcessor;
+import net.idea.modbcum.p.MasterDetailsProcessor;
 import net.idea.modbcum.r.QueryReporter;
+import net.idea.rest.groups.DBOrganisation;
+import net.idea.rest.groups.db.ReadOrganisation;
+import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.user.DBUser;
 import net.idea.restnet.db.QueryURIReporter;
+import net.toxbank.client.resource.Organisation;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -21,7 +29,7 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 	protected String comma = null;
 	protected Request request;
 	protected QueryURIReporter uriReporter;
-	
+	protected GroupQueryURIReporter groupURIReporter ;
 	
 	public Request getRequest() {
 		return request;
@@ -38,16 +46,50 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 		this.baseReference = (request==null?null:request.getRootRef());
 		setRequest(request);
 		uriReporter = new UserURIReporter(request,"");
+		
+		getProcessors().clear();
+		groupURIReporter = new GroupQueryURIReporter(request);
+		IQueryRetrieval<DBOrganisation> queryO = new ReadOrganisation(new DBOrganisation()); 
+		
+		MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition> orgReader = new MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition>(queryO) {
+			@Override
+			protected DBUser processDetail(DBUser target, DBOrganisation detail) throws Exception {
+				detail.setResourceURL(new URL(groupURIReporter.getURI(detail)));
+				target.addOrganisation(detail);
+				return target;
+			}
+		};
+		
+		getProcessors().add(orgReader);
+		processors.add(new DefaultAmbitProcessor<DBUser, DBUser>() {
+			public DBUser process(DBUser target) throws Exception {
+				processItem(target);
+				return target;
+			};
+		});			
 	}	
 
-	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"id\": \"U%s\",\n\t\"username\": \"%s\",\n\t\"title\": \"%s\",\n\t\"firstname\": \"%s\",\n\t\"lastname\": \"%s\",\n\t\"email\": \"%s\",\n\t\"homepage\": \"%s\",\n\t\"keywords\": \"%s\",\n\t\"reviewer\": %s\n\t}";
+	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"id\": \"U%s\",\n\t\"username\": \"%s\",\n\t\"title\": \"%s\",\n\t\"firstname\": \"%s\",\n\t\"lastname\": \"%s\",\n\t\"email\": \"%s\",\n\t\"homepage\": \"%s\",\n\t\"keywords\": \"%s\",\n\t\"reviewer\": %s,\n\t\t\"organisation\": [%s]\n\t}";
+	private static String formatGroup = "{\n\t\t\"uri\":\"%s\",\n\t\t\"title\": \"%s\"\n\t\t}";
 	//output.write("Title,First name,Last name,user name,email,Keywords,Reviewer\n");
 
 	@Override
 	public Object processItem(DBUser user) throws Exception {
 		try {
 			if (comma!=null) getOutput().write(comma);
+			
+			StringBuilder group = null;
+			if (user.getOrganisations()!=null)
+				for (Organisation org : user.getOrganisations()) {
+					if (group == null) group = new StringBuilder();
+					else group.append(",");
+					group.append(String.format(formatGroup,
+							groupURIReporter.getURI(org),
+							org.getTitle()
+							));
+				}
 			String uri = uriReporter.getURI(user);
+			
 			getOutput().write(String.format(format,
 					uri,
 					user.getID(),
@@ -58,7 +100,8 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 					user.getEmail()==null?"":user.getEmail(),
 					user.getHomepage()==null?"":user.getHomepage(),
 					user.getKeywords()==null?"":user.getKeywords(),
-					user.isReviewer()
+					user.isReviewer(),
+					group.toString()
 					));
 		} catch (IOException x) {
 			Context.getCurrentLogger().severe(x.getMessage());
