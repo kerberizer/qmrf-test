@@ -1,5 +1,6 @@
 function getMyAccount() {
 	var facet = {};	
+
     $.ajax({
         dataType: "json",
         url: "/qmrf/myaccount?media=application/json",
@@ -22,9 +23,30 @@ function getMyAccount() {
         		
         		$("#protocoluri").prop("href",protocolURI);
         		$("#alerturi").prop("href",alertURI);
-        		//$("#QMRF_documents").text(protocolURI);
-        		//$("#alerts").text(alertURI);
         		
+        		var oTable = $('#organisations').dataTable( {
+        			"bPaginate"  : false,
+        			"bAutoWidth" : false,
+        			"jQuery" : true,
+        			"sDom"   : "t",
+        			"aaData" : entry.organisation,
+        			"bFilter": false,
+        			"aoColumnDefs": [
+        			 				{ //0
+        			 					"aTargets": [ 0 ],	
+        			 					"mDataProp" : "uri",
+        			 					"bInfo"  : false,
+        			 					"bLengthChange" : false,
+        			 					"bUseRendered"  : false,
+        								"fnRender"      : function(o,val) {
+        									 if ((o.aData["title"] === undefined) || (o.aData["title"] == ""))
+        									 	return "<a href='"+ o.aData["uri"]+" target=_blank'>N/A</a>";
+        									 else
+        										 return "<a href='"+ o.aData["uri"]+" target=_blank'>"+o.aData["title"]+"</a>";
+        								}
+        			 				}        			 				
+        			 			]
+        		});
         		//reload tabs
         		$(function() {$( ".tabs" ).tabs({cache: true});});
         	});
