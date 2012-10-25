@@ -20,7 +20,18 @@ public class MyAccountResource<T> extends UserDBResource<T> {
 		super.doInit();
 		editable = false;
 		singleItem = true;
+		setHtmlbyTemplate(true);
 	}
+	
+	@Override
+	public boolean isHtmlbyTemplate() {
+		return headless?false:htmlbyTemplate;
+	}
+	@Override
+	public String getTemplateName() {
+		return "myprofile_body.ftl";
+	}
+	
 	@Override
 	protected ReadUser createQuery(Context context, Request request, Response response)
 			throws ResourceException {
