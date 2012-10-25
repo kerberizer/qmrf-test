@@ -39,6 +39,7 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 		if (input==null) return user;
 		
 		DBUser user = new DBUser();
+		if (Method.PUT.equals(method)) user.setID(this.user.getID());
 		user.setUserName(input.getFirstValue(ReadUser.fields.username.name()));
 		user.setFirstname(input.getFirstValue(ReadUser.fields.firstname.name()));
 		user.setLastname(input.getFirstValue(ReadUser.fields.lastname.name()));

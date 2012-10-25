@@ -195,4 +195,37 @@ public class UserResourceTest extends ResourceTest {
 		Assert.assertEquals(0,table.getRowCount());
 		c.close();			
 	}
+	
+	@Test
+	public void testUpdateUser() throws Exception {
+
+		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
+		formparams.add(new BasicNameValuePair(ReadUser.fields.firstname.name(),  "Alice"));
+		formparams.add(new BasicNameValuePair(ReadUser.fields.lastname.name(),  "B."));
+		
+        IDatabaseConnection c = getConnection();	
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM user where iduser=3");
+		Assert.assertEquals(1,table.getRowCount());
+		c.close();
+
+		RemoteTask task = testAsyncPoll(new Reference(String.format("http://localhost:%d%s/U3", port,
+				Resources.user)),
+				MediaType.TEXT_URI_LIST, new UrlEncodedFormEntity(formparams,"UTF-8"),
+				Method.PUT);
+		//wait to complete
+		while (!task.isDone()) {
+			task.poll();
+			Thread.sleep(100);
+			Thread.yield();
+		}
+		Assert.assertTrue(task.getResult().toString().startsWith(String.format("http://localhost:%d/user/U3",port)));
+
+        c = getConnection();	
+		table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
+		Assert.assertEquals(5,table.getRowCount());
+		table = 	c.createQueryTable("EXPECTED","SELECT iduser,title from user where iduser=3 and firstName='Alice' and lastName='B.'" );
+		Assert.assertEquals(1,table.getRowCount());
+		c.close();
+
+	}		
 }
