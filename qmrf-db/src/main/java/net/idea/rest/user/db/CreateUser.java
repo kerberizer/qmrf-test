@@ -17,8 +17,8 @@ public class CreateUser extends AbstractObjectUpdate<DBUser>{
 	@Override
 	public String[] getSQL() throws AmbitException {
 		return new String[] {
-				"insert into user (iduser,username,title,firstname,lastname,weblog,homepage) " +
-				"values (?,?,?,?,?,?,?)"
+				"insert into user (iduser,username,email,title,firstname,lastname,weblog,homepage) " +
+				"values (?,?,?,?,?,?,?,?)"
 				};
 	}
 
@@ -27,6 +27,7 @@ public class CreateUser extends AbstractObjectUpdate<DBUser>{
 		List<QueryParam> params1 = new ArrayList<QueryParam>();
 		params1.add(new QueryParam<Integer>(Integer.class,  null));
 		params1.add(new QueryParam<String>(String.class,  getObject().getUserName()));
+		params1.add(new QueryParam<String>(String.class,  getObject().getEmail()));
 		params1.add(new QueryParam<String>(String.class,  getObject().getTitle()));
 		params1.add(new QueryParam<String>(String.class,  getObject().getFirstname()));
 		params1.add(new QueryParam<String>(String.class,  getObject().getLastname()));
