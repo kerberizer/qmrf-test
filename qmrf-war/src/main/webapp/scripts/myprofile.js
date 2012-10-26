@@ -40,9 +40,9 @@ function getMyAccount() {
         			 					"bUseRendered"  : false,
         								"fnRender"      : function(o,val) {
         									 if ((o.aData["title"] === undefined) || (o.aData["title"] == ""))
-        									 	return "<a href='"+ o.aData["uri"]+" target=_blank'>N/A</a>";
+        									 	return "<a href='"+ o.aData["uri"]+"' target=_blank>N/A</a>";
         									 else
-        										 return "<a href='"+ o.aData["uri"]+" target=_blank'>"+o.aData["title"]+"</a>";
+        										 return "<a href='"+ o.aData["uri"]+"' target=_blank>"+o.aData["title"]+"</a>";
         								}
         			 				}        			 				
         			 			]
