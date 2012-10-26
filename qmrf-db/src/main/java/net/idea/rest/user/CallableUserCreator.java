@@ -44,6 +44,8 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 		user.setFirstname(input.getFirstValue(ReadUser.fields.firstname.name()));
 		user.setLastname(input.getFirstValue(ReadUser.fields.lastname.name()));
 		user.setTitle(input.getFirstValue(ReadUser.fields.title.name()));
+		user.setKeywords(input.getFirstValue(ReadUser.fields.keywords.name()));
+		user.setEmail(input.getFirstValue(ReadUser.fields.email.name()));
 		try {user.setHomepage(new URL(input.getFirstValue(ReadUser.fields.homepage.name()))); } catch (Exception x) {}
 		try {user.setWeblog(new URL(input.getFirstValue(ReadUser.fields.weblog.name())));} catch (Exception x) {}
 		

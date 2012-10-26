@@ -23,14 +23,14 @@
 		<!-- user details tab -->
 			<div id='tabs-id'>
 			<span class='summary'>
-			<form action='http://localhost:8081/qmrf/myaccount?method=PUT' name='form_myaccount' method='POST' >
+			<form action='/qmrf/myaccount/?method=put' id='form_myaccount' method='POST' >
 			<table width='80%%'>
 			<tbody>
 			<tr><th colspan='2'><a href=''><h2><span id='useruri'></span></h2></a></th></tr>
 			<tr><th colwidth='25%'>User name</th><th align='left' id='username'></th></tr>
-			<tr><th>Title</th><td align='left'><input type='text' size='40' id='title' value=''></td></tr>
-			<tr><th>First name</th><td align='left'><input type='text'  size='40' id='firstname' value=''></td></tr>
-			<tr><th>Last name</th><td align='left'><input type='text'  size='40' id='lastname' value=''></td></tr>
+			<tr><th>Title</th><td align='left'><input type='text' size='40' name='title' id='title' value=''></td></tr>
+			<tr><th>First name</th><td align='left'><input type='text'  size='40' id='firstname' name='firstname' value=''></td></tr>
+			<tr><th>Last name</th><td align='left'><input type='text'  size='40' id='lastname' name='lastname' value=''></td></tr>
 			<tr><th>Affiliation</th>
 			<td align='left' >
 			<div>
@@ -42,12 +42,12 @@
 			</table>
 			</div>
 			</td></tr>				
-			<tr><th>e-mail</th><td align='left'><input type='text'  size='40' id='email' value=''></td></tr>
-			<tr><th>WWW</th><td align='left' ><input type='text' id='homepage'  size='40' value=''></td></tr>
-			<tr><th>keywords</th><td align='left' ><input type='text' id='keywords'  size='40' value=''></td></tr>
-			<tr><th>Available as a reviewer</th><td align='left' ><input id='reviewer' type='checkbox'></td></tr>
+			<tr><th>e-mail</th><td align='left'><input type='text'  size='40' id='email' name='email' value=''></td></tr>
+			<tr><th>WWW</th><td align='left' ><input type='text' id='homepage' name='homepage' size='40' value=''></td></tr>
+			<tr><th>keywords</th><td align='left' ><input type='text' id='keywords' name='keywords' size='40' value=''></td></tr>
+			<tr><th>Available as a reviewer</th><td align='left' ><input id='reviewer' name='reviewer' type='checkbox'></td></tr>
 		
-			<tr><th></th><td align='left' ><input id='update' type='submit' value='Update'></td></tr>
+			<tr><th></th><td align='left' ><input id='update' name='update' type='submit' value='Update'></td></tr>
 			</tbody>								
 			</table>
 			
