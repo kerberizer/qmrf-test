@@ -38,7 +38,12 @@ public class DBUser extends User {
 				return  user==null?null:user.getUserName();
 			}
 		},
-		title,
+		title {
+			@Override
+			public Object getValue(DBUser user) {
+				return  user==null?null:user.getTitle();
+			}	
+		},
 		firstname {
 			@Override
 			public Object getValue(DBUser user) {
@@ -51,7 +56,12 @@ public class DBUser extends User {
 				return user==null?null:user.getLastname();
 			}
 		},
-		institute,
+		institute {
+			@Override
+			public Object getValue(DBUser user) {
+				return null;
+			}
+		},
 		weblog {
 			@Override
 			public Object getValue(DBUser user) {
@@ -103,9 +113,8 @@ public class DBUser extends User {
 			return String.format("%s%s", name().substring(0,1).toUpperCase(),name().substring(1));
 		}
 		public String getDescription() { return toString();}
-		public Object getValue(DBUser user) {
-			return null;
-		}
+		public abstract Object getValue(DBUser user);
+			
 		public String getSQL() { 
 			return String.format("%s = ?", name() );
 		}
