@@ -1,6 +1,7 @@
 package net.idea.rest.user.resource;
 
 import java.sql.Connection;
+import java.util.Map;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -49,8 +50,19 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	
 	public UserDBResource() {
 		super();
+		setHtmlbyTemplate(true);
 	}
 
+	@Override
+	public boolean isHtmlbyTemplate() {
+		return headless?false:singleItem?htmlbyTemplate:false;
+	}
+	@Override
+	public String getTemplateName() {
+		return "myprofile_body.ftl";
+	}
+	
+	
 	@Override
 	protected void doInit() throws ResourceException {
 		super.doInit();
@@ -233,5 +245,11 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 		return htmlBeauty;
 	}
 	
-	
+	@Override
+	protected Map<String, Object> getMap(Variant variant)
+			throws ResourceException {
+		Map<String, Object> map = super.getMap(variant);
+		map.put("myprofile", false);
+		return map;
+	}
 }

@@ -1,5 +1,7 @@
 package net.idea.rest.user.resource;
 
+import java.util.Map;
+
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.user.DBUser;
@@ -12,6 +14,7 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
+import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 public class MyAccountResource<T> extends UserDBResource<T> {
@@ -98,4 +101,11 @@ public class MyAccountResource<T> extends UserDBResource<T> {
 		};
 	}
 	
+	@Override
+	protected Map<String, Object> getMap(Variant variant)
+			throws ResourceException {
+		Map<String, Object> map = super.getMap(variant);
+		map.put("myprofile", true);
+		return map;
+	}
 }

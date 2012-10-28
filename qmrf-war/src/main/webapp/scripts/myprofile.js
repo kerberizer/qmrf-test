@@ -1,9 +1,9 @@
-function getMyAccount() {
+function getMyAccount(url) {
 	var facet = {};	
 
     $.ajax({
         dataType: "json",
-        url: "/qmrf/myaccount?media=application/json",
+        url: url, //"/qmrf/myaccount?media=application/json",
         success: function(data, status, xhr) {
         	$.each(data["user"],function(index, entry) {
         		$("#username").text(entry["username"]);
