@@ -1,7 +1,6 @@
 <#include "/html.ftl" >
 <head>
 <#include "/head.ftl" >
-<script type='text/javascript' src='/qmrf/jme/jme.js'></script>
 <#include "/users_head.ftl" >
 </head>
 <body>
@@ -23,14 +22,19 @@
 		<!-- user details tab -->
 			<div id='tabs-id'>
 			<span class='summary'>
-			<form action='/qmrf/myaccount/?method=put' id='form_myaccount' method='POST' >
+			<#if myprofile>
+				<#assign ro=''>
+				<form action='/qmrf/myaccount/?method=put' id='form_myaccount' method='POST' >
+			<#else>
+				<#assign ro='readonly'>
+			</#if>
 			<table width='80%%'>
 			<tbody>
 			<tr><th colspan='2'><a href=''><h2><span id='useruri'></span></h2></a></th></tr>
 			<tr><th colwidth='25%'>User name</th><th align='left' id='username'></th></tr>
-			<tr><th>Title</th><td align='left'><input type='text' size='40' name='title' id='title' value=''></td></tr>
-			<tr><th>First name</th><td align='left'><input type='text'  size='40' id='firstname' name='firstname' value=''></td></tr>
-			<tr><th>Last name</th><td align='left'><input type='text'  size='40' id='lastname' name='lastname' value=''></td></tr>
+			<tr><th>Title</th><td align='left'><input type='text' ${ro} size='40' name='title' id='title' value=''></td></tr>
+			<tr><th>First name</th><td align='left'><input type='text' ${ro} size='40' id='firstname' name='firstname' value=''></td></tr>
+			<tr><th>Last name</th><td align='left'><input type='text' ${ro} size='40' id='lastname' name='lastname' value=''></td></tr>
 			<tr><th>Affiliation</th>
 			<td align='left' >
 			<div>
@@ -42,16 +46,18 @@
 			</table>
 			</div>
 			</td></tr>				
-			<tr><th>e-mail</th><td align='left'><input type='text'  size='40' id='email' name='email' value=''></td></tr>
-			<tr><th>WWW</th><td align='left' ><input type='text' id='homepage' name='homepage' size='40' value=''></td></tr>
-			<tr><th>keywords</th><td align='left' ><input type='text' id='keywords' name='keywords' size='40' value=''></td></tr>
-			<tr><th>Available as a reviewer</th><td align='left' ><input id='reviewer' name='reviewer' type='checkbox'></td></tr>
-		
+			<tr><th>e-mail</th><td align='left'><input type='text' ${ro} size='40' id='email' name='email' value=''></td></tr>
+			<tr><th>WWW</th><td align='left' ><input type='text' ${ro} id='homepage' name='homepage' size='40' value=''></td></tr>
+			<tr><th>keywords</th><td align='left' ><input type='text' ${ro} id='keywords' name='keywords' size='40' value=''></td></tr>
+			<tr><th>Available as a reviewer</th><td align='left' ><input id='reviewer' ${ro} name='reviewer' type='checkbox'></td></tr>
+			<#if myprofile>
 			<tr><th></th><td align='left' ><input id='update' name='update' type='submit' value='Update'></td></tr>
+			</#if>
 			</tbody>								
 			</table>
-			
+			<#if myprofile>
 			</form>
+			</#if>
 			</span></div>
 		<!-- protocols -->
 			<div id='QMRF_documents'></div>
