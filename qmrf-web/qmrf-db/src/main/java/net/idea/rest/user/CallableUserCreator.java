@@ -11,7 +11,9 @@ import net.idea.rest.groups.user.db.AddGroupsPerUser;
 import net.idea.rest.user.db.CreateUser;
 import net.idea.rest.user.db.DeleteUser;
 import net.idea.rest.user.db.ReadUser;
+import net.idea.rest.user.db.UpdateCredentials;
 import net.idea.rest.user.db.UpdateUser;
+import net.idea.rest.user.db.UserCredentials;
 import net.idea.rest.user.resource.UserURIReporter;
 import net.idea.restnet.db.update.CallableDBUpdateTask;
 
@@ -23,19 +25,35 @@ import org.restlet.resource.ResourceException;
 public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String> {
 	protected UserURIReporter<IQueryRetrieval<DBUser>> reporter;
 	protected DBUser user;
+	protected boolean passwordChange;
+	protected UserCredentials credentials;
 	
 	public CallableUserCreator(Method method,DBUser item,UserURIReporter<IQueryRetrieval<DBUser>> reporter,
 						Form input,
 						String baseReference,
-						Connection connection,String token)  {
+						Connection connection,
+						String token,
+						boolean passwordChange)  {
 		super(method, input,connection,token);
 		this.reporter = reporter;
 		this.user = item;
 		this.baseReference = baseReference;
+		this.passwordChange = passwordChange;
 	}
 
 	@Override
 	protected DBUser getTarget(Form input) throws Exception {
+		if (passwordChange) {
+			if (Method.PUT.equals(method)) {
+				credentials = new UserCredentials(
+						input.getFirstValue("pwdold"),
+						input.getFirstValue("pwd1")
+						);
+						
+				return user;
+			}
+			else throw new Exception("User empty");
+		}
 		if (input==null) return user;
 		
 		DBUser user = new DBUser();
@@ -69,9 +87,11 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
  		return user;
 	}
 
+	
 	@Override
-	protected IQueryUpdate<Object, DBUser> createUpdate(DBUser user)
+	protected IQueryUpdate<? extends Object, DBUser> createUpdate(DBUser user)
 			throws Exception {
+		if (passwordChange) return new UpdateCredentials(credentials,user);
 		if (Method.POST.equals(method)) return  new CreateUser(user);
 		else if (Method.DELETE.equals(method)) return  new DeleteUser(user);
 		else if (Method.PUT.equals(method)) return new  UpdateUser(user);
@@ -83,8 +103,9 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 		return reporter.getURI(user);
 	}
 
+	
 	@Override
-	protected Object executeQuery(IQueryUpdate<Object, DBUser> query)
+	protected Object executeQuery(IQueryUpdate<? extends Object, DBUser> query)
 			throws Exception {
 		Object result = super.executeQuery(query);
 		if (Method.POST.equals(method)) {
@@ -102,8 +123,17 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 	}
 
 	@Override
+	protected String getURI(DBUser target, Method method) throws Exception {
+		if (passwordChange)
+			return String.format("%s/myaccount", baseReference);
+		else
+			return super.getURI(target, method);
+	}
+	@Override
 	public String toString() {
-		if (Method.POST.equals(method)) {
+		if (passwordChange)
+			return String.format("Password change");
+		else if (Method.POST.equals(method)) {
 			return String.format("Create user");
 		} else if (Method.PUT.equals(method)) {
 			return String.format("Update user");

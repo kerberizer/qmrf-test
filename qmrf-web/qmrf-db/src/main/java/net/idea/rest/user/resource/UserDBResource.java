@@ -204,7 +204,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 			UserURIReporter reporter = new UserURIReporter(getRequest(),"");
 			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 			conn = dbc.getConnection();
-			return new CallableUserCreator(method,item,reporter, form,getRequest().getRootRef().toString(),conn,getToken());
+			return new CallableUserCreator(method,item,reporter, form,getRequest().getRootRef().toString(),conn,getToken(),false);
 		} catch (Exception x) {
 			try { conn.close(); } catch (Exception xx) {}
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);

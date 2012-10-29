@@ -98,7 +98,7 @@ public class CallableAlertCreator extends CallableDBUpdateTask<DBAlert,Form,Stri
 	}
 
 	@Override
-	protected Object executeQuery(IQueryUpdate<Object, DBAlert> q)
+	protected Object executeQuery(IQueryUpdate<? extends Object, DBAlert> q)
 			throws Exception {
 		return super.executeQuery(q);
 	}

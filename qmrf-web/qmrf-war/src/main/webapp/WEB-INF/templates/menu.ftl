@@ -28,7 +28,7 @@
 			<li><a class='selectable ${s["/endpoint"]!""}' title='QMRF documents by endpoints' href='/qmrf/endpoint'>Endpoints</a></li>					
 				
 			<#if username??>
-				<li><a class='selectable ${s["/myaccount"]!""}' href='/qmrf/myaccount' title='${username}'s profile and documents.'>My profile</a></li>
+				<li><a class='selectable ${s["/myaccount"]!""}' href='/qmrf/myaccount' title="${username}'s profile and documents.">My profile</a></li>
 			</#if>
 			
 			<#assign admin = false>

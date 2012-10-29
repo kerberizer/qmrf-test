@@ -107,7 +107,7 @@ public class CallableGroupCreator extends CallableDBUpdateTask<IDBGroup,Form,Str
 	}
 
 	@Override
-	protected Object executeQuery(IQueryUpdate<Object, IDBGroup> q)
+	protected Object executeQuery(IQueryUpdate<? extends Object, IDBGroup> q)
 			throws Exception {
 		return super.executeQuery(q);
 	}

@@ -30,7 +30,7 @@
 			</#if>
 			<table width='80%%'>
 			<tbody>
-			<tr><th colspan='2'><a href=''><h2><span id='useruri'></span></h2></a></th></tr>
+			<tr><th colspan='2'><h2><a href=''><span id='useruri'></span></a></h2></th></tr>
 			<tr><th colwidth='25%'>User name</th><th align='left' id='username'></th></tr>
 			<tr><th>Title</th><td align='left'><input type='text' ${ro} size='40' name='title' id='title' value=''></td></tr>
 			<tr><th>First name</th><td align='left'><input type='text' ${ro} size='40' id='firstname' name='firstname' value=''></td></tr>
@@ -57,6 +57,8 @@
 			</table>
 			<#if myprofile>
 			</form>
+			<hr>
+			<a href="/qmrf/myaccount/reset">Change password</a>
 			</#if>
 			</span></div>
 		<!-- protocols -->

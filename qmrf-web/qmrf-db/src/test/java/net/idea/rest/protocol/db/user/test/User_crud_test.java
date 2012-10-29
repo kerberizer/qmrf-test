@@ -35,10 +35,15 @@ import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.CreateUser;
 import net.idea.rest.user.db.DeleteUser;
+import net.idea.rest.user.db.UpdateCredentials;
 import net.idea.rest.user.db.UpdateUser;
+import net.idea.rest.user.db.UserCredentials;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
+import org.junit.Test;
+
+import com.mysql.jdbc.Statement;
 
 public final class User_crud_test  extends CRUDTest<Object,DBUser>  {
 
@@ -116,4 +121,26 @@ public final class User_crud_test  extends CRUDTest<Object,DBUser>  {
 	public void testCreateNew() throws Exception {
 	}
 
+	@Test
+	public void testUpdatePassword() throws Exception {
+		DBUser user = new DBUser();
+		user.setUserName("test");
+		IDatabaseConnection c = getConnection();
+		java.sql.Statement st = c.getConnection().createStatement();
+		st.executeUpdate("insert into tomcat_users.users values ('test',md5('test')) on duplicate key update  user_pass=values(user_pass)");
+
+		//String md = org.apache.commons.codec.digest.DigestUtils.md5Hex("test");
+		IQueryUpdate query = new UpdateCredentials(
+					new UserCredentials("test", "newpwd"), 
+					user);
+		setUpDatabase(dbFile);
+		executor.setConnection(c.getConnection());
+		executor.open();
+		Assert.assertTrue(executor.process(query)>=1);
+		
+		ITable table = 	c.createQueryTable("EXPECTED","SELECT user_pass FROM `tomcat_users`.users where user_name='test'");
+		Assert.assertEquals(1,table.getRowCount());
+		Assert.assertEquals(org.apache.commons.codec.digest.DigestUtils.md5Hex("newpwd"),table.getValue(0,"user_pass"));
+		c.close();
+	}
 }
