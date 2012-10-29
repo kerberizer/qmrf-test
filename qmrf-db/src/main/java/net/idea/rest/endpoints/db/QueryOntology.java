@@ -34,14 +34,14 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 		"from ((`template` `t1`\n"+
 		"join `dictionary` `d` on((`t1`.`idtemplate` = `d`.`idsubject`)))\n"+
 		"join `template` `t2` on((`d`.`idobject` = `t2`.`idtemplate`)))\n"+
-		"where t1.name %s ?\n"+
+		"where lower(t1.name) %s lower(?)\n"+
 		"union\n";		
 	protected String sqlChild = 	
 		"select 1,t2.name,t1.name,t2.code as category,t1.code as code\n"+
 		"from ((`template` `t1`\n"+
 		"join `dictionary` `d` on((`t1`.`idtemplate` = `d`.`idsubject`)))\n"+
 		"join `template` `t2` on((`d`.`idobject` = `t2`.`idtemplate`)))\n"+
-		"where t2.name %s ?\n"
+		"where lower(t2.name) %s lower(?)\n"
 		;
 	
 	protected String sqlAll = 	
@@ -53,8 +53,8 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 		"(\n"+
 		"t1.code regexp ?\n"+
 		"or t2.code regexp ?\n"+
-		"or t1.name regexp ?\n"+
-		"or t2.name regexp ?\n"+
+		"or lower(t1.name) regexp lower(?)\n"+
+		"or lower(t2.name) regexp lower(?)\n"+
 		")\n"+
 		"and relationship != \"same_as\"\n"+
 		"order by t1.idtemplate\n";
