@@ -184,9 +184,11 @@ public class DBUser extends User {
 	
 	@Override
 	public String toString() {
-		return String.format("<a href='%s' title='%s'>%s</a>",
+		return String.format("<a href='%s'>%s%s %s</a>",
 				getResourceURL(),
-				getTitle()==null?getResourceURL():getTitle(),
-				getTitle()==null?getResourceURL():getTitle());
+				getTitle()==null?"":getTitle(),
+				getFirstname()==null?"":getFirstname(),
+				getLastname()==null?"":getLastname()
+				);
 	}
 }

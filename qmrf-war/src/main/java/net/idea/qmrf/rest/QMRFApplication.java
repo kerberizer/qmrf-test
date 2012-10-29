@@ -26,6 +26,7 @@ import net.idea.rest.structure.resource.StructureRouter;
 import net.idea.rest.user.UserRouter;
 import net.idea.rest.user.alerts.resource.AlertRouter;
 import net.idea.rest.user.resource.MyAccountResource;
+import net.idea.rest.user.resource.PwdResetResource;
 import net.idea.restnet.aa.cookie.CookieAuthenticator;
 import net.idea.restnet.aa.local.UserLoginPOSTResource;
 import net.idea.restnet.aa.local.UserLogoutPOSTResource;
@@ -129,6 +130,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		MyRouter myAccountRouter = new MyRouter(getContext());
 		myAccountRouter.attachDefault(MyAccountResource.class);
 		myAccountRouter.attach(Resources.alert,alertRouter);
+		myAccountRouter.attach(Resources.reset,PwdResetResource.class);
 		setCookieUserRouter
 				.attach(Resources.myaccount, myAccountRouter);
 		

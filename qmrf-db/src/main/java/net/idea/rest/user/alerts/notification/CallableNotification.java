@@ -86,7 +86,7 @@ public class CallableNotification extends CallableDBUpdateTask<DBUser,Form,Strin
 	}
 
 	@Override
-	protected Object executeQuery(IQueryUpdate<Object, DBUser> query)
+	protected Object executeQuery(IQueryUpdate<? extends Object, DBUser> query)
 			throws Exception {
 		/*TODO
 		Object result = super.executeQuery(query);
