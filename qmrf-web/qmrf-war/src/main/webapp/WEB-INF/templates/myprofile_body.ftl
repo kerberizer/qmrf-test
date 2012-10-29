@@ -3,6 +3,15 @@
 <#include "/head.ftl" >
 <#include "/users_head.ftl" >
 
+<style type="text/css">
+* { font-family: Verdana; font-size: 96%; }
+label { width: 10em; float: left; }
+label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
+p { clear: both; }
+.submit { margin-left: 12em; }
+em { font-weight: bold; padding-right: 1em; vertical-align: top; }
+</style>
+
 </head>
 <body>
 	<div class='w_wrap'>
@@ -23,44 +32,42 @@
 		<!-- user details tab -->
 			<div id='tabs-id'>
 			<span class='summary'>
+			<form action="/qmrf/myaccount/?method=put" id="form_myaccount" method="POST" >			
 			<#if myprofile>
 				<#assign ro=''>
-				<form action="/qmrf/myaccount/?method=put" id="form_myaccount" method="POST" >
 			<#else>
 				<#assign ro='readonly'>
 			</#if>
-			<table width='80%%'>
-			<tbody>
-			<tr><th colspan='2'><h2><a href=''><span id='useruri'></span></a></h2></th></tr>
-			<tr><th colwidth='25%'>User name</th><th align='left' id='username'></th></tr>
-			<tr><th>Title</th><td align='left'><input type='text' ${ro} size='40' name='title' id='title' value=''></td></tr>
-			<tr><th>First name</th><td align='left'><input type='text' ${ro} size='40' id='firstname' name='firstname' value=''></td></tr>
-			<tr><th>Last name</th><td align='left'><input type='text' ${ro} size='40' id='lastname' name='lastname' value=''></td></tr>
-			<tr><th>Affiliation</th>
-			<td align='left' >
-			<div>
+
+			<h2><a href=''><span id='useruri'></span></a></h2>
+			<p><label for="username">User name</label><b><span id='username'></span></b></p>
+			<p><label for="title">Title</label><input type="text" ${ro} size='40' name='title' id='title' value=''/></p>
+			<p><label for="firstname">First name</label><input type="text" ${ro} size='40' name='firstname' id='firstname' value=''/><em>*</em></p>
+			<p><label for="lastname">Last name</label><input type="text" ${ro} size='40' name='lastname' id='lastname' value=''/><em>*</em></p>
+			<p><label for="organisation">Affiliation</label>
+			<em> </em>
 			<table id='organisations'>
 				<thead style="display:none;">
 				<th></th>
 				</thead>
 				<tbody></tbody>
 			</table>
-			</div>
-			</td></tr>				
-			<tr><th>e-mail</th><td align='left'><input type='text' ${ro} size='40' id='email' name='email' value=''></td></tr>
-			<tr><th>WWW</th><td align='left' ><input type='text' ${ro} id='homepage' name='homepage' size='40' value=''></td></tr>
-			<tr><th>keywords</th><td align='left' ><input type='text' ${ro} id='keywords' name='keywords' size='40' value=''></td></tr>
-			<tr><th>Available as a reviewer</th><td align='left' ><input id='reviewer' ${ro} name='reviewer' type='checkbox'></td></tr>
+			</p>
+
+			<p><label for="email">e-mail</label><input type="text" ${ro} size='40' name='email' id='email' value=''/><em>*</em></p>
+			
+			<p><label for="homepage">WWW</label><input type="text" ${ro} size='40' name='homepage' id='homepage' value=''/></p>
+			<p><label for="keywords">Keywords</label><input type="text" ${ro} size='40' name='keywords' id='keywords' value=''/></p>
+			<p><label for="reviewer">Available as a reviewer</label><input type="checkbox" ${ro} name='reviewer' id='reviewer' value=''/></p>
 			<#if myprofile>
-			<tr><th></th><td align='left' ><input id='update' name='update' type='submit' value='Update'></td></tr>
+				<p><label for="update">&nbsp;</label><input id='update' name='update' type='submit' value='Update'></p>
 			</#if>
-			</tbody>								
-			</table>
+			
 			<#if myprofile>
+				<hr>
+				<p><a href="/qmrf/myaccount/reset">Change password</a></p>			
+			</#if>
 			</form>
-			<hr>
-			<a href="/qmrf/myaccount/reset">Change password</a>
-			</#if>
 			</span></div>
 		<!-- protocols -->
 			<div id='QMRF_documents'></div>
