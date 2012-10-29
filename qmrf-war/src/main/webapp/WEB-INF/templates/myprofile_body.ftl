@@ -4,7 +4,6 @@
 <#include "/users_head.ftl" >
 
 <style type="text/css">
-* { font-family: Verdana; font-size: 96%; }
 label { width: 10em; float: left; }
 label.error { float: none; color: red; padding-left: .5em; vertical-align: top; }
 p { clear: both; }
