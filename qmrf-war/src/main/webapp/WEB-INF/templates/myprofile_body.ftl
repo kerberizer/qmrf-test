@@ -2,6 +2,7 @@
 <head>
 <#include "/head.ftl" >
 <#include "/users_head.ftl" >
+
 </head>
 <body>
 	<div class='w_wrap'>
@@ -24,7 +25,7 @@
 			<span class='summary'>
 			<#if myprofile>
 				<#assign ro=''>
-				<form action='/qmrf/myaccount/?method=put' id='form_myaccount' method='POST' >
+				<form action="/qmrf/myaccount/?method=put" id="form_myaccount" method="POST" >
 			<#else>
 				<#assign ro='readonly'>
 			</#if>
