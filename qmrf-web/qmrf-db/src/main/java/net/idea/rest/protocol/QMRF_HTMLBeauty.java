@@ -41,6 +41,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 	private final static String[] js = new String[] {
 		"<script type='text/javascript' src='%s/jquery/jquery-1.7.2.min.js'></script>\n",
+		"<script type='text/javascript' src='%s/jquery/jquery.validate.min.js'></script>\n",
 		"<script type='text/javascript' src='%s/jquery/jquery-ui-1.8.18.custom.min.js'></script>\n",
 		"<script type='text/javascript' charset='utf8' src='%s/jquery/jquery.dataTables-1.9.0.min.js'></script>\n",
 		"<script type='text/javascript' src='%s/scripts/jopentox.js'></script>\n",
@@ -755,23 +756,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			return b.toString();
 		}
 
-		/*
-		public String getPaging(int page,int start, int last, long pageSize) {
-			String url = "<li><a href='?page=%d&pagesize=%d'>%s</a></li>";
-		    StringBuilder b = new StringBuilder(); 
-		    b.append("<div><ul id='hnavlist'>");
-		    b.append(String.format(url,page,pageSize,"Pages:"));
-		    b.append(String.format(url,0,pageSize,"<<"));
-		    b.append(String.format(url,page==0?page:page-1,pageSize,"Prev"));
-		    for (int i=start; i<= last; i++)
-		    	b.append(String.format(url,i,pageSize,i+1)); //zero numbered pages
-		    b.append(String.format(url,page+1,pageSize,"Next"));
-		   // b.append(String.format("<li><label name='pageSize' value='%d' size='4' title='Page size'></li>",pageSize));
-		    b.append("</ul></div><br>");
-		    return b.toString();
-		}
-		*/
-		
+	
 		public String getSearchURI() {
 			return searchURI;
 		}
@@ -876,9 +861,9 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 
 					content.append("<th width='15%%'>Endpoint</th>");
 					content.append(_tdStart);
-					content.append(String.format("<input type='text' readonly size='15' id='%s' name='%s'>",ReadProtocol.fields.endpointParentCode.name(),ReadProtocol.fields.endpointParentCode.name()));
-					content.append(String.format("<input type='text' readonly size='75' id='%s' name='%s'><br>",ReadProtocol.fields.endpointParentName.name(),ReadProtocol.fields.endpointParentName.name()));
-					content.append(String.format("<input type='text' size='75' title = 'Start writing here to get list of endpoints. The rest of the fields will be automatically filled in.' id='%s' name='%s'>","endpoint","endpoint"));
+					content.append(String.format("<input type='text' style='border:none;' readonly size='15' required id='%s' name='%s'>",ReadProtocol.fields.endpointParentCode.name(),ReadProtocol.fields.endpointParentCode.name()));
+					content.append(String.format("<input type='text' style='border:none;' readonly size='75' required id='%s' name='%s'><br>",ReadProtocol.fields.endpointParentName.name(),ReadProtocol.fields.endpointParentName.name()));
+					content.append(String.format("<input type='text' style='border:solid 1.5px;' size='75' required title = 'Start writing here to get list of endpoints. The rest of the fields will be automatically filled in.' id='%s' name='%s'>","endpoint","endpoint"));
 
 					
 					content.append(String.format(		
@@ -890,7 +875,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						"var formElementName = $(this).attr('name');\n"+
 						"var hiddenElementID  = formElementName + '_autocomplete_hidden';\n"+
 						"$(this).attr('name', formElementName + 'Name');\n"+
-						"$(this).before(\"<input type='text' size='15' readonly name=\" + formElementName + \" id=\" + hiddenElementID + \" />\");\n"+
+						"$(this).before(\"<input type='text' size='15' required style='border:none;.ui-autocomplete overflow-y: auto;' readonly name=\" + formElementName + \" id=\" + hiddenElementID + \" />\");\n"+
 						"$(this).autocomplete({source:'%s/catalog?media=application/json', \n"+
 						"	select: function(event, ui) {\n"+
 						"		var selectedObj = ui.item;\n"+
