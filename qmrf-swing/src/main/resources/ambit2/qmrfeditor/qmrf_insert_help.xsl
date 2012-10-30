@@ -300,7 +300,7 @@ g.	there exists a (graphical) expression of how the descriptor values of the che
 
 
 					<xsl:when test="@chapter=10.1">
-					<xsl:text>A unique number (numeric identifier) is assigned to any QMRF that is published in the JRC inventory. The number encodes the following information: model described in the QMRF (as derived from field 4.2), software implementing the model (as derived from field 1.3), version of the QMRF for the same model and the same software (as derived from the information included in field 2.4) and author of the QMRF (as derived from field 2.2). The number is unique for any QMRF uploaded and stored in the JRC inventory.</xsl:text>
+					<xsl:text>A unique numeric identifier is assigned to all QMRFs that are published in the JRC inventory. The identifier takes the form QMRF-year-number-version, e.g. QMRF-2009-213-1, where '2009' is the year of publication, '213' is the unique QMRF number in that year (typically consecutive as new documents are added), and '1' is the version of the document.</xsl:text>
 					</xsl:when>
 
 					<xsl:when test="@chapter=10.2">
