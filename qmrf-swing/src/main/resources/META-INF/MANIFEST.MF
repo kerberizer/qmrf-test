@@ -1,5 +1,4 @@
 Manifest-version: 1.0
-Name: net/idea/ambit/qmrf
 Package-Title: net.idea.ambit.qmrf.swing
 Main-Class: net.idea.ambit.qmrf.swing.QMRFEditor
 Specification-Title: QMRF editor
