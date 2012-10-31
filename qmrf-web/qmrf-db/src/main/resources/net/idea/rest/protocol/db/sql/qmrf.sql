@@ -231,7 +231,7 @@ CREATE TABLE  `version` (
   `comment` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`idmajor`,`idminor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-insert into version (idmajor,idminor,comment) values (2,6,"QMRF schema");
+insert into version (idmajor,idminor,comment) values (2,7,"QMRF schema");
 
 -- -----------------------------------------------------
 -- Create new protocol version
@@ -311,3 +311,26 @@ begin
 end $$
 
 DELIMITER ;
+
+-- -----------------------------------------------------
+-- Extract author details from XML
+-- name
+-- -----------------------------------------------------
+DROP FUNCTION IF EXISTS `getAuthorDetails`;
+DELIMITER $$
+CREATE FUNCTION `getAuthorDetails`(id TEXT, idp INT, idv INT, detail TEXT) RETURNS TEXT
+BEGIN
+
+    DECLARE name TEXT;
+    select extractvalue(abstract,concat("//authors_catalog/author[@id='",id,"']/@",detail)) into name from protocol
+    where idprotocol = idp and version=idv;
+
+    RETURN name;
+
+END $$
+
+DELIMITER ;
+
+grant execute on procedure getAuthorDetails to "guest"@"localhost";
+grant execute on procedure getAuthorDetails to "guest"@"127.0.0.1";
+insert into version (idmajor,idminor,comment) values (2,7,"QMRF schema");
