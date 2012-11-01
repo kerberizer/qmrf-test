@@ -78,6 +78,7 @@ public class UserXMLReporter <Q extends IQueryRetrieval<DBUser>>  extends QueryR
 	public void footer(Writer output, Q query) {
 		try {
 			output.write("\r\n</authors_catalog>\r\n");
+			output.write("\r\n</Catalogs>");
 		} catch (Exception x) {
 			
 		}		
@@ -85,6 +86,7 @@ public class UserXMLReporter <Q extends IQueryRetrieval<DBUser>>  extends QueryR
 	public void header(Writer output, Q query) {
 		try {
 			output.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n");
+			output.write("<Catalogs>");
 			output.write("<authors_catalog>\r\n");
 		} catch (Exception x) {
 			
