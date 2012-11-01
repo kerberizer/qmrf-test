@@ -782,8 +782,8 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	        	Properties props = new Properties();
 	        	in = new URL(url).openStream();
 	        	props.load(in);
-	        	if (props.getProperty("inventory")!=null)
-	        		readExternalCatalogs(props.getProperty("inventory")+"/authors?media=text/xml");
+	        	if (props.getProperty("authors")!=null)
+	        		readExternalCatalogs(props.getProperty("authors"));
 	        } catch (Exception x) {
 	        	
 	        } finally {
