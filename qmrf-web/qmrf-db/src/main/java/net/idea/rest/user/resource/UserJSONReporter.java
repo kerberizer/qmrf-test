@@ -54,8 +54,10 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 		MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition> orgReader = new MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition>(queryO) {
 			@Override
 			protected DBUser processDetail(DBUser target, DBOrganisation detail) throws Exception {
-				detail.setResourceURL(new URL(groupURIReporter.getURI(detail)));
-				target.addOrganisation(detail);
+				if (target.getID()>0) {
+					detail.setResourceURL(new URL(groupURIReporter.getURI(detail)));
+					target.addOrganisation(detail);
+				}
 				return target;
 			}
 		};
@@ -69,7 +71,7 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 		});			
 	}	
 
-	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"id\": \"U%s\",\n\t\"username\": \"%s\",\n\t\"title\": \"%s\",\n\t\"firstname\": \"%s\",\n\t\"lastname\": \"%s\",\n\t\"email\": \"%s\",\n\t\"homepage\": \"%s\",\n\t\"keywords\": \"%s\",\n\t\"reviewer\": %s,\n\t\t\"organisation\": [%s]\n\t}";
+	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"id\": %s,\n\t\"username\": \"%s\",\n\t\"title\": \"%s\",\n\t\"firstname\": \"%s\",\n\t\"lastname\": \"%s\",\n\t\"email\": \"%s\",\n\t\"homepage\": \"%s\",\n\t\"keywords\": \"%s\",\n\t\"reviewer\": %s,\n\t\t\"organisation\": [%s]\n\t}";
 	private static String formatGroup = "{\n\t\t\"uri\":\"%s\",\n\t\t\"title\": \"%s\"\n\t\t}";
 	//output.write("Title,First name,Last name,user name,email,Keywords,Reviewer\n");
 
@@ -88,11 +90,12 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 							org.getTitle()
 							));
 				}
-			String uri = uriReporter.getURI(user);
+
+			String uri = user.getID()>0?uriReporter.getURI(user):"";
 			
 			getOutput().write(String.format(format,
 					uri,
-					user.getID(),
+					(user.getID()>0)?String.format("\"U%s\"",user.getID()):null,
 					user.getUserName()==null?"":user.getUserName(),
 					user.getTitle()==null?"":user.getTitle(),
 					user.getFirstname()==null?"":user.getFirstname(),
@@ -101,7 +104,7 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 					user.getHomepage()==null?"":user.getHomepage(),
 					user.getKeywords()==null?"":user.getKeywords(),
 					user.isReviewer(),
-					group.toString()
+					group==null?"":group.toString()
 					));
 		} catch (IOException x) {
 			Context.getCurrentLogger().severe(x.getMessage());
