@@ -4,6 +4,7 @@ import java.util.Map;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.UserHTMLBeauty;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
 import net.idea.restnet.c.html.HTMLBeauty;

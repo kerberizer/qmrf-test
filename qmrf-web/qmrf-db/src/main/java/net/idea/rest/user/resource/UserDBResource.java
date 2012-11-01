@@ -6,7 +6,9 @@ import java.util.Map;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.q.conditions.EQCondition;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.protocol.UserHTMLBeauty;
 import net.idea.rest.user.CallableUserCreator;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
@@ -241,7 +243,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
-		if (htmlBeauty==null) htmlBeauty =  new UserHTMLBeauty();
+		if (htmlBeauty==null) htmlBeauty =  new UserHTMLBeauty(Resources.user);
 		return htmlBeauty;
 	}
 	
