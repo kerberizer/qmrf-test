@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Properties;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -771,19 +772,24 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
         }
         if( line.hasOption( "e" ) ) {
         	url = line.getOptionValue( "e" );
-        	
-        	try {
-        		System.out.println("reading catalogs from URL "+url);
-        		external_catalogs.read(new InputSource(new InputStreamReader(new URL(url).openStream(),"UTF-8")));
-    	    
-        	} catch (Exception x) {
-        		System.err.println(x.getMessage());
-        		readDefaultCatalogs(external_catalogs);
-        	} finally {
-
-        	}
-
-        }     
+        	readExternalCatalogs(url);
+        } 
+        //if not -e option of read failure, get the remote settings
+        if (external_catalogs.size()==0) {
+        	InputStream in = null;
+	        try {
+	        	url = "http://qmrf.sourceforge.net/editor/settings.properties";
+	        	Properties props = new Properties();
+	        	in = new URL(url).openStream();
+	        	props.load(in);
+	        	if (props.getProperty("inventory")!=null)
+	        		readExternalCatalogs(props.getProperty("inventory")+"/authors?media=text/xml");
+	        } catch (Exception x) {
+	        	
+	        } finally {
+	        	try {if (in !=null) in.close();} catch (Exception x) {}
+	        }
+        }
     
         if (external_catalogs.size() == 0)
         	readDefaultCatalogs(external_catalogs);
@@ -815,6 +821,18 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	        }
         }
      
+    }
+    
+    protected void readExternalCatalogs(String url) {
+    	try {
+    		System.out.println("reading catalogs from URL "+url);
+    		external_catalogs.read(new InputSource(new InputStreamReader(new URL(url).openStream(),"UTF-8")));
+	    
+    	} catch (Exception x) {
+    		System.err.println(x.getMessage());
+    	} finally {
+
+    	}
     }
 
     public void readURI(URI remoteFile) throws Exception {
