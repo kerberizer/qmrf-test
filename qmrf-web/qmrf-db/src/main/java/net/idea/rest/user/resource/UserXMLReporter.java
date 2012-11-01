@@ -2,11 +2,13 @@ package net.idea.rest.user.resource;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.UUID;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
 import net.idea.modbcum.r.QueryReporter;
 import net.idea.rest.user.DBUser;
+import net.toxbank.client.resource.Organisation;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -48,12 +50,23 @@ public class UserXMLReporter <Q extends IQueryRetrieval<DBUser>>  extends QueryR
 	@Override
 	public Object processItem(DBUser item) throws Exception {
 		try {
-			output.write(String.format("\t<author id='id%d' name='%s %s %s' affiliation='%s' contact='%s' url='%s' email='%s' number='%d'/>\r\n",
-					item.getID(),
-					item.getTitle(),item.getFirstname(),item.getLastname(),
-					"","","",
+			StringBuilder name = new StringBuilder();
+			name.append(item.getTitle()==null?"":item.getTitle());
+			name.append(" ");
+			name.append(item.getFirstname()==null?"":item.getFirstname());
+			name.append(" ");
+			name.append(item.getLastname()==null?"":item.getLastname());
+			String affiliation = "";
+			for (Organisation org : item.getOrganisations())
+				affiliation = org.getTitle();
+			
+			output.write(String.format("\t<author id='id%s' name='%s' affiliation='%s' contact='%s' url='%s' email='%s' number='%d'/>\r\n",
+					item.getID()>0?item.getID():UUID.randomUUID().toString(),
+					name.toString().trim(),
+					affiliation,"",
+					item.getHomepage()==null?"":item.getHomepage().toExternalForm(),
 					item.getEmail()==null?"":item.getEmail(),
-					item.getID()
+					1
 					));
 			output.flush();
 		} catch (IOException x) {
