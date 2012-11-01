@@ -363,6 +363,5 @@ Catalogs available in QMRF Inventory in XML format as defined in QMRF DTD schema
   </endpoints_catalog>
   <publications_catalog></publications_catalog>
   <authors_catalog>
-    <author affiliation="" contact="" email="rbenigni@iss.it" id="AUTH1" name="R. Benigni" number="1"></author>
   </authors_catalog>
 </Catalogs>

@@ -783,10 +783,22 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 
         	}
 
-        }        
+        }     
+    
         if (external_catalogs.size() == 0)
         	readDefaultCatalogs(external_catalogs);
-        
+        else {
+        	Catalogs dc = new Catalogs();
+        	readDefaultCatalogs(dc);
+        	for (int c=0; c < Catalog.catalog_names.length; c++) {
+             	String tag = Catalog.catalog_names[c][0].toString();
+             	if ((external_catalogs.get(tag)==null) || (external_catalogs.get(tag).size()==0)) {
+             		if (dc.get(tag)!=null)
+             			external_catalogs.put(tag, dc.get(tag));
+             	}
+            }   
+        }
+     
         if( line.hasOption( "x" ) ) {
         	URI remoteFile  = null;
         	try {

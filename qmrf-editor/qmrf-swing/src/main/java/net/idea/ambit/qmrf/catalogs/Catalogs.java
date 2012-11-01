@@ -41,6 +41,10 @@ import org.xml.sax.InputSource;
 
 
 public class Catalogs extends Hashtable<String, Catalog> implements	InterfaceQMRF {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5801415010735285795L;
 	protected String name; 
 	protected boolean editable = true;
 	public boolean isEditable() {
