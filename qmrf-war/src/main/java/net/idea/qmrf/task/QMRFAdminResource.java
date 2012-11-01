@@ -28,8 +28,9 @@ public class QMRFAdminResource extends CatalogResource<AdminItem> {
 //		topics.add(new AdminItem("QMRF upload",String.format("%s/%s",resource,Resources.editor),"Upload new QMRF document"));
 
 		topics.add(new AdminItem("Database admin",String.format("%s/%s",resource,DatabaseResource.resource),"Create or inspect database"));
-		topics.add(new AdminItem("Users","user?pagesize=10","Browse registered users"));
-		topics.add(new AdminItem("Organisations","organisation?pagesize=10","Browse users affiliations"));
+		topics.add(new AdminItem("Authors","authors","All QMRF document authors"));
+		topics.add(new AdminItem("Users","user","Browse registered users"));
+		topics.add(new AdminItem("Organisations","organisation","Browse users affiliations"));
 		topics.add(new AdminItem("System jobs","task?pagesize=10","Browse jobs status"));
 
 	}

@@ -35,6 +35,7 @@
 			<#if managerRole??>
 				<#if managerRole == 'true'>
 					<#assign admin = true>
+					<li><a class='selectable ${s["/authors"]!""}' title='QMRF document authors.' href='/qmrf/authors'>Authors</a></li>
 					<li><a class='selectable ${s["/user"]!""}' title='All registered users.' href='/qmrf/user'>Users</a></li>
 					<li><a class='selectable ${s["/organisation"]!""}' title='All registered user affiliations.' href='/qmrf/organisation'>Organisations</a></li>
 					<li><a class='selectable ${s["/admin"]!""}' title='System administration' href='/qmrf/admin'>Admin</a></li>
