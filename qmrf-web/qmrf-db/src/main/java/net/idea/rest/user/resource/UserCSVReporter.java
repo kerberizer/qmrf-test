@@ -2,11 +2,19 @@ package net.idea.rest.user.resource;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.net.URL;
 
+import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
+import net.idea.modbcum.p.DefaultAmbitProcessor;
+import net.idea.modbcum.p.MasterDetailsProcessor;
 import net.idea.modbcum.r.QueryReporter;
+import net.idea.rest.groups.DBOrganisation;
+import net.idea.rest.groups.db.ReadOrganisation;
+import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.user.DBUser;
+import net.toxbank.client.resource.Organisation;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -24,26 +32,57 @@ public class UserCSVReporter<Q extends IQueryRetrieval<DBUser>>  extends QueryRe
 	}
 	public void setRequest(Request request) {
 		this.request = request;
+		this.baseReference = request==null?null:request.getRootRef();
 	}
 	protected Reference baseReference;
 	public Reference getBaseReference() {
 		return baseReference;
 	}
-	protected UserCSVReporter(Reference baseRef) {
-		this.baseReference = baseRef;
-	}
+
 	public UserCSVReporter(Request request) {
-		this(request==null?null:request.getRootRef());
-		setRequest(request);
-	}	
-	protected UserCSVReporter() {
+		setRequest(request==null?null:request);
+		getProcessors().clear();
+		IQueryRetrieval<DBOrganisation> queryO = new ReadOrganisation(new DBOrganisation()); 
+		
+		MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition> orgReader = new MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition>(queryO) {
+			@Override
+			protected DBUser processDetail(DBUser target, DBOrganisation detail) throws Exception {
+				if (target.getID()>0) {
+					target.addOrganisation(detail);
+				}
+				return target;
+			}
+		};
+		
+		getProcessors().add(orgReader);
+		processors.add(new DefaultAmbitProcessor<DBUser, DBUser>() {
+			public DBUser process(DBUser target) throws Exception {
+				processItem(target);
+				return target;
+			};
+		});		
 	}	
 	@Override
 	public Object processItem(DBUser item) throws Exception {
 		try {
-			output.write(String.format("%s,\"%s\",\"%s\",%s,%s,\"%s\",%s\n",
-					item.getTitle(),item.getFirstname(),item.getLastname(),item.getUserName()==null?"":item.getUserName(),
-					item.getEmail()==null?"":item.getEmail(),item.getKeywords(),item.isReviewer()?"Yes":""
+			StringBuilder name = new StringBuilder();
+			name.append(item.getTitle()==null?"":item.getTitle());
+			name.append(" ");
+			name.append(item.getFirstname()==null?"":item.getFirstname());
+			name.append(" ");
+			name.append(item.getLastname()==null?"":item.getLastname());
+			
+			String affiliation = "";
+			if (item.getOrganisations()!=null)
+			for (Organisation org : item.getOrganisations())
+				affiliation = org.getTitle();
+			output.write(String.format("\"%s\",\"%s\",%s,\"%s\",\"%s\",%s\n",
+					name.toString().trim(),
+					affiliation,
+					item.getUserName()==null?"":item.getUserName(),
+					item.getEmail()==null?"":item.getEmail(),
+					item.getKeywords(),
+					item.isReviewer()?"Yes":""
 					));
 			output.flush();
 		} catch (IOException x) {
@@ -55,7 +94,7 @@ public class UserCSVReporter<Q extends IQueryRetrieval<DBUser>>  extends QueryRe
 	public void footer(Writer output, Q query) {};
 	public void header(Writer output, Q query) {
 		try {
-			output.write("Title,First name,Last name,user name,email,Keywords,Reviewer\n");
+			output.write("Name,Affiliation,user name,email,Keywords,Reviewer\n");
 		} catch (Exception x) {
 			
 		}

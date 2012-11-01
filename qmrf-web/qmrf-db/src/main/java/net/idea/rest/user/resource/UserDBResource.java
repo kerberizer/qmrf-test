@@ -85,7 +85,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 						,MediaType.TEXT_URI_LIST,filenamePrefix);
 		} else if (variant.getMediaType().equals(MediaType.TEXT_CSV)) {
 			return new OutputWriterConvertor(
-					new UserCSVReporter<IQueryRetrieval<DBUser>>(getRequest().getResourceRef()),
+					new UserCSVReporter<IQueryRetrieval<DBUser>>(getRequest()),
 					MediaType.TEXT_CSV);
 		} else if (variant.getMediaType().equals(MediaType.APPLICATION_JSON)) {
 			return new OutputWriterConvertor(
