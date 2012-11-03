@@ -18,5 +18,5 @@ GRANT ALL ON `qmrf-test`.* TO 'guest'@'localhost';
 GRANT TRIGGER ON qmrf_test.* TO 'guest'@'localhost';
 GRANT UPDATE,DROP,CREATE,SELECT,INSERT,EXECUTE, DELETE, CREATE ROUTINE, ALTER ROUTINE on `qmrf-test`.* TO 'guest'@'localhost';
 GRANT UPDATE,DROP,CREATE,SELECT,INSERT,EXECUTE, DELETE, CREATE ROUTINE, ALTER ROUTINE on `qmrf-test`.* TO 'guest'@'127.0.0.1';
-GRANT execute on PROCEDURE `qmrf-test`.findByProperty to guest@127.0.0.1
-GRANT execute on PROCEDURE `qmrf-test`.findByProperty to guest@localhost
+GRANT execute on function `qmrf-test`.getAuthorDetails to guest@127.0.0.1;
+GRANT execute on function `qmrf-test`.getAuthorDetails to guest@localhost;
