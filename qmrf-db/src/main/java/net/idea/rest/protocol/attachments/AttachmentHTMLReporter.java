@@ -16,6 +16,7 @@ import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
 
 import org.restlet.Request;
+import org.restlet.data.ClientInfo;
 import org.restlet.data.Reference;
 
 public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQueryRetrieval<DBAttachment>> {
@@ -64,6 +65,17 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 			documentUI = null;
 		}
 	}
+	
+	protected boolean isAdminOrEditor() {
+		ClientInfo clientInfo = uriReporter.getRequest().getClientInfo();
+		if (clientInfo==null) return false;
+		
+		return clientInfo.getRoles().indexOf(managerRole)>=0
+			   || 
+			   clientInfo.getRoles().indexOf(editorRole) >=0;
+
+	}
+	
 	@Override
 	protected void printTableHeader(Writer w) throws Exception {
 		w.write("<table width='100%'>\n");
@@ -110,10 +122,15 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 				attachment.getTitle(),attachment.getMediaType()
 				)
 				);
+		
 	
 		switch (attachment.getType()) {
 		case document: {
 			datasets.append("<td></td>");
+			if (isAdminOrEditor()) {
+				String form = String.format("<form method='POST' title='Remove attachment' action='%s?method=delete'><input type='hidden' value='true' name='delete'><input type='submit' class='Draw' title='Delete attachment' value='Delete attachment'></form>",uri);
+				datasets.append(String.format("<td align='left'>%s</td>",form));
+			} else datasets.append("<td></td>");
 			break;
 		}
 		default: {
@@ -124,10 +141,15 @@ public class AttachmentHTMLReporter extends QMRFHTMLReporter<DBAttachment, IQuer
 						
 				datasets.append(String.format("<td align='left' ><a href='%s'>Browse structures</a></td>",
 						datasetURI));
-
+				datasets.append("<td></td>");
 			} else {
-				String form = String.format("<form method='POST' title='This dataset is not yet browsable and searchable' action='%s/dataset'><input type='hidden' value='true' name='import'><input type='submit' class='Draw' title='Convert to browsable and searchable dataset' value='Convert to browsable'></form>",uri);
-				datasets.append(String.format("<td align='left'>%s</td>",form));
+
+				if (isAdminOrEditor()) {
+					String form = String.format("<form method='POST' title='This dataset is not yet browsable and searchable' action='%s/dataset'><input type='hidden' value='true' name='import'><input type='submit' class='Draw' title='Convert to browsable and searchable dataset' value='Convert to browsable'></form>",uri);
+					datasets.append(String.format("<td align='left'>%s</td>",form));
+					form = String.format("<form method='POST' title='Remove attachment' action='%s?method=delete'><input type='hidden' value='true' name='delete'><input type='submit' class='Draw' title='Delete attachment' value='Delete attachment'></form>",uri);
+					datasets.append(String.format("<td align='left'>%s</td>",form));
+				} else datasets.append("<td></td><td></td>");
 			}
 			break;
 		}

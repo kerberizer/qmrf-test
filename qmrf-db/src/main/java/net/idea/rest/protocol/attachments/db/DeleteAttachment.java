@@ -10,7 +10,7 @@ import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
 
 /**
- * Removes an author of a given protocol. Does not delete the user itself.
+ * Removes an attachment of a given QMRF document. 
  * @author nina
  *
  */

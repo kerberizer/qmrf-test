@@ -14,13 +14,13 @@ import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
-import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
 import net.idea.rest.protocol.resource.db.FileReporter;
 import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
 import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.TaskCreator;
@@ -28,6 +28,7 @@ import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
 import org.apache.commons.fileupload.FileItem;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -83,6 +84,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 			else	
 				return new DownloadDocumentConvertor(createFileReporter(),null,filenamePrefix);
 	}
+	
 	
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless) throws ResourceException {
@@ -161,7 +163,12 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 
 	@Override
 	protected TaskCreator getTaskCreator(Form form, final Method method, boolean async, final Reference reference) throws Exception {
-		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Not multipart web form!");
+		if (Method.DELETE.equals(method)) {
+			TaskCreator taskCreator = super.getTaskCreator(form, method, async, reference);
+			taskCreator.getProcessors().setAbortOnError(true);
+			return taskCreator;
+		} else
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Not multipart web form!");
 	}	
 	
 	@Override
@@ -188,6 +195,31 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 			throws ResourceException {
 		return MediaType.MULTIPART_FORM_DATA.equals(mediaType);
 	}
+	
+	@Override
+	protected CallableProtectedTask<String> createCallable(Method method,
+			Form form, DBAttachment item) throws ResourceException {
+		AttachmentURIReporter reporter = new AttachmentURIReporter(getRequest(),"");
+		Connection conn = null;
+		try {
+			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			conn = dbc.getConnection();
+			String ambituser = ((TaskApplication)getApplication()).getProperty(Resources.AMBIT_LOCAL_USER);
+			String ambitpass = ((TaskApplication)getApplication()).getProperty(Resources.AMBIT_LOCAL_PWD);
+			UsernamePasswordCredentials creds = new UsernamePasswordCredentials(ambituser,ambitpass);
+			return new CallableAttachmentImporter(
+					method,
+					getRequest().getRootRef(),
+					reporter,
+					item,
+					form,
+					null,conn,creds);
+		} catch (Exception x) {
+			try { conn.close(); } catch (Exception xx) {}
+			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
+		}
+	}
+	
 	@Override
 	protected CallableProtectedTask<String> createCallable(Method method,
 			List<FileItem> input, DBAttachment item) throws ResourceException {
