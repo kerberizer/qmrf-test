@@ -44,6 +44,7 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.Restlet;
 import org.restlet.Server;
+import org.restlet.data.Method;
 import org.restlet.data.Protocol;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Filter;
@@ -120,8 +121,10 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		// here we check if the cookie contains auth token, if not just consider
 		// the user notlogged in
 		Filter auth = createCookieAuthenticator(true);
+		Filter authz = new ProtocolAuthorizer(); 
 		Router setCookieUserRouter = new MyRouter(getContext());
-		auth.setNext(setCookieUserRouter);
+		auth.setNext(authz);
+		authz.setNext(setCookieUserRouter);
 
 		setCookieUserRouter
 				.attach(Resources.login, QMRFLoginFormResource.class);
@@ -419,6 +422,26 @@ class SimpleRoleAndMethodAuthorizer extends RoleAuthorizer {
 			return false;
 		// if (Method.GET.equals(request.getMethod()))
 		// return true;
+		return super.authorize(request, response);
+	}
+
+}
+
+class ProtocolAuthorizer extends RoleAuthorizer {
+	public ProtocolAuthorizer(DBRole... roles) {
+		super();
+		for (DBRole role : roles)
+			getAuthorizedRoles().add(role);
+	}
+
+	@Override
+	public boolean authorize(Request request, Response response) {
+		if (Method.GET.equals(request.getMethod()))
+			return true;
+		if ((request.getClientInfo() == null)
+				|| (request.getClientInfo().getUser() == null)
+				|| (request.getClientInfo().getUser().getIdentifier() == null))
+			return false;
 		return super.authorize(request, response);
 	}
 
