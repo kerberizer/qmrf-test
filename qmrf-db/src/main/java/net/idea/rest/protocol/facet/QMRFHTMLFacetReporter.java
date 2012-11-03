@@ -74,7 +74,7 @@ public class QMRFHTMLFacetReporter extends QMRFHTMLReporter<EndpointProtocolFace
 			
 			String d = uri==null?"":uri.indexOf("?")>0?"&":"?";
 			output.write(((QMRF_HTMLBeauty)htmlBeauty).printWidgetContentContent(String.format(
-						"<a href=\"%s%spage=0&pagesize=10\">%s&nbsp;%s</a>&nbsp;(%d)<br>",
+						"<a href=\"%s%s\">%s&nbsp;%s</a>&nbsp;(%d)<br>",
 						uri==null?"":uri,d,
 						item.getProperty2()==null?"":item.getProperty2().trim(),
 						item.getValue()==null?"Undefined endpoint":item.getValue().toString().trim(),

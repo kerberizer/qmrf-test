@@ -587,12 +587,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			return this.printMenuItem(relativeURI, title, baseReference, pagesize,"");
 		}
 		protected String printMenuItem(String relativeURI,String title,String baseReference,String pagesize,String hint) {
-			return String.format("<li><a class='%s' title='%s' href='%s%s%s%s'>%s</a></li>\n",
+			return String.format("<li><a class='%s' title='%s' href='%s%s'>%s</a></li>\n",
 					getSearchURI().equals(relativeURI)?"selected":"selectable",
 					hint==null?title:hint,
 					baseReference,relativeURI,
-					pagesize==null?"":"?pagesize=",
-					pagesize==null?"":pagesize,
 					title);
 		}
 		
@@ -634,17 +632,17 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		}	
 	
 		protected String searchMenu(Reference baseReference,Form form)  {
-			String pageSize = "10";
+			String pageSize = "100";
 			String structure = null;
 			try {
 				if ((form != null) && (form.size()>0)) {
 					searchQuery = form.getFirstValue(AbstractResource.search_param)==null?"":form.getFirstValue(AbstractResource.search_param);
-					pageSize = form.getFirstValue("pagesize")==null?"10":form.getFirstValue("pagesize");
+					pageSize = form.getFirstValue("pagesize")==null?"100":form.getFirstValue("pagesize");
 					structure = form.getFirstValue("structure");
 				}
 			} catch (Exception x) {
 				searchQuery = "";
-				pageSize = "10";
+				pageSize = "100";
 			}
 			option = SearchMode.text;
 			try {
@@ -666,7 +664,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.append("<div class='search ui-widget'>\n");
 				stringBuilder.append("<p title='%s'>%s</p>\n");
-				stringBuilder.append("<form method='GET' action='%s%s?pagesize=10'>\n");
+				stringBuilder.append("<form method='GET' action='%s%s'>\n");
 				stringBuilder.append("<table width='200px'>\n");
 				stringBuilder.append("<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter search query'></td></tr>\n");
 				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='1' type='radio' value='title' name='option' title='Title' size='20'>Title</td></tr>\n");
