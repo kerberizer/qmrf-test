@@ -60,9 +60,12 @@
 			<!-- search menu -->
 			<#if s["/protocol"]??>
 				<#include "/protocols_menu.ftl" >
+			<#else> <#if s["/unpublished"]??> 
+				<#include "/protocols_menu.ftl" >		
 			<#else> <#if s["/chemical"]??>
 				<#include "/structures_menu.ftl" >
-				</#if>
+			</#if>
+			</#if>
 			</#if>
 			
 		<#else>  <!-- Front page -->
