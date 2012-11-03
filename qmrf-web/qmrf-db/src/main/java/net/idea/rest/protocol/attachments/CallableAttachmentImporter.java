@@ -11,6 +11,8 @@ import java.util.List;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.opentox.cli.task.FibonacciSequence;
 import net.idea.opentox.cli.task.RemoteTask;
+import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.attachments.db.DeleteAttachment;
 import net.idea.rest.protocol.attachments.db.UpdateAttachment;
 import net.idea.restnet.db.update.CallableDBUpdateTask;
 
@@ -62,30 +64,48 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 		this.attachment = attachment;
 		this.queryService= queryService;
 		this.creds = credentials;
+		this.baseReference = baseReference.toString();
 	}
 
 	@Override
 	protected DBAttachment getTarget(Form input) throws Exception {
-		try {
-			RemoteTask task = remoteImport(attachment);
-			if (task.isCompletedOK()) {
-				attachment.setImported(true);
-				return attachment;
-			} else throw task.getError();
-		} catch (Exception x) {
-			throw x;
-		}
+		if (Method.DELETE.equals(method)) return attachment;
+		else
+			try {
+				RemoteTask task = remoteImport(attachment);
+				if (task.isCompletedOK()) {
+					attachment.setImported(true);
+					return attachment;
+				} else throw task.getError();
+			} catch (Exception x) {
+				throw x;
+			}
 	}
 
 	@Override
-	protected IQueryUpdate<Object, DBAttachment> createUpdate(
+	protected IQueryUpdate<? extends Object, DBAttachment> createUpdate(
 			DBAttachment target) throws Exception {
+		if (Method.DELETE.equals(method)) {
+			return new DeleteAttachment(target,target.getQMRFDocument());
+		} else
 		return new UpdateAttachment(null,target);
 	}
 
 	@Override
 	protected String getURI(DBAttachment target) throws Exception {
-		return String.format("%s/dataset",reporter.getURI(target));
+		if (Method.DELETE.equals(method)) {
+			try {
+				File file = new File(target.getResourceURL().getFile());
+				file.delete();
+			} catch (Exception x) {
+				x.printStackTrace();
+			}
+			return String.format("%s%s/%s%s",baseReference,
+					Resources.protocol,
+					target.getQMRFDocument().getIdentifier(),
+					Resources.attachment);
+		} else
+			return String.format("%s/dataset",reporter.getURI(target));
 	}
 	
 	@Override

@@ -67,6 +67,32 @@ public class AttachmentResourceTest extends ResourceTest {
 	}	
 	
 	@Test
+	public void testDeleteAttachment() throws Exception {
+		
+		Reference uri = new Reference(String.format("http://localhost:%d/protocol/%s/attachment/A110",port,id83));
+
+		RemoteTask task = testAsyncPoll(
+				uri,
+				MediaType.TEXT_URI_LIST, null,
+				Method.DELETE);
+		//wait to complete
+		while (!task.isDone()) {
+			task.poll();
+			Thread.sleep(100);
+			Thread.yield();
+		}
+		if (!task.isCompletedOK())
+			System.out.println(task.getError());
+		System.out.println(task.getResult());
+
+		
+   	    IDatabaseConnection c = getConnection();	
+		ITable  table = 	c.createQueryTable("EXPECTED","SELECT idattachment,idprotocol,version from attachments p where p.idprotocol=83 and p.version=1 and idattachment=110");
+		Assert.assertEquals(0,table.getRowCount());
+		c.close();
+	}
+	
+	@Test
 	public void testCreateEntryFromMultipartWeb() throws Exception {
 		String url = createEntryFromMultipartWeb(new Reference(getTestURI()));
 		
