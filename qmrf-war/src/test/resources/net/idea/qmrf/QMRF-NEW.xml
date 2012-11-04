@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE QMRF PUBLIC "http://ambit.sourceforge.net/qmrf/qmrf.dtd" "qmrf.dtd">
+<!DOCTYPE QMRF PUBLIC "http://qmrf.sourceforge.net/qmrf.dtd" "qmrf.dtd">
 <QMRF author="Joint Research Centre, European Commission" contact="Joint Research Centre, European Commission" date="May 2012" email="JRC-IHCP-COMPUTOX@ec.europa.eu" name="(Q)SAR Model Reporting Format" schema_version="1.0" url="http://ihcp.jrc.ec.europa.eu/" version="1.3">
 <QMRF_chapters>
 <QSAR_identifier chapter="1" help="" name="QSAR identifier">
