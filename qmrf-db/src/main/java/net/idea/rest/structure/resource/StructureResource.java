@@ -23,6 +23,7 @@ import net.idea.rest.prediction.ReadModelQuery;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
+import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
@@ -72,8 +73,18 @@ public class StructureResource extends CatalogResource<Structure> {
 	protected void configureTemplateMap(Map<String, Object> map) {
 		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
 		Reference query = getSearchReference(getContext(),getRequest(),getResponse(),parameters);
+		
+		Reference qmrf_request = query.clone();
+		qmrf_request.addQueryParameter("media",MediaType.TEXT_CSV.toString());
+		map.put("qmrf_request_csv",qmrf_request.toString());
+		
+		qmrf_request = query.clone();
+		qmrf_request.addQueryParameter("media",ChemicalMediaType.CHEMICAL_MDLSDF.toString());
+		map.put("qmrf_request_sdf",qmrf_request.toString());		
+		
 		query.addQueryParameter("media",MediaType.APPLICATION_JAVASCRIPT.toString());
 		map.put("qmrf_request_jsonp",query.toString());
+
 	
 		map.put("managerRole", "false");
 		map.put("editorRole", "false");
