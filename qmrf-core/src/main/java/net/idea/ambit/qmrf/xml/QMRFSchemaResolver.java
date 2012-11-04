@@ -33,7 +33,7 @@ import org.xml.sax.InputSource;
 import ambit2.base.log.AmbitLogger;
 
 public class QMRFSchemaResolver implements EntityResolver {
-	public static final String defaultLocation="http://ambit.sourceforge.net/qmrf/qmrf.dtd";
+	public static final String defaultLocation="http://qmrf.sourceforge.net/qmrf.dtd";
 	protected AmbitLogger logger;
     protected String location;
     protected boolean ignoreSystemID = false;
