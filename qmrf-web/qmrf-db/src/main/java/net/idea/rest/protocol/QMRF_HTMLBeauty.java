@@ -68,11 +68,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"fjs.parentNode.insertBefore(js, fjs);\n" +
 			"}(document, 'script', 'facebook-jssdk'));</script>\n";
 	
-	// Twitter JS
-	private final static String twitterInit =
-			"<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id))" +
-			"{js=d.createElement(s);js.id=id;js.src=\"//platform.twitter.com/widgets.js\";" +
-			"fjs.parentNode.insertBefore(js,fjs);}}(document,\"script\",\"twitter-wjs\");</script>\n";
 
 	// LinkedIn
 	private final static String linkedInInit = "<script src='https://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
@@ -340,7 +335,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			if (!isMsie7()) {
 				w.write(String.format("<script type='text/javascript' src='%s/scripts/init_gplus.js'></script>\n",baseReference));
 				//w.write(googlePlusInit);
-				w.write(twitterInit);
+				w.write(String.format("<script type='text/javascript' src='%s/scripts/init_twitter.js'></script>\n",baseReference));
 				w.write(linkedInInit);
 			}
 			// Disabled for the time being, as there are issues with it.
