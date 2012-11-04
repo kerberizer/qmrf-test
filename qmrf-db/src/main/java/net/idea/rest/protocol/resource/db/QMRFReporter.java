@@ -77,7 +77,7 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 			String xml = item.getAbstract();
 			if (MediaType.APPLICATION_XML.equals(media)) {
 				
-				getOutput().write(xml.getBytes());
+				getOutput().write(xml.getBytes("UTF-8"));
 			} else if (MediaType.APPLICATION_PDF.equals(media)) {
 				 QMRF_xml2pdf qpdf = new QMRF_xml2pdf(null);
 		         qpdf.xml2pdf(new InputSource(new StringReader(xml)),getOutput());	
