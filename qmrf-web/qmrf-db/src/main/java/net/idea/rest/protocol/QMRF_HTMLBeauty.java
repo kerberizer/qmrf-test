@@ -56,15 +56,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n"
 	};
 	
-	// Google +1 buttons
-	private final static String googlePlusInit =
-		"<script type='text/javascript'>" +
-		"(function() {" +
-		"var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;" +
-		"po.src = 'https://apis.google.com/js/plusone.js';" +
-		"var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);" +
-		"})();" +
-		"</script>";
 
 	// Facebook JavaScript SDK
 	private final static String facebookInit =
@@ -347,7 +338,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// Initialize Google +1, Twitter, Linked In and VKontakte buttons; Facebook is initialized at the beginning of BODY
 			// But don't load if Microsoft IE 7 is detected, because this produces JS parsing errors.
 			if (!isMsie7()) {
-				w.write(googlePlusInit);
+				w.write(String.format("<script type='text/javascript' src='%s/scripts/init_gplus.js'></script>\n",baseReference));
+				//w.write(googlePlusInit);
 				w.write(twitterInit);
 				w.write(linkedInInit);
 			}
