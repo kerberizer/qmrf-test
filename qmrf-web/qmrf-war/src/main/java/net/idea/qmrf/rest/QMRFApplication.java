@@ -28,6 +28,7 @@ import net.idea.rest.user.alerts.resource.AlertRouter;
 import net.idea.rest.user.author.resource.AuthorsResource;
 import net.idea.rest.user.resource.MyAccountResource;
 import net.idea.rest.user.resource.PwdResetResource;
+import net.idea.rest.user.resource.RegistrationResource;
 import net.idea.restnet.aa.cookie.CookieAuthenticator;
 import net.idea.restnet.aa.local.UserLoginPOSTResource;
 import net.idea.restnet.aa.local.UserLogoutPOSTResource;
@@ -118,6 +119,8 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 	public Restlet createInboundRoot() {
 
 		Router router = new MyRouter(this.getContext());
+		
+		
 		// here we check if the cookie contains auth token, if not just consider
 		// the user notlogged in
 		Filter auth = createCookieAuthenticator(true);
@@ -197,6 +200,8 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		auth = createCookieAuthenticator(false);
 		auth.setNext(protectedRouter);
 		router.attach("/protected", auth);
+		
+		router.attach(Resources.register, RegistrationResource.class);
 
 
 		router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
