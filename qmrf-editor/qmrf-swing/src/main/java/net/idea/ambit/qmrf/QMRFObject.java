@@ -138,7 +138,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     protected boolean adminUser = false;
     protected String source = "New";
     protected QMRFChapter selectedChapter = null;
-    protected boolean saveSelectedOnly = false;
+    protected boolean saveSelectedOnly = true;
     protected boolean attachmentReadOnly = false;
 	
 	protected static final String[] attrNames = {"name","version","author","date","contact","email","url"};
@@ -658,7 +658,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     /**
      * Example:
      * <pre>
-     * -e http://nina.acad.bg/qmrf/catalogs_xml.jsp?all=true  -c
+     * -e https://sourceforge.net/p/qmrf/code/593/tree/trunk/qmrf-editor/qmrf-core/src/main/resources/ambit2/qmrfeditor/endpoints/endpoints.xml 
      * </pre>
      * @return
      */
@@ -702,6 +702,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 
         Option catalog_cleanup   = OptionBuilder.withLongOpt("cleancatalogs")
         .withDescription(  "When saving as XML, include only catalog entries which have an idref reference")
+        .withArgName("value")
         .create( "c" );
         
         Option readonlyAttachments   = OptionBuilder.withLongOpt("readonly-attachments")
@@ -768,7 +769,11 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
         	adminUser = "admin".equals(line.getOptionValue( "u" ));
         }        
         if( line.hasOption( "c" ) ) {
-        	setSaveSelectedOnly(true);
+        	try {
+        		setSaveSelectedOnly(Boolean.parseBoolean(line.getOptionValue("c")));
+        	} catch (Exception x) {
+        		setSaveSelectedOnly(true);
+        	}
         }
         if( line.hasOption( "e" ) ) {
         	url = line.getOptionValue( "e" );
