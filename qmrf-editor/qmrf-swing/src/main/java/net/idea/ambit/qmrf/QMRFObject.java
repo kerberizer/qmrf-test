@@ -132,7 +132,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	protected Catalogs catalogs;
 	
 	protected Catalogs external_catalogs;
-    protected String dtdSchema = "http://ambit.sourceforge.net/qmrf/qmrf.dtd";
+    protected String dtdSchema = "http://qmrf.sourceforge.net/qmrf.dtd";
     protected String xmlSample = "http://ambit.sourceforge.net/qmrf/qmrf.xml";
     protected String ttfFontUrl = "http://ambit.sourceforge.net/qmrf/jws/times.ttf";
     protected boolean adminUser = false;
@@ -668,7 +668,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
         Option dtdschema   = OptionBuilder.withLongOpt("dtd")
                             .withArgName( "url" )
                             .hasArg()
-                            .withDescription(  "DTD schema location - URL where DTD schema resides (e.g. -dfile:///D:/src/ambit/qmrf.dtd or -dhttp://ambit.sourceforge.net/qmrf/qmrf.dtd ) ")
+                            .withDescription(  "DTD schema location - URL where DTD schema resides (e.g. -dfile:///D:/myfolder/qmrf.dtd or -dhttp://qmrf.sourceforge.net/qmrf.dtd ) ")
                             .create( "d" );
 
         Option content   = OptionBuilder.withLongOpt("xmlcontent")
@@ -701,7 +701,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
         .create( "e" );        
 
         Option catalog_cleanup   = OptionBuilder.withLongOpt("cleancatalogs")
-        .withDescription(  "When saving as XML, include only catalog entries which have an idref reference")
+        .withDescription(  "true| false : When saving as XML, include only catalog entries which have an idref reference")
         .withArgName("value")
         .create( "c" );
         
