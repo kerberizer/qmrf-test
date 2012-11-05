@@ -5,7 +5,7 @@
 <body>
 	<div class='w_wrap'>
 	<#include "/banner.ftl">
-	<#include "/menu.ftl">
+	<#include "/w_menu.ftl">
 	<div class='w_content'>
 		<p class='w_p_header'>Welcome to the QMRF Inventory</p>
 		<p class='w_p'>
