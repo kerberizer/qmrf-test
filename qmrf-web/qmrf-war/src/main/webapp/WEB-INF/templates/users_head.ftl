@@ -33,7 +33,7 @@ $(document).ready(function() {
 			},
 			'homepage'   : {
 				url: "Please provide valid web address"
-			},
+			}
 		}
 	});
 });
