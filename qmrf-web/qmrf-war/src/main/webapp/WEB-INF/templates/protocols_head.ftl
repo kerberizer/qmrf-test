@@ -55,13 +55,13 @@ $(document).ready(function() {
 				},
 				{ "mDataProp": "title" , "asSorting": [ "asc", "desc" ], "aTargets": [ 2 ]
 				},
-				{ "mDataProp": "endpoint.code" , "bUseRendered" : "true",
+				{ "mDataProp": "endpoint.name" , "bUseRendered" : "false",
 				  "asSorting": [ "asc", "desc" ], 
 				  "bSearchable" : true, 
 				  "aTargets": [ 3 ],
-				  "fnRender": function ( o, val ) {
-					return "TODO";  
-				  },
+			      "fnRender": function ( o, val ) {
+        				return renderEndpoint(val.length>42?val.substring(0,42):val,val);
+      			  },
 				  sWidth : "10%"
 			    },
 				{ "mDataProp": "updated", 

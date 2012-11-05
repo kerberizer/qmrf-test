@@ -88,7 +88,7 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 		
 	}
 	
-	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"visibleid\": \"%s\",\n\t\"identifier\": \"%s\",\n\t\"title\": \"%s\",\n\t\"published\": %s,\n\t\"endpoint\": {\n\t\t\"code\" :null, \"name\" :null\n\t},\n\t\"submitted\": \"%s\",\n\t\"updated\": \"%s\",\n\t\"owner\": {\n\t\t\"uri\" :\"%s\",\n\t\t\"username\": \"%s\",\n\t\t\"firstname\": \"%s\",\n\t\t\"lastname\": \"%s\"\n\t}";
+	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"visibleid\": \"%s\",\n\t\"identifier\": \"%s\",\n\t\"title\": \"%s\",\n\t\"published\": %s,\n\t\"endpoint\": {\n\t\t\"code\" :\"%s\", \"name\" :\"%s\"\n\t},\n\t\"submitted\": \"%s\",\n\t\"updated\": \"%s\",\n\t\"owner\": {\n\t\t\"uri\" :\"%s\",\n\t\t\"username\": \"%s\",\n\t\t\"firstname\": \"%s\",\n\t\t\"lastname\": \"%s\"\n\t}";
 	private static String formatAttachments =  "\n\t\t{\n\t\t\"uri\":\"%s\",\n\t\t\"title\":\"%s\",\n\t\t\"description\":\"%s\",\n\t\t\"type\":\"%s\",\n\t\t\t\"dataset\": {\"uri\": \"%s/dataset/%d\", \"structure\": null}\n\t\t}";
 		
 	@Override
@@ -111,6 +111,8 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 					item.getIdentifier(),
 					item.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
 					item.isPublished(),
+					"",
+					item.getEndpoint().getName(),
 					dateFormat.format(new Date(item.getSubmissionDate())),
 					dateFormat.format(new Date(item.getTimeModified())),
 					item.getOwner().getResourceURL(),

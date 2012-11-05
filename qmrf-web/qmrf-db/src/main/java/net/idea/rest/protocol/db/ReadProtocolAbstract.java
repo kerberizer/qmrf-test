@@ -7,6 +7,7 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.modbcum.q.query.AbstractQuery;
+import net.idea.rest.endpoints.EndpointTest;
 import net.idea.rest.protocol.DBProtocol;
 
 import org.restlet.resource.ResourceException;
@@ -57,7 +58,9 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"select idprotocol,protocol.version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
 		"idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
-		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status\n" +
+		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status,\n" +
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') as endpointgroup,\n"+
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') as endpointname\n"+
 		"from protocol join user using(iduser)\n" +
 		" %s %s order by idprotocol desc,version desc";		
 	
@@ -113,15 +116,27 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 				p.setSubmissionDate(ts.getTime());
 			} catch (Exception x) {
 				x.printStackTrace();
-				
 			}
 			try {
 				String qmrf_number = rs.getString(DBProtocol.QMRFNUMBER);
 				p.setIdentifier(qmrf_number);
 			} catch (Exception x) {
 				throw new AmbitException("Error when reading QMRF number",x);
-				
-			}				
+			}		
+			try {
+				String endpointname = rs.getString("endpointname");
+				if (p.getEndpoint()==null) p.setEndpoint(new EndpointTest(endpointname,null));
+				else p.getEndpoint().setName(endpointname);
+			} catch (Exception x) {
+				x.printStackTrace();
+			}			
+			try {
+				String endpointgroup = rs.getString("endpointgroup");
+				if (p.getEndpoint()==null) p.setEndpoint(new EndpointTest(null,null));
+				else p.getEndpoint().setParentTemplate(endpointgroup);
+			} catch (Exception x) {
+				x.printStackTrace();
+			}			
 			return p;
 		} catch (AmbitException x) {
 			throw x;
