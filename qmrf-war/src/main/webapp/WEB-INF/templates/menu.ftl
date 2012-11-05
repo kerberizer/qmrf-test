@@ -12,6 +12,7 @@
 </script>
 
 	<div class='w_left'>
+		<div id='menu'>
 		
 		<#if searchURI??>
 			
@@ -109,4 +110,5 @@
 			</div>
 	
 		</#if>
+		</div>
 	</div> <#-- w_menu -->
