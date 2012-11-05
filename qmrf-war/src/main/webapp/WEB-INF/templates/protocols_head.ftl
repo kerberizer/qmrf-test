@@ -29,7 +29,7 @@ $(document).ready(function() {
 		        "error" : function( xhr, textStatus, error ) {
 		        	oSettings.oApi._fnProcessingDisplay( oSettings, false );
 		        },		        
-		        "success": fnCallback,
+		        "success": fnCallback
 
 		      } );
 		},
@@ -44,7 +44,7 @@ $(document).ready(function() {
 					"bUseRendered" : "true",
 					"fnRender" : function(o,val) {
 							return "<span class='zoom'><img border='0' src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'></span>";
-					},
+					}
 				},			              
 				{ "mDataProp": "visibleid" , "asSorting": [ "asc", "desc" ], "aTargets": [ 1 ], bUseRendered:false,	
 				  "bSortable" : true,
