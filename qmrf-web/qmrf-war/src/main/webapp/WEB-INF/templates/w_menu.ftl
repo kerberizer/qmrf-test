@@ -11,6 +11,7 @@
 	}	
 </script>
 	<div class='w_left'>
+		<div id="menu">
 	
 	 <!-- Front page -->
 			<ul id='navmenu'>
@@ -52,5 +53,5 @@
 			</table>
 			</div>
 	
-
+		</div> <#-- menu -->
 	</div> <#-- w_menu -->
