@@ -28,6 +28,7 @@ import net.idea.rest.user.alerts.resource.AlertRouter;
 import net.idea.rest.user.author.resource.AuthorsResource;
 import net.idea.rest.user.resource.MyAccountResource;
 import net.idea.rest.user.resource.PwdResetResource;
+import net.idea.rest.user.resource.RegistrationConfirmResource;
 import net.idea.rest.user.resource.RegistrationResource;
 import net.idea.restnet.aa.cookie.CookieAuthenticator;
 import net.idea.restnet.aa.local.UserLoginPOSTResource;
@@ -202,7 +203,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		router.attach("/protected", auth);
 		
 		router.attach(Resources.register, RegistrationResource.class);
-
+		router.attach(String.format("%s%s", Resources.register, Resources.confirm), RegistrationConfirmResource.class);
 
 		router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
 		router.setRoutingMode(Router.MODE_BEST_MATCH);
