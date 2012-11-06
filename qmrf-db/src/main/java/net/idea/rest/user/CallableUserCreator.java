@@ -13,9 +13,9 @@ import net.idea.rest.user.db.DeleteUser;
 import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.db.UpdateCredentials;
 import net.idea.rest.user.db.UpdateUser;
-import net.idea.rest.user.db.UserCredentials;
 import net.idea.rest.user.resource.UserURIReporter;
 import net.idea.restnet.db.update.CallableDBUpdateTask;
+import net.idea.restnet.u.UserCredentials;
 
 import org.restlet.data.Form;
 import org.restlet.data.Method;

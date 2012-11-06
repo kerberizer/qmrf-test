@@ -77,12 +77,12 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 
 </head>
 <body>
-	<div class='w_wrap'>
+	<div id='wrap'>
 	<#include "/banner.ftl">
 	<#include "/menu.ftl">
 
 	<div class='w_content'>
-		<div class='ui-widget ' style='margin-top: 20px; padding: 0 .7em;'>
+		<div class='ui-widget ' style='padding: 0 .7em;'>
 		<div class='ui-widget-header ui-corner-top'><p>Registration form</p></div>
 	    <div class='ui-widget-content ui-corner-bottom'>					
 			<form action="/qmrf/register" id="registerForm"  method="POST" >		
@@ -106,12 +106,12 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 		</div>
 		</div>
 		
-	</div> <#-- w_content -->
+	</div> <#-- content -->
 
 	<#-- Prevents the footer from hiding the last line on smaller screens. -->
 	<div class='pusher'></div>
 	
-	</div> <#-- w_wrap -->
+	</div> <#-- wrap -->
 	
 <#include "/footer.ftl">
 <#include "/scripts-welcome.ftl">

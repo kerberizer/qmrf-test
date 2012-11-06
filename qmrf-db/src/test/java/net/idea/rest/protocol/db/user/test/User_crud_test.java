@@ -37,13 +37,11 @@ import net.idea.rest.user.db.CreateUser;
 import net.idea.rest.user.db.DeleteUser;
 import net.idea.rest.user.db.UpdateCredentials;
 import net.idea.rest.user.db.UpdateUser;
-import net.idea.rest.user.db.UserCredentials;
+import net.idea.restnet.u.UserCredentials;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;
 import org.junit.Test;
-
-import com.mysql.jdbc.Statement;
 
 public final class User_crud_test  extends CRUDTest<Object,DBUser>  {
 

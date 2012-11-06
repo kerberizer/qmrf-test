@@ -8,10 +8,13 @@ import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.resource.CatalogResource;
+import net.idea.restnet.i.task.ICallableTask;
 
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.Form;
+import org.restlet.data.Method;
 import org.restlet.resource.ResourceException;
 
 public class RegistrationResource extends CatalogResource<DBUser> {
@@ -35,7 +38,7 @@ public class RegistrationResource extends CatalogResource<DBUser> {
 	@Override
 	protected void configureTemplateMap(Map<String, Object> map) {
 	
-		map.put("searchURI","/register");
+		map.put("searchURI",Resources.register);
 		map.put("managerRole", "false");
 		map.put("editorRole", "false");
 		if (getClientInfo()!=null) {
@@ -54,5 +57,11 @@ public class RegistrationResource extends CatalogResource<DBUser> {
 	    
 	}
 	
+	@Override
+	protected ICallableTask createCallable(Method method, Form form, DBUser item)
+			throws ResourceException {
+		// TODO create user entry with unconfirmed status
+		return super.createCallable(method, form, item);
+	}
 
 }
