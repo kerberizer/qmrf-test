@@ -16,6 +16,7 @@
 			
 			<#assign s = {searchURI:"selected"}>
 
+			<!-- the menu begins here -->
 			<ul id='navmenu'>
 			<li><a class='selectable' title='Go to the welcome page' href='/qmrf'>
 				<img class='logo_home_menu' src='/qmrf/images/logo_menu.png'>
@@ -49,15 +50,17 @@
 			<#if admin>
 					<li><a class='selectable ${s["/unpublished"]!""}' title='All unpublished QMRF documents.' href='/qmrf/unpublished'>Unpublished Documents</a></li>
 			</#if>
-					
-			</ul>		
+			
 			<!-- save search widget only in case of query -->			
 			<#if qmrf_query??><#if username??><#if s["/protocol"]??>
 				<#include "/alerts_menu.ftl" >
 			</#if></#if></#if>
 			<!-- end saved search -->	
 			
-			<!-- search menu -->
+			</ul>		
+			<!-- the menu ends here -->
+			
+			<!-- search widget -->
 			<#if s["/protocol"]??>
 				<#include "/protocols_menu.ftl" >
 			<#else> <#if s["/unpublished"]??> 
