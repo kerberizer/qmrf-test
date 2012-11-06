@@ -513,21 +513,6 @@ td.qmrfDownloadLinks {
 	white-space: nowrap;
 }
 
-td.contentTableManageL {
-	text-align: center;
-	padding: 0.1em 0 0.1em 0.5em;
-}
-
-td.contentTableManageM {
-	text-align: center;
-	padding: 0.1em 0;
-}
-
-td.contentTableManageR {
-	text-align: center;
-	padding: 0.1em 0.5em 0.1em 0;
-}
-
 div.socialPanel {
 	width: 100%;
 }
