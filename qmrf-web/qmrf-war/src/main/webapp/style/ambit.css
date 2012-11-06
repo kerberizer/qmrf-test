@@ -219,7 +219,7 @@ a.login {
 
 ul#navmenu {
 	width: 180px;
-	margin: 5 5 5 5;
+	margin: 13px 0 0 0;
 	padding: 0;
 	list-style-type: none;
 	height: 100%;
@@ -418,7 +418,7 @@ div.protocol label {
 .search {
 	width: 180px;
 	margin: 0 auto;
-	padding: 0;
+	padding: 10px;
 	background-color: #ffff;
 	color: #109DFF;
 	border: 1px solid 109DFF;
@@ -715,10 +715,9 @@ div.w_wrap {
 
 div.w_left {
 	position: relative;
-	width: 182px;
-	padding: 10px 20px 0 10px;
+	padding: 10px 0 0 0;
 	float: left;
-	display: inline-block;
+	width: 202px;
 }
 
 div.w_content {

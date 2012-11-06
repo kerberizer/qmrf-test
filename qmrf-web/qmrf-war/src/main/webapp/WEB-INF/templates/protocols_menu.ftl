@@ -4,7 +4,7 @@
 				<div class='search ui-widget'>
 				<p title=''>${search_title}</p>
 				<form method='GET' action='/qmrf/protocol'>
-				<table width='200px'>
+				<table width='100%'>
 				<tr><td colspan='2'><input type='text' name='search' size='20' value='${query.search!""}' tabindex='0' title='Enter search query'></td></tr>
 				<tr><td colspan='2'><input ${s["title"]!""} tabindex='1' type='radio' value='title' name='option' title='Title' size='20'>Title</td></tr>
 				<tr><td colspan='2'><input ${s["text"]!""} tabindex='1' type='radio' value='text' name='option' title='Free text search' size='20'>Free text</td></tr>

@@ -58,7 +58,8 @@
 			<!-- end saved search -->	
 			
 			</ul>		
-			<!-- the menu ends here -->
+		</div>
+		<!-- the menu ends here -->
 			
 			<!-- search widget -->
 			<#if s["/protocol"]??>
@@ -71,6 +72,4 @@
 			</#if>
 			</#if>
 			
-	
-		</div>
 	</div> <#-- w_menu -->
