@@ -9,15 +9,6 @@ Created on 2012-04-09 by Luchesar V. ILIEV, IDEAconsult Ltd., http://www.ideacon
 
 @CHARSET "UTF-8";
 
-div.w_left {
-	width: 182px;
-	margin-left: -25px;
-	margin-right: 40px;
-	padding: 25px 20px 0 0;
-	float: left;
-	display: inline-block;
-}
-
 img.w_logo_inventory {
 	top: 3px;
 	left: 48px;
@@ -40,13 +31,6 @@ p.w_p_send {
 
 div#menu {
 	margin-top: 12px;
-}
-
-img.logo_home_menu {
-	position: absolute;
-	top: -8px;
-	left: 25px;
-	border: 0;
 }
 
 .ui-tabs li a {
