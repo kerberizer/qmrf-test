@@ -61,7 +61,9 @@ public class RegistrationConfirmResource extends  QMRFQueryResource<ReadRegistra
 			Response response) throws ResourceException {
 		Object code = getRequest().getResourceRef().getQueryAsForm().getFirstValue(confirmationCode);
 		if (code==null) throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
-		return new ReadRegistration(code.toString());
+		ReadRegistration q = new ReadRegistration(code.toString());
+		q.setDatabaseName("tomcat_users");
+		return q;
 	}
 
 }
