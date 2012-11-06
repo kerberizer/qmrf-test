@@ -129,6 +129,32 @@ SELECT idtemplate as tid FROM template p where code regexp "QMRF 6. 6"
 ) as t
 where idtemplate is null;
 
+-- tomcat-users
+use tomcat_users;
+DROP TABLE IF EXISTS `user_registration`;
+CREATE TABLE  `user_registration` (
+  `user_name` varchar(16) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `confirmed` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `code` varchar(45) NOT NULL,
+  `status` enum('disabled','commenced','confirmed') NOT NULL DEFAULT 'disabled',
+  PRIMARY KEY (`user_name`),
+  UNIQUE KEY `Index_2` (`code`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+insert ignore into user_registration
+SELECT user_name,now(),now(),concat("MIGRATED_",user_name),'confirmed' FROM tomcat_users.users u;
+
+DROP TABLE IF EXISTS `version`;
+CREATE TABLE  `version` (
+  `idmajor` int(5) unsigned NOT NULL,
+  `idminor` int(5) unsigned NOT NULL,
+  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `comment` varchar(45) COLLATE utf8_bin DEFAULT NULL,
+  PRIMARY KEY (`idmajor`,`idminor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+insert into tomcat_users (2,0,now(),"Migration");
+
 -- attachments - to retrieve files from 
 -- SELECT concat("curl \"http://qsardb.jrc.it/qmrf/download_attachment.jsp?name=",replace(name," ","+"),"\" 1>  \"qmrf\\",type,"\\\"",name,"'")
 -- FROM qmrf_documents.attachments a
