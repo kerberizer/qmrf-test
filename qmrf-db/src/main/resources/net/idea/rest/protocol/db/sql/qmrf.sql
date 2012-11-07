@@ -1,5 +1,3 @@
--- CREATE DATABASE `tb` /*!40100 DEFAULT CHARACTER SET utf8 */;
-
 -- -----------------------------------------------------
 -- Users. If registered, 'username' points to tomcat_users table
 -- -----------------------------------------------------
@@ -331,6 +329,8 @@ END $$
 
 DELIMITER ;
 
-grant execute on procedure getAuthorDetails to "guest"@"localhost";
-grant execute on procedure getAuthorDetails to "guest"@"127.0.0.1";
+grant execute on function getAuthorDetails to "guest"@"localhost";
+grant execute on function getAuthorDetails to "guest"@"127.0.0.1";
+grant execute on function getauthordetails to "guest"@"localhost";
+grant execute on function getauthordetails to "guest"@"127.0.0.1";
 insert into version (idmajor,idminor,comment) values (2,7,"QMRF schema");
