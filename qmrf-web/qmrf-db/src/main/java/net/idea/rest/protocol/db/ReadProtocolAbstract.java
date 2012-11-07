@@ -40,7 +40,9 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"select idprotocol,version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
 		"idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
-		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status\n" +
+		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status,\n" +
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') as endpointgroup,\n"+
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') as endpointname\n"+		
 		"from protocol join user using(iduser)\n" +
 		"left join keywords using(idprotocol,version) %s %s";
 
