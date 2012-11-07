@@ -329,8 +329,15 @@ END $$
 
 DELIMITER ;
 
-grant execute on function getAuthorDetails to "guest"@"localhost";
-grant execute on function getAuthorDetails to "guest"@"127.0.0.1";
-grant execute on function getauthordetails to "guest"@"localhost";
-grant execute on function getauthordetails to "guest"@"127.0.0.1";
-insert into version (idmajor,idminor,comment) values (2,7,"QMRF schema");
+-- SET @func = concat("`",Database(),"`.","getAuthorDetails");
+-- SET @user = '''guest''@''localhost''';
+-- SET @query = CONCAT('GRANT EXECUTE ON function ', @func, ' TO ', @user);
+-- PREPARE stmt FROM @query;
+-- EXECUTE stmt;
+-- DEALLOCATE PREPARE stmt;
+-- SET @user = '''guest''@''127.0.0.1''';
+-- SET @query = CONCAT('GRANT EXECUTE ON function ', @func, ' TO ', @user);
+-- PREPARE stmt FROM @query;
+-- EXECUTE stmt;
+-- DEALLOCATE PREPARE stmt;
+insert into version (idmajor,idminor,comment) values (2,8,"QMRF schema");

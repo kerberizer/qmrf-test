@@ -42,7 +42,7 @@ import net.idea.restnet.db.CreateDatabaseProcessor;
  */
 public class DbCreateDatabase extends CreateDatabaseProcessor {
 	
-	public final static String version = "2.7";
+	public final static String version = "2.8";
 	
     /**
 	 */
