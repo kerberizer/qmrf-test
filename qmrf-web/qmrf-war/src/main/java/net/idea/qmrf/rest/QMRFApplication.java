@@ -124,8 +124,10 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		
 		// here we check if the cookie contains auth token, if not just consider
 		// the user notlogged in
+		boolean testAuthZ = "true".equalsIgnoreCase(getContext().getParameters().getFirstValue("TESTAUTHZ"));
+		
 		Filter auth = createCookieAuthenticator(true);
-		Filter authz = new ProtocolAuthorizer(); 
+		Filter authz = new ProtocolAuthorizer(testAuthZ); 
 		Router setCookieUserRouter = new MyRouter(getContext());
 		auth.setNext(authz);
 		authz.setNext(setCookieUserRouter);
@@ -434,8 +436,10 @@ class SimpleRoleAndMethodAuthorizer extends RoleAuthorizer {
 }
 
 class ProtocolAuthorizer extends RoleAuthorizer {
-	public ProtocolAuthorizer(DBRole... roles) {
+	protected boolean skip = true;
+	public ProtocolAuthorizer(boolean skip, DBRole... roles) {
 		super();
+		this.skip = skip;
 		for (DBRole role : roles)
 			getAuthorizedRoles().add(role);
 	}
@@ -444,6 +448,7 @@ class ProtocolAuthorizer extends RoleAuthorizer {
 	public boolean authorize(Request request, Response response) {
 		if (Method.GET.equals(request.getMethod()))
 			return true;
+		if (skip) return true;
 		if ((request.getClientInfo() == null)
 				|| (request.getClientInfo().getUser() == null)
 				|| (request.getClientInfo().getUser().getIdentifier() == null))
