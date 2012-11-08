@@ -9,11 +9,12 @@ import net.idea.modbcum.i.query.QueryParam;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.user.alerts.db.DBAlert;
+import net.idea.restnet.db.aalocal.user.IUser;
 import net.toxbank.client.resource.User;
 
 import org.restlet.routing.Template;
 
-public class DBUser extends User {
+public class DBUser extends User implements IUser {
 	protected List<DBAlert> alerts;
 	
 	public List<DBAlert> getAlerts() {
@@ -191,4 +192,16 @@ public class DBUser extends User {
 				getLastname()==null?"":getLastname()
 				);
 	}
+	
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setPassword(String password) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
