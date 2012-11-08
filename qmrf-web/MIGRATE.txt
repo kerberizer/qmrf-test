@@ -54,6 +54,26 @@ NOTICE: The file 'qmrf.sql' should be located in the current folder.
 				 STEP 3
 #######################################################################
 
+NOTICE: Please skip this step if the 'tomcat_users' database exists
+already.
+
+If the 'tomcat_users' database does not exist, run the following
+commands in a MySQL console:
+
+---8<------------------------------------------------------------------
+create database tomcat_users;
+use tomcat_users;
+source tomcat_users.sql;
+GRANT ALL ON `tomcat_users`.* TO 'guest'@'localhost';
+---8<------------------------------------------------------------------
+
+NOTICE: The file 'tomcat_users.sql' is provided in this archive and
+should be placed in the current folder.
+
+#######################################################################
+				 STEP 4
+#######################################################################
+
 Migrate the content from the old database, 'qmrf_documents', into the
 new one, 'qmrf'. Use the 'migrate.sql' script from MIGRATION directory.
 Alternatively, download the 'migrate.sql', 'dictionary.sql', and
@@ -76,7 +96,7 @@ NOTICE: All the three files, 'migrate.sql', 'dictionary.sql', and
 'source dictionary.sql;', etc. 
 
 #######################################################################
-				 STEP 4
+				 STEP 5
 #######################################################################
 
 Create the chemical structures database, populate it with data and set
@@ -92,26 +112,6 @@ GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'localhost';
 ---8<------------------------------------------------------------------
 
 NOTICE: The file 'ambit2-qmrf.sql' is provided in this archive and
-should be placed in the current folder.
-
-#######################################################################
-				 STEP 5
-#######################################################################
-
-NOTICE: Please skip this step if the 'tomcat_users' database exists
-already.
-
-If the 'tomcat_users' database does not exist, run the following
-commands in a MySQL console:
-
----8<------------------------------------------------------------------
-create database tomcat_users;
-use tomcat_users;
-source tomcat_users.sql;
-GRANT ALL ON `tomcat_users`.* TO 'guest'@'localhost';
----8<------------------------------------------------------------------
-
-NOTICE: The file 'tomcat_users.sql' is provided in this archive and
 should be placed in the current folder.
 
 #######################################################################
