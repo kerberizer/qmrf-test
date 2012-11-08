@@ -6,8 +6,9 @@ import net.idea.restnet.u.UserCredentials;
 
 public class UpdateCredentials extends AbstractUpdateCredentials<DBUser> {
 
-	public UpdateCredentials(UserCredentials c,DBUser ref) {
+	public UpdateCredentials(UserCredentials c,DBUser ref, String dbname) {
 		super(c,ref);
+		setDatabaseName(dbname);
 	}
 	
 	@Override

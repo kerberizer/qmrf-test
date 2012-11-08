@@ -54,7 +54,8 @@ public class Resources {
 		qmrf_faq,
 		qmrf_oecd,
 		qmrf_jrc,
-		sessiontimeout
+		sessiontimeout,
+		users_dbname
 	}
 	
 	public final static String AMBIT_LOCAL_USER="aa.local.admin.name";

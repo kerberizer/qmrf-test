@@ -15,6 +15,7 @@ import junit.framework.Assert;
 import net.idea.modbcum.i.config.Preferences;
 import net.idea.opentox.cli.task.RemoteTask;
 import net.idea.qmrf.client.Resources;
+import net.idea.qmrf.client.Resources.Config;
 import net.idea.qmrf.rest.QMRFRESTComponent;
 import net.idea.rest.protocol.db.test.DbUnitTest;
 import net.idea.restnet.aa.cookie.CookieAuthenticator;
@@ -74,7 +75,8 @@ public abstract class ResourceTest extends DbUnitTest {
         context.getParameters().add(Preferences.HOST, getHost());
         context.getParameters().add(Resources.Config.qmrf_protected.name(), "false");
         context.getParameters().add("TESTAUTHZ", Boolean.TRUE.toString());
-
+        context.getParameters().add(Config.users_dbname.name(),"aalocal_test");
+        
         // Create a component
         component = new QMRFRESTComponent(context);
         Server server = component.getServers().add(Protocol.HTTP, port);

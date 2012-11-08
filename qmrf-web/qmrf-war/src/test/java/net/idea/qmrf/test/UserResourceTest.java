@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigInteger;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,12 +101,28 @@ public class UserResourceTest extends ResourceTest {
 		return o;
 	}
 	
+	protected void cleanUsers() throws Exception {
+        IDatabaseConnection c = getConnection();	
+        Statement st = c.getConnection().createStatement();
+        st.addBatch("USE aalocal_test;");
+        st.addBatch("DELETE FROM aalocal_test.users;");
+        st.addBatch("DELETE FROM aalocal_test.user_registration;");
+        st.addBatch("DELETE FROM aalocal_test.user_roles;");
+        st.executeBatch();
+        st.close();
+        c.close();
+	}
+	
 	@Test
 	public void testCreateUserFromName() throws Exception {
-
+		cleanUsers();
+		
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair(ReadUser.fields.firstname.name(),  "Alice"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.lastname.name(),  "B."));
+		formparams.add(new BasicNameValuePair("pwd1",  "test"));
+		formparams.add(new BasicNameValuePair("pwd2",  "test"));
+		formparams.add(new BasicNameValuePair(ReadUser.fields.username.name(),  "test"));
 		
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
@@ -134,9 +151,13 @@ public class UserResourceTest extends ResourceTest {
 	}		
 	@Test
 	public void testCreateEntryFromWebForm() throws Exception {
+		cleanUsers();
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair(ReadUser.fields.firstname.name(),  "Alice"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.lastname.name(),  "B."));
+		formparams.add(new BasicNameValuePair("pwd1",  "test"));
+		formparams.add(new BasicNameValuePair("pwd2",  "test"));
+		formparams.add(new BasicNameValuePair("username",  "username"));
 		
 		for (ReadUser.fields field : ReadUser.fields.values()) {
 			switch (field) {
