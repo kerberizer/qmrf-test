@@ -14,31 +14,36 @@ import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.db.UpdateCredentials;
 import net.idea.rest.user.db.UpdateUser;
 import net.idea.rest.user.resource.UserURIReporter;
+import net.idea.restnet.db.aalocal.user.IDBConfig;
 import net.idea.restnet.db.update.CallableDBUpdateTask;
 import net.idea.restnet.u.UserCredentials;
+import net.idea.restnet.u.UserRegistration;
 
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 
-public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String> {
+public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String> implements IDBConfig {
 	protected UserURIReporter<IQueryRetrieval<DBUser>> reporter;
 	protected DBUser user;
 	protected boolean passwordChange;
 	protected UserCredentials credentials;
+	protected String aadbname;
 	
 	public CallableUserCreator(Method method,DBUser item,UserURIReporter<IQueryRetrieval<DBUser>> reporter,
 						Form input,
 						String baseReference,
 						Connection connection,
 						String token,
-						boolean passwordChange)  {
+						boolean passwordChange,
+						String usersdbname)  {
 		super(method, input,connection,token);
 		this.reporter = reporter;
 		this.user = item;
 		this.baseReference = baseReference;
 		this.passwordChange = passwordChange;
+		setDatabaseName(usersdbname);
 	}
 
 	@Override
@@ -53,10 +58,17 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 				return user;
 			}
 			else throw new Exception("User empty");
+		} else {
+			if (input != null)
+				credentials = new UserCredentials(
+						input.getFirstValue("pwd1"),
+						input.getFirstValue("pwd2")
+						);
 		}
 		if (input==null) return user;
 		
 		DBUser user = new DBUser();
+		user.setCredentials(credentials);
 		if (Method.PUT.equals(method)) user.setID(this.user.getID());
 		user.setUserName(input.getFirstValue(ReadUser.fields.username.name()));
 		user.setFirstname(input.getFirstValue(ReadUser.fields.firstname.name()));
@@ -91,8 +103,8 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 	@Override
 	protected IQueryUpdate<? extends Object, DBUser> createUpdate(DBUser user)
 			throws Exception {
-		if (passwordChange) return new UpdateCredentials(credentials,user);
-		if (Method.POST.equals(method)) return  new CreateUser(user);
+		if (passwordChange) return new UpdateCredentials(credentials,user,getDatabaseName());
+		if (Method.POST.equals(method)) return  new CreateUser(user,new UserRegistration(),getDatabaseName());
 		else if (Method.DELETE.equals(method)) return  new DeleteUser(user);
 		else if (Method.PUT.equals(method)) return new  UpdateUser(user);
 		throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
@@ -141,5 +153,15 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 			return String.format("Delete user");
 		}
 		return "Read user";
+	}
+
+	@Override
+	public void setDatabaseName(String name) {
+		aadbname = name;
+	}
+
+	@Override
+	public String getDatabaseName() {
+		return aadbname;
 	}
 }

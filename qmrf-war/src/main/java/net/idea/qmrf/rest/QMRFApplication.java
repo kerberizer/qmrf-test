@@ -11,6 +11,7 @@ import net.idea.qmrf.aa.QMRFLogoutPOSTResource;
 import net.idea.qmrf.aa.UserAuthorizer;
 import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
+import net.idea.qmrf.client.Resources.Config;
 import net.idea.qmrf.task.QMRFAdminRouter;
 import net.idea.qmrf.task.QMRFEditorRouter;
 import net.idea.qmrf.task.QMRFTaskRouter;
@@ -232,8 +233,11 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 	 */
 	protected Filter createCookieAuthenticator(boolean optional) {
 		String secret = getProperty(Resources.Config.secret.name());
+		String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
+		if (usersdbname==null) usersdbname = "tomcat_users";
 		CookieAuthenticator cookieAuth = new CookieAuthenticator(getContext(),
-				"tomcat_users", (secret==null?UUID.randomUUID().toString():secret).getBytes());
+				usersdbname, 
+				(secret==null?UUID.randomUUID().toString():secret).getBytes());
 		cookieAuth.setCookieName("qmrfs");
 		long sessionLength = 1000*60*45L; //45 min in milliseconds
 		try { sessionLength = Long.parseLong(getProperty(Resources.Config.sessiontimeout.name())); } catch (Exception x) {}
@@ -248,9 +252,9 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 
 
 			cookieAuth.setVerifier(new DBVerifier(getContext(), config,
-					"tomcat_users"));
+					usersdbname));
 			cookieAuth.setEnroler(new DbEnroller(getContext(), config,
-					"tomcat_users"));
+					usersdbname));
 			return cookieAuth;
 		} else {
 			cookieAuth.setVerifier(new SecretVerifier() {
@@ -277,7 +281,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 
 			});
 			cookieAuth.setEnroler(new DbEnroller(getContext(), config,
-					"tomcat_users"));
+					usersdbname));
 		}
 		return cookieAuth;
 	}

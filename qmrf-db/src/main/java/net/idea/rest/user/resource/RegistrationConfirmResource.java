@@ -5,6 +5,7 @@ import java.util.Map;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.qmrf.client.Resources;
+import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
@@ -62,7 +63,8 @@ public class RegistrationConfirmResource extends  QMRFQueryResource<ReadRegistra
 		Object code = getRequest().getResourceRef().getQueryAsForm().getFirstValue(confirmationCode);
 		if (code==null) throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
 		ReadRegistration q = new ReadRegistration(code.toString());
-		q.setDatabaseName("tomcat_users");
+		String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
+		q.setDatabaseName(usersdbname==null?"tomcat_users":usersdbname);
 		return q;
 	}
 

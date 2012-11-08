@@ -2,6 +2,7 @@ package net.idea.rest.user.resource;
 
 import java.sql.Connection;
 
+import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.user.CallableUserCreator;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
@@ -47,7 +48,8 @@ public class PwdResetResource<T> extends MyAccountResource<T> {
 				(getClientInfo().getUser().getIdentifier()!=null) && 
 				getClientInfo().getUser().getIdentifier().equals(item.getUserName())
 				) {
-				
+				String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
+
 				UserURIReporter reporter = new UserURIReporter(getRequest(),"");
 				DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 				conn = dbc.getConnection();
@@ -59,7 +61,9 @@ public class PwdResetResource<T> extends MyAccountResource<T> {
 							getRequest().getRootRef().toString(),
 							conn,
 							getToken(),
-							true);
+							true,
+							usersdbname==null?"tomcat_users":usersdbname
+							);
 			} 
 			throw new ResourceException(Status.CLIENT_ERROR_FORBIDDEN);
 		} catch (Exception x) {

@@ -10,11 +10,19 @@ import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.user.alerts.db.DBAlert;
 import net.idea.restnet.db.aalocal.user.IUser;
+import net.idea.restnet.u.UserCredentials;
 import net.toxbank.client.resource.User;
 
 import org.restlet.routing.Template;
 
 public class DBUser extends User implements IUser {
+	protected UserCredentials credentials = null;
+	public UserCredentials getCredentials() {
+		return credentials;
+	}
+	public void setCredentials(UserCredentials credentials) {
+		this.credentials = credentials;
+	}
 	protected List<DBAlert> alerts;
 	
 	public List<DBAlert> getAlerts() {
@@ -195,13 +203,11 @@ public class DBUser extends User implements IUser {
 	
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return credentials==null?null:credentials.getNewpwd();
 	}
 	@Override
 	public void setPassword(String password) {
-		// TODO Auto-generated method stub
-		
+		credentials = new UserCredentials(null,password);
 	}
 	
 }
