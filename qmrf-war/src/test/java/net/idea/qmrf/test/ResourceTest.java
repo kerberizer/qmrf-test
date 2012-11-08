@@ -6,6 +6,7 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,6 +17,7 @@ import net.idea.opentox.cli.task.RemoteTask;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.rest.QMRFRESTComponent;
 import net.idea.rest.protocol.db.test.DbUnitTest;
+import net.idea.restnet.aa.cookie.CookieAuthenticator;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.task.ClientResourceWrapper;
 import net.idea.restnet.rdf.ns.OT;
@@ -71,7 +73,8 @@ public abstract class ResourceTest extends DbUnitTest {
         context.getParameters().add(Preferences.PORT, getPort());
         context.getParameters().add(Preferences.HOST, getHost());
         context.getParameters().add(Resources.Config.qmrf_protected.name(), "false");
-        
+        context.getParameters().add("TESTAUTHZ", Boolean.TRUE.toString());
+
         // Create a component
         component = new QMRFRESTComponent(context);
         Server server = component.getServers().add(Protocol.HTTP, port);
@@ -81,6 +84,15 @@ public abstract class ResourceTest extends DbUnitTest {
         component.start();        
 	}
 
+	public synchronized String getProperty(String key) {
+		try {
+			if (properties==null) loadProperties();
+			return properties.getProperty(key);  	
+		} catch (Exception x) {
+			return null;
+		}
+	}
+	
 	protected String dbFile = "src/test/resources/net/idea/qmrf/qmrf.xml";	
 	public String getDbFile() {
 		return dbFile;
