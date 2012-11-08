@@ -150,7 +150,17 @@ public class UserResourceTest extends ResourceTest {
 
 	}		
 	@Test
-	public void testCreateEntryFromWebForm() throws Exception {
+	public void testRegisterUser() throws Exception {
+		testCreateEntryFromWebForm(Resources.register);
+	}
+	
+	@Test
+	public void testCreateUser() throws Exception {
+		testCreateEntryFromWebForm(Resources.user);
+	}
+	
+
+	public void testCreateEntryFromWebForm(String resource) throws Exception {
 		cleanUsers();
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair(ReadUser.fields.firstname.name(),  "Alice"));
@@ -177,7 +187,7 @@ public class UserResourceTest extends ResourceTest {
 		c.close();
 
 		RemoteTask task = testAsyncPoll(new Reference(String.format("http://localhost:%d%s", port,
-				Resources.user)),
+				resource)),
 				MediaType.TEXT_URI_LIST, new UrlEncodedFormEntity(formparams, "UTF-8"),
 				Method.POST);
 		//wait to complete
