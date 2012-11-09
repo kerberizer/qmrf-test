@@ -51,6 +51,7 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 
 	@Override
 	protected DBUser getTarget(Form input) throws Exception {
+	
 		if (passwordChange) {
 			if (Method.PUT.equals(method)) {
 				credentials = new UserCredentials(
@@ -70,6 +71,10 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 		}
 		if (input==null) return user;
 		
+		if (Method.POST.equals(method) && (input.getFirstValue(ReadUser.fields.email.name())==null)) {
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"e-mail address not specified!");
+		}
+		
 		DBUser user = new DBUser();
 		user.setCredentials(credentials);
 		if (Method.PUT.equals(method)) user.setID(this.user.getID());
@@ -81,6 +86,7 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 		user.setEmail(input.getFirstValue(ReadUser.fields.email.name()));
 		try {user.setHomepage(new URL(input.getFirstValue(ReadUser.fields.homepage.name()))); } catch (Exception x) {}
 		try {user.setWeblog(new URL(input.getFirstValue(ReadUser.fields.weblog.name())));} catch (Exception x) {}
+		
 		
 		String[] values = input.getValuesArray("organisation_uri");
 		if (values != null)
