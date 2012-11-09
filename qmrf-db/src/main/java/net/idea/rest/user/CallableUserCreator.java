@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.query.IQueryUpdate;
+import net.idea.qmrf.client.Resources;
 import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.groups.DBProject;
 import net.idea.rest.groups.user.db.AddGroupsPerUser;
@@ -137,9 +138,13 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 	@Override
 	protected String getURI(DBUser target, Method method) throws Exception {
 		if (passwordChange)
-			return String.format("%s/myaccount", baseReference);
-		else
+			return String.format("%s%s", baseReference, Resources.myaccount);
+		else if (Method.POST.equals(method)) {
+			//send notification
+			return String.format("%s%s%s", baseReference, Resources.register, Resources.notify);
+		} else
 			return super.getURI(target, method);
+		
 	}
 	@Override
 	public String toString() {

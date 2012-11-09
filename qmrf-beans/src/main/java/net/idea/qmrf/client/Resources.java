@@ -26,6 +26,7 @@ public class Resources {
 	public static final String myaccount = "/myaccount";
 	public static final String register = "/register";
 	public static final String confirm = "/confirm";
+	public static final String notify = "/notify";
 	public static final String admin = String.format("/%s",AdminResource.resource);
 	public static final String task = TaskResource.resource;
 	public static final String alert = "/alert";

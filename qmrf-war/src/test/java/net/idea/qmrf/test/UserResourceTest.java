@@ -139,7 +139,7 @@ public class UserResourceTest extends ResourceTest {
 			Thread.sleep(100);
 			Thread.yield();
 		}
-		Assert.assertTrue(task.getResult().toString().startsWith(String.format("http://localhost:%d/user/U",port)));
+		Assert.assertTrue(task.getResult().toString().startsWith(String.format("http://localhost:%d/register/notify",port)));
 
         c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
@@ -193,7 +193,7 @@ public class UserResourceTest extends ResourceTest {
 		//wait to complete
 		task.waitUntilCompleted(Integer.MAX_VALUE);
 
-		Assert.assertTrue(task.getResult().toString().startsWith(String.format("http://localhost:%d/user/U",port)));
+		Assert.assertTrue(task.getResult().toString().startsWith(String.format("http://localhost:%d/register/notify",port)));
 
         c = getConnection();	
 		table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
