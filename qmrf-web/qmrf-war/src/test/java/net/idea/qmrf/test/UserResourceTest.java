@@ -123,6 +123,7 @@ public class UserResourceTest extends ResourceTest {
 		formparams.add(new BasicNameValuePair("pwd1",  "test"));
 		formparams.add(new BasicNameValuePair("pwd2",  "test"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.username.name(),  "test"));
+		formparams.add(new BasicNameValuePair(ReadUser.fields.email.name(),  "noone@example.org"));
 		
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
@@ -168,6 +169,7 @@ public class UserResourceTest extends ResourceTest {
 		formparams.add(new BasicNameValuePair("pwd1",  "test"));
 		formparams.add(new BasicNameValuePair("pwd2",  "test"));
 		formparams.add(new BasicNameValuePair("username",  "username"));
+		formparams.add(new BasicNameValuePair(ReadUser.fields.email.name(),  "noone@example.org"));
 		
 		for (ReadUser.fields field : ReadUser.fields.values()) {
 			switch (field) {

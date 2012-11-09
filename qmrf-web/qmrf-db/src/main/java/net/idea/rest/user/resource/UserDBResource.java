@@ -18,6 +18,7 @@ import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
+import net.idea.restnet.c.task.TaskCreator;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.db.convertors.OutputWriterConvertor;
@@ -200,8 +201,19 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	}
 	
 	@Override
+	protected TaskCreator getTaskCreator(Form form, Method method,
+			boolean async, Reference reference) throws Exception {
+		if (Method.POST.equals(method) && (form.getFirstValue(ReadUser.fields.email.name())==null)) {
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"e-mail address not specified!");
+		}
+		return super.getTaskCreator(form, method, async, reference);
+	}
+	
+	@Override
 	protected CallableProtectedTask<String> createCallable(Method method,
 			Form form, DBUser item) throws ResourceException {
+
+		
 		Connection conn = null;
 		try {
 			String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
