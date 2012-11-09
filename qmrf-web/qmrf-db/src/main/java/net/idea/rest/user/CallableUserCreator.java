@@ -160,7 +160,7 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 	protected String getURI(DBUser target, Method method) throws Exception {
 		if (passwordChange)
 			return String.format("%s%s", baseReference, Resources.myaccount);
-		else if (Method.POST.equals(method) && registration!=null && target.getEmail()!=null) {
+		else if (Method.POST.equals(method) && registration!=null && target != null && target.getEmail()!=null) {
 			Notification notification = new Notification("config/qmrf.properties");
 			notification.sendNotification(target.getEmail(), "QMRF Inventory User Confirmation", 
 					String.format(emailContent,target.getUserName(),baseReference,Resources.register,Resources.confirm,registration.getConfirmationCode()),
