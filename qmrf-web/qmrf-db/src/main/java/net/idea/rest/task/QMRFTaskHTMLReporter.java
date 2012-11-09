@@ -1,4 +1,4 @@
-package net.idea.qmrf.task;
+package net.idea.rest.task;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

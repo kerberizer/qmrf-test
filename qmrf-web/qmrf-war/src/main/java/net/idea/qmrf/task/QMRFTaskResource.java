@@ -8,6 +8,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.task.QMRFTaskHTMLReporter;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.TaskResource;
