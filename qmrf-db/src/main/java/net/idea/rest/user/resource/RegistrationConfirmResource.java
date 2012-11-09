@@ -4,12 +4,12 @@ import java.sql.Connection;
 import java.util.Map;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.modbcum.i.exceptions.NotFoundException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.p.UpdateExecutor;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFQueryResource;
-import net.idea.rest.user.CallableUserCreator;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
@@ -66,7 +66,7 @@ public class RegistrationConfirmResource extends  QMRFQueryResource<ReadRegistra
 	protected ReadRegistration createQuery(Context context, Request request,
 			Response response) throws ResourceException {
 		Object code = getRequest().getResourceRef().getQueryAsForm().getFirstValue(confirmationCode);
-		if (code==null) throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
+		if (code==null) return null;
 		ReadRegistration q = new ReadRegistration(code.toString());
 		String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
 		q.setDatabaseName(usersdbname==null?"tomcat_users":usersdbname);
@@ -105,6 +105,12 @@ public class RegistrationConfirmResource extends  QMRFQueryResource<ReadRegistra
 			}
 		}
 		return super.getRepresentation(variant);
+	}
+	
+	@Override
+	protected Representation processNotFound(NotFoundException x,
+			Variant variant) throws Exception {
+		return null;
 	}
 
 }
