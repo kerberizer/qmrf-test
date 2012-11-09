@@ -14,15 +14,23 @@
 			</li>
 			<li class='topLinks'>|</li>
 
-			<li class='topLinks'>
+			
 
 			<#if username??>
+				<li class='topLinks'>
 				<a class='topLinks login' title='You are currently logged in as "${username}". Click here to log out.' href='#' onClick='document.forms["logoutForm"].submit(); return false;'>Log out [<b>${username}</b>]</a>			   
 				<form id='logoutForm' action='/qmrf/protected/signout?targetUri=.' method='POST'></form>
+				</li>
 			<#else>
+				<li class='topLinks'>
 				<a class='topLinks login' title='Log in here to submit new documents (only required for editors)' href='/qmrf/login'>Log in</a>
+				</li>
+				<li class='topLinks'>|</li>
+				<li class='topLinks'>
+				<a class='topLinks register' title='Register' href='/qmrf/register'>Register</a>
+				</li>
 			</#if>			
-			</li>
+			
 			</ul>
 
 			<a href='http://ihcp.jrc.ec.europa.eu/'>
