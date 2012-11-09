@@ -1,4 +1,4 @@
-	<#assign search_title = "Search all published QMRF documents">
+	<#assign search_title = "QMRF documents search">
 				<#assign s = { query.option!"default":"checked"} >
 				
 				<div class='search ui-widget'>
