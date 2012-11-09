@@ -1,13 +1,24 @@
 package net.idea.rest.user.resource;
 
+import java.io.Writer;
 import java.sql.Connection;
+import java.util.Iterator;
+import java.util.UUID;
 
+import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources.Config;
+import net.idea.rest.task.UserTaskHTMLReporter;
 import net.idea.rest.user.CallableUserCreator;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
+import net.idea.restnet.c.ResourceDoc;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
+import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.db.DBConnection;
+import net.idea.restnet.i.task.ITaskStorage;
+import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -70,5 +81,19 @@ public class PwdResetResource<T> extends MyAccountResource<T> {
 			try { conn.close(); } catch (Exception xx) {}
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
 		}
+	}
+	
+	@Override
+	protected FactoryTaskConvertor getFactoryTaskConvertor(ITaskStorage storage)
+			throws ResourceException {
+		return new FactoryTaskConvertorRDF<Object>(storage,getHTMLBeauty()) {
+			@Override
+			public synchronized Reporter<Iterator<UUID>, Writer> createTaskReporterHTML(
+					Request request,ResourceDoc doc,HTMLBeauty htmlbeauty) throws AmbitException, ResourceException {
+				UserTaskHTMLReporter reporter =	new UserTaskHTMLReporter(storage,request,doc,htmlbeauty);
+				reporter.setTitle("Pasword reset");
+				return reporter;
+			}			
+		};
 	}
 }
