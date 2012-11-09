@@ -44,8 +44,10 @@ function runTask(modelURI, datasetURI, resultDOM, statusDOM, imgRunning, imgRead
 	
 	request.send(reqBody);
 }
-
 function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError) {
+	checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError,'Ready. Results available.');
+}
+function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError, successMessage) {
 	
 	var request = new XMLHttpRequest();
 	
@@ -58,7 +60,7 @@ function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError) {
 		if (request.readyState != 4) { return false; }
 		switch (request.status) {
 			case 200:
-				document.getElementById(resultDOM).innerHTML = '<span title=\"' + request.status + ' ' + request.statusText + '\">Ready. Results available.</span>';
+				document.getElementById(resultDOM).innerHTML = '<span title=\"' + request.status + ' ' + request.statusText + '\">'+successMessage+'</span>';
 				document.getElementById(resultDOM).href = request.responseText;
 				document.getElementById(statusDOM).src = imgReady;
 				document.getElementById(resultDOM).style.display = 'inline';

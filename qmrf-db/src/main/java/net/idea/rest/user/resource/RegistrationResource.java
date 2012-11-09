@@ -15,7 +15,7 @@ import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
-import net.idea.rest.task.QMRFTaskHTMLReporter;
+import net.idea.rest.task.RegistrationTaskHTMLReporter;
 import net.idea.rest.user.CallableUserCreator;
 import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.ResourceDoc;
@@ -135,10 +135,13 @@ public class RegistrationResource extends CatalogResource<DBUser> {
 			@Override
 			public synchronized Reporter<Iterator<UUID>, Writer> createTaskReporterHTML(
 					Request request,ResourceDoc doc,HTMLBeauty htmlbeauty) throws AmbitException, ResourceException {
-				return	new QMRFTaskHTMLReporter<Object>(storage,request,doc,htmlbeauty);
+				return	new RegistrationTaskHTMLReporter(storage,request,doc,htmlbeauty);
 			}			
 		};
 	}
 	
-	
+	@Override
+	protected String getTaskTitle(DBUser item, Reference source) {
+		return "New user registration";
+	}
 }
