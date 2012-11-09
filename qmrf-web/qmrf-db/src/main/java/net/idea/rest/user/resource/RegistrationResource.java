@@ -17,8 +17,11 @@ import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
+import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.i.task.ICallableTask;
+import net.idea.restnet.i.task.ITaskStorage;
+import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -119,5 +122,10 @@ public class RegistrationResource extends CatalogResource<DBUser> {
 			Variant variant, String filenamePrefix) throws AmbitException,
 			ResourceException {
 		return super.createJSONConvertor(variant, filenamePrefix);
+	}
+	@Override
+	protected FactoryTaskConvertor getFactoryTaskConvertor(ITaskStorage storage)
+			throws ResourceException {
+		return new FactoryTaskConvertorRDF(storage,getHTMLBeauty());
 	}
 }
