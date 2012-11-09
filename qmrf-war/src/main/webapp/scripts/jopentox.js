@@ -72,7 +72,7 @@ function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError, successMes
 				document.getElementById(resultDOM).innerHTML = '<span title=\'' + request.status + ' ' + request.statusText + '\'>Waiting ...</span>';
 				document.getElementById(resultDOM).href = request.responseText;
 				var taskTimer = window.setTimeout(function() {
-					checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError);
+					checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError,successMessage);
 				}, 1000);
 				break;
 			default:
