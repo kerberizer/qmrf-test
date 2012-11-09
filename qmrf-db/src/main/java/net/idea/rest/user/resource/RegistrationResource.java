@@ -1,19 +1,24 @@
 package net.idea.rest.user.resource;
 
+import java.io.Writer;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
+import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.task.QMRFTaskHTMLReporter;
 import net.idea.rest.user.CallableUserCreator;
 import net.idea.rest.user.DBUser;
+import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
@@ -126,6 +131,14 @@ public class RegistrationResource extends CatalogResource<DBUser> {
 	@Override
 	protected FactoryTaskConvertor getFactoryTaskConvertor(ITaskStorage storage)
 			throws ResourceException {
-		return new FactoryTaskConvertorRDF(storage,getHTMLBeauty());
+		return new FactoryTaskConvertorRDF<Object>(storage,getHTMLBeauty()) {
+			@Override
+			public synchronized Reporter<Iterator<UUID>, Writer> createTaskReporterHTML(
+					Request request,ResourceDoc doc,HTMLBeauty htmlbeauty) throws AmbitException, ResourceException {
+				return	new QMRFTaskHTMLReporter<Object>(storage,request,doc,htmlbeauty);
+			}			
+		};
 	}
+	
+	
 }
