@@ -19,6 +19,7 @@ import net.idea.restnet.db.aalocal.user.IDBConfig;
 import net.idea.restnet.db.update.CallableDBUpdateTask;
 import net.idea.restnet.u.UserCredentials;
 import net.idea.restnet.u.UserRegistration;
+import net.idea.restnet.u.mail.Notification;
 
 import org.restlet.data.Form;
 import org.restlet.data.Method;
@@ -31,6 +32,7 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 	protected boolean passwordChange;
 	protected UserCredentials credentials;
 	protected String aadbname;
+	protected UserRegistration registration = null;
 	
 	public CallableUserCreator(Method method,DBUser item,UserURIReporter<IQueryRetrieval<DBUser>> reporter,
 						Form input,
@@ -105,7 +107,10 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 	protected IQueryUpdate<? extends Object, DBUser> createUpdate(DBUser user)
 			throws Exception {
 		if (passwordChange) return new UpdateCredentials(credentials,user,getDatabaseName());
-		if (Method.POST.equals(method)) return  new CreateUser(user,new UserRegistration(),getDatabaseName());
+		if (Method.POST.equals(method)) {
+			registration = new UserRegistration();
+			return  new CreateUser(user,registration,getDatabaseName());
+		}
 		else if (Method.DELETE.equals(method)) return  new DeleteUser(user);
 		else if (Method.PUT.equals(method)) return new  UpdateUser(user);
 		throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
@@ -135,12 +140,25 @@ public class CallableUserCreator extends CallableDBUpdateTask<DBUser,Form,String
 		return result;
 	}
 
+	private static String emailContent = 
+	"Thank you for applying for user registration with the QMRF Database.\n"+
+	"\n"+
+	"Please point your browser to the following URL in order to proceed with the registration of the \"%s\" user:\n"+
+	"%s%s%s?code=%s\n"+
+	"Please note that your registration will be cancelled automatically if it is not confirmed within 48 hours. If you miss this deadline you should start over the registration procedure and get a new confirmation code.\n"+
+	"\n"+
+	"If you change your mind and decide that you do NOT want to confirm the registration, then please discard this message and let the request expire on its own.\n"
+	;
+	
 	@Override
 	protected String getURI(DBUser target, Method method) throws Exception {
 		if (passwordChange)
 			return String.format("%s%s", baseReference, Resources.myaccount);
-		else if (Method.POST.equals(method)) {
-			//send notification
+		else if (Method.POST.equals(method) && registration!=null && target.getEmail()!=null) {
+			Notification notification = new Notification();
+			notification.sendNotification(target.getEmail(), "QMRF Inventory User Confirmation", 
+					String.format(emailContent,target.getUserName(),baseReference,Resources.register,Resources.confirm,registration.getConfirmationCode()),
+					"text/plain");
 			return String.format("%s%s%s", baseReference, Resources.register, Resources.notify);
 		} else
 			return super.getURI(target, method);
