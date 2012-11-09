@@ -1,7 +1,6 @@
 <div id='header'>
 
 			<ul class='topLinks'>
-			<!--
 			<li class='topLinks'>
 			<a class='topLinks' href='http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe'>Download QMRF Editor</a>
 			</li>
@@ -14,7 +13,7 @@
 			<a class='topLinks' href='http://qmrf.sf.net/'>Help</a>
 			</li>
 			<li class='topLinks'>|</li>
-						-->
+
 			<li class='topLinks'>
 
 			<#if username??>
