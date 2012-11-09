@@ -44,11 +44,9 @@ function runTask(modelURI, datasetURI, resultDOM, statusDOM, imgRunning, imgRead
 	
 	request.send(reqBody);
 }
-function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError) {
-	checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError,'Ready. Results available.');
-}
+
 function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError, successMessage) {
-	
+	if (successMessage === undefined) successMessage='Ready. Results available.';
 	var request = new XMLHttpRequest();
 	
 	// 'true' is for async
