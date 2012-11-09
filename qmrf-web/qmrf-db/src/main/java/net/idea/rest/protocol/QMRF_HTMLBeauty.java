@@ -660,7 +660,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				stringBuilder.append("<tr><td><input %s type='radio' tabindex='2' name='option' value='endpoint' title='Search by endpoint'>Endpoint</td>\n");
 				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='3' type='radio' value='author' name='option' title='Search by author' size='20'>Author</td></tr>\n");
 				stringBuilder.append("<tr><td><input %s type='radio' tabindex='4' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF number</td>\n");
-				stringBuilder.append("<tr><td>Number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n");
+				stringBuilder.append("<tr><td>Max number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n");
 				stringBuilder.append("<input type='hidden' name='structure' value='%s'>\n");
 				stringBuilder.append("<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='4' value='Search'/></td></tr>\n");
 				stringBuilder.append("</table>\n");
