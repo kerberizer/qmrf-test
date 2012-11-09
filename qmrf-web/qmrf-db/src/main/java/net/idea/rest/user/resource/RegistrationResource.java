@@ -9,9 +9,11 @@ import java.util.Map;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFHTMLReporter;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.user.CallableUserCreator;
 import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.TaskApplication;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.db.DBConnection;
@@ -105,5 +107,11 @@ public class RegistrationResource extends CatalogResource<DBUser> {
 	public String getConfigFile() {
 		return "conf/qmrf-db.pref";
 	}
+	
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		return new QMRF_HTMLBeauty(Resources.register);
+	}
+	
 	
 }
