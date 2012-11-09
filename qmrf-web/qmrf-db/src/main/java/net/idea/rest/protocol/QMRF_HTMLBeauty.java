@@ -152,6 +152,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				"<a class='topLinks help' href='%s'>Help</a>\n" +
 			"</li>\n" +
 			"%s" +
+			"%s" +
 		"</ul>\n";
 	
 	// home menu option
@@ -171,6 +172,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"%s" + // this is a placeholder for the logout form
 		"</li>\n";
 
+	private final static String registerLinkTemplate =
+		"<li class='topLinks'>|</li>\n" +
+		"<li class='topLinks'>\n" +
+		"<a class='topLinks register' title='%s' href='%s%s' %s>%s</a>\n" +
+		"</li>\n";
+	
 	// footer
 	private final static String footerText =
 		"<div id='footer-out'>\n" +
@@ -394,6 +401,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			w.write("<div id='header'>\n");
 			
 			String logInOutLink = "";
+			String registerLink = "";
 			
 			if (!getSearchURI().equals(Resources.login)) {
 				if (request.getClientInfo().getUser()==null) {
@@ -409,6 +417,12 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 							"Log in",
 							// The log out form (empty here as we're not yet logged in)
 							"");
+					registerLink = String.format(registerLinkTemplate,
+							"Register",
+							baseReference.toString(), Resources.register,
+							"",
+							"Register",
+							"");					
 				} else {
 					// Log out
 					logInOutLink = String.format(logInOutLinkTemplate,
@@ -433,7 +447,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					qmrfEditorEmail, 
 					// Help
 					qmrfHelpURL,					
-					logInOutLink
+					logInOutLink,
+					registerLink
 			));
 			/*
 			TODO logout immediately 
