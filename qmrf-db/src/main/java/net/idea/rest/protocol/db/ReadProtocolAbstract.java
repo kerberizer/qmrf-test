@@ -46,16 +46,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"from protocol join user using(iduser)\n" +
 		"left join keywords using(idprotocol,version) %s %s";
 
-	/*
-	protected static String sql_nokeywords_renumber = 
-		String.format(
-		"select idprotocol,version,protocol.title,qmrf_number,%s as anabstract,iduser,summarySearchable,",qmrfNumber) +
-		"idproject," +
-		"idorganisation,user.username,user.firstname,user.lastname," +
-		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status\n" +
-		"from protocol join user using(iduser)\n" +
-		" %s %s order by idprotocol desc,version desc";	
-	*/
+
 	protected static String sql_nokeywords = 
 		"select idprotocol,protocol.version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
 		"idproject," +
@@ -130,6 +121,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 				if (p.getEndpoint()==null) p.setEndpoint(new EndpointTest(endpointname,null));
 				else p.getEndpoint().setName(endpointname);
 			} catch (Exception x) {
+				System.out.println(getClass().getName());
 				x.printStackTrace();
 			}			
 			try {
