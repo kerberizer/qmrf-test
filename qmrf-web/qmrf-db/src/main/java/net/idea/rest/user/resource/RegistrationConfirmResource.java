@@ -1,16 +1,21 @@
 package net.idea.rest.user.resource;
 
+import java.sql.Connection;
 import java.util.Map;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
+import net.idea.modbcum.p.UpdateExecutor;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.user.CallableUserCreator;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.u.RegistrationJSONReporter;
 import net.idea.restnet.u.UserRegistration;
+import net.idea.restnet.u.db.ConfirmRegistration;
 import net.idea.restnet.u.db.ReadRegistration;
 
 import org.restlet.Context;
@@ -66,6 +71,40 @@ public class RegistrationConfirmResource extends  QMRFQueryResource<ReadRegistra
 		String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
 		q.setDatabaseName(usersdbname==null?"tomcat_users":usersdbname);
 		return q;
+	}
+	
+	@Override
+	protected Representation getRepresentation(Variant variant)
+			throws ResourceException {
+		//confirm the registration only if JSON requested; 
+		//this means it is either requested by JS enabled browser or by a knowledgeable client :)
+	
+		if (MediaType.APPLICATION_JSON.equals(variant.getMediaType())) {
+			Connection conn = null;
+			UpdateExecutor exec = null;
+			Object code = getRequest().getResourceRef().getQueryAsForm().getFirstValue(confirmationCode);
+			if (code!=null) 
+			try {
+				String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
+				if (usersdbname==null) usersdbname = "tomcat_users";
+				UserURIReporter reporter = new UserURIReporter(getRequest(),"");
+				DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+				conn = dbc.getConnection();
+				UserRegistration reg = new  UserRegistration(code.toString());
+				ConfirmRegistration q = new ConfirmRegistration(reg);
+				q.setDatabaseName(usersdbname);
+				exec = new UpdateExecutor();
+				exec.setConnection(conn);
+				exec.process(q);
+			} catch (Exception x) {
+				try {if (conn!=null) {conn.close(); conn=null;} } catch (Exception xx) {}
+				throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
+			} finally {
+				try {exec.close();} catch (Exception x) {}
+				try {if (conn!=null) conn.close();} catch (Exception x) {}				
+			}
+		}
+		return super.getRepresentation(variant);
 	}
 
 }
