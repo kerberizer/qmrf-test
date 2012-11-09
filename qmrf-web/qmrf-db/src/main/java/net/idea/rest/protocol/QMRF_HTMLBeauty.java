@@ -341,7 +341,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// Disabled for the time being, as there are issues with it.
 			//w.write(vKontakteInit);
 
-			w.write(meta);
 
 			//meta		
 			for (String tag : metaTag ) w.write(String.format(tag,baseReference));
@@ -378,6 +377,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// Show the to top link when the contents are scrolled down enough.
 			w.write(showToTopLink);
 			
+
+			w.write(meta);
 			// HEAD ends here.
 			w.write("</head>\n");
 			
