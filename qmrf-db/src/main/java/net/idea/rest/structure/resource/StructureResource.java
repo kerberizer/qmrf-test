@@ -30,6 +30,8 @@ import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryResource;
 
+
+import org.apache.xerces.impl.dv.util.Base64;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -212,8 +214,12 @@ public class StructureResource extends CatalogResource<Structure> {
 			}
 			ref.addQueryParameter("pagesize", Long.toString(parameters.getPageSize()));
 			ref.addQueryParameter("page", Integer.toString(parameters.getPage()));
-			if (parameters.getSearchQuery() != null)
-				ref.addQueryParameter(QueryResource.search_param, parameters.getSearchQuery());
+			if (parameters.getSearchQuery() != null) {
+				if (parameters.getSearchQuery().indexOf("#")>=0) //this breasks jquery jsonp even if url encoded, use base64 as workaround
+					ref.addQueryParameter("b64search", Base64.encode(parameters.getSearchQuery().getBytes()));
+				else
+					ref.addQueryParameter(QueryResource.search_param, parameters.getSearchQuery());
+			}
 			return ref;
 		} catch (ResourceException x) {
 			throw x;
