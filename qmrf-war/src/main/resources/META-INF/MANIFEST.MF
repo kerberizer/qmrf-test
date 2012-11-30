@@ -2,11 +2,11 @@ Manifest-version: 1.0
 Name: net/idea/qmrf/rest
 Package: net.idea.qmrf.rest
 Main-Class: net.idea.qmrf.rest.QMRFApplication
-Specification-Title: QMRF Inventory
+Specification-Title: QMRF Database
 Specification-Vendor: JRC IHCP
 Specification-Version: 2012
 Package-Version: ${project.version}
 Package-Vendor: Ideaconsult Ltd.
-Implementation-Title: QMRF Inventory
+Implementation-Title: QMRF Database
 Implementation-Version: build${buildNumber}
 Implementation-Vendor: Ideaconsult Ltd.

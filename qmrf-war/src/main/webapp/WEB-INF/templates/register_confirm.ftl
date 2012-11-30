@@ -54,7 +54,7 @@ $(document).ready(function() {
 	    	<br>
 			<#if qmrf_reg_confirmed??>
 			<span id='success' style='display:none'>
-			Your registration is now confirmed and you can <a href="/qmrf/login">log in</a> into QMRF Inventory.<br>
+			Your registration is now confirmed and you can <a href="/qmrf/login">log in</a> into QMRF Database.<br>
 			</span>
 
 			<span id='failure' style='display:none'>

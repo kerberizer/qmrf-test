@@ -15,8 +15,8 @@
 	
 	 <!-- Front page -->
 			<ul id='navmenu'>
-			<li><a class='selectable enter_qmrf' title='Click here to enter the QMRF inventory' href='/qmrf/protocol?pagesize=100'>
-				<img class='w_logo_inventory' src='/qmrf/images/logo_menu.png'>
+			<li><a class='selectable enter_qmrf' title='Click here to enter the QMRF Database' href='/qmrf/protocol?pagesize=100'>
+				<img class='w_logo_qmrfdb' src='/qmrf/images/logo_menu.png'>
 				Access
 			</a></li>
 			<li><a class='selectable' title='Click here to download the QMRF Editor application' href='${qmrf_editor}'>Get QMRF Editor</a></li>
