@@ -78,7 +78,7 @@ public class QMRFStatusService extends StatusService {
 				if (Status.CLIENT_ERROR_UNAUTHORIZED.equals(status)) {
 					errName = "Invalid user name or password";
 					errDescription = String.format(
-							"The user name or password you provided does not match the QMRF inventory records.<br><br>Please try to <a href='%s%s' title='Login to submit new documents'>login</a> again, or <a href='%s%s' title='Register'>register</a> if you are a new user.<br><br>Log in is only required for editors!",
+							"The user name or password you provided does not match the QMRF Database records.<br><br>Please try to <a href='%s%s' title='Login to submit new documents'>login</a> again, or <a href='%s%s' title='Register'>register</a> if you are a new user.<br><br>Log in is only required for editors!",
 							request.getRootRef(),Resources.login,
 							request.getRootRef(),Resources.register
 							);

@@ -3,7 +3,7 @@
 #######################################################################
 
 This is a list of actions for setting up (or upgrading to) the latest
-version of the QSAR Model Reporting Format Inventory database.
+version of the QSAR Model Reporting Format Database.
 
 #######################################################################
 				 STEP 1

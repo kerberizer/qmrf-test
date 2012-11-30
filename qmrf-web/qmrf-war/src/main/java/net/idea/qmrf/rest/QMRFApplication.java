@@ -73,8 +73,8 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 	public QMRFApplication() {
 		super();
 
-		setName("(Q)SAR Model Reporting Format Inventory");
-		setDescription("(Q)SAR Model Reporting Format Inventory");
+		setName("(Q)SAR Model Reporting Format Database");
+		setDescription("(Q)SAR Model Reporting Format Database");
 		setOwner("Institute for Health and Consumer Protection, JRC");
 		setAuthor("Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC");
 		setConfigFile("config/qmrf.properties");
