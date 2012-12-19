@@ -10,9 +10,11 @@ import net.idea.opentox.cli.AbstractClient;
 import net.idea.opentox.cli.IIdentifiableResource;
 import net.toxbank.client.resource.Protocol;
 
+import org.apache.http.Header;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
 import org.restlet.data.Reference;
 import org.restlet.resource.ResourceException;
 
@@ -198,7 +200,9 @@ public class Structure implements IIdentifiableResource<URL>, Serializable {
 	public static List<Structure> retrieveStructures(String queryService, String ref)  throws Exception{
 		Reference queryURI = new Reference(queryService);
 		HttpClient httpcli = new DefaultHttpClient();
+
 		AbstractClient<Structure, String> cli = new AbstractClient<Structure, String>(httpcli);
+		cli.setHeaders(new Header[]{new BasicHeader("Referer","http://localhost")});
 		List<Structure> records = new ArrayList<Structure>();
 		try {
 			List<URL> urls = cli.listURI(new URL(ref)); //TODO custom client to return List<Structure>
