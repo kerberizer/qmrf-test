@@ -40,6 +40,9 @@
 	</div> <#-- w_wrap -->
 	
 <#include "/footer.ftl">
+<div id='toTop'>
+&Delta;<br>&Delta;<br>&Delta;
+</div>
 <#include "/scripts-welcome.ftl">
 </body>
 </html>
