@@ -43,10 +43,15 @@ public class QMRFStatusService extends StatusService {
 			if ((status.getThrowable() !=null) && (status.getThrowable() instanceof RResourceException)) 
 				wrapInHTML = ((RResourceException)status.getThrowable()).getVariant().equals(MediaType.TEXT_HTML);
 			else {
-				Form headers = (Form) request.getAttributes().get("org.restlet.http.headers"); 
-				String acceptHeader = headers.getValues("accept");
-				if (acceptHeader!=null)
-					wrapInHTML = acceptHeader.contains("text/html");
+				//MSIE Accept headers are completely ridiculous
+				if ((request.getClientInfo() != null) && "MSIE".equals(request.getClientInfo().getAgentName())) 
+					wrapInHTML = true;
+				else {
+					Form headers = (Form) request.getAttributes().get("org.restlet.http.headers"); 
+					String acceptHeader = headers.getValues("accept");
+					if (acceptHeader!=null)
+						wrapInHTML = acceptHeader.contains("text/html");
+				}
 			}
 			
 			if (wrapInHTML) {
@@ -84,7 +89,16 @@ public class QMRFStatusService extends StatusService {
 							);
 					
 				}
-				if (Status.CLIENT_ERROR_FORBIDDEN.equals(status)) errName = "You are not allowed to access this page";
+				if (Status.CLIENT_ERROR_FORBIDDEN.equals(status)) {
+					details = new StringWriter();
+					details.append(errDescription);
+					errName = "You are not allowed to access this page";
+					errDescription = String.format(
+							"Only editors are allowed to submit new documents and edit existing ones.<br><br>Please try to <a href='%s%s' title='Login to submit new documents'>login</a> again, or <a href='%s%s' title='Register'>register</a> if you are a new user.<br><br>Log in is only required for editors!",
+							request.getRootRef(),Resources.login,
+							request.getRootRef(),Resources.register
+							);					
+				}
 				
 				w.write(
 						String.format(		
