@@ -3,6 +3,7 @@ package net.idea.rest.user.alerts.db;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.user.DBUser;
@@ -104,9 +105,11 @@ public class DBAlert extends Alert<DBUser> {
 			@Override
 			public void setParam(DBAlert alert, ResultSet rs) throws SQLException {
 				try {
-					Date date = rs.getDate(name());
+					Timestamp date = rs.getTimestamp(name());
 					alert.setSentAt(date.getTime());
-				} catch (Exception x) { alert.setSentAt(0L);}
+				} catch (Exception x) {
+					alert.setSentAt(0L);
+				}
 			}			
 			@Override
 			public Object getValue(DBAlert alert) {
@@ -122,9 +125,11 @@ public class DBAlert extends Alert<DBUser> {
 			@Override
 			public void setParam(DBAlert alert, ResultSet rs) throws SQLException {
 				try {
-					Date date = rs.getDate(name());
+					Timestamp date = rs.getTimestamp(name());
 					alert.setCreated(date.getTime());
-				} catch (Exception x) { alert.setCreated(0L);}
+				} catch (Exception x) {
+					alert.setCreated(0L);
+				}
 			}			
 			@Override
 			public Object getValue(DBAlert alert) {
