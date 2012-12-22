@@ -18,8 +18,31 @@ public class ReadProtocolByTextSearch extends ReadProtocolByEndpointString {
 	 * 
 	 */
 	private static final long serialVersionUID = -5128395204960444566L;
-	protected static String sql = String.format(ReadProtocol.sql_withkeywords,
-					"where ","published_status='published' and match (keywords.keywords) against (?)");
+	protected static String sql_natural = String.format(ReadProtocol.sql_withkeywords,
+					"where ","published_status='published' and match (keywords.keywords) against (? IN NATURAL LANGUAGE MODE)");
+	protected static String sql_boolean = String.format(ReadProtocol.sql_withkeywords,
+					"where ","published_status='published' and match (keywords.keywords) against (? IN BOOLEAN MODE)");
+	protected TextSearchMode mode = TextSearchMode.textnatural;
+	
+	public ReadProtocolByTextSearch() {
+		this(TextSearchMode.textnatural);
+	}
+	public ReadProtocolByTextSearch(TextSearchMode mode) {
+		super();
+		setMode(mode);
+	}
+	public TextSearchMode getMode() {
+		return mode;
+	}
+
+	public void setMode(TextSearchMode mode) {
+		this.mode = mode;
+	}
+
+	public enum TextSearchMode {
+		textnatural,
+		textboolean;
+	}
 
 	public List<QueryParam> getParameters() throws AmbitException {
 		List<QueryParam> params =  new ArrayList<QueryParam>();
@@ -30,7 +53,7 @@ public class ReadProtocolByTextSearch extends ReadProtocolByEndpointString {
 	}
 
 	public String getSQL() throws AmbitException {
-		return sql;
+		return TextSearchMode.textnatural.equals(mode)?sql_natural:sql_boolean;
 
 	}
 
