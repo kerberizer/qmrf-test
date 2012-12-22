@@ -50,7 +50,8 @@ $(document).ready(function() {
 				  "bSortable" : true,
 				  sWidth : "15%",
  			      "fnRender": function ( o, val ) {
-          				return "<a href='"+o.aData["uri"] + "'>" + o.aData["visibleid"] + "</a>";
+ 			    	    return "<a name='toploc_"+o.aData["identifier"]+"'></a>" +
+ 			    	    	   "<a href='"+o.aData["uri"] + "'>" + o.aData["visibleid"] + "</a>";
         			}
 				},
 				{ "mDataProp": "title" , "asSorting": [ "asc", "desc" ], "aTargets": [ 2 ]
@@ -161,6 +162,7 @@ $(document).ready(function() {
 		var qmrfDocument = oTable.fnGetData(nTr);
 		var sOut = '<div id="' + id + '" style="display: block;">';
 		sOut = sOut + "<div id='" + id + "_tabs' class='tabs'>Please wait while QMRF document chapters are loading...</div>";
+		sOut = sOut + "<div class='tabs2top'><a href='#toploc_"+qmrfDocument["identifier"]+"'><span class='upArrow'>&Delta;</span>&nbsp;TOP&nbsp;<span class='upArrow'>&Delta;</span></a></div>";
 		sOut = sOut + "</div>";	
 
 	      $.ajax({
