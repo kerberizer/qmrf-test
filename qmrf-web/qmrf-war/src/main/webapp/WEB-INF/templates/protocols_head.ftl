@@ -1,6 +1,14 @@
 <script>$(function() {$( ".tabs" ).tabs({cache: true});});</script>
 
+<script type='text/javascript' src='/qmrf/jquery/jquery.validate.min.js'></script>
+<script type='text/javascript' src='/qmrf/scripts/qmrfsearchform.js'></script>
 <script type='text/javascript'>
+
+$(document).ready( function () {
+	validateQMRFSearchForm();
+	$("#submit").button();
+});
+
 $(document).ready( function () {
 	$('#toTop').click( function () {
 		$('html, body').animate({scrollTop: '0'}, 1000);
