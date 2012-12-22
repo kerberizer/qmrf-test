@@ -44,6 +44,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"<script type='text/javascript' src='%s/jquery/jquery.validate.min.js'></script>\n",
 		"<script type='text/javascript' src='%s/jquery/jquery-ui-1.8.18.custom.min.js'></script>\n",
 		"<script type='text/javascript' charset='utf8' src='%s/jquery/jquery.dataTables-1.9.0.min.js'></script>\n",
+		"<script type='text/javascript' src='%s/jquery/jquery.validate.min.js'></script>\n",
+		"<script type='text/javascript' src='%s/scripts/qmrfsearchform.js'></script>\n",
 		"<script type='text/javascript' src='%s/scripts/jopentox.js'></script>\n",
 		//"<script type='text/javascript' src='%s/scripts/jendpoints.js'></script>\n",
 		"<script type='text/javascript' src='%s/jme/jme.js'></script>\n"
@@ -667,17 +669,19 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				StringBuilder stringBuilder = new StringBuilder();
 				stringBuilder.append("<div class='search ui-widget'>\n");
 				stringBuilder.append("<p title='%s'>%s</p>\n");
-				stringBuilder.append("<form method='GET' action='%s%s'>\n");
+				stringBuilder.append("<form method='GET' id='protocolquery' action='%s%s'>\n");
 				stringBuilder.append("<table width='200px'>\n");
 				stringBuilder.append("<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Enter search query'></td></tr>\n");
-				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='1' type='radio' value='title' name='option' title='Title' size='20'>Title</td></tr>\n");
-				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='1' type='radio' value='text' name='option' title='Free text search' size='20'>Free text</td></tr>\n");
-				stringBuilder.append("<tr><td><input %s type='radio' tabindex='2' name='option' value='endpoint' title='Search by endpoint'>Endpoint</td>\n");
-				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='3' type='radio' value='author' name='option' title='Search by author' size='20'>Author</td></tr>\n");
-				stringBuilder.append("<tr><td><input %s type='radio' tabindex='4' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF number</td>\n");
+				stringBuilder.append("<tr><td colspan='2'><div style='padding:5px;width:160px;font-size: 0.9em;font-weight:italic;color:gray;line-height:90%%' id='qhelp' title='Help'><div/></td></tr>\n");
+				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='1' type='radio' value='title' name='option' title='Title' size='20'>Title <a href='#' onClick=qHelp('title')>?</a></td></tr>\n");
+				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='2' type='radio' value='text' name='option' title='Free text - Natural language search in the entire QMRF document' size='20'>Free text <a href='#' onClick=qHelp('text')>?</a></td></tr>\n");
+				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='3' type='radio' value='textboolean' name='option' title='Free text - Implied Boolean logic with keyword searching in the entire QMRF document' size='20'>Free text (boolean) <a href='#' onClick=qHelp('textboolean')>?</a></td></tr>\n");
+				stringBuilder.append("<tr><td><input %s type='radio' tabindex='4' name='option' value='endpoint' title='Search by endpoint'>Endpoint <a href='#' onClick=qHelp('endpoint')>?</a></td></tr>\n");
+				stringBuilder.append("<tr><td colspan='2'><input %s tabindex='5' type='radio' value='author' name='option' title='Search by author' size='20'>Author <a href='#' onClick=qHelp('author')>?</a></td></tr>\n");
+				stringBuilder.append("<tr><td><input %s type='radio' tabindex='6' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF number <a href='#' onClick=qHelp('qmrfnumber')>?</a></td></tr>\n");
 				stringBuilder.append("<tr><td>Max number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value='%s'></td></tr>\n");
 				stringBuilder.append("<input type='hidden' name='structure' value='%s'>\n");
-				stringBuilder.append("<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='4' value='Search'/></td></tr>\n");
+				stringBuilder.append("<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='7' value='Search'/></td></tr>\n");
 				stringBuilder.append("</table>\n");
 				stringBuilder.append("</form> \n");
 				stringBuilder.append("&nbsp;\n");
@@ -693,6 +697,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 						searchQuery==null?"":searchQuery,
 						SearchMode.title.equals(option)?"checked":"",
 						SearchMode.text.equals(option)?"checked":"",
+						SearchMode.textboolean.equals(option)?"checked":"",
 						SearchMode.endpoint.equals(option)?"checked":"",
 						SearchMode.author.equals(option)?"checked":"",
 						SearchMode.qmrfnumber.equals(option)?"checked":"",
