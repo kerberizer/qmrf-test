@@ -133,7 +133,7 @@ public class AlertHTMLReporter extends QMRFHTMLReporter<DBAlert, IQueryRetrieval
 							getRunLink(alert),
 							alert.getRecurrenceFrequency(),
 							getDeleteLink(alert),
-							alert.getSentAt()==0?"Never":new Date(alert.getSentAt())
+							alert.getSentAt()==0L?"Never":new Date(alert.getSentAt())
 
 							)));
 			output.flush();
