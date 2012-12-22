@@ -1,6 +1,21 @@
 <script>$(function() {$( ".tabs" ).tabs({cache: true});});</script>
 
-<script type="text/javascript">
+<script type='text/javascript'>
+$(document).ready( function () {
+	$('#toTop').click( function () {
+		$('html, body').animate({scrollTop: '0'}, 1000);
+	});
+	$(window).scroll( function () {
+		var h = $('#header').height();
+		var p = $(window).scrollTop();
+		if ( p > (h + 100) ) {
+			$('#toTop').stop().animate({left: '-5px'}, 'fast');
+		} else if ( p < (h + 50) ) {
+			$('#toTop').stop().animate({left: '-30px'}, 'slow');
+		}
+	});
+});
+
 $(document).ready(function() {
 	$.ajaxSetup({cache:false});//while dev
 	//headers
