@@ -46,7 +46,7 @@ $(document).ready(function() {
 		<th></th>
 		<th>Code</th>
 		<th>Name</th>
-		<th>QMRF Documents</th>
+		<th><span title='Number of QMRF documents'>#</span></th>
 		</thead>
 		<tbody></tbody>
 		</table>

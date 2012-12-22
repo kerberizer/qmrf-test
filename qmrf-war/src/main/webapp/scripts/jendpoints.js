@@ -43,7 +43,7 @@ function defineEndpointsTable(url) {
 					"aTargets": [ 3 ],	
 					"sClass" : "center",
 					"bSortable" : false,
-					"bSearchable" : false,
+					"bSearchable" : true,
 					"mDataProp" : null,
 					"bUseRendered" : true,
 					sWidth : "32px",
