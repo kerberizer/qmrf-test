@@ -57,6 +57,7 @@ public class UserXMLReporter <Q extends IQueryRetrieval<DBUser>>  extends QueryR
 			name.append(" ");
 			name.append(item.getLastname()==null?"":item.getLastname());
 			String affiliation = "";
+			if (item.getOrganisations()!=null)
 			for (Organisation org : item.getOrganisations())
 				affiliation = org.getTitle();
 			
