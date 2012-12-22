@@ -26,6 +26,7 @@ import net.idea.rest.protocol.db.ReadProtocolByEndpoint;
 import net.idea.rest.protocol.db.ReadProtocolByEndpointString;
 import net.idea.rest.protocol.db.ReadProtocolByStructure;
 import net.idea.rest.protocol.db.ReadProtocolByTextSearch;
+import net.idea.rest.protocol.db.ReadProtocolByTextSearch.TextSearchMode;
 import net.idea.rest.structure.resource.Structure;
 import net.idea.rest.user.DBUser;
 import net.idea.rest.user.db.ReadUser;
@@ -73,6 +74,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	public enum SearchMode {
 		title,
 		text,
+		textboolean,
 		endpoint,
 		endpointcode,
 		author,
@@ -374,7 +376,14 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					editable = showCreateLink;
 					singleItem = false;				
 					return (Q)query;
-				}		
+				}	
+				case textboolean: {
+					IQueryRetrieval<DBProtocol> query = new ReadProtocolByTextSearch(TextSearchMode.textboolean);
+					((ReadProtocolByTextSearch)query).setFieldname(search.toString().trim());
+					editable = showCreateLink;
+					singleItem = false;				
+					return (Q)query;
+				}				
 				case endpointcode: {
 					IQueryRetrieval<DBProtocol> query = new ReadProtocolByEndpoint();
 					EndpointTest endpointTest = new EndpointTest(null,null);
