@@ -65,7 +65,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 
 	@Override
 	public boolean isHtmlbyTemplate() {
-		return headless?false:singleItem?htmlbyTemplate:false;
+		return headless?false:singleItem?freeMarkerSupport.isHtmlbyTemplate():false;
 	}
 	@Override
 	public String getTemplateName() {

@@ -103,7 +103,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	@Override
 	public boolean isHtmlbyTemplate() {
 		// TODO Auto-generated method stub
-		return singleItem || headless?false:htmlbyTemplate;
+		return singleItem || headless?false:freeMarkerSupport.isHtmlbyTemplate();
 	}
 	
 	@Override

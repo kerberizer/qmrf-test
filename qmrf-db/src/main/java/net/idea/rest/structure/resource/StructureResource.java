@@ -30,7 +30,6 @@ import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryResource;
 
-
 import org.apache.xerces.impl.dv.util.Base64;
 import org.restlet.Context;
 import org.restlet.Request;
@@ -54,7 +53,7 @@ public class StructureResource extends CatalogResource<Structure> {
 		queryService = 
 			//"http://ambit.uni-plovdiv.bg:8080/qmrfdata";
 			((TaskApplication) getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name());
-		htmlbyTemplate = true;
+		setHtmlbyTemplate(true);
 	}
 
 	@Override
@@ -72,7 +71,7 @@ public class StructureResource extends CatalogResource<Structure> {
 	}
 	
 	@Override
-	protected void configureTemplateMap(Map<String, Object> map) {
+	public void configureTemplateMap(Map<String, Object> map) {
 		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
 		Reference query = getSearchReference(getContext(),getRequest(),getResponse(),parameters);
 		
