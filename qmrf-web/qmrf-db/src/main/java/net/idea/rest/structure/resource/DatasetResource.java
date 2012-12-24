@@ -10,7 +10,6 @@ import net.idea.modbcum.p.QueryExecutor;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.restnet.db.DBConnection;
-import net.idea.restnet.db.QueryResource;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -24,7 +23,7 @@ public class DatasetResource extends StructureResource {
 	
 	public DatasetResource() {
 		super();
-		htmlbyTemplate = false;
+		setHtmlbyTemplate(false);
 	}
 	
 	@Override	

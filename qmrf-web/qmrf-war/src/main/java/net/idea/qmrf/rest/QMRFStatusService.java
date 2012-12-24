@@ -79,7 +79,9 @@ public class QMRFStatusService extends StatusService {
 						
 				String errName = status.getName();
 				String errDescription = status.getDescription();
+				
 				if (Status.CLIENT_ERROR_BAD_REQUEST.equals(status)) errName = "Invalid input";
+				
 				if (Status.CLIENT_ERROR_UNAUTHORIZED.equals(status)) {
 					errName = "Invalid user name or password";
 					errDescription = String.format(
