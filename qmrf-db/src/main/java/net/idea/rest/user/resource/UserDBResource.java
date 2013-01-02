@@ -32,6 +32,7 @@ import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 import net.idea.restnet.user.DBUser;
 import net.idea.restnet.user.db.ReadUser;
+import net.idea.restnet.user.resource.UserJSONReporter;
 import net.idea.restnet.user.resource.UserRDFReporter;
 import net.idea.restnet.user.resource.UserURIReporter;
 import net.toxbank.client.io.rdf.TOXBANK;

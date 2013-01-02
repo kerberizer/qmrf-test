@@ -299,7 +299,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			throws ResourceException {
 		
 		Form form = request.getResourceRef().getQueryAsForm();
-
+		DBProtocol queryObject = null;
 		Object search = null;
 		try {
 			search = form.getFirstValue("search").toString();
@@ -315,6 +315,10 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		Object modified = null;
 		try {
 			modified = form.getFirstValue("modifiedSince").toString();
+			if (modified != null) {
+				queryObject = new DBProtocol();
+				queryObject.setTimeModified(Long.parseLong(modified.toString()));		
+			}	
 		} catch (Exception x) {
 			modified = null;
 		}			
@@ -358,6 +362,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} catch (Exception x) {	
 		} finally {
 		}		
+
 		try {
 			if (search!=null)
 				switch (option) {
@@ -365,14 +370,15 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					IQueryRetrieval<DBProtocol> query = new ReadProtocolByAuthor();
 					
 					((ReadProtocolByAuthor)query).setFieldname(search.toString().trim());
+					((ReadProtocolByAuthor)query).setValue(queryObject);
 					editable = showCreateLink;
 					singleItem = false;				
 					return (Q)query;
 				}
 				case text: {
 					IQueryRetrieval<DBProtocol> query = new ReadProtocolByTextSearch();
-					
 					((ReadProtocolByTextSearch)query).setFieldname(search.toString().trim());
+					((ReadProtocolByTextSearch)query).setValue(queryObject);
 					editable = showCreateLink;
 					singleItem = false;				
 					return (Q)query;
@@ -380,6 +386,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				case textboolean: {
 					IQueryRetrieval<DBProtocol> query = new ReadProtocolByTextSearch(TextSearchMode.textboolean);
 					((ReadProtocolByTextSearch)query).setFieldname(search.toString().trim());
+					((ReadProtocolByTextSearch)query).setValue(queryObject);
 					editable = showCreateLink;
 					singleItem = false;				
 					return (Q)query;
@@ -389,6 +396,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					EndpointTest endpointTest = new EndpointTest(null,null);
 					endpointTest.setCode("undefined".equals(search)?null:search.toString().trim());
 					((ReadProtocolByEndpoint)query).setFieldname(endpointTest);
+					((ReadProtocolByEndpoint)query).setValue(queryObject);
 					editable = showCreateLink;
 					singleItem = false;				
 					return (Q)query;
@@ -398,6 +406,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					
 					((ReadProtocolByEndpointString)query).setFieldname(search.toString().trim());
 					((ReadProtocolByEndpointString)query).setCondition(c);
+					((ReadProtocolByEndpointString)query).setValue(queryObject);
 					editable = showCreateLink;
 					singleItem = false;				
 					return (Q)query;
@@ -414,23 +423,6 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					}
 
 				}		
-				/*
-				case modifiedSince: {
-					try {
-						Long.parseLong(search.toString().trim());
-						modified = search.toString();
-						structure = null;
-						search = null;
-						//go to the standard processing 
-					} catch (Exception x) {
-						throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST.getCode(),
-								String.format("Invalid date %s",new Date(search.toString())),
-								String.format("The date entered is not valid",search),
-								null
-								);
-					}
-				}
-				*/
 				}
 			if ((structure!=null) && structure.toString().startsWith("http")) {
 				IQueryRetrieval<DBProtocol> query = new ReadProtocolByStructure();

@@ -52,9 +52,14 @@
 			</#if>
 			
 			<!-- save search widget only in case of query -->			
-			<#if qmrf_query??><#if username??><#if s["/protocol"]??>
-				<#include "/alerts_menu.ftl" >
-			</#if></#if></#if>
+			<#if qmrf_query??><#if username??>
+				<#if s["/protocol"]??>
+					<#include "/alerts_menu.ftl" >
+				<#else><#if s["/chemical"]??>
+					<#include "/alerts_menu.ftl" >
+					</#if>
+				</#if>
+			</#if></#if>
 			<!-- end saved search -->	
 			
 			</ul>		
@@ -64,12 +69,13 @@
 			<!-- search widget -->
 			<#if s["/protocol"]??>
 				<#include "/protocols_menu.ftl" >
-			<#else> <#if s["/unpublished"]??> 
+			<#elseif s["/unpublished"]??> 
 				<#include "/protocols_menu.ftl" >		
-			<#else> <#if s["/chemical"]??>
+			<#elseif s["/chemical"]??>
 				<#include "/structures_menu.ftl" >
-			</#if>
-			</#if>
+			<#elseif s["/notification"]??>
+				<#include "/notification_menu.ftl" >
+			<#else>	
 			</#if>
 			
 	</div> <#-- w_menu -->

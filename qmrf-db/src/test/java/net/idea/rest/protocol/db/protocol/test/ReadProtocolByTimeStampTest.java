@@ -14,7 +14,7 @@ public class ReadProtocolByTimeStampTest extends QueryTest<ReadProtocol> {
 	protected ReadProtocol createQuery() throws Exception {
 
 		DBProtocol p = new DBProtocol();
-		p.setTimeModified(1254757473000L);//in msec
+		p.setTimeModified(1254757473L);//in sec
 		/**
 		 * in DB: 1241795264, 1254757473 
 		 */

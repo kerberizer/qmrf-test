@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
+import net.idea.rest.protocol.db.ReadProtocolByTextSearch.TextSearchMode;
 
 public class ReadProtocolByEndpointString extends ReadProtocolAbstract<String> {
 
@@ -24,11 +25,24 @@ public class ReadProtocolByEndpointString extends ReadProtocolAbstract<String> {
 		if (getFieldname()!=null) 
 			params.add(new QueryParam<String>(String.class, getFieldname()));
 		else throw new AmbitException("No endpoint!");
+		if (getValue()!=null && getValue().getTimeModified()!=null)
+			params.add(new QueryParam<Long>(Long.class, getValue().getTimeModified()));		
 		return params;
 	}
 
-	public String getSQL() throws AmbitException {
+	public String getLocalSQL() throws AmbitException {
 		return String.format(sql,getCondition().getSQL());
+	}
+	public String getSQL() throws AmbitException {
+		String sql = getLocalSQL();
+		if (getValue()!=null && getValue().getTimeModified()!=null) { 
+			StringBuilder b = new StringBuilder();
+			b.append(sql);
+			b.append(" and ");
+			b.append(ReadProtocol.fields.updated.getCondition());
+			return b.toString();
+		} else return sql;
+
 
 	}
 	

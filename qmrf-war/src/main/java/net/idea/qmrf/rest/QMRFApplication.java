@@ -38,6 +38,9 @@ import net.idea.restnet.aa.local.UserLogoutPOSTResource;
 import net.idea.restnet.aa.resource.AdminRouter;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.routers.MyRouter;
+import net.idea.restnet.c.task.AlertsNotifier;
+import net.idea.restnet.c.task.TaskStorage;
+import net.idea.restnet.c.task.TaskStorageWithNotifier;
 import net.idea.restnet.db.aalocal.DBRole;
 import net.idea.restnet.db.aalocal.DBVerifier;
 import net.idea.restnet.db.aalocal.DbEnroller;
@@ -391,6 +394,24 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 	}
 
 
+	/**
+	 * Includes notification timer
+	 */
+	protected TaskStorage<String> createTaskStorage() {
+		return new TaskStorageWithNotifier(getName(),getLogger()) {
+			
+			@Override
+			protected AlertsNotifier createAlertsNotifier() {
+				return new AlertsNotifier() {
+					@Override
+					protected String getConfig() {
+						return "config/qmrf.properties";
+					}
+				};
+			}
+		};
+
+	}
 	
 	/**
 	 * Standalone, for testing mainly
@@ -430,6 +451,7 @@ class SimpleRoleAndMethodAuthorizer extends RoleAuthorizer {
 
 	@Override
 	public boolean authorize(Request request, Response response) {
+		if (Protocol.RIAP.equals(request.getProtocol())) return true;
 		if ((request.getClientInfo() == null)
 				|| (request.getClientInfo().getUser() == null)
 				|| (request.getClientInfo().getUser().getIdentifier() == null))
@@ -455,6 +477,7 @@ class ProtocolAuthorizer extends RoleAuthorizer {
 		if (Method.GET.equals(request.getMethod()))
 			return true;
 		if (skip) return true;
+		if (Protocol.RIAP.equals(request.getProtocol())) return true;
 		if ((request.getClientInfo() == null)
 				|| (request.getClientInfo().getUser() == null)
 				|| (request.getClientInfo().getUser().getIdentifier() == null))
