@@ -32,6 +32,7 @@ public class QMRFAdminResource extends CatalogResource<AdminItem> {
 		topics.add(new AdminItem("Users","user","Browse registered users"));
 		topics.add(new AdminItem("Organisations","organisation","Browse users affiliations"));
 		topics.add(new AdminItem("System jobs","task?pagesize=10","Browse jobs status"));
+		topics.add(new AdminItem("Notifications",String.format("%s/notification",resource),"Browse pending notifications"));
 
 	}
 	@Override

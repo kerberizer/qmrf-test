@@ -8,8 +8,11 @@ import java.util.Set;
 import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.exceptions.NotFoundException;
 import net.idea.modbcum.p.MasterDetailsProcessor;
+import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.UserHTMLBeauty;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.TaskApplication;
+import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.TaskCreator;
 import net.idea.restnet.c.task.TaskCreatorForm;
@@ -35,6 +38,7 @@ import org.restlet.data.Method;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
+import org.restlet.representation.StringRepresentation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
@@ -42,12 +46,26 @@ import org.restlet.resource.ResourceException;
 
 public class NotificationResource<T> extends UserDBResource<T> {
 	protected Form params = null;
-	public static final String resourceKey = "/notification";
 	protected Set<RecurrenceFrequency> frequency;
 	public NotificationResource() {
 		super();
 
 	}
+	@Override
+	public boolean isHtmlbyTemplate() {
+		return true;
+	}
+	@Override
+	public String getTemplateName() {
+		return "notification.ftl";
+	}
+	
+	@Override
+	protected HTMLBeauty getHTMLBeauty() {
+		if (htmlBeauty==null) htmlBeauty =  new UserHTMLBeauty(Resources.notify);
+		return htmlBeauty;
+	}
+	
 	@Override
 	protected ReadUser createQuery(Context context, Request request, Response response)
 			throws ResourceException {
@@ -65,11 +83,10 @@ public class NotificationResource<T> extends UserDBResource<T> {
 
 		try {
 			frequency = new HashSet<RecurrenceFrequency>();
-			if (search==null) frequency.add(RecurrenceFrequency.weekly);
-			else for (String freq : search) try {
-				frequency.add(RecurrenceFrequency.valueOf(freq));
-			} catch (Exception x) {};
-			if (frequency.isEmpty() ) frequency.add(RecurrenceFrequency.weekly);
+			if (search!=null) 
+				for (String freq : search) try {
+					frequency.add(RecurrenceFrequency.valueOf(freq));
+				} catch (Exception x) {};
 			return new ReadUsersByAlerts(frequency);
 		}catch (ResourceException x) {
 			throw x;
@@ -96,8 +113,14 @@ public class NotificationResource<T> extends UserDBResource<T> {
 			UserURIReporter reporter = new UserURIReporter(getRequest(),"");
 			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 			conn = dbc.getConnection();
-			CallableNotification callable = new CallableNotification(method,item,reporter, form,getRequest().getRootRef().toString(),conn,getToken());
-			callable.setNotification(new SimpleNotificationEngine());
+			CallableNotification callable = new CallableNotification(method,item,reporter, form,getRequest().getRootRef().toString(),conn,getToken()) {
+				@Override
+				protected String retrieveEmail(DBUser user, String token)
+						throws Exception {
+					return user.getEmail();
+				}
+			};
+			callable.setNotification(new SimpleNotificationEngine(getRequest().getRootRef(),"config/qmrf.properties"));
 			return callable;
 		} catch (Exception x) {
 			try { conn.close(); } catch (Exception xx) {}
@@ -200,5 +223,14 @@ public class NotificationResource<T> extends UserDBResource<T> {
 		}
 	}
 	
-	
+	@Override
+	protected Representation processNotFound(NotFoundException x,
+			Variant variant) throws Exception {
+		return new StringRepresentation("");
+	}
+	@Override
+	protected Representation processNotFound(NotFoundException x, int retry)
+			throws Exception {
+		return new StringRepresentation("");
+	}
 }

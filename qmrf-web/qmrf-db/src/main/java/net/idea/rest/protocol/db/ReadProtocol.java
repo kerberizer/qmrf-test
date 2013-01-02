@@ -619,11 +619,11 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 			}
 			@Override
 			public QueryParam getParam(DBProtocol protocol) {
-				return new QueryParam<Timestamp>(Timestamp.class,new Timestamp(protocol.getTimeModified()));
+				return new QueryParam<Long>(Long.class,protocol.getTimeModified());
 			}
 			@Override
 			public String getCondition() {
-				return String.format(" %s >= ? ",name());
+				return String.format(" %s >= FROM_UNIXTIME(?) ",name());
 			}
 		},		
 		endpoint {

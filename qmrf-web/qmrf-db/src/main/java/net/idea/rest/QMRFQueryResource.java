@@ -133,6 +133,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 		        query.removeAll("media");
 		        Reference r = getRequest().getResourceRef().clone();
 		        r.setQuery(query.getQueryString());
+		        map.put("qmrf_root",getRequest().getRootRef().toString()) ;
 		        map.put("qmrf_request",r.toString()) ;
 		        if (query.size()>0)
 		        	map.put("qmrf_query",query.getQueryString()) ;

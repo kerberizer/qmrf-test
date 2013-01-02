@@ -49,12 +49,14 @@ public class ReadProtocolByTextSearch extends ReadProtocolByEndpointString {
 		if (getFieldname()!=null) 
 			params.add(new QueryParam<String>(String.class, getFieldname()));
 		else throw new AmbitException("No search query name!");
+		if (getValue()!=null && getValue().getTimeModified()!=null)
+			params.add(new QueryParam<Long>(Long.class, getValue().getTimeModified()));
 		return params;
 	}
 
-	public String getSQL() throws AmbitException {
+	@Override
+	public String getLocalSQL() throws AmbitException {
 		return TextSearchMode.textnatural.equals(mode)?sql_natural:sql_boolean;
-
 	}
 
 }
