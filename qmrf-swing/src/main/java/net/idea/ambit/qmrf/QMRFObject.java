@@ -862,6 +862,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     			throw x;
     		} finally {
     			try {if (in != null) in.close();} catch (Exception x) {}
+    			try {cli.getConnectionManager().shutdown();} catch (Exception x) {}
     		}        		
         	
 
