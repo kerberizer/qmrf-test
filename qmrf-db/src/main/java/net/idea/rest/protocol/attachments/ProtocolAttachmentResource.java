@@ -17,7 +17,6 @@ import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
 import net.idea.rest.protocol.resource.db.FileReporter;
 import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
-import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.TaskApplication;
@@ -26,6 +25,7 @@ import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.TaskCreator;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
+import net.idea.restnet.user.DBUser;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.http.auth.UsernamePasswordCredentials;

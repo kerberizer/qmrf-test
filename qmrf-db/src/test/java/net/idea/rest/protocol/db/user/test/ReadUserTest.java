@@ -4,8 +4,8 @@ import java.sql.ResultSet;
 
 import junit.framework.Assert;
 import net.idea.rest.protocol.db.test.QueryTest;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.db.ReadUser;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
 
 
 public class ReadUserTest  extends QueryTest<ReadUser> {

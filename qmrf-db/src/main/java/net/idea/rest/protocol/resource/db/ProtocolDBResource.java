@@ -28,8 +28,6 @@ import net.idea.rest.protocol.db.ReadProtocolByStructure;
 import net.idea.rest.protocol.db.ReadProtocolByTextSearch;
 import net.idea.rest.protocol.db.ReadProtocolByTextSearch.TextSearchMode;
 import net.idea.rest.structure.resource.Structure;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.PageParams;
 import net.idea.restnet.c.RepresentationConvertor;
@@ -49,6 +47,8 @@ import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.db.convertors.RDFJenaConvertor;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
 import net.toxbank.client.io.rdf.TOXBANK;
 
 import org.apache.commons.fileupload.FileItem;

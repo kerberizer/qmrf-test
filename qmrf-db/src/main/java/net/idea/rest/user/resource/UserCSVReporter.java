@@ -2,7 +2,6 @@ package net.idea.rest.user.resource;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.net.URL;
 
 import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.IQueryRetrieval;
@@ -10,10 +9,9 @@ import net.idea.modbcum.i.exceptions.DbAmbitException;
 import net.idea.modbcum.p.DefaultAmbitProcessor;
 import net.idea.modbcum.p.MasterDetailsProcessor;
 import net.idea.modbcum.r.QueryReporter;
-import net.idea.rest.groups.DBOrganisation;
-import net.idea.rest.groups.db.ReadOrganisation;
-import net.idea.rest.groups.resource.GroupQueryURIReporter;
-import net.idea.rest.user.DBUser;
+import net.idea.restnet.groups.DBOrganisation;
+import net.idea.restnet.groups.db.ReadOrganisation;
+import net.idea.restnet.user.DBUser;
 import net.toxbank.client.resource.Organisation;
 
 import org.restlet.Context;

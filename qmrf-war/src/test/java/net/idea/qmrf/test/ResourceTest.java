@@ -6,7 +6,6 @@ import java.io.Reader;
 import java.io.Serializable;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.UUID;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -18,7 +17,6 @@ import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.qmrf.rest.QMRFRESTComponent;
 import net.idea.rest.protocol.db.test.DbUnitTest;
-import net.idea.restnet.aa.cookie.CookieAuthenticator;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.task.ClientResourceWrapper;
 import net.idea.restnet.rdf.ns.OT;

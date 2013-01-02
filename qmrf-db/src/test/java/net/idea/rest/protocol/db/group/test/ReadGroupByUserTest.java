@@ -3,10 +3,10 @@ package net.idea.rest.protocol.db.group.test;
 import java.sql.ResultSet;
 
 import junit.framework.Assert;
-import net.idea.rest.groups.DBOrganisation;
-import net.idea.rest.groups.db.ReadOrganisation;
 import net.idea.rest.protocol.db.test.QueryTest;
-import net.idea.rest.user.DBUser;
+import net.idea.restnet.groups.DBOrganisation;
+import net.idea.restnet.groups.db.ReadOrganisation;
+import net.idea.restnet.user.DBUser;
 
 
 public class ReadGroupByUserTest extends QueryTest<ReadOrganisation> {

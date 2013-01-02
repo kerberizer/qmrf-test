@@ -2,6 +2,7 @@
 <script type='text/javascript' src='/qmrf/scripts/qmrf_structures.js'></script>
 <script type='text/javascript'>
 $(document).ready(function() {
+	$("#submit").button();
 	$.ajaxSetup({cache:false});//while dev
 	
 	var url = "${qmrf_request_jsonp}";

@@ -29,6 +29,14 @@ public class MoleculeResource extends StructureResource {
 	protected String tabID="Molecule";
 	
 	@Override
+	protected Reference getSearchReference(Context context, Request request,
+			Response response, StructureHTMLBeauty parameters)
+			throws ResourceException {
+		parseParameters(context,request,response);
+		return null;
+	}
+	
+	@Override
 	protected Iterator<Structure> createQuery(Context context, Request request,
 			Response response) throws ResourceException {
 		parseParameters(context,request,response);

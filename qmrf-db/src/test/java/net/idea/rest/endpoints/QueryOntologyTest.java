@@ -3,7 +3,6 @@ package net.idea.rest.endpoints;
 import java.sql.ResultSet;
 
 import junit.framework.Assert;
-
 import net.idea.rest.endpoints.db.QueryOntology;
 import net.idea.rest.endpoints.db.QueryOntology.RetrieveMode;
 import net.idea.rest.protocol.db.test.QueryTest;

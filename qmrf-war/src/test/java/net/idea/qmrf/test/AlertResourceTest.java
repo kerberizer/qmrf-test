@@ -9,8 +9,8 @@ import java.util.List;
 
 import junit.framework.Assert;
 import net.idea.opentox.cli.task.RemoteTask;
-import net.idea.rest.user.alerts.db.DBAlert;
-import net.idea.rest.user.alerts.db.ReadAlert;
+import net.idea.restnet.user.alerts.db.DBAlert;
+import net.idea.restnet.user.alerts.db.ReadAlert;
 import net.toxbank.client.Resources;
 import net.toxbank.client.io.rdf.AlertIO;
 import net.toxbank.client.resource.Alert;

@@ -2,10 +2,10 @@ package net.idea.rest.user.author.resource;
 
 import net.idea.rest.FileResource;
 import net.idea.rest.protocol.DBProtocol;
-import net.idea.rest.user.DBUser;
 import net.idea.rest.user.author.db.ReadAuthor;
-import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.resource.UserDBResource;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
 
 import org.restlet.data.Reference;
 import org.restlet.data.Status;

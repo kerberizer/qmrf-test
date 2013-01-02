@@ -5,10 +5,10 @@ import java.util.Map;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.UserHTMLBeauty;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.db.ReadUser;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
 
 import org.restlet.Context;
 import org.restlet.Request;

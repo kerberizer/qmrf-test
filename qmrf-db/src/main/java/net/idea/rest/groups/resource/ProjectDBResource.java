@@ -3,16 +3,17 @@ package net.idea.rest.groups.resource;
 import java.sql.Connection;
 
 import net.idea.qmrf.client.Resources;
-import net.idea.rest.groups.CallableGroupCreator;
-import net.idea.rest.groups.DBProject;
-import net.idea.rest.groups.GroupType;
-import net.idea.rest.groups.db.ReadGroup;
-import net.idea.rest.groups.db.ReadProject;
-import net.idea.rest.user.DBUser;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.db.DBConnection;
+import net.idea.restnet.groups.CallableGroupCreator;
+import net.idea.restnet.groups.DBProject;
+import net.idea.restnet.groups.GroupType;
+import net.idea.restnet.groups.db.ReadGroup;
+import net.idea.restnet.groups.db.ReadProject;
+import net.idea.restnet.groups.resource.GroupQueryURIReporter;
+import net.idea.restnet.user.DBUser;
 
 import org.restlet.data.Form;
 import org.restlet.data.Method;

@@ -6,11 +6,11 @@ import java.math.BigInteger;
 import junit.framework.Assert;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.rest.protocol.db.test.CRUDTest;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.alerts.db.AddAlert;
-import net.idea.rest.user.alerts.db.DBAlert;
-import net.idea.rest.user.alerts.db.DeleteAlert;
-import net.idea.rest.user.alerts.db.UpdateAlertSentTimeStamp;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.alerts.db.AddAlert;
+import net.idea.restnet.user.alerts.db.DBAlert;
+import net.idea.restnet.user.alerts.db.DeleteAlert;
+import net.idea.restnet.user.alerts.db.UpdateAlertSentTimeStamp;
 import net.toxbank.client.resource.Alert.RecurrenceFrequency;
 
 import org.dbunit.database.IDatabaseConnection;

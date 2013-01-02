@@ -10,8 +10,8 @@ import java.util.List;
 import junit.framework.Assert;
 import net.idea.opentox.cli.task.RemoteTask;
 import net.idea.qmrf.client.Resources;
-import net.idea.rest.groups.DBGroup;
-import net.idea.rest.groups.db.ReadOrganisation;
+import net.idea.restnet.groups.DBGroup;
+import net.idea.restnet.groups.db.ReadOrganisation;
 import net.toxbank.client.io.rdf.OrganisationIO;
 import net.toxbank.client.resource.Organisation;
 

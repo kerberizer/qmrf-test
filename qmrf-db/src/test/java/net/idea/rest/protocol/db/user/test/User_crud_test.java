@@ -34,13 +34,13 @@ import java.sql.Statement;
 import junit.framework.Assert;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.rest.protocol.db.test.CRUDTest;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.db.CreateUser;
-import net.idea.rest.user.db.DeleteUser;
-import net.idea.rest.user.db.UpdateCredentials;
-import net.idea.rest.user.db.UpdateUser;
 import net.idea.restnet.u.UserCredentials;
 import net.idea.restnet.u.UserRegistration;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.CreateUser;
+import net.idea.restnet.user.db.DeleteUser;
+import net.idea.restnet.user.db.UpdateCredentials;
+import net.idea.restnet.user.db.UpdateUser;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.dbunit.database.IDatabaseConnection;

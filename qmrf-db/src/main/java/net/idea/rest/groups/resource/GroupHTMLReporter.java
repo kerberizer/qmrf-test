@@ -5,14 +5,15 @@ import java.io.Writer;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.rest.QMRFHTMLReporter;
-import net.idea.rest.groups.DBGroup;
-import net.idea.rest.groups.IDBGroup;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
-import net.idea.rest.user.DBUser;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
+import net.idea.restnet.groups.DBGroup;
+import net.idea.restnet.groups.IDBGroup;
+import net.idea.restnet.groups.resource.GroupQueryURIReporter;
+import net.idea.restnet.user.DBUser;
 
 import org.restlet.Request;
 import org.restlet.data.Form;

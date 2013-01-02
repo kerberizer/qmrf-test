@@ -5,10 +5,10 @@ import java.util.List;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.query.QueryParam;
-import net.idea.rest.groups.DBOrganisation;
 import net.idea.rest.protocol.DBProtocol;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.db.ReadUser;
+import net.idea.restnet.groups.DBOrganisation;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
 
 public class ReadAuthorXML extends ReadUser<DBProtocol> {
 

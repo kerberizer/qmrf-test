@@ -5,13 +5,13 @@ import java.util.List;
 
 import junit.framework.Assert;
 import net.idea.modbcum.i.query.IQueryUpdate;
-import net.idea.rest.groups.DBOrganisation;
-import net.idea.rest.groups.DBProject;
-import net.idea.rest.groups.IDBGroup;
-import net.idea.rest.groups.user.db.AddGroupsPerUser;
-import net.idea.rest.groups.user.db.DeleteGroupsPerUser;
 import net.idea.rest.protocol.db.test.CRUDTest;
-import net.idea.rest.user.DBUser;
+import net.idea.restnet.groups.DBOrganisation;
+import net.idea.restnet.groups.DBProject;
+import net.idea.restnet.groups.IDBGroup;
+import net.idea.restnet.groups.user.db.AddGroupsPerUser;
+import net.idea.restnet.groups.user.db.DeleteGroupsPerUser;
+import net.idea.restnet.user.DBUser;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;

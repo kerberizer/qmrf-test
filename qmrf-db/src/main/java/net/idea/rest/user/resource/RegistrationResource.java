@@ -16,8 +16,7 @@ import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.task.RegistrationTaskHTMLReporter;
-import net.idea.rest.user.CallableUserCreator;
-import net.idea.rest.user.DBUser;
+import net.idea.rest.user.QMRFCallableUserCreator;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -27,6 +26,8 @@ import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.i.task.ICallableTask;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.resource.UserURIReporter;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -105,7 +106,7 @@ public class RegistrationResource extends CatalogResource<DBUser> {
 			UserURIReporter reporter = new UserURIReporter(getRequest(),"");
 			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 			conn = dbc.getConnection();
-			return new CallableUserCreator(method,item,reporter, form,getRequest().getRootRef().toString(),
+			return new QMRFCallableUserCreator(method,item,reporter, form,getRequest().getRootRef().toString(),
 					conn,getToken(),false,usersdbname==null?"tomcat_users":usersdbname);
 		} catch (Exception x) {
 			try { conn.close(); } catch (Exception xx) {}

@@ -8,7 +8,7 @@ import net.idea.modbcum.i.query.QueryParam;
 import net.idea.modbcum.q.update.AbstractUpdate;
 import net.idea.rest.db.exceptions.InvalidProtocolException;
 import net.idea.rest.protocol.DBProtocol;
-import net.idea.rest.user.DBUser;
+import net.idea.restnet.user.DBUser;
 
 /**
  * Removes an author of a given protocol. Does not delete the user itself.

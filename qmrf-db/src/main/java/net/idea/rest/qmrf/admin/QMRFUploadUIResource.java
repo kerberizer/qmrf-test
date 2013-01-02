@@ -13,7 +13,6 @@ import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.QMRF_HTMLBeauty.update_mode;
-import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.resource.CatalogResource;

@@ -6,8 +6,8 @@ import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.test.CRUDTest;
 import net.idea.rest.protocol.db.test.QueryTest;
-import net.idea.rest.user.DBUser;
 import net.idea.rest.user.author.db.ReadAuthor;
+import net.idea.restnet.user.DBUser;
 
 
 public class ReadProtocolAuthorsTest extends QueryTest<ReadAuthor> {

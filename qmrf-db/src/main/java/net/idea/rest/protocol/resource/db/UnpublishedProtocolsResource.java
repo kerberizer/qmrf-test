@@ -7,10 +7,10 @@ import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.db.ReadProtocol;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.html.HTMLBeauty;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
 
 import org.restlet.Context;
 import org.restlet.Request;

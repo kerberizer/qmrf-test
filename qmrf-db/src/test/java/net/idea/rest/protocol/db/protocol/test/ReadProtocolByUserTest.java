@@ -6,7 +6,7 @@ import junit.framework.Assert;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.db.test.QueryTest;
-import net.idea.rest.user.DBUser;
+import net.idea.restnet.user.DBUser;
 
 
 public class ReadProtocolByUserTest extends QueryTest<ReadProtocol> {
