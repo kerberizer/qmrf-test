@@ -11,7 +11,7 @@ import java.util.List;
 import junit.framework.Assert;
 import net.idea.opentox.cli.task.RemoteTask;
 import net.idea.qmrf.client.Resources;
-import net.idea.rest.user.db.ReadUser;
+import net.idea.restnet.user.db.ReadUser;
 import net.toxbank.client.io.rdf.UserIO;
 import net.toxbank.client.resource.User;
 

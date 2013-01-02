@@ -2,12 +2,12 @@ package net.idea.rest.protocol.db.group.test;
 
 import junit.framework.Assert;
 import net.idea.modbcum.i.query.IQueryUpdate;
-import net.idea.rest.groups.DBProject;
-import net.idea.rest.groups.IDBGroup;
-import net.idea.rest.groups.db.CreateGroup;
-import net.idea.rest.groups.db.DeleteGroup;
-import net.idea.rest.groups.db.UpdateGroup;
 import net.idea.rest.protocol.db.test.CRUDTest;
+import net.idea.restnet.groups.DBProject;
+import net.idea.restnet.groups.IDBGroup;
+import net.idea.restnet.groups.db.CreateGroup;
+import net.idea.restnet.groups.db.DeleteGroup;
+import net.idea.restnet.groups.db.UpdateGroup;
 
 import org.dbunit.database.IDatabaseConnection;
 import org.dbunit.dataset.ITable;

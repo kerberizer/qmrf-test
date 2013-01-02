@@ -12,10 +12,10 @@ import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.db.ReadProtocol;
 import net.idea.rest.protocol.resource.db.ProtocolDBResource.SearchMode;
-import net.idea.rest.user.alerts.db.DBAlert;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
+import net.idea.restnet.user.alerts.db.DBAlert;
 import net.toxbank.client.resource.Query;
 
 import org.restlet.Request;

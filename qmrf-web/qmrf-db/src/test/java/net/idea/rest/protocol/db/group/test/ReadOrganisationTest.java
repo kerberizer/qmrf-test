@@ -3,9 +3,9 @@ package net.idea.rest.protocol.db.group.test;
 import java.sql.ResultSet;
 
 import junit.framework.Assert;
-import net.idea.rest.groups.DBOrganisation;
-import net.idea.rest.groups.db.ReadOrganisation;
 import net.idea.rest.protocol.db.test.QueryTest;
+import net.idea.restnet.groups.DBOrganisation;
+import net.idea.restnet.groups.db.ReadOrganisation;
 
 
 public class ReadOrganisationTest extends QueryTest<ReadOrganisation> {

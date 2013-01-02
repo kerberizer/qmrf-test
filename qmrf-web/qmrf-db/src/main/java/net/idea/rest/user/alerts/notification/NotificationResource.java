@@ -3,20 +3,12 @@ package net.idea.rest.user.alerts.notification;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 import net.idea.modbcum.i.IQueryCondition;
-import net.idea.modbcum.i.IQueryRetrieval;
+import net.idea.modbcum.i.exceptions.NotFoundException;
 import net.idea.modbcum.p.MasterDetailsProcessor;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.alerts.db.DBAlert;
-import net.idea.rest.user.alerts.db.ReadAlert;
-import net.idea.rest.user.db.ReadUser;
-import net.idea.rest.user.db.ReadUsersByAlerts;
 import net.idea.rest.user.resource.UserDBResource;
-import net.idea.rest.user.resource.UserURIReporter;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.TaskCreator;
@@ -25,6 +17,14 @@ import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.i.task.ICallableTask;
 import net.idea.restnet.i.task.Task;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.alerts.db.DBAlert;
+import net.idea.restnet.user.alerts.db.ReadAlert;
+import net.idea.restnet.user.alerts.notification.CallableNotification;
+import net.idea.restnet.user.alerts.notification.SimpleNotificationEngine;
+import net.idea.restnet.user.db.ReadUser;
+import net.idea.restnet.user.db.ReadUsersByAlerts;
+import net.idea.restnet.user.resource.UserURIReporter;
 import net.toxbank.client.resource.Alert.RecurrenceFrequency;
 
 import org.restlet.Context;
@@ -37,6 +37,7 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
+
 
 
 public class NotificationResource<T> extends UserDBResource<T> {
@@ -134,16 +135,7 @@ public class NotificationResource<T> extends UserDBResource<T> {
 					DBUser item) throws ResourceException {
 					return addTask(callable, item,reference);
 				}
-		
-			@Override
-			public List<UUID> process(IQueryRetrieval<DBUser> query)
-					throws Exception {
-				return super.process(query);
-			}
-			@Override
-			public Object processItem(DBUser item) throws Exception {
-				return super.processItem(item);
-			}
+			
 		};
 				
 		ReadAlert queryP = new ReadAlert(null); 
@@ -191,11 +183,22 @@ public class NotificationResource<T> extends UserDBResource<T> {
 	@Override
 	protected Representation post(Representation entity, Variant variant)
 			throws ResourceException {
-		params = new Form(entity);
+		try {
+			params = entity.isAvailable()?new Form(entity):null;
+		} catch (Exception x) {
+			//should work with empty form as well
+		}
 		synchronized (this) {
-			return processAndGenerateTask(Method.POST, null, variant,true);
+			try {
+				return processAndGenerateTask(Method.POST, null, variant,true);
+			} catch (ResourceException x) {
+				if ((x.getStatus()!=null) && (x.getStatus().getThrowable() instanceof NotFoundException)) {
+					//then it's fine, just no alerts to worry about. Upgrade restnet for a better 'not found' handler!
+					throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND,x.getStatus().getThrowable());
+				} else throw x;
+			}
 		}
 	}
-		
+	
 	
 }

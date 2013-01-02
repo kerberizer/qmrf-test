@@ -1,6 +1,5 @@
 package net.idea.rest.user.alerts.resource;
 
-import java.io.PrintWriter;
 import java.io.Writer;
 import java.sql.Date;
 
@@ -8,14 +7,14 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.alerts.db.DBAlert;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.QueryURIReporter;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.alerts.db.DBAlert;
+import net.idea.restnet.user.alerts.resource.AlertURIReporter;
 
 import org.restlet.Request;
-import org.restlet.data.Reference;
 
 public class AlertHTMLReporter extends QMRFHTMLReporter<DBAlert, IQueryRetrieval<DBAlert>> {
 	/**

@@ -185,7 +185,7 @@ public class ProtocolResourceTest extends ProtectedResourceTest {
 		String uri = String.format("http://localhost:%d%s/%s", port,
 										Resources.protocol, id2v2);
 		String newURI = createEntryFromMultipartWeb(new Reference(uri), Method.PUT);
-		String newQMRF = "Q12-14-0001";
+		String newQMRF = "Q13-14-0001";
 		IDatabaseConnection c = getConnection();
 		ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM protocol");
 		Assert.assertEquals(5, table.getRowCount());

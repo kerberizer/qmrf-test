@@ -7,16 +7,16 @@ import java.util.Date;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.r.QueryReporter;
-import net.idea.rest.groups.DBOrganisation;
-import net.idea.rest.groups.DBProject;
-import net.idea.rest.groups.IDBGroup;
-import net.idea.rest.groups.resource.GroupQueryURIReporter;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.AttachmentURIReporter;
 import net.idea.rest.protocol.attachments.DBAttachment;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.resource.UserURIReporter;
 import net.idea.restnet.db.QueryURIReporter;
+import net.idea.restnet.groups.DBOrganisation;
+import net.idea.restnet.groups.DBProject;
+import net.idea.restnet.groups.IDBGroup;
+import net.idea.restnet.groups.resource.GroupQueryURIReporter;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.resource.UserURIReporter;
 
 import org.restlet.Request;
 import org.restlet.data.MediaType;

@@ -3,9 +3,9 @@ package net.idea.rest.protocol.db.group.test;
 import java.sql.ResultSet;
 
 import junit.framework.Assert;
-import net.idea.rest.groups.DBProject;
-import net.idea.rest.groups.db.ReadProject;
 import net.idea.rest.protocol.db.test.QueryTest;
+import net.idea.restnet.groups.DBProject;
+import net.idea.restnet.groups.db.ReadProject;
 
 
 public class ReadProjectTest  extends QueryTest<ReadProject> {

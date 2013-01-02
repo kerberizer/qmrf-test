@@ -4,11 +4,11 @@ import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.UserHTMLBeauty;
-import net.idea.rest.user.DBUser;
 import net.idea.rest.user.author.db.ReadAuthorXML;
-import net.idea.rest.user.db.ReadUser;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.html.HTMLBeauty;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
 
 import org.restlet.data.Reference;
 import org.restlet.data.Status;

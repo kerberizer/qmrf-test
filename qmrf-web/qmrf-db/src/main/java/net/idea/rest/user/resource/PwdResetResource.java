@@ -9,9 +9,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.task.UserTaskHTMLReporter;
-import net.idea.rest.user.CallableUserCreator;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.db.ReadUser;
+import net.idea.rest.user.QMRFCallableUserCreator;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
@@ -19,6 +17,9 @@ import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
+import net.idea.restnet.user.resource.UserURIReporter;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -64,7 +65,7 @@ public class PwdResetResource<T> extends MyAccountResource<T> {
 				UserURIReporter reporter = new UserURIReporter(getRequest(),"");
 				DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 				conn = dbc.getConnection();
-				return new CallableUserCreator(
+				return new QMRFCallableUserCreator(
 							method,
 							item,
 							reporter, 

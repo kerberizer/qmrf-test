@@ -7,7 +7,7 @@ import java.util.UUID;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
 import net.idea.modbcum.r.QueryReporter;
-import net.idea.rest.user.DBUser;
+import net.idea.restnet.user.DBUser;
 import net.toxbank.client.resource.Organisation;
 
 import org.restlet.Context;

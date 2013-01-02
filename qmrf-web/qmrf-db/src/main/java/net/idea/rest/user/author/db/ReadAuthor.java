@@ -8,8 +8,8 @@ import net.idea.modbcum.i.query.QueryParam;
 import net.idea.rest.db.exceptions.InvalidProtocolException;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocol;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.db.ReadUser;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
 
 
 public class ReadAuthor extends ReadUser<DBProtocol> {

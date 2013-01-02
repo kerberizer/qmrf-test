@@ -1,7 +1,6 @@
 package net.idea.rest.protocol.db.attachments.test;
 
 import junit.framework.Assert;
-
 import net.idea.rest.protocol.ProtocolFactory;
 
 import org.junit.Test;

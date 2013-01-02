@@ -13,8 +13,8 @@ import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.reporters.TaskHTMLReporter;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.i.task.Task;
-import net.idea.restnet.i.task.TaskResult;
 import net.idea.restnet.i.task.Task.TaskStatus;
+import net.idea.restnet.i.task.TaskResult;
 
 import org.restlet.Request;
 

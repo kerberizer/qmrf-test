@@ -4,9 +4,9 @@ import java.sql.ResultSet;
 
 import junit.framework.Assert;
 import net.idea.rest.protocol.db.test.QueryTest;
-import net.idea.rest.user.DBUser;
-import net.idea.rest.user.alerts.db.DBAlert;
-import net.idea.rest.user.alerts.db.ReadAlert;
+import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.alerts.db.DBAlert;
+import net.idea.restnet.user.alerts.db.ReadAlert;
 
 /**
  * Test for {@link ReadAlert}
