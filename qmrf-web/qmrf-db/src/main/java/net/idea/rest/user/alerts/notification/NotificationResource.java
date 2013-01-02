@@ -120,7 +120,7 @@ public class NotificationResource<T> extends UserDBResource<T> {
 					return user.getEmail();
 				}
 			};
-			callable.setNotification(new SimpleNotificationEngine(getRequest().getRootRef(),"config/qmrf.properties"));
+			callable.setNotification(new QMRFNotificationEngine(getRequest().getRootRef()));
 			return callable;
 		} catch (Exception x) {
 			try { conn.close(); } catch (Exception xx) {}
