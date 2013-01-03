@@ -15,6 +15,7 @@ import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.db.convertors.RDFJenaConvertor;
 import net.idea.restnet.groups.IDBGroup;
 import net.idea.restnet.groups.db.ReadGroup;
+import net.idea.restnet.groups.resource.GroupJSONReporter;
 import net.idea.restnet.groups.resource.GroupQueryURIReporter;
 import net.idea.restnet.groups.resource.GroupRDFReporter;
 import net.idea.restnet.i.task.ITaskStorage;
@@ -58,12 +59,15 @@ public abstract class GroupDBResource<G extends IDBGroup>	extends QMRFQueryResou
 			return new OutputWriterConvertor(
 					new GroupCSVReporter<IQueryRetrieval<Group>>(getRequest().getResourceRef()),
 					MediaType.TEXT_CSV);
+		} else if (variant.getMediaType().equals(MediaType.APPLICATION_JSON)) {
+			return new OutputWriterConvertor(
+					new GroupJSONReporter<IQueryRetrieval<IDBGroup>>(getRequest()),
+					MediaType.APPLICATION_JSON);					
 		
 		} else if (variant.getMediaType().equals(MediaType.APPLICATION_RDF_XML) ||
 					variant.getMediaType().equals(MediaType.APPLICATION_RDF_TURTLE) ||
 					variant.getMediaType().equals(MediaType.TEXT_RDF_N3) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES) ||
-					variant.getMediaType().equals(MediaType.APPLICATION_JSON)  
+					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES) 
 					
 					) {
 				return new RDFJenaConvertor<IDBGroup, IQueryRetrieval<IDBGroup>>(
