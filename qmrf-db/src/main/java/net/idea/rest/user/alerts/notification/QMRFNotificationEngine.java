@@ -3,12 +3,23 @@ package net.idea.rest.user.alerts.notification;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
 
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.restnet.user.alerts.notification.SimpleNotificationEngine;
 import net.toxbank.client.io.rdf.ProtocolIO;
+import net.toxbank.client.resource.Protocol;
 
+import org.restlet.data.MediaType;
 import org.restlet.data.Reference;
+import org.restlet.representation.Representation;
+import org.restlet.resource.ClientResource;
+import org.restlet.resource.ResourceException;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 public class QMRFNotificationEngine extends SimpleNotificationEngine<DBProtocol> {
 	protected ProtocolIO ioClass = new ProtocolIO();
@@ -16,12 +27,12 @@ public class QMRFNotificationEngine extends SimpleNotificationEngine<DBProtocol>
 	    super(root,"config/qmrf.properties");
 	    setNotificationSubject("QMRF Inventory Alert Updates");
 	}
-    /*
     @Override
-    protected List<String> retrieveByRIAP(Reference ref) throws Exception {
+    protected List<String> retrieve(Reference ref) throws Exception {
   	  ClientResource cr = null;
   	  Representation repr = null;
   	  try {
+
   		cr = new ClientResource(ref);
   		repr = cr.get(MediaType.APPLICATION_RDF_XML);
   		if (org.restlet.data.Status.SUCCESS_OK.equals(cr.getStatus())) {
@@ -37,11 +48,11 @@ public class QMRFNotificationEngine extends SimpleNotificationEngine<DBProtocol>
   			return urls;
   		}
   		} catch (ResourceException x) {
+
   			if (x.getStatus().equals(org.restlet.data.Status.CLIENT_ERROR_NOT_FOUND)) {
   				//skip, this is ok
   			} else 
   				log.log(Level.WARNING,String.format("Error reading URL %s\n%s",ref.toString(),cr.getStatus()),x);
-  			x.printStackTrace();
   		} catch (Exception x) {	
   			throw x;
   		} finally {
@@ -50,5 +61,5 @@ public class QMRFNotificationEngine extends SimpleNotificationEngine<DBProtocol>
   		}     
   		return null;
     }
-    */
+
 }
