@@ -24,7 +24,6 @@ import net.idea.restnet.user.DBUser;
 import net.idea.restnet.user.alerts.db.DBAlert;
 import net.idea.restnet.user.alerts.db.ReadAlert;
 import net.idea.restnet.user.alerts.notification.CallableNotification;
-import net.idea.restnet.user.alerts.notification.SimpleNotificationEngine;
 import net.idea.restnet.user.db.ReadUser;
 import net.idea.restnet.user.db.ReadUsersByAlerts;
 import net.idea.restnet.user.resource.UserURIReporter;
@@ -120,7 +119,8 @@ public class NotificationResource<T> extends UserDBResource<T> {
 					return user.getEmail();
 				}
 			};
-			callable.setNotification(new QMRFNotificationEngine(getRequest().getRootRef()));
+			String root = getContext().getParameters().getFirstValue(Resources.BASE_URL);
+			callable.setNotification(new QMRFNotificationEngine(root==null?getRequest().getRootRef():new Reference(root)));
 			return callable;
 		} catch (Exception x) {
 			try { conn.close(); } catch (Exception xx) {}

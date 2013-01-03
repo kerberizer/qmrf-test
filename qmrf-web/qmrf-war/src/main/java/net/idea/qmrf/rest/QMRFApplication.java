@@ -70,8 +70,6 @@ import org.restlet.service.TunnelService;
  * 
  */
 public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
-	/** The Freemarker's configuration. */
- 
 
 	public QMRFApplication() {
 		super();
@@ -124,9 +122,18 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 	@Override
 	public Restlet createInboundRoot() {
 
-		Router router = new MyRouter(this.getContext());
-		
-		
+		Router router = new MyRouter(this.getContext()) {
+			public void handle(Request request, Response response) {
+				//to use within riap calls
+				String rootUrl = getContext().getParameters().getFirstValue(Resources.BASE_URL); 
+				if ((rootUrl == null) && request.getRootRef().toString().startsWith("http")) { 
+                    rootUrl = request.getRootRef().toString(); 
+                    getContext().getParameters().set(Resources.BASE_URL,rootUrl,true);
+				}
+				super.handle(request, response);
+			};
+		};
+
 		// here we check if the cookie contains auth token, if not just consider
 		// the user notlogged in
 		boolean testAuthZ = "true".equalsIgnoreCase(getContext().getParameters().getFirstValue("TESTAUTHZ"));
