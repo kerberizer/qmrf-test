@@ -2,9 +2,13 @@
 <script type='text/javascript' src='/qmrf/jquery/jquery.validate.min.js'></script>
 <script type='text/javascript'>
 $(document).ready(function() {
-	getMyAccount('${qmrf_request_json}');
+	<#if myprofile>
+		getMyAccount('${qmrf_request_json}',false);
+	<#else>
+		getMyAccount('${qmrf_request_json}',true);
+	</#if>
 	
-		// validate the comment form when it is submitted
+	
 	$("#form_myaccount").validate({
 		rules : {
 			'firstname': {

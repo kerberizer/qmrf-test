@@ -43,16 +43,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 			<p><label for="title">Title</label><input type="text" ${ro} size='40' name='title' id='title' value=''/></p>
 			<p><label for="firstname">First name</label><input type="text" ${ro} size='40' name='firstname' id='firstname' value=''/><em>*</em></p>
 			<p><label for="lastname">Last name</label><input type="text" ${ro} size='40' name='lastname' id='lastname' value=''/><em>*</em></p>
-			<p><label for="organisation">Affiliation</label>
-			<em> </em>
-			<table id='organisations'>
-				<thead style="display:none;">
-				<th></th>
-				</thead>
-				<tbody></tbody>
-			</table>
-			</p>
-
+			<span id='organisations'></span>
 			<p><label for="email">e-mail</label><input type="text" ${ro} size='40' name='email' id='email' value=''/><em>*</em></p>
 			
 			<p><label for="homepage">WWW</label><input type="text" ${ro} size='40' name='homepage' id='homepage' value=''/></p>

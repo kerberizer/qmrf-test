@@ -126,11 +126,14 @@ public final class User_crud_test<T extends Object>  extends CRUDTest<T,DBUser> 
 
 	@Override
 	protected IQueryUpdate<T,DBUser> updateQuery() throws Exception {
-		DBUser ref = new DBUser();
-		ref.setLastname("NEW");
-		ref.setID(3);
+		DBUser user = new DBUser();
+		user.setLastname("NEW");
+		DBOrganisation org = new DBOrganisation();
+		org.setTitle("My New Affiliation");
+		user.addOrganisation(org);
+		user.setID(3);
 
-		return (IQueryUpdate<T,DBUser>) new UpdateUser(ref);
+		return (IQueryUpdate<T,DBUser>) new UpdateUser(user);
 	}
 
 	@Override
