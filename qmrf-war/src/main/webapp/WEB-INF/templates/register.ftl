@@ -6,6 +6,27 @@
 
 
 $().ready(function() {
+
+	$("#affiliation").autocomplete({
+    		source: function (request, response) {
+    		$.ajax({
+                   url: "/qmrf/organisation?media=application/json&search="+request.term,
+                   contentType: "application/json; charset=utf-8",
+                   dataType: "json",
+                   success: function (data) {
+    	                response(
+    	                    $.map(data.group, function (item) {
+    	                       return {
+    	                           label: item.title,
+    	                           value: item.title
+    	                       }
+    	                   }));
+    	               }
+    	           })
+    		},
+    	    minLength: 2	            
+    	   });
+    				
 	// validate the comment form when it is submitted
 	$("#registerForm").validate({
 		rules : {
@@ -18,6 +39,7 @@ $().ready(function() {
 				required : true
 			},
 			'lastname': {
+				minlength: 2,
 				required : true
 			},
 			'email': {
@@ -28,6 +50,7 @@ $().ready(function() {
 				url: true
 			},
 			'affiliation': {
+				minlength: 2,
 				required : true
 			},		
 			'pwd1': {
