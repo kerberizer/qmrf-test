@@ -29,6 +29,11 @@ function getMyAccount(url,readonly) {
         			sOrg += "<input type='text' size='40' name='affiliation' class='affiliation' value='"+value.title+"'"+ (readonly?" readonly ":"") +"/>";
         			sOrg += "<em></em></p>\n";
         		});
+        		if (sOrg=="") {
+        			sOrg += "<p><label for='affiliation'>Affiliation</label>";
+        			sOrg += "<input type='text' size='40' name='affiliation' class='affiliation' value=''"+ (readonly?" readonly ":"") +"/>";
+        			sOrg += "<em></em></p>\n";
+        		};
     			$("#organisations").html(sOrg);
     			if (!readonly) {
     				$(".affiliation").autocomplete({
