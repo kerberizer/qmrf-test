@@ -26,11 +26,31 @@ function getMyAccount(url,readonly) {
         		var sOrg = "";
         		$.each(entry["organisation"],function(index,value) {
         			sOrg += "<p><label for='affiliation'>Affiliation</label>";
-        			sOrg += "<input type='text' size='40' name='affiliation' value='"+value.title+"'"+ (readonly?" readonly ":"") +"/>";
+        			sOrg += "<input type='text' size='40' name='affiliation' class='affiliation' value='"+value.title+"'"+ (readonly?" readonly ":"") +"/>";
         			sOrg += "<em></em></p>\n";
-        			console.log(sOrg);
         		});
     			$("#organisations").html(sOrg);
+    			if (!readonly) {
+    				$(".affiliation").autocomplete({
+    					source: function (request, response) {
+    						$.ajax({
+    			                url: "/qmrf/organisation?media=application/json&search="+request.term,
+    			                contentType: "application/json; charset=utf-8",
+    			                dataType: "json",
+    			                success: function (data) {
+    			                    response(
+    			                    $.map(data.group, function (item) {
+    			                        return {
+    			                            label: item.title,
+    			                            value: item.title
+    			                        }
+    			                    }));
+    			                }
+    			            })
+    					},
+    		            minLength: 2	            
+    		        });
+    			}
         		//reload tabs
         		$(function() {$( ".tabs" ).tabs({cache: true});});
         	});
