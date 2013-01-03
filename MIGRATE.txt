@@ -169,6 +169,27 @@ been deployed, and YOURPORT is the port Tomcat is listening to.
 NOTICE: You must restart Tomcat to make sure that the configuration
 changes you've made become effective.
 
+#To enable QMRF Inventory to send e-mail notifications (on registration and alert updates)
+#please configure the SMTP server settings to reflect your setup
+#true if connecting to SMTP via TLS
+mail.smtp.starttls.enable=true
+#true if the SMTP server requires authentication
+mail.smtp.auth=true
+#SMTP 
+mail.transport.protocol=smtp
+#SMTP port 
+mail.smtp.port=587
+#fallback from TLS
+mail.smtp.socketFactory.fallback=false
+#Replace with your SMTP server address
+mail.host=mx.example.com
+#Replace with the username-to-connect-to mail.host
+mail.user=user
+#mail.user password
+mail.password=the-password
+#email address to appear in the FROM: field of sent emails
+notification.admin.email=email@tosend-emails-from-this-user
+
 #######################################################################
 				 STEP 9
 #######################################################################
