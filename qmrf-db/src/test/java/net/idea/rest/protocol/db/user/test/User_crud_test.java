@@ -34,6 +34,7 @@ import java.sql.Statement;
 import junit.framework.Assert;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.rest.protocol.db.test.CRUDTest;
+import net.idea.restnet.groups.DBOrganisation;
 import net.idea.restnet.u.UserCredentials;
 import net.idea.restnet.u.UserRegistration;
 import net.idea.restnet.user.DBUser;
@@ -52,7 +53,12 @@ public final class User_crud_test<T extends Object>  extends CRUDTest<T,DBUser> 
 	protected final String code = RandomStringUtils.randomAlphanumeric(45);
 	@Override
 	protected IQueryUpdate<T,DBUser> createQuery() throws Exception {
-        IDatabaseConnection c = getConnection();	
+  
+		return createTestQuery("TestQMRF Ltd");
+	}
+	
+	protected IQueryUpdate<T,DBUser> createTestQuery(String affiliation) throws Exception {
+		IDatabaseConnection c = getConnection();	
         Statement st = c.getConnection().createStatement();
         st.addBatch("USE aalocal_test;");
         st.addBatch("DELETE FROM aalocal_test.users;");
@@ -72,6 +78,9 @@ public final class User_crud_test<T extends Object>  extends CRUDTest<T,DBUser> 
 		user.setFirstname("QWERTY");
 		user.setLastname("ASDFG");
 		user.setUserName("testuser");
+		DBOrganisation org = new DBOrganisation();
+		org.setTitle(affiliation);
+		user.addOrganisation(org);
 		user.setCredentials(new UserCredentials(null,"test"));
 		return (IQueryUpdate<T,DBUser>)new CreateUser(user,new UserRegistration(code),"aalocal_test");
 	}
@@ -91,7 +100,11 @@ public final class User_crud_test<T extends Object>  extends CRUDTest<T,DBUser> 
 		Assert.assertEquals(1,table.getRowCount());
 		table = 	c.createQueryTable("EXPECTED",
 					"SELECT user_name,role_name from aalocal_test.user_roles where user_name='testuser' and role_name='user'");		
-		Assert.assertEquals(1,table.getRowCount());		
+		Assert.assertEquals(1,table.getRowCount());
+		table = 	c.createQueryTable("EXPECTED",
+				String.format("SELECT iduser,username,organisation.name from user join user_organisation using(iduser) join organisation using(idorganisation) where firstname='QWERTY' and username='testuser' "));	
+		Assert.assertEquals(1,table.getRowCount());
+		Assert.assertEquals("TestQMRF Ltd ",table.getValue(0,"name"));
 		c.close();
 	}
 
@@ -136,13 +149,30 @@ public final class User_crud_test<T extends Object>  extends CRUDTest<T,DBUser> 
 	@Override
 	protected IQueryUpdate<T, DBUser> createQueryNew()
 			throws Exception {
-		return null;
+		return createTestQuery("My new affiliation");
 	}
 
 	@Override
 	protected void createVerifyNew(IQueryUpdate<T, DBUser> query)
 			throws Exception {
-		
+		   IDatabaseConnection c = getConnection();	
+			ITable table = 	c.createQueryTable("EXPECTED",
+					String.format("SELECT iduser,username,firstname,lastname from user where firstname='QWERTY' and username='testuser'"));
+			Assert.assertEquals(1,table.getRowCount());
+			table = 	c.createQueryTable("EXPECTED",
+						"SELECT user_name  from aalocal_test.users where user_name='testuser'");		
+			Assert.assertEquals(1,table.getRowCount());
+			table = 	c.createQueryTable("EXPECTED",
+					String.format("SELECT user_name,code,status  from aalocal_test.user_registration where user_name='testuser' and status='commenced' and code='%s'",code));		
+			Assert.assertEquals(1,table.getRowCount());
+			table = 	c.createQueryTable("EXPECTED",
+						"SELECT user_name,role_name from aalocal_test.user_roles where user_name='testuser' and role_name='user'");		
+			Assert.assertEquals(1,table.getRowCount());
+			table = 	c.createQueryTable("EXPECTED",
+					String.format("SELECT iduser,username,organisation.name from user join user_organisation using(iduser) join organisation using(idorganisation) where firstname='QWERTY' and username='testuser' "));	
+			Assert.assertEquals(1,table.getRowCount());
+			Assert.assertEquals("My new affiliation",table.getValue(0,"name"));
+			c.close();		
 		
 	}
 	@Override

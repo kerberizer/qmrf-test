@@ -122,6 +122,7 @@ public class UserResourceTest extends ResourceTest {
 		formparams.add(new BasicNameValuePair(ReadUser.fields.lastname.name(),  "B."));
 		formparams.add(new BasicNameValuePair("pwd1",  "test"));
 		formparams.add(new BasicNameValuePair("pwd2",  "test"));
+		//formparams.add(new BasicNameValuePair("affiliation",  "test"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.username.name(),  "test"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.email.name(),  "noone@example.org"));
 		
@@ -179,8 +180,9 @@ public class UserResourceTest extends ResourceTest {
 			}
 			}
 		}
+		formparams.add(new BasicNameValuePair("affiliation",  "My new affiliation"));
 		formparams.add(new BasicNameValuePair("organisation_uri",  String.format("http://localhost:%d%s/G1",port,Resources.organisation)));
-		formparams.add(new BasicNameValuePair("organisation_uri",  String.format("http://localhost:%d%s/G2",port,Resources.organisation)));
+		//formparams.add(new BasicNameValuePair("organisation_uri",  String.format("http://localhost:%d%s/G2",port,Resources.organisation)));
 		formparams.add(new BasicNameValuePair("project_uri",  String.format("http://localhost:%d%s/G2",port,Resources.project)));
 
         IDatabaseConnection c = getConnection();	
@@ -202,8 +204,10 @@ public class UserResourceTest extends ResourceTest {
 		Assert.assertEquals(6,table.getRowCount());
 		table = 	c.createQueryTable("EXPECTED","SELECT iduser,title from user where iduser>88 and username='username'");
 		Assert.assertEquals(1,table.getRowCount());
-		table = 	c.createQueryTable("EXPECTED","SELECT iduser,idorganisation from user_organisation where iduser>88 and (idorganisation=1 or idorganisation=2)");
-		Assert.assertEquals(2,table.getRowCount());
+		table = 	c.createQueryTable("EXPECTED","SELECT iduser,idorganisation from user_organisation where iduser>88 and idorganisation=1");
+		Assert.assertEquals(1,table.getRowCount());
+		table = 	c.createQueryTable("EXPECTED","SELECT iduser,idorganisation,name from user_organisation join organisation using(idorganisation) where iduser>88 and name='My new affiliation'");
+		Assert.assertEquals(1,table.getRowCount());
 		table = 	c.createQueryTable("EXPECTED","SELECT iduser,idproject from user_project where iduser>88 and idproject=2");
 		Assert.assertEquals(1,table.getRowCount());		
 		c.close();
