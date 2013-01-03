@@ -1,4 +1,4 @@
-function getMyAccount(url) {
+function getMyAccount(url,readonly) {
 	var facet = {};	
 
     $.ajax({
@@ -23,30 +23,14 @@ function getMyAccount(url) {
         		
         		$("#protocoluri").prop("href",protocolURI);
         		$("#alerturi").prop("href",alertURI);
-        		
-        		var oTable = $('#organisations').dataTable( {
-        			"bPaginate"  : false,
-        			"bAutoWidth" : false,
-        			"jQuery" : true,
-        			"sDom"   : "t",
-        			"aaData" : entry.organisation,
-        			"bFilter": false,
-        			"aoColumnDefs": [
-        			 				{ //0
-        			 					"aTargets": [ 0 ],	
-        			 					"mDataProp" : "uri",
-        			 					"bInfo"  : false,
-        			 					"bLengthChange" : false,
-        			 					"bUseRendered"  : false,
-        								"fnRender"      : function(o,val) {
-        									 if ((o.aData["title"] === undefined) || (o.aData["title"] == ""))
-        									 	return "<a href='"+ o.aData["uri"]+"' target=_blank>N/A</a>";
-        									 else
-        										 return "<a href='"+ o.aData["uri"]+"' target=_blank>"+o.aData["title"]+"</a>";
-        								}
-        			 				}        			 				
-        			 			]
+        		var sOrg = "";
+        		$.each(entry["organisation"],function(index,value) {
+        			sOrg += "<p><label for='affiliation'>Affiliation</label>";
+        			sOrg += "<input type='text' size='40' name='affiliation' value='"+value.title+"'"+ (readonly?" readonly ":"") +"/>";
+        			sOrg += "<em></em></p>\n";
+        			console.log(sOrg);
         		});
+    			$("#organisations").html(sOrg);
         		//reload tabs
         		$(function() {$( ".tabs" ).tabs({cache: true});});
         	});

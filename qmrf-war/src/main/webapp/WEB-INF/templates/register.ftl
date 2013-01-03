@@ -26,7 +26,10 @@ $().ready(function() {
 			},
 			'homepage': {
 				url: true
-			},	
+			},
+			'affiliation': {
+				required : true
+			},		
 			'pwd1': {
 				required : true,
 				minlength: 6
@@ -46,6 +49,9 @@ $().ready(function() {
 			'lastname'  : {
 				required: "Please provide your last name"
 			},
+			'affiliation'  : {
+				required: "Please provide your affiliation"
+			},			
 			'email'     : {
 				required: "Please provide e-mail",
 				email: "Please provide valid e-mail"
