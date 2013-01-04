@@ -43,4 +43,16 @@ public class EndpointTest extends Dictionary {
 	public String toString() {
 		return String.format("%s.%s",getCode(),getName());
 	}
+	
+	public static String[] split(String label) {
+		String[] decoded = new String[2];
+		String endpointname = label;
+		String[] split = endpointname.split("\\.");
+		StringBuilder endpointCode = new StringBuilder();
+		for (int i=0; i < (split.length-1);i++) {endpointCode.append(split[i]);endpointCode.append(".");}
+		if(split.length>0) endpointname = split[split.length-1].trim();
+		decoded[0] = endpointCode.toString();
+		decoded[1] = endpointname;
+		return decoded;
+	}
 }

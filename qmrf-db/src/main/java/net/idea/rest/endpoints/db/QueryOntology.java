@@ -28,7 +28,7 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 		islocal,
 		idreference
 	}	
-	protected String sqlParent = 
+	private static String sqlParent = 
 	
 		"select 0,t2.name,t1.name,t2.code as category,t1.code as code\n"+
 		"from ((`template` `t1`\n"+
@@ -36,7 +36,7 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 		"join `template` `t2` on((`d`.`idobject` = `t2`.`idtemplate`)))\n"+
 		"where lower(t1.name) %s lower(?)\n"+
 		"union\n";		
-	protected String sqlChild = 	
+	private static String sqlChild = 	
 		"select 1,t2.name,t1.name,t2.code as category,t1.code as code\n"+
 		"from ((`template` `t1`\n"+
 		"join `dictionary` `d` on((`t1`.`idtemplate` = `d`.`idsubject`)))\n"+
@@ -44,7 +44,7 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 		"where lower(t2.name) %s lower(?)\n"
 		;
 	
-	protected String sqlAll = 	
+	private static String sqlAll = 	
 		"select 2,t2.name,t1.name,t2.code as category,t1.code as code\n"+
 		"from ((`template` `t1`\n"+
 		"join `dictionary` `d` on((`t1`.`idtemplate` = `d`.`idsubject`)))\n"+
@@ -59,14 +59,18 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 		"and relationship != \"same_as\"\n"+
 		"order by t1.idtemplate\n";
 	
-	protected String sqlProtocol = 	
-		"SELECT idprotocol,t2.name,t1.name,t2.code as category,t1.code as code FROM\n"+
-		"protocol\n"+
+	private static String sqlProtocol = 	
+		"SELECT idprotocol,t2.name,t1.name,t2.code as category,t1.code as code,\n"+
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') as endpointgroup,\n"+
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') as endpointname\n"+
+		"FROM protocol\n"+
 		"left join protocol_endpoints using(idprotocol,version)\n"+
 		"left join template t1 using(idtemplate)\n"+
 		"left join dictionary d on t1.idtemplate=d.idsubject\n"+
 		"left join template t2 on t2.idtemplate=d.idobject\n"+
 		"where qmrf_number=?";
+	
+
 
 	public enum RetrieveMode {
 		child,
@@ -150,9 +154,26 @@ public class QueryOntology<D extends Dictionary>  extends AbstractQuery<Boolean,
 
 	public D getObject(ResultSet rs) throws AmbitException {
 		try {
-			EndpointTest result = new EndpointTest(rs.getString(3),rs.getString(2));
-			result.setCode(rs.getString("code"));
-			result.setParentCode(rs.getString("category"));
+			String[] endpoint = new String[] {
+					rs.getString("code"),rs.getString(3)
+			};
+			String[] parent = new String[] {
+					rs.getString("category"),rs.getString(2)
+			};
+			if ((endpoint[0]==null) || (endpoint[1]==null)) try {
+				String label = rs.getString("endpointname");
+				endpoint = EndpointTest.split(label);
+			} catch (Exception x) { endpoint = new String[] {"",""};}
+			if ((parent[0]==null) || (parent[1]==null)) try {
+				String label = rs.getString("endpointgroup");
+				parent = EndpointTest.split(label);
+			} catch (Exception x) { parent = new String[] {"",""};}				
+			
+			EndpointTest result = new EndpointTest(null,null);
+			result.setName(endpoint[1]);
+			result.setCode(endpoint[0]);
+			result.setParentCode(parent[0]);
+			result.setParentTemplate(parent[1]);
 			return (D)result;
 		} catch (SQLException x) {
 			throw new AmbitException(x);

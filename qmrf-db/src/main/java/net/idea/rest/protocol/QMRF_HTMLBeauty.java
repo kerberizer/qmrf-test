@@ -877,35 +877,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					"<script>\n"+
 					"$(function() {\n"+
 						"endpointAutocomplete('%s','%s');\n"+
-						/*
-						"$( \"#endpoint\" ).each(function() {\n" +
-						"var autoCompleteElement = this;\n"+
-						"var formElementName = $(this).attr('name');\n"+
-						"var hiddenElementID  = formElementName + '_autocomplete_hidden';\n"+
-						"$(this).attr('name', formElementName + 'Name');\n"+
-						"$(this).before(\"<input type='text' size='15' required style='border:none;.ui-autocomplete overflow-y: auto;' readonly name=\" + formElementName + \" id=\" + hiddenElementID + \" />\");\n"+
-						"$(this).autocomplete({source:'%s/catalog?media=application/json', \n"+
-						"	select: function(event, ui) {\n"+
-						"		var selectedObj = ui.item;\n"+
-						"		$(autoCompleteElement).val(selectedObj.name);\n"+
-						"		$('#'+hiddenElementID).val(selectedObj.code);\n"+
-						"   	$('#endpointParentCode').val(selectedObj.parentCode);\n"+
-						"   	$('#endpointParentName').val(selectedObj.parentName);\n"+			
-						"		return false;\n"+
-						"	}\n"+
-						"});\n"+
-						"});\n"+
-						//load the current value
-						"$.getJSON(\"%s\",\n"+
-				        "function(data){\n"+
-				        "  $.each(data, function(i,item){\n"+
-				        "   	$('#endpoint_autocomplete_hidden').val(item.code);\n"+
-				        "   	$('#endpoint').val(item.name);\n"+
-				        "   	$('#endpointParentCode').val(item.parentCode);\n"+
-				        "   	$('#endpointParentName').val(item.parentName);\n"+
-				        "  });\n"+
-				        "});\n" +		
-				        */					
 					"});\n"+
 					"</script>\n",baseReference,protocolURI));
 					
