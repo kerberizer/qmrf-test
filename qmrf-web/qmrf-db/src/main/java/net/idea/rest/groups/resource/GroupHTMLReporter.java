@@ -1,6 +1,7 @@
 package net.idea.rest.groups.resource;
 
 import java.io.Writer;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -131,7 +132,7 @@ public abstract class GroupHTMLReporter extends QMRFHTMLReporter<IDBGroup, IQuer
 				output.write("</tr>\n");				
 			}
 			output.flush();
-		} catch (Exception x) {x.printStackTrace();} 
+		} catch (Exception x) {logger.log(Level.WARNING,x.getMessage(),x);} 
 	}	
 	
 	protected void printTable(Writer output, String uri, IDBGroup item) {

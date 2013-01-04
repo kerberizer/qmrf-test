@@ -5,6 +5,8 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -25,6 +27,7 @@ public class ReadAttachment extends AbstractQuery<DBProtocol, DBAttachment, EQCo
 	/**
 	 * 
 	 */
+	protected Logger logger = Logger.getLogger(getClass().getName());
 	private static final long serialVersionUID = 6228939989116141217L;
 	protected String dir = null;
 	private enum _fields {
@@ -137,7 +140,6 @@ and idchemical=282
 					try {
 						protocol.setPublishedStatus(PublishedStatus.valueOf(rs.getString(ReadProtocol.fields.published_status.name())));
 					} catch (Exception x) {
-						x.printStackTrace();
 						protocol.setPublished(false);	
 					}
 					protocol.setTitle(rs.getString(ReadProtocol.fields.title.name()));
@@ -146,7 +148,7 @@ and idchemical=282
 					protocol.setSubmissionDate(ts.getTime());
 					attachment.setQMRFDocument(protocol);
 				} catch (Exception x) {
-					x.printStackTrace();
+					logger.log(Level.WARNING,x.getMessage(),x);
 					
 				}
 				

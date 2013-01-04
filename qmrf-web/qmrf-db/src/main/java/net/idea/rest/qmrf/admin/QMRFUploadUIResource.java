@@ -20,6 +20,7 @@ import net.toxbank.client.resource.Organisation;
 import net.toxbank.client.resource.Project;
 import net.toxbank.client.resource.User;
 
+import org.apache.log4j.Level;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -88,7 +89,7 @@ public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
 				try {
 					w.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm(uri,uri, protocol,mode,request.getRootRef().toString()));
 				} catch (Exception x) {
-					x.printStackTrace();
+					logger.error(x.getMessage(),x);
 				}
 			}
 			@Override

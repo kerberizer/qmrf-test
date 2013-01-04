@@ -1,5 +1,7 @@
 package net.idea.rest.db;
 
+import java.util.logging.Level;
+
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.exceptions.DbAmbitException;
 import net.idea.restnet.c.ResourceDoc;
@@ -74,7 +76,7 @@ public class DBHtmlReporter extends QueryHTMLReporter<DBVersion,DBVersionQuery> 
 			if (isCreate())
 				output.write("</form>");
 			return item;
-	} catch (Exception x) { x.printStackTrace(); return null;}
+	} catch (Exception x) { logger.warn(x); return null;}
 	}
 	
 }

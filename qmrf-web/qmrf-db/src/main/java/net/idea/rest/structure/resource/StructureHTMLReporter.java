@@ -4,6 +4,7 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.prediction.DBModel;
@@ -41,7 +42,7 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			output.write(renderItem(item));
 			record++;
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.warn(x);
 		}
 	}
 	

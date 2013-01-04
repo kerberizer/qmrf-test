@@ -3,6 +3,7 @@ package net.idea.rest;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
@@ -27,7 +28,7 @@ import org.restlet.resource.ResourceException;
 public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends Serializable> extends QueryResource<Q,T>{
 	protected boolean headless = false;
 	protected QMRF_HTMLBeauty htmlBeauty;
-	
+	protected Logger logger = Logger.getLogger(getClass().getName());
 	public QMRFQueryResource() {
 		super();
 		

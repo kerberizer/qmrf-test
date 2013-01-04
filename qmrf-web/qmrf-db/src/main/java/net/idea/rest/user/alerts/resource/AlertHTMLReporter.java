@@ -2,6 +2,7 @@ package net.idea.rest.user.alerts.resource;
 
 import java.io.Writer;
 import java.sql.Date;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
@@ -73,7 +74,7 @@ public class AlertHTMLReporter extends QMRFHTMLReporter<DBAlert, IQueryRetrieval
 			output.write(renderItem(alert));			
 			output.write("</tr>\n");
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		} 
 	}
 	
@@ -136,7 +137,7 @@ public class AlertHTMLReporter extends QMRFHTMLReporter<DBAlert, IQueryRetrieval
 
 							)));
 			output.flush();
-		} catch (Exception x) {x.printStackTrace();} 
+		} catch (Exception x) { } 
 	}	
 	
 

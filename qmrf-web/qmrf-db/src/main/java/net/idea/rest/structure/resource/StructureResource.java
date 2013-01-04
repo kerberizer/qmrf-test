@@ -178,13 +178,13 @@ public class StructureResource extends CatalogResource<Structure> {
 		try {
 			String[] datasets = form.getValuesArray("dataset");
 			parameters.setDatasets(verifyDataset(datasets));
-		} catch (Exception x) { parameters.setDatasets(null); x.printStackTrace();}
+		} catch (Exception x) { parameters.setDatasets(null); }
 		
 		try {
 			String[] models = form.getValuesArray("model");
 			if ((models!=null) && (models.length>0))
 				parameters.setModels(verifyModels(models));
-		} catch (Exception x) { parameters.setModels(null); x.printStackTrace();}
+		} catch (Exception x) { parameters.setModels(null);}
 	}
 
 	protected Reference getSearchReference(Context context, Request request,

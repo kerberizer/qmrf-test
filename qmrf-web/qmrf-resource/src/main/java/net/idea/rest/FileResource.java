@@ -5,13 +5,14 @@ import java.io.Serializable;
 
 import net.idea.restnet.c.resource.CatalogResource;
 
+import org.apache.log4j.Logger;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 public abstract class FileResource<T extends Serializable> extends CatalogResource<T> {
 	public static final String resourceKey = "key";
-
+	protected Logger logger = Logger.getLogger(getClass().getName());
 	
 	protected String directoryPrefix;
 	protected final String prefix;

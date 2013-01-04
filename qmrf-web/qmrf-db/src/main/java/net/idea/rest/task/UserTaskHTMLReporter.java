@@ -16,6 +16,7 @@ import net.idea.restnet.i.task.Task;
 import net.idea.restnet.i.task.Task.TaskStatus;
 import net.idea.restnet.i.task.TaskResult;
 
+import org.openjena.atlas.logging.Log;
 import org.restlet.Request;
 
 public class UserTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERID> {
@@ -64,7 +65,7 @@ public class UserTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERID> {
 			t = item.getUri()==null?"":item.getUri().toString();
 			status = item.getStatus().toString();
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.warn(x);
 			status = "Error";
 			t = "";
 		} finally {
@@ -99,7 +100,7 @@ public class UserTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERID> {
 
 
 			} catch (Exception x) {
-				x.printStackTrace();
+				logger.warn(x);
 			}
 		}
 	};

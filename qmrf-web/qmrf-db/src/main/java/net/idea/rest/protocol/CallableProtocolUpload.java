@@ -4,6 +4,8 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.modbcum.p.ProcessorException;
@@ -40,6 +42,7 @@ import org.restlet.resource.ResourceException;
 
 
 public class CallableProtocolUpload extends CallableProtectedTask<String> {
+	protected Logger logger = Logger.getLogger(getClass().getName());
 	public enum UpdateMode {
 		create {
 			@Override
@@ -297,7 +300,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					UpdateFreeTextIndex q = new UpdateFreeTextIndex(protocol);
 					exec.process(q);
 				} catch (Exception x) {
-					x.printStackTrace();
+					logger.log(Level.WARNING,x.getMessage(),x);
 					//free text index failed, but ignore so far
 				}
 				String uri = reporter.getURI(protocol);
@@ -414,7 +417,8 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 					UpdateFreeTextIndex x = new UpdateFreeTextIndex(protocol);
 					exec.process(x);
 				} catch (Exception x) {
-					x.printStackTrace(); //free text index failed, but ignore so far
+					logger.log(Level.SEVERE,x.getMessage(),x);
+					 //free text index failed, but ignore so far
 				}
 				if ((protocol.getAttachments()!=null) && protocol.getAttachments().size()>0) 
 					for (DBAttachment attachment: protocol.getAttachments()) {

@@ -45,7 +45,7 @@ public class ProtocolHTMLReporter  extends ProtocolURIReporter {
 			String t = super.getURI(item);
 			output.write(String.format("<a href='%s'>%s</a><br>", t,item.toString()));
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.warn(x);
 		}
 	};
 	@Override

@@ -3,6 +3,7 @@ package net.idea.rest.user.resource;
 import java.io.Writer;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.IQueryRetrieval;
@@ -166,7 +167,7 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			rendering.append("</div>\n</div>\n"); // tabs, protocol
 
 			output.write(rendering.toString());
-		} catch (Exception x) {x.printStackTrace();} 
+		} catch (Exception x) {logger.log(Level.WARNING,x.getMessage(),x);} 
 	}	
 
 	@Override
@@ -176,7 +177,7 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			output.write(renderItem(user));			
 			output.write("</tr>\n");
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		} 
 	}
 	

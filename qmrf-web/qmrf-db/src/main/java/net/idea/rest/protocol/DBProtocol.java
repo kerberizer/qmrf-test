@@ -102,17 +102,6 @@ public class DBProtocol extends Protocol {
 	
 	public static String generateIdentifier() {
 		return UUID.randomUUID().toString(); 
-		/*
-		Base32 b32 = new Base32();
-		try {
-			String id = new String(b32.encode(UUID.randomUUID().toString().getBytes()));
-			System.out.println(id  + " " + id.length());
-			return id;
-		} catch (Exception x) {
-			x.printStackTrace();
-			return UUID.randomUUID().toString(); 
-		}
-		*/
 	}
 
 	@Override
