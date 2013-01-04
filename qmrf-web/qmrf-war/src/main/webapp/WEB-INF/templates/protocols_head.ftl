@@ -87,7 +87,7 @@ $(document).ready(function() {
 			      		var e = (o.aData["endpoint"]["code"]==null?"": o.aData["endpoint"]["code"]) + val;
         				return renderEndpoint(e.length>42?e.substring(0,42):e,e);
       			  },
-				  sWidth : "10%"
+				  sWidth : "15%"
 			    },
 				{ "mDataProp": "updated", 
 				  "asSorting": [ "asc", "desc" ],
@@ -100,13 +100,12 @@ $(document).ready(function() {
 			    	 var sOut = 
 			    	 "<span>"+
 			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Fpdf'><img border='0' src='/qmrf/images/pdf.png' title='Download as PDF'></a>&nbsp;"+
-			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Fexcel'><img border='0' src='/qmrf/images/excel.png' title='Download as MS Excel'></a>&nbsp;"+
 			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Frtf'><img border='0' src='/qmrf/images/word.png' title='Download as Rich Text Format (RTF)'></a>&nbsp;"+
 			    	 "<a href='"+ o.aData["uri"] + "/document?media=application%2Fxml'><img border='0' src='/qmrf/images/xml.png' title='Download as QMRF XML'></a>&nbsp;"+
 			    	 "</span>";
 			    	 return sOut;
 	        	   },
-	        	   sWidth : "80px" 
+	        	   sWidth : "70px" 
 				},
 				{ "mDataProp": null,"bUseRendered" : "true",
 				  sWidth : "5%",
