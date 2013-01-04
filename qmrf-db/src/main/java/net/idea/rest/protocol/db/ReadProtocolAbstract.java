@@ -47,9 +47,10 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 		"left join keywords using(idprotocol,version) %s %s";
 
 
-	protected static String sql_nokeywords = 
-		"select idprotocol,protocol.version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
-		"idproject," +
+	protected static String sql_withabstract = 
+		"select idprotocol,protocol.version,protocol.title,qmrf_number," +
+		"abstract as anabstract,\n"+
+		"iduser,summarySearchable,idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
 		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status,\n" +
 		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') as endpointgroup,\n"+

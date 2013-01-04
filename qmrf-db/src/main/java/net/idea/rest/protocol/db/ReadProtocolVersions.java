@@ -23,7 +23,8 @@ public class ReadProtocolVersions extends ReadProtocol {
 	public String getSQL() throws AmbitException {
 		if (getValue()!=null) {
 			if (getValue().isValidIdentifier())
-					return String.format(sql_nokeywords,"where",
+					return String.format(sql_noabstract,
+						"where",
 						 String.format("idprotocol in (select idprotocol from protocol where qmrf_number=?)",fields.identifier.getCondition()));
 
 		} 

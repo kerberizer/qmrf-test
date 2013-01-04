@@ -903,7 +903,7 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 		
 		if (getValue()!=null) {
 			if (getValue().getIdentifier()!=null) {
-					return String.format(sql_nokeywords,"where",
+					return String.format(sql_withabstract,"where",
 							String.format("%s %s %s",
 									fields.identifier.getCondition(),
 									byUser==null?"":" and ",
