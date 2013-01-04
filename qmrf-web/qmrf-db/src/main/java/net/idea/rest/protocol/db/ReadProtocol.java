@@ -912,14 +912,14 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 
 			} else 
 				if (getValue().getTitle()!=null)
-					return String.format(sql_nokeywords,"where",
+					return String.format(sql_noabstract,"where",
 										String.format("%s %s %s %s",
 												fields.title.getCondition(),
 												byUser==null?"":" and ",
 												byUser==null?"":byUser,
 												publishedOnly));
 				else if (getValue().getTimeModified()!=null)
-					return String.format(sql_nokeywords,"where",
+					return String.format(sql_noabstract,"where",
 									String.format("%s %s %s %s",
 											fields.updated.getCondition(),
 											byUser==null?"":" and ",
@@ -927,12 +927,12 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 											publishedOnly));			
 		} 
 		String sql = onlyUnpublished?
-				String.format(sql_nokeywords,
+				String.format(sql_noabstract,
 						"where",byUser==null?"published_status!='published'":String.format("%s %s",byUser,publishedOnly))
 				:getShowUnpublished()?
-				String.format(sql_nokeywords,
+				String.format(sql_noabstract,
 						"where",byUser==null?"":byUser):
-				String.format(sql_nokeywords,
+				String.format(sql_noabstract,
 						"where",byUser==null?"published_status='published'":String.format("%s %s",byUser,publishedOnly)); //published only
 		return sql;
 	}

@@ -37,7 +37,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 	//	"updateXML(abstract,\"//QMRF_number\",concat(\" <QMRF_number chapter='10.1' name='QMRF number'>\",'QMRF-',year(created),'-',idprotocol,'-',version,'</QMRF_number> ')) ";
 	
 	protected static String sql_withkeywords =  //for text search
-		"select idprotocol,version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
+		"select idprotocol,version,protocol.title,qmrf_number,null as anabstract,iduser,summarySearchable," +
 		"idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
 		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status,\n" +
@@ -49,6 +49,16 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 
 	protected static String sql_nokeywords = 
 		"select idprotocol,protocol.version,protocol.title,qmrf_number,abstract as anabstract,iduser,summarySearchable," +
+		"idproject," +
+		"idorganisation,user.username,user.firstname,user.lastname," +
+		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status,\n" +
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') as endpointgroup,\n"+
+		"extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') as endpointname\n"+
+		"from protocol join user using(iduser)\n" +
+		" %s %s order by idprotocol desc,version desc";		
+	
+	protected static String sql_noabstract = 
+		"select idprotocol,protocol.version,protocol.title,qmrf_number,null as anabstract,iduser,summarySearchable," +
 		"idproject," +
 		"idorganisation,user.username,user.firstname,user.lastname," +
 		"filename,extractvalue(abstract,'//keywords') as xmlkeywords,updated,status,`created`,published_status,\n" +
