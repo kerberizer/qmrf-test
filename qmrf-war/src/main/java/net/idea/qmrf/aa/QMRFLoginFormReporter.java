@@ -17,7 +17,7 @@ import org.restlet.security.Role;
 import org.restlet.security.User;
 
 public class QMRFLoginFormReporter<U extends User> extends UserLoginHTMLReporter<U> {
-	protected Logger logger = Logger.getLogger(getClass().getName());
+	protected transient Logger logger = Logger.getLogger(getClass().getName());
 	private String js_validate;
     public QMRFLoginFormReporter(Request ref, ResourceDoc doc) {
     	this(ref,doc,null);

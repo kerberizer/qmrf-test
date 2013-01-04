@@ -27,7 +27,7 @@ public class ReadAttachment extends AbstractQuery<DBProtocol, DBAttachment, EQCo
 	/**
 	 * 
 	 */
-	protected Logger logger = Logger.getLogger(getClass().getName());
+	protected transient Logger logger = Logger.getLogger(getClass().getName());
 	private static final long serialVersionUID = 6228939989116141217L;
 	protected String dir = null;
 	private enum _fields {
