@@ -84,7 +84,8 @@ $(document).ready(function() {
 				  "bSearchable" : true, 
 				  "aTargets": [ 3 ],
 			      "fnRender": function ( o, val ) {
-        				return renderEndpoint(val.length>42?val.substring(0,42):val,val);
+			      		var e = (o.aData["endpoint"]["code"]==null?"": o.aData["endpoint"]["code"]) + val;
+        				return renderEndpoint(e.length>42?e.substring(0,42):e,e);
       			  },
 				  sWidth : "10%"
 			    },
