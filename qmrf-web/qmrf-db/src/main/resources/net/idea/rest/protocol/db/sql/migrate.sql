@@ -131,6 +131,8 @@ where idtemplate is null;
 
 -- tomcat-users
 use tomcat_users;
+insert ignore into user_roles values ("editor","qmrf_manager");
+
 DROP TABLE IF EXISTS `user_registration`;
 CREATE TABLE  `user_registration` (
   `user_name` varchar(16) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
