@@ -229,7 +229,7 @@ CREATE TABLE  `version` (
   `comment` varchar(45) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`idmajor`,`idminor`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-insert into version (idmajor,idminor,comment) values (2,7,"QMRF schema");
+insert into version (idmajor,idminor,comment) values (2,8,"QMRF schema");
 
 -- -----------------------------------------------------
 -- Create new protocol version
@@ -340,4 +340,4 @@ DELIMITER ;
 -- PREPARE stmt FROM @query;
 -- EXECUTE stmt;
 -- DEALLOCATE PREPARE stmt;
-insert into version (idmajor,idminor,comment) values (2,8,"QMRF schema");
+
