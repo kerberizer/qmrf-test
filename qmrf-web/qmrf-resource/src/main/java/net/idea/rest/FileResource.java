@@ -12,7 +12,7 @@ import org.restlet.resource.ResourceException;
 
 public abstract class FileResource<T extends Serializable> extends CatalogResource<T> {
 	public static final String resourceKey = "key";
-	protected Logger logger = Logger.getLogger(getClass().getName());
+	protected transient Logger logger = Logger.getLogger(getClass().getName());
 	
 	protected String directoryPrefix;
 	protected final String prefix;

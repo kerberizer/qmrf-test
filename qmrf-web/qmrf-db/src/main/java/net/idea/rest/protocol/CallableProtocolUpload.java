@@ -42,7 +42,7 @@ import org.restlet.resource.ResourceException;
 
 
 public class CallableProtocolUpload extends CallableProtectedTask<String> {
-	protected Logger logger = Logger.getLogger(getClass().getName());
+	protected transient Logger logger = Logger.getLogger(getClass().getName());
 	public enum UpdateMode {
 		create {
 			@Override
