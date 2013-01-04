@@ -128,16 +128,27 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 			}		
 			try {
 				String endpointname = rs.getString("endpointname");
-				if (p.getEndpoint()==null) p.setEndpoint(new EndpointTest(endpointname,null));
-				else p.getEndpoint().setName(endpointname);
+				String[] split = endpointname.split("\\.");
+				StringBuilder endpointCode = new StringBuilder();
+				for (int i=0; i < (split.length-1);i++) {endpointCode.append(split[i]);endpointCode.append(".");}
+				if(split.length>0) endpointname = split[split.length-1];
+				
+				if (p.getEndpoint()==null) p.setEndpoint(new EndpointTest(null,null));
+				p.getEndpoint().setCode(endpointCode.toString());
+				p.getEndpoint().setName(endpointname.trim());
 			} catch (Exception x) {
-				System.out.println(getClass().getName());
 				x.printStackTrace();
 			}			
 			try {
 				String endpointgroup = rs.getString("endpointgroup");
+				String[] split = endpointgroup.split("\\.");
+				StringBuilder endpointCode = new StringBuilder();
+				for (int i=0; i < (split.length-1);i++) {endpointCode.append(split[i]);endpointCode.append(".");}
+				if(split.length>0) endpointgroup = split[split.length-1];
+				
 				if (p.getEndpoint()==null) p.setEndpoint(new EndpointTest(null,null));
-				else p.getEndpoint().setParentTemplate(endpointgroup);
+				p.getEndpoint().setParentCode(endpointCode.toString());
+				p.getEndpoint().setParentTemplate(endpointgroup.trim());
 			} catch (Exception x) {
 				x.printStackTrace();
 			}			
@@ -151,6 +162,7 @@ public abstract class ReadProtocolAbstract<T> extends AbstractQuery<T, DBProtoco
 			//if (p!=null) p.setIdentifier(generateIdentifier(p));
 		}
 	}
+	
 	@Override
 	public String toString() {
 		return getValue()==null?"All protocols":String.format("Protocol id=P%s",getValue().getID());
