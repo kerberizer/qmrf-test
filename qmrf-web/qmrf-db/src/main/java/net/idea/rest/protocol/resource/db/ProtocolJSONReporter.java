@@ -14,6 +14,7 @@ import net.idea.modbcum.r.QueryReporter;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.AttachmentURIReporter;
 import net.idea.rest.protocol.attachments.DBAttachment;
+import net.idea.rest.protocol.attachments.DBAttachment.attachment_type;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.groups.DBOrganisation;
@@ -90,6 +91,7 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 	
 	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"visibleid\": \"%s\",\n\t\"identifier\": \"%s\",\n\t\"title\": \"%s\",\n\t\"published\": %s,\n\t\"endpoint\": {\n\t\t\"parentCode\" :\"%s\",\"parentName\" :\"%s\",\"code\" :\"%s\", \"name\" :\"%s\"\n\t},\n\t\"submitted\": \"%s\",\n\t\"updated\": \"%s\",\n\t\"owner\": {\n\t\t\"uri\" :\"%s\",\n\t\t\"username\": \"%s\",\n\t\t\"firstname\": \"%s\",\n\t\t\"lastname\": \"%s\"\n\t}";
 	private static String formatAttachments =  "\n\t\t{\n\t\t\"uri\":\"%s\",\n\t\t\"title\":\"%s\",\n\t\t\"description\":\"%s\",\n\t\t\"type\":\"%s\",\n\t\t\t\"dataset\": {\"uri\": \"%s/dataset/%d\", \"structure\": null}\n\t\t}";
+	private static String formatAttachmentDocument =  "\n\t\t{\n\t\t\"uri\":\"%s\",\n\t\t\"title\":\"%s\",\n\t\t\"description\":\"%s\",\n\t\t\"type\":\"%s\"\n\t\t}";
 		
 	@Override
 	public Object processItem(DBProtocol item) throws Exception {
@@ -129,13 +131,20 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 					DBAttachment attachment = item.getAttachments().get(na);
 					if (na>0)
 						getOutput().write(",");
-					getOutput().write(String.format(formatAttachments,
-							attachment.getResourceURL(),
-							attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
-							attachment.getDescription().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
-							attachment.getType().toString(),
-							queryService,
-							attachment.getIdquerydatabase()));
+					if (attachment_type.document.equals(attachment.getType())) 
+						getOutput().write(String.format(formatAttachmentDocument,
+								attachment.getResourceURL(),
+								attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
+								attachment.getDescription().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
+								attachment.getType().toString()));						
+					else	
+						getOutput().write(String.format(formatAttachments,
+								attachment.getResourceURL(),
+								attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
+								attachment.getDescription().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
+								attachment.getType().toString(),
+								queryService,
+								attachment.getIdquerydatabase()));
 				}			
 				getOutput().write("\n\t]\n");
 			}
