@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2005-2012  
+Copyright (C) 2005-2013  
 
 Contact: www.ideaconsult.net
 
@@ -65,6 +65,7 @@ import com.lowagie.text.pdf.PdfWriter;
 public class QMRF_xml2pdf extends QMRFConverter {
 
 	protected static Color chapterColor = new Color(230, 230, 230);
+
 
 	protected DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 			.newInstance();
@@ -442,6 +443,7 @@ public class QMRF_xml2pdf extends QMRFConverter {
 
 								String c = org.apache.commons.lang.StringEscapeUtils
 										.unescapeXml(e.getAttribute("url"));
+								if (c!=null && !c.startsWith("http")) c = rootURL + c;
 
 								PdfAction action = new PdfAction(c);
 								p = new Paragraph();

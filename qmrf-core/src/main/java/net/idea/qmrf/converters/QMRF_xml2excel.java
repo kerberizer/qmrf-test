@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2005-2012  
+Copyright (C) 2005-2013  
 
 Contact: www.ideaconsult.net
 

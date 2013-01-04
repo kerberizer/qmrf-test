@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2005-2012  
+Copyright (C) 2005-2013  
 
 Contact: www.ideaconsult.net
 
@@ -47,6 +47,16 @@ import freemarker.template.Template;
 
 
 public class QMRF_xml2rtf  {
+	
+	protected String rootURL="";
+	public String getRootURL() {
+		return rootURL;
+	}
+
+	public void setRootURL(String rootURL) {
+		this.rootURL = rootURL;
+	}
+	
 	//TODO global config
 	Configuration configuration;
 	
@@ -81,6 +91,7 @@ public class QMRF_xml2rtf  {
 
 	        qmrf.setCleanTags(true);
 	        model.put("qmrf", qmrf);
+	        model.put("root", rootURL==null?"":rootURL);
 	     
 	        /* Merge data model with template */
 	        temp.process(model, out);
