@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.SimpleTaskResource;
@@ -59,7 +60,7 @@ public class RegistrationTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERI
 			t = item.getUri()==null?"":item.getUri().toString();
 			status = item.getStatus().toString();
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.warn(x);
 			status = "Error";
 			t = "";
 		} finally {
@@ -101,7 +102,7 @@ public class RegistrationTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERI
 
 
 			} catch (Exception x) {
-				x.printStackTrace();
+				logger.warn(x);
 			}
 		}
 	};

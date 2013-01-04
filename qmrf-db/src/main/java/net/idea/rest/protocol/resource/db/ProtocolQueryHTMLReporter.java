@@ -3,6 +3,7 @@ package net.idea.rest.protocol.resource.db;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Date;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -229,7 +230,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			}
 		
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		} finally {
 			
 		}
@@ -240,7 +241,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 	protected void printUploadForm(Writer output, String uri, DBProtocol protocol) {
 		try {
 			output.write(((QMRF_HTMLBeauty)htmlBeauty).printUploadForm("", uri, protocol,update_mode.attachments,uriReporter.getBaseReference().toString()));
-		} catch (Exception x) {x.printStackTrace();} 
+		} catch (Exception x) {logger.log(Level.WARNING,x.getMessage(),x);} 
 		
 	}	
 	
@@ -382,7 +383,7 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			}
 
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		} 
 	}
 

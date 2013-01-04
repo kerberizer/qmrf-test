@@ -1,6 +1,7 @@
 package net.idea.rest.protocol.facet;
 
 import java.io.Writer;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.facet.IFacet;
@@ -42,7 +43,7 @@ public class QMRFHTMLFacetReporter extends QMRFHTMLReporter<EndpointProtocolFace
 			//w.write("<div class='protocol'>");
 			//w.write("<div class='tabs'>");
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		}
 		
 	}
@@ -80,7 +81,7 @@ public class QMRFHTMLFacetReporter extends QMRFHTMLReporter<EndpointProtocolFace
 						item.getValue()==null?"Undefined endpoint":item.getValue().toString().trim(),
 						item.getCount())));
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		}
 
 		

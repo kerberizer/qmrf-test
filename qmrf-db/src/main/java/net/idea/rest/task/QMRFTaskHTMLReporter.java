@@ -59,7 +59,7 @@ public class QMRFTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERID> {
 			t = item.getUri()==null?"":item.getUri().toString();
 			status = item.getStatus().toString();
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.warn(x);
 			status = "Error";
 			t = "";
 		} finally {
@@ -101,7 +101,7 @@ public class QMRFTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERID> {
 
 
 			} catch (Exception x) {
-				x.printStackTrace();
+				logger.warn(x);
 			}
 		}
 	};

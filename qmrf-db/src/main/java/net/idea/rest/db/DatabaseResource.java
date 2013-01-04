@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.LoginInfo;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -114,7 +115,7 @@ public class DatabaseResource  extends QMRFQueryResource<DBVersionQuery,DBVersio
 			}
 					
 		} catch (ResourceException x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		} catch (Throwable e) {	
 			e.printStackTrace();
 		
@@ -261,7 +262,7 @@ public class DatabaseResource  extends QMRFQueryResource<DBVersionQuery,DBVersio
 			dbc = null;
 			return generateRepresentation(db, true);
 		} catch (Exception xx) {
-			x.printStackTrace();
+			logger.log(Level.SEVERE,x.getMessage(),x);
 			return null;
 		} finally {
 			

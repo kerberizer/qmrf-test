@@ -50,7 +50,7 @@ public class QMRFCatalogHTMLReporter<T> extends CatalogHTMLReporter<T> {
 			);
 			record++;
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.warn(x);
 		}
 	}
 	public String renderItemTitle(T item) {

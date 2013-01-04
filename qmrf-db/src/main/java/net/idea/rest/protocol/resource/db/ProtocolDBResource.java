@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryObject;
 import net.idea.modbcum.i.IQueryRetrieval;
@@ -216,7 +217,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				DBProtocol p = new DBProtocol();
 				p.setTimeModified(Long.parseLong(modified.toString()));
 				query.setValue(p);
-			} catch (Exception x) {x.printStackTrace();}
+			} catch (Exception x) {logger.log(Level.SEVERE,x.getMessage(),x);}
 //			query.setFieldname(search.toString());
 			editable = showCreateLink;
 			if (userID>0) {

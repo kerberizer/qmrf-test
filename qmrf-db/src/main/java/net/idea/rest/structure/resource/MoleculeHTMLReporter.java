@@ -49,7 +49,7 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			}	
 			record++;
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.warn(x);
 		}
 	}
 	

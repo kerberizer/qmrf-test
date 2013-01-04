@@ -1,5 +1,7 @@
 package net.idea.rest.protocol.resource.db;
 
+import java.util.logging.Level;
+
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
@@ -67,7 +69,7 @@ public class UnpublishedProtocolsResource<Q extends IQueryRetrieval<DBProtocol>>
 				DBProtocol p = new DBProtocol();
 				p.setTimeModified(Long.parseLong(modified.toString()));
 				query.setValue(p);
-			} catch (Exception x) {x.printStackTrace();}
+			} catch (Exception x) {logger.log(Level.SEVERE,x.getMessage(),x);}
 //			query.setFieldname(search.toString());
 			editable = showCreateLink;
 			if (userID>0) {

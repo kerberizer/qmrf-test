@@ -2,6 +2,7 @@ package net.idea.rest.protocol.resource.db;
 
 import java.io.StringReader;
 import java.io.Writer;
+import java.util.logging.Level;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -163,7 +164,7 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 			try {
 				qhtml.xml2summary(getDOMSource(item),output);
 			} catch (Exception x) {
-				x.printStackTrace();
+				logger.log(Level.WARNING,x.getMessage(),x);
 			}
 			System.err.println(System.currentTimeMillis()-now);
 			if (!plainHtmlHeader) {
@@ -173,7 +174,7 @@ public class QMRFChaptersHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQuer
 			}
 			
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		}
 	}
 

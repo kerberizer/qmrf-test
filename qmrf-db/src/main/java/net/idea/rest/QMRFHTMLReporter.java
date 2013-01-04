@@ -2,6 +2,8 @@ package net.idea.rest;
 
 import java.io.Writer;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -19,7 +21,7 @@ import org.restlet.data.Reference;
 public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends QueryHTMLReporter<T,Q>  {
 	public static final DBRole managerRole = new DBRole(QMRFRoles.qmrf_manager.name(),QMRFRoles.qmrf_manager.toString());
 	public static final DBRole editorRole = new DBRole(QMRFRoles.qmrf_editor.name(),QMRFRoles.qmrf_editor.toString());
-
+	protected Logger logger = Logger.getLogger(getClass().getName());
 	/**
 	 * 
 	 */
@@ -72,7 +74,7 @@ public abstract class QMRFHTMLReporter<T,Q extends IQueryRetrieval<T>>  extends 
 		try {
 			if (printAsTable() && !headless) printPageNavigator(query);
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		} finally {
 			try {
 				if (!headless)

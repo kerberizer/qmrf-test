@@ -1,6 +1,7 @@
 package net.idea.rest.user.resource;
 
 import java.util.Map;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
@@ -48,7 +49,7 @@ public class MyAccountResource<T> extends UserDBResource<T> {
 			search_value = getClientInfo().getUser().getIdentifier();
 		} catch (Exception x) {
 			search_value = null;
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		}				
 		if (search_value == null) throw new ResourceException(Status.CLIENT_ERROR_UNAUTHORIZED,"Not logged in!");
 		Object key = request.getAttributes().get(UserDBResource.resourceKey);		

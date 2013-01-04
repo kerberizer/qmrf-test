@@ -3,6 +3,8 @@ package net.idea.qmrf.aa;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.idea.qmrf.client.QMRFRoles;
 import net.idea.restnet.aa.local.UserLoginHTMLReporter;
@@ -15,6 +17,7 @@ import org.restlet.security.Role;
 import org.restlet.security.User;
 
 public class QMRFLoginFormReporter<U extends User> extends UserLoginHTMLReporter<U> {
+	protected Logger logger = Logger.getLogger(getClass().getName());
 	private String js_validate;
     public QMRFLoginFormReporter(Request ref, ResourceDoc doc) {
     	this(ref,doc,null);
@@ -77,7 +80,7 @@ public class QMRFLoginFormReporter<U extends User> extends UserLoginHTMLReporter
 			writer.write("</tbody></table>");
 			output.write(htmlBeauty.printWidget(header, writer.toString()));
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
 		}
 		
 	};
