@@ -27,7 +27,7 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 	protected MediaType media;
 	protected String fileExtension= null;
 	protected Configuration freeMarkerConfiguration;
-	
+	protected String baseRef;
 	public Configuration getFreeMarkerConfiguration() {
 		return freeMarkerConfiguration;
 	}
@@ -58,6 +58,7 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 
 	public QMRFReporter(Request request, MediaType media, Configuration freeMarkerConfiguration) throws ResourceException {
 		super();
+		baseRef = request.getRootRef().toString();
 		setMedia(media);
 		this.freeMarkerConfiguration = freeMarkerConfiguration;
 	}
@@ -80,9 +81,11 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 				getOutput().write(xml.replace("/WEB-INF/xslt/qmrf.dtd","http://qmrf.sourceforge.net/qmrf.dtd").getBytes("UTF-8"));
 			} else if (MediaType.APPLICATION_PDF.equals(media)) {
 				 QMRF_xml2pdf qpdf = new QMRF_xml2pdf(null);
+				 qpdf.setRootURL(baseRef);
 		         qpdf.xml2pdf(new InputSource(new StringReader(xml)),getOutput());	
 			} else if (MediaType.APPLICATION_EXCEL.equals(media)) {
 				 QMRF_xml2excel qexcel = new QMRF_xml2excel();
+				 qexcel.setRootURL(baseRef);
 				 qexcel.xml2excel(new InputSource(new StringReader(xml)),getOutput());	      
 		         
 			} else if (MediaType.APPLICATION_MSOFFICE_DOCX.equals(media)) {
@@ -92,6 +95,7 @@ public class QMRFReporter<Q extends IQueryRetrieval<DBProtocol>>  extends QueryR
 			} else if (MediaType.APPLICATION_RTF.equals(media)) {
 				 if (freeMarkerConfiguration==null) throw new AmbitException("FreeMarker configuration not initialized");
 				 QMRF_xml2rtf qhtml = new QMRF_xml2rtf();
+				 qhtml.setRootURL(baseRef);
 				 qhtml.setConfiguration(freeMarkerConfiguration);
 				 //qhtml.initConfig();this fails when server side
 				 OutputStreamWriter writer = new OutputStreamWriter(getOutput());

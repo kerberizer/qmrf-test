@@ -52,7 +52,7 @@ since RTF is white-space sensitive (except for newlines).
 	     			 <@rtf.left>
 	     		     <@rtf.bold>${attachmentType.title}: </@rtf.bold> 
 	     		     ${attachment.description} (${attachment.filetype})<@rtf.newline/><#t>
-	     		     <@rtf.href>${attachment.url}</@rtf.href><@rtf.newline/><#t>
+	     		     <@rtf.href>${root}${attachment.url}</@rtf.href><@rtf.newline/><#t>
 	     		     </@rtf.left><#t>				   	     		   
 	     		 </#list><#t>
 	     	</#list><#t>

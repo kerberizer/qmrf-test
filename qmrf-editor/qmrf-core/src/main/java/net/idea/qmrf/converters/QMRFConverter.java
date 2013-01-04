@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2005-2012  
+Copyright (C) 2005-2013  
 
 Contact: www.ideaconsult.net
 
@@ -57,7 +57,14 @@ public abstract class QMRFConverter {
 	public enum ScriptMode {
 		normal, subscript, superscript
 	};
+	protected String rootURL="";
+	public String getRootURL() {
+		return rootURL;
+	}
 
+	public void setRootURL(String rootURL) {
+		this.rootURL = rootURL;
+	}
 	protected final String xml_attribute_chapter = "chapter";
 	protected final String xml_attribute_name = "name";
 	protected final String xml_attribute_help = "help";
@@ -527,7 +534,7 @@ public abstract class QMRFConverter {
 	 * (document*)>
 	 */
 	protected String listAttachments(Document doc, String attachments) {
-		StringBuffer b = new StringBuffer();
+		StringBuilder b = new StringBuilder();
 		NodeList nodes = doc.getElementsByTagName(attachments);
 		if (nodes.getLength() == 0)
 			b.append("N/A");
@@ -546,12 +553,16 @@ public abstract class QMRFConverter {
 										.unescapeXml(e
 												.getAttribute("description")));
 								b.append('\t');
+								b.append(' ');
 								/*
 								 * b.append(e.getAttribute("filetype"));
 								 * b.append(' ');
 								 */
-								b.append(org.apache.commons.lang.StringEscapeUtils
-										.unescapeXml(e.getAttribute("url")));
+								String url = org.apache.commons.lang.StringEscapeUtils
+										.unescapeXml(e.getAttribute("url"));
+								if (url!=null && !url.startsWith("http")) b.append(rootURL==null?"":rootURL);
+
+								b.append(url);
 								b.append('\n');
 							}
 				}
@@ -566,7 +577,7 @@ public abstract class QMRFConverter {
 
 		int r = 1;
 		boolean printnumbers = (node_list.size() > 1) && line;
-		StringBuffer b = new StringBuffer();
+		StringBuilder b = new StringBuilder();
 		boolean printnewline = false;
 		for (Iterator it = node_list.iterator(); it.hasNext();) {
 			if (printnewline) {
@@ -663,7 +674,7 @@ public abstract class QMRFConverter {
 	}
 
 	protected String findAnswer(String name_node, org.w3c.dom.Document source) {
-		StringBuffer b = new StringBuffer();
+		StringBuilder b = new StringBuilder();
 		b.append(findAttributeValue(name_node, "answer", source));
 		b.append('\n');
 		findNodeValue(name_node, source);
@@ -676,7 +687,7 @@ public abstract class QMRFConverter {
 				{ "chemname", "Chemical Name" }, { "smiles", "Smiles" },
 				{ "formula", "Formula" }, { "inchi", "INChI" },
 				{ "mol", "MOL file" } };
-		StringBuffer b = new StringBuffer();
+		StringBuilder b = new StringBuilder();
 		for (int i = 0; i < attr.length; i++) {
 			b.append(attr[i][1]);
 			b.append(": ");
