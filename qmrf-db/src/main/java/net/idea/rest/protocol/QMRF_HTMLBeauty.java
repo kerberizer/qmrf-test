@@ -47,7 +47,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"<script type='text/javascript' src='%s/jquery/jquery.validate.min.js'></script>\n",
 		"<script type='text/javascript' src='%s/scripts/qmrfsearchform.js'></script>\n",
 		"<script type='text/javascript' src='%s/scripts/jopentox.js'></script>\n",
-		//"<script type='text/javascript' src='%s/scripts/jendpoints.js'></script>\n",
+		"<script type='text/javascript' src='%s/scripts/qmrfendpoint.js'></script>\n",
 		"<script type='text/javascript' src='%s/jme/jme.js'></script>\n"
 	};
 	
@@ -876,7 +876,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					content.append(String.format(		
 					"<script>\n"+
 					"$(function() {\n"+
-				
+						"endpointAutocomplete('%s','%s');\n"+
+						/*
 						"$( \"#endpoint\" ).each(function() {\n" +
 						"var autoCompleteElement = this;\n"+
 						"var formElementName = $(this).attr('name');\n"+
@@ -903,7 +904,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				        "   	$('#endpointParentCode').val(item.parentCode);\n"+
 				        "   	$('#endpointParentName').val(item.parentName);\n"+
 				        "  });\n"+
-				        "});\n" +							
+				        "});\n" +		
+				        */					
 					"});\n"+
 					"</script>\n",baseReference,protocolURI));
 					

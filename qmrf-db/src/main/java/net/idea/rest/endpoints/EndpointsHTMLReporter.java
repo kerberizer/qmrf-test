@@ -234,23 +234,7 @@ public class EndpointsHTMLReporter<D extends Dictionary> extends QMRFHTMLReporte
 	@Override
 	public void footer(Writer output, IQueryRetrieval<D> query) {
 		try {
-
-
 			output.write("</tbody></table>");
-			/*
-			output.write("<div class=\"ui-widget-content\">	<label for=\"tags\">Tags: </label><input size='40' id=\"tags\"></div>");
-			output.write(
-			String.format(		
-			"<script>\n"+
-			"$(function() {\n"+
-				"$( \"#tags\" ).autocomplete({\n"+
-					"source: '%s/catalog?media=application/json',minLength:3\n"+
-				"});\n"+
-			"});\n"+
-			"</script>\n",uriReporter.getBaseReference()));
-			
-			output.write("</div>");
-			*/
 			if (!headless) {
 				if (htmlBeauty == null) htmlBeauty = new HTMLBeauty();
 				htmlBeauty.writeHTMLFooter(output, "", uriReporter.getRequest());			
