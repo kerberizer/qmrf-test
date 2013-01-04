@@ -34,12 +34,27 @@ public class PublishProtocol extends AbstractUpdate<EndpointTest,DBProtocol>{
 		"'/QMRF/Catalogs/endpoints_catalog/endpoint/@name',?)\n" +
 		"where idprotocol=? and version=? and published_status!='published'",
 		
-		"update protocol set published_status=?,abstract=updatexml(abstract,'//QMRF_number',concat('<QMRF_number chapter=\"10.1\"  name=\"QMRF number\">',qmrf_number,'</QMRF_number>')) where idprotocol=? and version=? and published_status!='published'",
+		"update protocol set published_status=?,abstract=\n" +
+		"updatexml(abstract,'//QMRF_number',concat('<QMRF_number chapter=\"10.1\"  name=\"QMRF number\">',qmrf_number,'</QMRF_number>')) " +
+		"where idprotocol=? and version=? and published_status!='published'",
 		
 		"delete from protocol_endpoints where idprotocol=? and version=?",
 		
 		"insert into protocol_endpoints select idprotocol,version,idtemplate\n"+
-		"from protocol join template where name = ? and code = ? and idprotocol=? and version=?"
+		"from protocol join template where name = ? and code = ? and idprotocol=? and version=?",
+		
+		"update protocol p, attachments a set abstract=updatexml(abstract,'//attachment_documents/document',\n"+
+		"concat(\"<document format='\",format,\"' name='\",name,\"' description='\",description,\"' url='/protocol/\",qmrf_number,\"/attachment/A\",idattachment,\"'/>\"))\n"+
+		"where a.type='document' and p.idprotocol=a.idprotocol and p.version=a.version and p.idprotocol=? and p.version=?\n",
+		
+		"update protocol p, attachments a set abstract=updatexml(abstract,'//attachment_training_data/molecules',\n"+
+		"concat(\"<molecules format='\",format,\"' name='\",name,\"' description='\",description,\"' url='/protocol/\",qmrf_number,\"/attachment/A\",idattachment,\"'/>\"))\n"+
+		"where a.type='data_training' and p.idprotocol=a.idprotocol and p.version=a.version and p.idprotocol=? and p.version=?\n",
+		
+		"update protocol p, attachments a set abstract=updatexml(abstract,'//attachment_validation_data/molecules',\n"+
+		"concat(\"<molecules format='\",format,\"' name='\",name,\"' description='\",description,\"' url='/protocol/\",qmrf_number,\"/attachment/A\",idattachment,\"'/>\"))\n"+
+		"where a.type='data_validation' and p.idprotocol=a.idprotocol and p.version=a.version and p.idprotocol=? and p.version=?\n"
+				
 		
 	};
 	public PublishProtocol(EndpointTest endpoint,DBProtocol ref) {
@@ -73,7 +88,7 @@ public class PublishProtocol extends AbstractUpdate<EndpointTest,DBProtocol>{
 		} else if (index == 3) {
 			params1.add(new QueryParam<String>(String.class,getGroup().getName()));
 			params1.add(new QueryParam<String>(String.class,getGroup().getCode()));
-		}
+		} 
 		
 		params1.add(ReadProtocol.fields.idprotocol.getParam(getObject()));
 		params1.add(ReadProtocol.fields.version.getParam(getObject()));
