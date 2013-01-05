@@ -7,6 +7,9 @@ CREATE USER 'guest'@'localhost' IDENTIFIED BY 'guest';
 GRANT ALL ON qmrf.* TO 'guest'@'localhost';
 GRANT TRIGGER ON qmrf.* TO 'guest'@'localhost';
 GRANT execute on function `qmrf`.getAuthorDetails to guest@localhost;
+GRANT EXECUTE on procedure `qmrf`.createProtocolVersion to 'guest'@'localhost';
+GRANT EXECUTE on procedure `qmrf`.deleteProtocol to 'guest'@'localhost';
+
 GRANT execute on `ambit2-qmrf`.* to guest@localhost
 GRANT execute on PROCEDURE `ambit2-qmrf`.findByProperty to guest@127.0.0.1
 GRANT execute on PROCEDURE `ambit2-qmrf`.findByProperty to guest@localhost
