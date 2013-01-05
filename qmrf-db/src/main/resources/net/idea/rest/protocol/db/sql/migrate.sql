@@ -90,15 +90,15 @@ update qmrf.attachments set name = replace(name,"#","N");
 -- ----------------------------------------------------------------------------------------
 -- Rewrite attachment URL
 -- --------------------------- Documents --------------------------------------------------
-update protocol p, attachments a set abstract=updatexml(abstract,'//attachment_documents',
+update protocol p, attachments a set p.updated=p.updated,abstract=updatexml(abstract,'//attachment_documents',
 concat("<attachment_documents>\n<document format='",format,"' name='",name,"' description='",description,"' url='/protocol/",qmrf_number,"/attachment/A",idattachment,"'/>\n</attachment_documents>\n"))
 where a.type='document' and p.idprotocol=a.idprotocol and p.version=a.version;
 -- --------------------------- Training --------------------------------------------------
-update protocol p, attachments a set abstract=updatexml(abstract,'//attachment_training_data',
+update protocol p, attachments a set p.updated=p.updated,abstract=updatexml(abstract,'//attachment_training_data',
 concat("<attachment_training_data>\n<molecules format='",format,"' name='",name,"' description='",description,"' url='/protocol/",qmrf_number,"/attachment/A",idattachment,"'/>\n</attachment_training_data>\n"))
 where a.type='data_training' and p.idprotocol=a.idprotocol and p.version=a.version;
 -- --------------------------- Validation ------------------------------------------------
-update protocol p, attachments a set abstract=updatexml(abstract,'//attachment_validation_data',
+update protocol p, attachments a set p.updated=p.updated,abstract=updatexml(abstract,'//attachment_validation_data',
 concat("<attachment_validation_data>\n<molecules format='",format,"' name='",name,"' description='",description,"' url='/protocol/",qmrf_number,"/attachment/A",idattachment,"'/>\n</attachment_validation_data>\n"))
 where a.type='data_validation' and p.idprotocol=a.idprotocol and p.version=a.version;
 -- ----------------------------------------------------------------------------------------
