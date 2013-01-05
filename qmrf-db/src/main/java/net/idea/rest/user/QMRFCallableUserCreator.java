@@ -12,6 +12,15 @@ import org.restlet.data.Method;
 
 public class QMRFCallableUserCreator extends CallableUserCreator {
 	
+	protected String getSenderName() { return "The QMRF Database Support Team"; };
+	@Override
+	protected String getSender() {
+		return "JRC-IHCP-COMPUTOX@ec.europa.eu";
+	}
+	@Override
+	protected String getSystemName() {
+		return "QMRF Database";
+	}
 	public QMRFCallableUserCreator(Method method,DBUser item,
 						UserURIReporter<IQueryRetrieval<DBUser>> reporter,
 						Form input,
@@ -21,16 +30,7 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 						boolean passwordChange,
 						String usersdbname)  {
 		super(method,item,reporter, input,baseReference, connection,token,passwordChange,usersdbname);
-		subject = "QMRF Database User Confirmation";
-		emailContent = 
-			"Thank you for applying for user registration with the QMRF Database.\n"+
-			"\n"+
-			"Please point your browser to the following URL in order to proceed with the registration of the \"%s\" user:\n"+
-			"%s%s%s?code=%s\n"+
-			"Please note that your registration will be cancelled automatically if it is not confirmed within 48 hours. If you miss this deadline you should start over the registration procedure and get a new confirmation code.\n"+
-			"\n"+
-			"If you change your mind and decide that you do NOT want to confirm the registration, then please discard this message and let the request expire on its own.\n"
-			;			
+		subject = "QMRF Database User Activation";
 	}
 
 	
