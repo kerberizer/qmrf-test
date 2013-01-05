@@ -138,7 +138,10 @@ Open the following URI in your browser:
 
 http://YOURHOST:YOURPORT/qmrf
 
-The browser should display the first 10 QMRF documents.
+The browser should display the "Welcome" page of the QMRF repository.
+
+Click "Access" on the left hand side menu. The browser should display
+the first 10 QMRF documents.
 
 #######################################################################
 				 STEP 8
