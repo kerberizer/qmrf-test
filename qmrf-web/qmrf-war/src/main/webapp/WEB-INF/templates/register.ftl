@@ -120,7 +120,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 			<p><label for="title">Title</label><input type="text" size='40' name='title' id='title' value=''/></p>
 			<p><label for="firstname">First name<em>*</em></label><input type="text" size='40' name='firstname' id='firstname' value=''/></p>
 			<p><label for="lastname">Last name<em>*</em></label><input type="text"  size='40' name='lastname' id='lastname' value=''/></p>
-			<p><label for="affiliation">Affiliation</label><input type="text"  size='40' name='affiliation' id='affiliation' value=''/></p>
+			<p><label for="affiliation">Affiliation</label><em>*</em><input type="text"  size='40' name='affiliation' id='affiliation' value=''/></p>
 			<p><label for="email">e-mail<em>*</em></label><input type="text"size='40' name='email' id='email' value=''/></p>
 			
 			<p><label for="homepage">WWW</label><input type="text"  size='40' name='homepage' id='homepage' value=''/></p>
