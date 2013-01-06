@@ -29,6 +29,7 @@ a MySQL console. The console can be started by typing 'mysql -uroot -p',
 CREATE DATABASE qmrf_documents;
 GRANT ALL ON qmrf_documents.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
 GRANT ALL ON qmrf_documents.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
+GRANT ALL ON qmrf_documents.* TO 'guest'@'::1' IDENTIFIED BY 'guest';
 USE qmrf_documents;
 source qmrf_documents.sql
 ---8<--------------------------------------------------------------------------
@@ -53,6 +54,7 @@ step for information on how to start the console).
 CREATE DATABASE qmrf CHARACTER SET utf8;
 GRANT ALL ON qmrf.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
 GRANT ALL ON qmrf.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
+GRANT ALL ON qmrf.* TO 'guest'@'::1' IDENTIFIED BY 'guest';
 USE qmrf;
 source qmrf.sql
 ---8<--------------------------------------------------------------------------
@@ -75,6 +77,7 @@ provided in this archive.
 CREATE DATABASE tomcat_users;
 GRANT ALL ON tomcat_users.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
 GRANT ALL ON tomcat_users.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
+GRANT ALL ON tomcat_users.* TO 'guest'@'::1' IDENTIFIED BY 'guest';
 USE tomcat_users;
 source tomcat_users.sql
 ---8<--------------------------------------------------------------------------
@@ -123,8 +126,10 @@ Run the following commands in the MySQL console.
 source ambit2-qmrf.sql
 GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
 GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
+GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'::1' IDENTIFIED BY 'guest';
 GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'localhost';
 GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'127.0.0.1';
+GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'::1';
 ---8<--------------------------------------------------------------------------
 
 ###############################################################################
