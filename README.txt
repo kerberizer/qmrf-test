@@ -3,8 +3,7 @@
 The default maven profile is -P qmrf
 
 The tests assume 
-CREATE USER 'guest'@'localhost' IDENTIFIED BY 'guest';
-GRANT ALL ON qmrf.* TO 'guest'@'localhost';
+GRANT ALL ON qmrf.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
 GRANT TRIGGER ON qmrf.* TO 'guest'@'localhost';
 GRANT execute on function `qmrf`.getAuthorDetails to guest@localhost;
 GRANT EXECUTE on procedure `qmrf`.createProtocolVersion to 'guest'@'localhost';
