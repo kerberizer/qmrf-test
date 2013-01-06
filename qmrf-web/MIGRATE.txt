@@ -55,6 +55,15 @@ CREATE DATABASE qmrf CHARACTER SET utf8;
 GRANT ALL ON qmrf.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
 GRANT ALL ON qmrf.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
 GRANT ALL ON qmrf.* TO 'guest'@'::1' IDENTIFIED BY 'guest';
+GRANT EXECUTE ON FUNCTION qmrf.getAuthorDetails TO 'guest'@'localhost';
+GRANT EXECUTE ON FUNCTION qmrf.getAuthorDetails TO 'guest'@'127.0.0.1';
+GRANT EXECUTE ON FUNCTION qmrf.getAuthorDetails TO 'guest'@'::1';
+GRANT EXECUTE ON PROCEDURE qmrf.createProtocolVersion TO 'guest'@'localhost';
+GRANT EXECUTE ON PROCEDURE qmrf.createProtocolVersion TO 'guest'@'127.0.0.1';
+GRANT EXECUTE ON PROCEDURE qmrf.createProtocolVersion TO 'guest'@'::1';
+GRANT EXECUTE ON PROCEDURE qmrf.deleteProtocol TO 'guest'@'localhost';
+GRANT EXECUTE ON PROCEDURE qmrf.deleteProtocol TO 'guest'@'127.0.0.1';
+GRANT EXECUTE ON PROCEDURE qmrf.deleteProtocol TO 'guest'@'::1';
 USE qmrf;
 source qmrf.sql
 ---8<--------------------------------------------------------------------------
@@ -127,6 +136,9 @@ source ambit2-qmrf.sql
 GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
 GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
 GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'::1' IDENTIFIED BY 'guest';
+GRANT TRIGGER ON `ambit2-qmrf`.* TO 'guest'@'localhost';
+GRANT TRIGGER ON `ambit2-qmrf`.* TO 'guest'@'127.0.0.1';
+GRANT TRIGGER ON `ambit2-qmrf`.* TO 'guest'@'::1';
 GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'localhost';
 GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'127.0.0.1';
 GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'::1';
