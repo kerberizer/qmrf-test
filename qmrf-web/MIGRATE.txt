@@ -1,213 +1,252 @@
-#######################################################################
-			      INTRODUCTION
-#######################################################################
+###############################################################################
+				 INTRODUCTION
+###############################################################################
 
-This is a list of actions for setting up (or upgrading to) the latest
-version of the QSAR Model Reporting Format Database.
+This is a list of the actions for setting up or upgrading to the latest version
+of the QSAR Model Reporting Format Database.
 
-#######################################################################
-				 STEP 1
-#######################################################################
+	IMPORTANT: If you are upgrading, make sure that you have created dumps
+	of the old 'qmrf_documents' and 'tomcat_users' databases. You can use
+	the 'mysqldump' tool for this task. Please refer to mysqldump's
+	documentation for further help on how to create these dumps.
 
-NOTICE: Please skip this step if you have an existing database instance
-named 'qmrf_documents'.
+###############################################################################
+				    STEP 1
+###############################################################################
 
-If the database 'qmrf_documents' does not exist, run the following
-commands in a MySQL console (you can start the console by typing
-'mysql -uroot -p', without the quotes, on the command line):
+	IMPORTANT: If you already have a database named 'qmrf_documents',
+	please skip this step.
 
----8<------------------------------------------------------------------
-create database qmrf_documents;
-GRANT ALL ON `qmrf_documents`.* TO 'guest'@'localhost';
-use qmrf_documents;
-source qmrf_documents-20120217.sql;
----8<------------------------------------------------------------------
+If the database 'qmrf_documents' does not exist, run the following commands in
+a MySQL console. The console can be started by typing 'mysql -uroot -p',
+(without the quotes) on the command line.
 
-NOTICE: The file 'qmrf_documents-20120217.sql' should contain the most
-recent dump of the old 'qmrf_documents' database and should be located
-in the current folder.
+	IMPORTANT: Before starting the console, copy the most recent dump of
+	the old 'qmrf_documents' database to the folder you are currently in,
+	and give it the name 'qmrf_documents.sql'.
 
-#######################################################################
-				 STEP 2
-#######################################################################
+---8<--------------------------------------------------------------------------
+CREATE DATABASE qmrf_documents;
+GRANT ALL ON qmrf_documents.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
+GRANT ALL ON qmrf_documents.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
+USE qmrf_documents;
+source qmrf_documents.sql
+---8<--------------------------------------------------------------------------
 
-Create the new 'qmrf' database, set up the corresponding grants, and
-create the tables that are required. Use the 'qmrf.sql' script from the
-MIGRATION directory. Alternatively, download the script from:
+###############################################################################
+				    STEP 2
+###############################################################################
+
+Create the new 'qmrf' database, set up the corresponding grants, and create
+the tables that are required. You will need the 'qmrf.sql' script, which you
+can either copy from the MIGRATION directory, or, alternatively, download from
 
 http://qmrf.sf.net/downloads/qmrf.sql
 
-Run the following commands in a MySQL console (again, you can start the
-console by typing 'mysql -uroot -p', without the quotes, on the command
-line):
+Run the following commands in the MySQL console (please refer to the previous
+step for information on how to start the console).
 
----8<------------------------------------------------------------------
-create database qmrf character set utf8;
-GRANT ALL ON qmrf.* TO 'guest'@'localhost';
-use qmrf;
-source qmrf.sql;
----8<------------------------------------------------------------------
+	IMPORTANT: Before starting the console, make sure that the script
+	'qmrf.sql' is located in the current folder.
 
-NOTICE: The file 'qmrf.sql' should be located in the current folder.
+---8<--------------------------------------------------------------------------
+CREATE DATABASE qmrf CHARACTER SET utf8;
+GRANT ALL ON qmrf.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
+GRANT ALL ON qmrf.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
+USE qmrf;
+source qmrf.sql
+---8<--------------------------------------------------------------------------
 
-#######################################################################
-				 STEP 3
-#######################################################################
+###############################################################################
+				    STEP 3
+###############################################################################
 
-NOTICE: Please skip this step if the 'tomcat_users' database exists
-already.
+	IMPORTANT: If you already have a database named 'tomcat_users', please
+	skip this step.
 
-If the 'tomcat_users' database does not exist, run the following
-commands in a MySQL console:
+If the database 'tomcat_users' does not exist, run the following commands in
+the MySQL console. You will need the 'tomcat_users.sql' script, which is
+provided in this archive.
 
----8<------------------------------------------------------------------
-create database tomcat_users;
-use tomcat_users;
-source tomcat_users.sql;
-GRANT ALL ON `tomcat_users`.* TO 'guest'@'localhost';
----8<------------------------------------------------------------------
+	IMPORTANT: Before starting the console, make sure that the script
+	'tomcat_users.sql' is located in the current folder.
 
-NOTICE: The file 'tomcat_users.sql' is provided in this archive and
-should be placed in the current folder.
+---8<--------------------------------------------------------------------------
+CREATE DATABASE tomcat_users;
+GRANT ALL ON tomcat_users.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
+GRANT ALL ON tomcat_users.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
+USE tomcat_users;
+source tomcat_users.sql
+---8<--------------------------------------------------------------------------
 
-#######################################################################
-				 STEP 4
-#######################################################################
+###############################################################################
+				    STEP 4
+###############################################################################
 
-Migrate the content from the old database, 'qmrf_documents', into the
-new one, 'qmrf'. Use the 'migrate.sql' script from MIGRATION directory.
-Alternatively, download the 'migrate.sql', 'dictionary.sql', and
-'template.sql' scripts from:
+Migrate the content from the old database, 'qmrf_documents', into the new one,
+'qmrf'. You will need the 'migrate.sql', 'dictionary.sql', and 'template.sql'
+scripts, which you can either copy from the MIGRATION directory, or,
+alternatively, download from
 
 http://qmrf.sf.net/downloads/migrate.sql
 http://qmrf.sf.net/downloads/dictionary.sql
 http://qmrf.sf.net/downloads/template.sql
 
-Run the following commands in a MySQL console:
+Run the following commands in the MySQL console.
 
----8<------------------------------------------------------------------
-use qmrf;
-source migrate.sql;
----8<------------------------------------------------------------------
+	IMPORTANT: Before starting the console, make sure that the three
+	scripts, 'migrate.sql', 'dictionary.sql', and 'template.sql', are
+	located in the current folder.
 
-NOTICE: All the three files, 'migrate.sql', 'dictionary.sql', and
-'template.sql', should be located in the current folder and only
-'source migrate.sql;' should be run, i.e. do not run
-'source dictionary.sql;', etc. 
+	IMPORTANT: Do NOT run 'source dictionary.sql' or 'source template.sql'!
+	The only command that needs to be run is 'source migrate.sql'.
 
-#######################################################################
-				 STEP 5
-#######################################################################
+---8<--------------------------------------------------------------------------
+USE qmrf;
+source migrate.sql
+---8<--------------------------------------------------------------------------
 
-Create the chemical structures database, populate it with data and set
-up the associated grants.
+###############################################################################
+				    STEP 5
+###############################################################################
 
-Run the following commands in a MySQL console:
+Create the chemical structures database, populate it with data, and set up the
+associated grants. You will need the 'ambit2-qmrf.sql' script, which is
+provided in this archive.
 
----8<------------------------------------------------------------------
-source ambit2-qmrf.sql;
-GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'localhost';
-GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'127.0.0.1';
+Run the following commands in the MySQL console.
+
+	IMPORTANT: Before starting the console, make sure that the script
+	'ambit2-qmrf.sql' is located in the current folder.
+
+---8<--------------------------------------------------------------------------
+source ambit2-qmrf.sql
+GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'localhost' IDENTIFIED BY 'guest';
+GRANT ALL ON `ambit2-qmrf`.* TO 'guest'@'127.0.0.1' IDENTIFIED BY 'guest';
 GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'localhost';
----8<------------------------------------------------------------------
+GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'127.0.0.1';
+---8<--------------------------------------------------------------------------
 
-NOTICE: The file 'ambit2-qmrf.sql' is provided in this archive and
-should be placed in the current folder.
+###############################################################################
+				    STEP 6
+###############################################################################
 
-#######################################################################
-				 STEP 6
-#######################################################################
+Deploy the 'qmrfdata.war' in your Tomcat instance. The 'qmrfdata.war' is in
+the WebApplications folder.
 
-Deploy the 'qmrfdata.war' in your Tomcat instance. The 'qmrfdata.war'
-is in the WebApplications folder.
-
-Open the following URI in your browser:
+Open the following URI in your browser, replacing YOURHOST and YOURPORT with
+the relevant values from your configuration.
 
 http://YOURHOST:YOURPORT/qmrfdata/dataset
 
-The browser should display the training and validation datasets.
+The browser should then display the training and validation datasets.
 
-#######################################################################
-				 STEP 7
-#######################################################################
+###############################################################################
+				    STEP 7
+###############################################################################
 
-Undeploy the old 'qmrf.war' and deploy the new 'qmrf.war' (included in
-this archive) in your Tomcat instance.
+Undeploy the old 'qmrf.war' and deploy the new 'qmrf.war' in your Tomcat
+instance. The new 'qmrf.war' is included in this archive.
 
-Open the following URI in your browser:
+Open the following URI in your browser, replacing YOURHOST and YOURPORT with
+the relevant values from your configuration.
 
 http://YOURHOST:YOURPORT/qmrf
 
-The browser should display the "Welcome" page of the QMRF repository.
+The browser should then display the "Welcome" page of the QMRF repository.
 
-Click "Access" on the left hand side menu. The browser should display
-the first 10 QMRF documents.
+Click "Access" on the left hand side menu. The browser should now display the
+first 10 QMRF documents.
 
-#######################################################################
-				 STEP 8
-#######################################################################
+###############################################################################
+				    STEP 8
+###############################################################################
 
-Change some configuration settings for the QMRF web application
-(required only if your setup differs from the defaults).
+Customize the configuration settings for the QMRF web application.
 
-Open and edit the following file:
+	IMPORTANT: This step is required only if your setup differs from the
+	default values.
+
+Open and edit the following file, replacing the {tomcat-dir} with the relevant
+value from your configuration.
 
 {tomcat-dir}/webapps/qmrf/WEB-INF/classes/config/qmrf.properties
 
-#File path to store attachments. If null will use the temp folder
+The following option sets the folder where attachments are stored. You can
+reuse the existing folder from your previous setup.
+
+	IMPORTANT: Tomcat must have both read and write access to this folder.
+
+---8<--------------------------------------------------------------------------
+# File path to store attachments. If null, will use the temp folder.
 qmrf_attachments_dir=/srv/qmrf-docs
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Replace this with the folder where attachments are stored. You could
-reuse the existing folder from your previous setup. Please note that
-Tomcat should have read and write access to this folder.
+---8<--------------------------------------------------------------------------
 
-#If not defined correctly, query by structure will not be available
+Set the following option to 'http://YOURHOST:YOURPORT/qmrfdata' (don't include
+the quotes), where YOURHOST is the fully qualified domain name of the host
+running the Tomcat instance in which the qmrfdata web application has been
+deployed, and YOURPORT is the TCP port Tomcat is listening on.
+
+---8<--------------------------------------------------------------------------
+# If not defined correctly, the query by structure will not be available.
 qmrf_ambit_service=http://qsardb.jrc.it/qmrfdata
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Replace this with 'http://YOURHOST:YOURPORT/qmrfdata', without the
-quotes, where YOURHOST is the fully qualified domain name of the host
-running the Tomcat instance in which the qmrfdata web application has
-been deployed, and YOURPORT is the port Tomcat is listening to.
+---8<--------------------------------------------------------------------------
 
-NOTICE: You must restart Tomcat to make sure that the configuration
-changes you've made become effective.
+The following options control the e-mail notifications from the services.
 
-#To enable QMRF Inventory to send e-mail notifications (on registration and alert updates)
-#please configure the SMTP server settings to reflect your setup
-#true if connecting to SMTP via TLS
+---8<--------------------------------------------------------------------------
+# To enable the QMRF Database to send e-mail notifications on registration and
+# alert updates, configure the following SMTP server settings appropriately.
+#
+# Set to 'true' if SMTP connections should use TLS
 mail.smtp.starttls.enable=true
-#true if the SMTP server requires authentication
+#
+# Set to 'true' if the SMTP server requires authentication
 mail.smtp.auth=true
-#SMTP 
+#
+# This must be set to 'smtp'
 mail.transport.protocol=smtp
-#SMTP port 
+#
+# The TCP port on which the SMTP server listens
 mail.smtp.port=587
-#fallback from TLS
+#
+# Fallback from TLS; this must be set to 'false'
 mail.smtp.socketFactory.fallback=false
-#Replace with your SMTP server address
+#
+# The fully qualified domain name of the SMTP server
 mail.host=mx.example.com
-#Replace with the username-to-connect-to mail.host
+#
+# If the SMTP server requires authentication, use this user name
 mail.user=user
-#mail.user password
+#
+# Password for the SMTP user
 mail.password=the-password
-#email address to appear in the FROM: field of sent emails
-notification.admin.email=email@tosend-emails-from-this-user
+#
+# The email address, which should appear in the FROM: field of the sent emails
+notification.admin.email=user@domain.tld
+---8<--------------------------------------------------------------------------
 
-#######################################################################
-				 STEP 9
-#######################################################################
+	IMPORTANT: You must restart Tomcat to make sure that the configuration
+	changes you've made become effective.
 
-NOTICE: This step is optional.
+###############################################################################
+				    STEP 9
+###############################################################################
 
-Remove the old databases that are not needed anymore. You might want to
-ensure that you have recent dumps of these databases before droping
-them. Run the following commands in a MySQL console:
+	NOTICE: This step is optional.
 
----8<------------------------------------------------------------------
-drop database qmrf_documents;
-drop database ambit_qmrf;
----8<------------------------------------------------------------------
+Remove the old databases that are not needed anymore.
 
-#######################################################################
-			      END OF FILE
-#######################################################################
+Run the following commands in the MySQL console.
+
+	IMPORTANT: Make sure that you have recent dumps of these databases
+	before droping them. If unsure, it is safer to omit this step.
+
+---8<--------------------------------------------------------------------------
+DROP DATABASE qmrf_documents;
+DROP DATABASE ambit_qmrf;
+---8<--------------------------------------------------------------------------
+
+###############################################################################
+				  END OF FILE
+###############################################################################
