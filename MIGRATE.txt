@@ -252,12 +252,11 @@ notification.admin.email=user@domain.tld
 
 	NOTICE: This step is optional.
 
-Remove the old databases that are not needed anymore.
+Remove the old databases that are not needed any more.
 
 Run the following commands in the MySQL console.
 
-	IMPORTANT: Make sure that you have recent dumps of these databases
-	before droping them. If unsure, it is safer to omit this step.
+	NOTICE: You might want to dump these databases before dropping them.
 
 ---8<--------------------------------------------------------------------------
 DROP DATABASE qmrf_documents;
