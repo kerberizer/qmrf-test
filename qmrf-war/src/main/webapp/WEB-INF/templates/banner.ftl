@@ -2,11 +2,11 @@
 
 			<ul class='topLinks'>
 			<li class='topLinks'>
-			<a class='topLinks' href='http://ambit.uni-plovdiv.bg/downloads/qmrf/QMRFEditor-v2.0.0-setup.exe'>Download QMRF Editor</a>
+			<a class='topLinks' href='http://qmrf.sf.net/editor'>Download QMRF Editor</a>
 			</li>
 			<li class='topLinks'>|</li>
 			<li class='topLinks'>
-			<a class='topLinks email' href='mailto:JRC-IHCP-COMPUTOX@ec.europa.eu'>Submit QMRF by e-mail</a>
+			<a class='topLinks email' href='mailto:${qmrf_email}'>Submit QMRF by e-mail</a>
 			</li>
 			<li class='topLinks'>|</li>
 			<li class='topLinks'>
