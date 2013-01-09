@@ -428,7 +428,7 @@
 				 #The service (ambit2.war) could be downloaded from http://ambit_sf_net
 				 #If not defined, structure search will not be available 
   			 -->
-        <qmrf_ambit_service>http://localhost:8080/ambit2</qmrf_ambit_service>
+        <qmrf_ambit_service>http://localhost:8080/qmrfdata</qmrf_ambit_service>
         <!-- Default project for submitting new documents -->
         <qmrf_default_project>/project/G1</qmrf_default_project>
         <!-- Default project for submitting new documents -->
