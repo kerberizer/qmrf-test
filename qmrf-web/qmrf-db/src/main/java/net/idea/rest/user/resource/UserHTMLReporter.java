@@ -146,7 +146,9 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			rendering.append("<table width='80%%'>");
 			rendering.append(String.format("<tr><th colspan='2'><a href='%s%s/U%d'>%s&nbsp;%s&nbsp%s</a></th></tr>",
 							uriReporter.getRequest().getRootRef(),Resources.user,user.getID(),
-							user.getTitle().trim(),user.getFirstname().trim(),user.getLastname().trim()));
+							user.getTitle()==null?"":user.getTitle().trim(),
+							user.getFirstname()==null?"":user.getFirstname().trim(),
+							user.getLastname()==null?"":user.getLastname().trim()));
 			
 			if (user.getOrganisations()!=null)
 			for (Organisation org : user.getOrganisations())
