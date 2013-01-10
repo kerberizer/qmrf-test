@@ -152,7 +152,8 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			
 			if (user.getOrganisations()!=null)
 			for (Organisation org : user.getOrganisations())
-				rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", "Affiliation", org.getTitle()));					
+				rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", "Affiliation", 
+						org.getTitle()));					
 			
 			for (DBUser.fields field : displayFields) 
 					rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", 
@@ -187,7 +188,7 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 		StringBuilder rendering = new StringBuilder();
 
 		rendering.append(String.format("<td>%s %s %s %s</td>",
-			item.getTitle(),
+			item.getTitle()==null?"":item.getTitle(),
 			item.getFirstname(),
 			item.getLastname(),
 			item.getUserName()==null?"":
