@@ -63,6 +63,7 @@ public class RegistrationNotifyResource  extends CatalogResource<String> {
 		}
 		map.put("creator","Ideaconsult Ltd.");
 	    map.put("qmrf_root",getRequest().getRootRef());
+		map.put(Resources.Config.qmrf_email.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_email.name()));
 	    map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
 	    
 	}

@@ -103,7 +103,7 @@ public class StructureResource extends CatalogResource<Structure> {
 	    map.put("qmrf_root",getRequest().getRootRef());
 	    map.put("searchURI",htmlBeauty==null || htmlBeauty.getSearchURI()==null?"":htmlBeauty.getSearchURI());
 	    map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
-	    
+	    map.put(Resources.Config.qmrf_email.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_email.name()));
 	    map.put("query", query2map(parameters));
 	}
 	
