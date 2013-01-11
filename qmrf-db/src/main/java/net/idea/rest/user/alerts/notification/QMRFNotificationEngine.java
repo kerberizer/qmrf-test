@@ -25,7 +25,7 @@ public class QMRFNotificationEngine extends SimpleNotificationEngine<DBProtocol>
 	protected ProtocolIO ioClass = new ProtocolIO();
     public QMRFNotificationEngine(Reference root) throws IOException {
 	    super(root,"config/qmrf.properties");
-	    setNotificationSubject("QMRF Inventory Alert Updates");
+	    setNotificationSubject("QMRF Database Alert Updates");
 	}
     @Override
     protected List<String> retrieve(Reference ref) throws Exception {
