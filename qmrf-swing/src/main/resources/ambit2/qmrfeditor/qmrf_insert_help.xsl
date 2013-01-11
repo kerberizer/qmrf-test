@@ -3,7 +3,7 @@
 
 
 <xsl:output method="xml"  encoding="utf-8" doctype-system="qmrf.dtd"
-		doctype-public="http://ambit.acad.bg/qmrf/qmrf.dtd" indent="yes"/>
+		doctype-public="http://qmrf.sf.net/qmrf.dtd" indent="yes"/>
 
 
 
@@ -295,16 +295,16 @@ g.	there exists a (graphical) expression of how the descriptor values of the che
 					</xsl:when>
 
 					<xsl:when test="@chapter=10">
-					<xsl:text>The summary section is specific for the JRC Inventory. If the model is submitted to JRC for inclusion in the JRC Inventory of QSAR models, then this summary is compiled by JRC after QMRF submission. The QMRF author does not have to fill in any of the fields of the summary section.</xsl:text>
+					<xsl:text>The summary section is specific for the QMRF Database. If the model is submitted to JRC for inclusion in the QMRF Database of QSAR models, then this summary is compiled by JRC after QMRF submission. The QMRF author does not have to fill in any of the fields of the summary section.</xsl:text>
 					</xsl:when>
 
 
 					<xsl:when test="@chapter=10.1">
-					<xsl:text>A unique numeric identifier is assigned to all QMRFs that are published in the JRC inventory. The identifier takes the form QMRF-year-number-version, e.g. QMRF-2009-213-1, where '2009' is the year of publication, '213' is the unique QMRF number in that year (typically consecutive as new documents are added), and '1' is the version of the document.</xsl:text>
+					<xsl:text>A unique numeric identifier is assigned to all QMRFs that are published in the QMRF Database. The identifier takes the form QYY-endpoint-number, e.g. Q13-46-0001, where '13' is the year of publication (2013), 46 is endpoint 4.6. Skin sensitisation and '0001' is the unique QMRF number in that year (typically consecutive as new documents are added).</xsl:text>
 					</xsl:when>
 
 					<xsl:when test="@chapter=10.2">
-					<xsl:text>The date (month/year) of publication in the JRC inventory is reported here.</xsl:text>
+					<xsl:text>The date (month/year) of publication in the QMRF Database is reported here.</xsl:text>
 					</xsl:when>
 
 					<xsl:when test="@chapter=10.3">
@@ -312,7 +312,7 @@ g.	there exists a (graphical) expression of how the descriptor values of the che
 					</xsl:when>
 
 					<xsl:when test="@chapter=10.4">
-					<xsl:text>Any comments that are relevant for the publication of the QMRF in the JRC Inventory (e.g., comments about updates and about supporting information) are reported here.</xsl:text>
+					<xsl:text>Any comments that are relevant for the publication of the QMRF in the QMRF Database (e.g., comments about updates and about supporting information) are reported here.</xsl:text>
 					</xsl:when>
 
 					<xsl:otherwise>

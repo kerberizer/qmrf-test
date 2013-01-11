@@ -518,7 +518,7 @@
 </attachment_validation_data>
 </attachments>
 </QSAR_Miscelaneous>
-<QMRF_Summary chapter="10" help="" name="Summary (ECB Inventory)">
+<QMRF_Summary chapter="10" help="" name="Summary (JRC Inventory)">
 <QMRF_number chapter="10.1" help="" name="QMRF number">QMRF-2012-341-1</QMRF_number>
 <date_publication chapter="10.2" help="" name="Publication date">2009/12/03</date_publication>
 <keywords chapter="10.3" name="Keywords" help="">acute toxicity, fish, Danio rerio, QSARModel 3.3.8, LC50 </keywords>
