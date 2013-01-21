@@ -113,7 +113,8 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 	<div class='w_content'>
 		<div class='ui-widget ' style='padding: 0 .7em;'>
 		<div class='ui-widget-header ui-corner-top'><p>Registration form</p></div>
-	    <div class='ui-widget-content ui-corner-bottom'>					
+	    <div class='ui-widget-content ui-corner-bottom'>				
+	    	<p>Registration as user is only necessary, if you wish to be informed about news issues and updates.</p>
 			<form action="/qmrf/register" id="registerForm"  method="POST" >		
 			
 			<p><label for="username">User name<em>*</em></label><input type="text" size='40' name='username' id='username' value=''/></p>

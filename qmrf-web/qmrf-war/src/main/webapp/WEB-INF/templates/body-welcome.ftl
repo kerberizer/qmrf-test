@@ -10,6 +10,7 @@
 		<p class='w_p_header'>Welcome to the QMRF Database</p>
 		<p class='w_p'>
 			In the regulatory assessment of chemicals (e.g. under REACH), <b>(Q)SAR models</b> are playing an increasingly important role in predicting properties for hazard and risk assessment. This implies both a need to be able to identify relevant (Q)SARs and to use them to derive estimates and/or have access to their precalculated estimates. To help meet these needs, we are developing a database of (Q)SAR models (i.e. an inventory of information on the models). The JRC QSAR Model Database is freely accessible through this web site.
+			Registration as user is only necessary, if you wish to be informed about news issues and updates.
 		</p>
 		<p class='w_p'>
 			The <b>(Q)SAR Model Reporting Format (QMRF)</b> is a harmonised template for summarising and reporting key information on (Q)SAR models, including the results of any validation studies. The information is structured according to the OECD (Q)SAR validation principles. 
