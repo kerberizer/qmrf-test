@@ -38,7 +38,7 @@ public class AttachmentURIReporter <Q extends IQueryRetrieval<DBAttachment>> ext
 		StringBuilder b = new StringBuilder();
 		b.append(ref);
 		b.append(prefix);
-		b.append(Resources.protocol);
+		b.append(Resources.attachment);
 		b.append("/A");
 		b.append(Integer.toString(item.getID()));
 		return b.toString();
