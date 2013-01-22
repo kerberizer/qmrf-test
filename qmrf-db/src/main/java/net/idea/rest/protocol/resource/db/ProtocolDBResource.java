@@ -493,6 +493,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			user.setUserName(getRequest().getClientInfo().getUser().getIdentifier());
 		}	
 		Connection conn = null;
+		DBConnection dbc = null;
 		try {
 			ProtocolQueryURIReporter r = new ProtocolQueryURIReporter(getRequest(),"");
 			class TDBConnection extends DBConnection {
@@ -504,10 +505,10 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					return getAttachmentDir();
 				}
 			};
-			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getConfigFile());
+			dbc = new TDBConnection(getApplication().getContext(),getConfigFile());
 			conn = dbc.getConnection();
 
-			String dir = dbc.getDir();
+			String dir = ((TDBConnection)dbc).getDir();
 			if ("".equals(dir)) dir = null;
 			return new CallableProtocolUpload(method,item,user,input,conn,r,getToken(),getRequest().getRootRef().toString(),
 						dir==null?null:new File(dir)
@@ -517,6 +518,8 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		} catch (Exception x) {
 			try { conn.close(); } catch (Exception xx) {}
 			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
+		} finally {
+			dbc = null;
 		}
 
 	}
