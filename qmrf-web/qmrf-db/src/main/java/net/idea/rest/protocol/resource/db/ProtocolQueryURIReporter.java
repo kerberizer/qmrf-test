@@ -43,12 +43,20 @@ public class ProtocolQueryURIReporter <Q extends IQueryRetrieval<DBProtocol>> ex
 
 	@Override
 	public String getURI(String ref, DBProtocol item) {
-		
+		StringBuilder b = new StringBuilder();
+		b.append(ref);
+		b.append(Resources.protocol);
+		b.append("/");
+		b.append(ReadProtocolByAuthor.generateIdentifier(item));
+		b.append(suffix==null?"":suffix);
+		return b.toString();
+		/*
 		return String.format("%s%s/%s%s",
 				ref,
 				Resources.protocol,
 				ReadProtocolByAuthor.generateIdentifier(item),
 				suffix==null?"":suffix);
+				*/
 	}
 
 }

@@ -2,6 +2,7 @@ package net.idea.rest.protocol.attachments;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.protocol.db.ReadProtocolByAuthor;
 import net.idea.restnet.db.QueryURIReporter;
 
 import org.restlet.Request;
@@ -34,7 +35,15 @@ public class AttachmentURIReporter <Q extends IQueryRetrieval<DBAttachment>> ext
 
 	@Override
 	public String getURI(String ref, DBAttachment item) {
-		return String.format("%s%s%s/A%d",ref,prefix,Resources.attachment,item.getID());
+		StringBuilder b = new StringBuilder();
+		b.append(ref);
+		b.append(prefix);
+		b.append(Resources.protocol);
+		b.append("/A");
+		b.append(Integer.toString(item.getID()));
+		return b.toString();
+		
+		//return String.format("%s%s%s/A%d",ref,prefix,Resources.attachment,item.getID());
 	}
 
 }

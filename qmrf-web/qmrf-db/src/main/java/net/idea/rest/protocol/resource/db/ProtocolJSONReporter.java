@@ -106,7 +106,39 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 			if ((item.getOwner()!=null) && (item.getOwner().getResourceURL()==null))
 				item.getOwner().setResourceURL(new URL(userReporter.getURI((DBUser)item.getOwner())));
 			
-
+			//private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"visibleid\": \"%s
+			getOutput().write("\n{\n\t\"uri\":\"");
+			getOutput().write(uri);
+			getOutput().write("\",\n\t\"visibleid\": \"");
+			getOutput().write(item.getVisibleIdentifier());
+			getOutput().write("\",\n\t\"identifier\": \"");
+			getOutput().write(item.getIdentifier());
+			getOutput().write("\",\n\t\"title\": \"");
+			getOutput().write(item.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+			getOutput().write("\",\n\t\"published\": ");
+			getOutput().write(Boolean.toString(item.isPublished()));
+			getOutput().write(",\n\t\"endpoint\": {\n\t\t\"parentCode\" :\"");
+			getOutput().write(item.getEndpoint().getParentCode()==null?"":item.getEndpoint().getParentCode());
+			getOutput().write("\",\"parentName\" :\"");
+			getOutput().write(item.getEndpoint().getParentTemplate());
+			getOutput().write("\",\"code\" :\"");
+			getOutput().write(item.getEndpoint().getCode()==null?"":item.getEndpoint().getCode());
+			getOutput().write("\", \"name\" :\"");
+			getOutput().write(item.getEndpoint().getName());
+			getOutput().write("\"\n\t},\n\t\"submitted\": \"");
+			getOutput().write(dateFormat.format(new Date(item.getSubmissionDate())));
+			getOutput().write("\",\n\t\"updated\": \"");
+			getOutput().write(dateFormat.format(new Date(item.getTimeModified())));
+			getOutput().write("\",\n\t\"owner\": {\n\t\t\"uri\" :\"");
+			getOutput().write(item.getOwner().getResourceURL().toExternalForm());
+			getOutput().write("\",\n\t\t\"username\": \"");
+			getOutput().write(item.getOwner().getUserName()==null?"":item.getOwner().getUserName());
+			getOutput().write("\",\n\t\t\"firstname\": \"");
+			getOutput().write(item.getOwner().getFirstname()==null?"":item.getOwner().getFirstname());
+			getOutput().write("\",\n\t\t\"lastname\": \"");
+			getOutput().write(item.getOwner().getLastname()==null?"":item.getOwner().getLastname());
+			getOutput().write("\"\n\t}");
+			/*
 			getOutput().write(String.format(format,
 					uri,
 					item.getVisibleIdentifier(),
@@ -124,6 +156,7 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 					item.getOwner().getFirstname()==null?"":item.getOwner().getFirstname(),
 					item.getOwner().getLastname()==null?"":item.getOwner().getLastname()
 					));
+					*/
 			if (item.getAttachments()!=null){
 				getOutput().write(",\n\t\"attachments\": [");
 				for (int na = 0; na < item.getAttachments().size(); na++) {
@@ -131,13 +164,38 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 					DBAttachment attachment = item.getAttachments().get(na);
 					if (na>0)
 						getOutput().write(",");
-					if (attachment_type.document.equals(attachment.getType())) 
+					if (attachment_type.document.equals(attachment.getType())) {
+						getOutput().write("\n\t\t{\n\t\t\"uri\":\"");
+						getOutput().write(attachment.getResourceURL().toExternalForm());
+						getOutput().write("\",\n\t\t\"title\":\"");
+						getOutput().write(attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+						getOutput().write("\",\n\t\t\"description\":\"");
+						getOutput().write(attachment.getDescription().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+						getOutput().write("\",\n\t\t\"type\":\"");
+						getOutput().write(attachment.getType().toString());
+						getOutput().write("\"\n\t\t}");
+						/*
 						getOutput().write(String.format(formatAttachmentDocument,
 								attachment.getResourceURL(),
 								attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
 								attachment.getDescription().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
-								attachment.getType().toString()));						
-					else	
+								attachment.getType().toString()));
+								*/						
+					} else {	
+						getOutput().write("\n\t\t{\n\t\t\"uri\":\"" );
+						getOutput().write(attachment.getResourceURL().toExternalForm());
+						getOutput().write("\",\n\t\t\"title\":\"" );
+						getOutput().write(attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+						getOutput().write("\",\n\t\t\"description\":\"");
+						getOutput().write(attachment.getDescription().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+						getOutput().write("\",\n\t\t\"type\":\"");
+						getOutput().write(attachment.getType().toString());
+						getOutput().write("\",\n\t\t\t\"dataset\": {\"uri\": \"");
+						getOutput().write(queryService);
+						getOutput().write("/dataset/");
+						getOutput().write(Integer.toString(attachment.getIdquerydatabase()));
+						getOutput().write("\", \"structure\": null}\n\t\t}");
+						/*
 						getOutput().write(String.format(formatAttachments,
 								attachment.getResourceURL(),
 								attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"),
@@ -145,6 +203,8 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 								attachment.getType().toString(),
 								queryService,
 								attachment.getIdquerydatabase()));
+								*/
+					}
 				}			
 				getOutput().write("\n\t]\n");
 			}
