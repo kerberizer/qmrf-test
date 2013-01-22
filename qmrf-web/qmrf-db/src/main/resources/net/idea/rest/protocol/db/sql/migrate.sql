@@ -103,6 +103,17 @@ concat("<attachment_validation_data>\n<molecules format='",format,"' name='",nam
 where a.type='data_validation' and p.idprotocol=a.idprotocol and p.version=a.version;
 -- ----------------------------------------------------------------------------------------
 
+-- ----------------------------------------------------------------------------------------
+-- Update contacts
+-- ----------------------------------------------------------------------------------------
+update protocol p
+set p.updated=p.updated,abstract=
+updatexml(updatexml(updatexml(
+abstract,'/QMRF/@email',"email='JRC-IHCP-COMPUTOX@ec.europa.eu'"),
+'/QMRF/@author',"author='Joint Research Centre, European Commission'"),
+'/QMRF/@contact',"contact='Joint Research Centre, European Commission'");
+
+
 source template.sql;
 source dictionary.sql;
 
