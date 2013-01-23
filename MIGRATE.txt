@@ -145,13 +145,16 @@ Deploy the 'qmrfdata.war' in your Tomcat instance. The 'qmrfdata.war' is
 provided in the WebApplications folder of this archive.
 
 	IMPORTANT: If you are running Tomcat without root privileges, please
-	ensure that:
-		1) Tomcat has read access to 'qmrfdata.war';
-		2) Tomcat has both read and write access to the 'webapps'
-		   folder where web applications are deployed
+	ensure that the following requirements are met:
+
+		1) Tomcat must have read access to 'qmrfdata.war';
+
+		2) Tomcat must have both read and write access to the
+		   'webapps' folder where web applications are being deployed
 		   (e.g. '/usr/share/tomcat6/webapps');
-		3) Tomcat has both read and write access to the home directory
-		   of the user who is running the service
+
+		3) Tomcat must have both read and write access to the home
+		   directory of the user who is running the service
 		   (e.g. '/usr/share/tomcat6' for user 'tomcat').
 
 Open the following URI in your browser, replacing YOURHOST and YOURPORT with
@@ -169,10 +172,12 @@ Undeploy the old 'qmrf.war' and deploy the new 'qmrf.war' in your Tomcat
 instance. The new 'qmrf.war' is included in this archive.
 
 	IMPORTANT: If you are running Tomcat without root privileges, please
-	ensure that:
-		1) Tomcat has read access to 'qmrf.war';
-		2) Tomcat has both read and write access to the 'webapps'
-		   folder where web applications are deployed
+	ensure that the following requirements are met:
+
+		1) Tomcat must have read access to 'qmrf.war';
+
+		2) Tomcat must have both read and write access to the
+		   'webapps' folder where web applications are being deployed
 		   (e.g. '/usr/share/tomcat6/webapps');
 
 Open the following URI in your browser, replacing YOURHOST and YOURPORT with
@@ -191,8 +196,9 @@ first 10 QMRF documents.
 
 Customize the configuration settings for the QMRF web application.
 
-	IMPORTANT: This step is required only if your setup differs from the
-	default values.
+	IMPORTANT: As a minimum, check and adjust if necessary the following
+	settings: 'qmrf_attachments_dir', 'qmrf_ambit_service', 'mail.host',
+	'mail.user', 'mail.password' and 'notification.admin.email'.
 
 Open and edit the following file, replacing the {tomcat-dir} with the relevant
 value from your configuration.
@@ -220,7 +226,7 @@ deployed, and YOURPORT is the TCP port Tomcat is listening on.
 
 ---8<--------------------------------------------------------------------------
 # If not defined correctly, the query by structure will not be available.
-qmrf_ambit_service=http://qsardb.jrc.it/qmrfdata
+qmrf_ambit_service=http://localhost:8080/qmrfdata
 ---8<--------------------------------------------------------------------------
 
 The following options control the e-mail notifications from the services.
@@ -245,16 +251,16 @@ mail.smtp.port=587
 mail.smtp.socketFactory.fallback=false
 #
 # The fully qualified domain name of the SMTP server
-mail.host=mx.example.com
+mail.host=out.mail.ec.europa.eu
 #
 # If the SMTP server requires authentication, use this user name
-mail.user=user
+mail.user=JRC-IHCP-COMPUTOX
 #
 # Password for the SMTP user
-mail.password=the-password
+mail.password=EMAIL-PASS
 #
 # The email address, which should appear in the FROM: field of the sent emails
-notification.admin.email=user@domain.tld
+notification.admin.email=JRC-IHCP-COMPUTOX@ec.europa.eu
 ---8<--------------------------------------------------------------------------
 
 	IMPORTANT: You must restart Tomcat to make sure that the configuration
