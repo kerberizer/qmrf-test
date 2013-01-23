@@ -2,6 +2,7 @@ package net.idea.rest.protocol.db;
 
 import java.sql.CallableStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,5 +72,11 @@ public class CreateProtocolVersion  extends AbstractUpdate<String,DBProtocol> im
 	public void getStoredProcedureOutVars(CallableStatement statement) throws SQLException {
 		int version = statement.getInt(f.length+1);
 		getObject().setVersion(version);
+	}
+	@Override
+	public void registerOutParameters(CallableStatement statement)
+			throws SQLException {
+		statement.registerOutParameter(5, Types.INTEGER);
+		
 	}
 }

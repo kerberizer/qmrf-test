@@ -17,7 +17,7 @@
   	</repository>
   </repositories>
   <dependencies>
-  	
+  	<!-- should be in restnet dep anyway
   	<dependency>
   		<groupId>net.idea</groupId>
   		<artifactId>modbcum-q</artifactId>
@@ -32,6 +32,7 @@
   		<type>jar</type>
   		<scope>compile</scope>
   	</dependency>  	
+  	 -->
   	    <dependency>
     	<groupId>org.dbunit</groupId>
     	<artifactId>dbunit</artifactId>

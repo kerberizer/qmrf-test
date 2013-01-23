@@ -80,4 +80,9 @@ public class DeleteProtocol extends AbstractObjectUpdate<DBProtocol> implements 
 		
 		
 	}
+	@Override
+	public void registerOutParameters(CallableStatement statement)
+			throws SQLException {
+		//no out params
+	}
 }
