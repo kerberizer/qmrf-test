@@ -278,6 +278,9 @@ Run the following commands in the MySQL console.
 
 	NOTICE: You might want to dump these databases before dropping them.
 
+	IMPORTANT: 'ambit_qmrf' and 'ambit2_qmrf' are two different databases.
+	Only 'ambit_qmrf' is safe to drop. Do not drop 'ambit2_qmrf'!
+
 ---8<--------------------------------------------------------------------------
 DROP DATABASE qmrf_documents;
 DROP DATABASE ambit_qmrf;
