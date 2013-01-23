@@ -434,6 +434,10 @@
         <qmrf_default_organisation>/organisation/G2</qmrf_default_organisation>
         <!-- Default owner for submitting new documents -->
         <qmrf_default_owner>/user/U66</qmrf_default_owner>
+	<!-- Google Analytics identifier -->
+	<google_analytics></google_analytics>
+	<!-- Allow insecure connections to SSL/TLS sites (similar to curl -k option). -->
+	<insecure>true</insecure>
         <!-- Used in surefire tests only-->
         <!-- Database for tests -->
         <qmrf.db.test>qmrf-test</qmrf.db.test>
