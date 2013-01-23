@@ -39,10 +39,8 @@ source qmrf_documents.sql
 ###############################################################################
 
 Create the new 'qmrf' database, set up the corresponding grants, and create
-the tables that are required. You will need the 'qmrf.sql' script, which you
-can either copy from the MIGRATION directory, or, alternatively, download from
-
-http://qmrf.sf.net/downloads/qmrf.sql
+the tables that are required. You will need the 'qmrf.sql' script, which is
+provided in this archive.
 
 Run the following commands in the MySQL console (please refer to the previous
 step for information on how to start the console).
@@ -97,12 +95,7 @@ source tomcat_users.sql
 
 Migrate the content from the old database, 'qmrf_documents', into the new one,
 'qmrf'. You will need the 'migrate.sql', 'dictionary.sql', and 'template.sql'
-scripts, which you can either copy from the MIGRATION directory, or,
-alternatively, download from
-
-http://qmrf.sf.net/downloads/migrate.sql
-http://qmrf.sf.net/downloads/dictionary.sql
-http://qmrf.sf.net/downloads/template.sql
+scripts, which are provided in this archive.
 
 Run the following commands in the MySQL console.
 
@@ -148,8 +141,18 @@ GRANT EXECUTE ON PROCEDURE `ambit2-qmrf`.findByProperty TO 'guest'@'::1';
 				    STEP 6
 ###############################################################################
 
-Deploy the 'qmrfdata.war' in your Tomcat instance. The 'qmrfdata.war' is in
-the WebApplications folder.
+Deploy the 'qmrfdata.war' in your Tomcat instance. The 'qmrfdata.war' is
+provided in the WebApplications folder of this archive.
+
+	IMPORTANT: If you are running Tomcat without root privileges, please
+	ensure that:
+		1) Tomcat has read access to 'qmrfdata.war';
+		2) Tomcat has both read and write access to the 'webapps'
+		   folder where web applications are deployed
+		   (e.g. '/usr/share/tomcat6/webapps');
+		3) Tomcat has both read and write access to the home directory
+		   of the user who is running the service
+		   (e.g. '/usr/share/tomcat6' for user 'tomcat').
 
 Open the following URI in your browser, replacing YOURHOST and YOURPORT with
 the relevant values from your configuration.
@@ -164,6 +167,13 @@ The browser should then display the training and validation datasets.
 
 Undeploy the old 'qmrf.war' and deploy the new 'qmrf.war' in your Tomcat
 instance. The new 'qmrf.war' is included in this archive.
+
+	IMPORTANT: If you are running Tomcat without root privileges, please
+	ensure that:
+		1) Tomcat has read access to 'qmrf.war';
+		2) Tomcat has both read and write access to the 'webapps'
+		   folder where web applications are deployed
+		   (e.g. '/usr/share/tomcat6/webapps');
 
 Open the following URI in your browser, replacing YOURHOST and YOURPORT with
 the relevant values from your configuration.
@@ -198,6 +208,10 @@ reuse the existing folder from your previous setup.
 # File path to store attachments. If null, will use the temp folder.
 qmrf_attachments_dir=/srv/qmrf-docs
 ---8<--------------------------------------------------------------------------
+
+	IMPORTANT: If you're performing an upgrade, please ensure that all
+	existing attachments are placed in the 'qmrf_attachments_dir' that
+	you've just configured.
 
 Set the following option to 'http://YOURHOST:YOURPORT/qmrfdata' (don't include
 the quotes), where YOURHOST is the fully qualified domain name of the host
