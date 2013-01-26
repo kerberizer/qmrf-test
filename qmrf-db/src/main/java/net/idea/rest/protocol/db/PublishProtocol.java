@@ -35,7 +35,8 @@ public class PublishProtocol extends AbstractUpdate<EndpointTest,DBProtocol>{
 		"where idprotocol=? and version=? and published_status!='published'",
 		
 		"update protocol set published_status=?,abstract=\n" +
-		"updatexml(abstract,'//QMRF_number',concat('<QMRF_number chapter=\"10.1\"  name=\"QMRF number\">',qmrf_number,'</QMRF_number>')) " +
+		"updatexml(updatexml(abstract,'//QMRF_number',concat('<QMRF_number chapter=\"10.1\"  name=\"QMRF number\">',qmrf_number,'</QMRF_number>')),\n " +
+		"'//date_publication',concat('<date_publication chapter=\"10.2\" help=\"\" name=\"Publication date\">',date(updated),'</date_publication>'))\n"+
 		"where idprotocol=? and version=? and published_status!='published'",
 		
 		"delete from protocol_endpoints where idprotocol=? and version=?",
