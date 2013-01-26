@@ -242,7 +242,7 @@ public final class Protocol_crud_test<T extends Object>  extends CRUDTest<T,DBPr
 			throws Exception {
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED",
-					"SELECT idprotocol,version,qmrf_number,published_status,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') g,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') n,extractvalue(abstract,\"//QMRF_number\") qxml FROM protocol where idprotocol=2 and version=1");
+					"SELECT idprotocol,version,qmrf_number,published_status,extractvalue(abstract,'//date_publication') u,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group') g,extractvalue(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@name') n,extractvalue(abstract,\"//QMRF_number\") qxml FROM protocol where idprotocol=2 and version=1");
 		
 		Assert.assertEquals(PublishedStatus.published.name(),
 				table.getValue(0,ReadProtocol.fields.published_status.name())
@@ -251,6 +251,7 @@ public final class Protocol_crud_test<T extends Object>  extends CRUDTest<T,DBPr
 		Assert.assertEquals("1.4.Vapour Pressure",table.getValue(0,"n"));
 		Assert.assertEquals("Q13-14-0001",table.getValue(0,"qxml"));
 		Assert.assertEquals("Q13-14-0001",table.getValue(0,"qmrf_number"));
+		Assert.assertNotSame("To be entered by ECB",table.getValue(0,"u"));
 		table = 	c.createQueryTable("EXPECTED","SELECT idprotocol,version,idtemplate from protocol_endpoints where idprotocol=2 and version=1 and idtemplate=10");
 		Assert.assertEquals(1,table.getRowCount());
 		c.close();
