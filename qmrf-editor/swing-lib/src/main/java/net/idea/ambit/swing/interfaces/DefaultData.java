@@ -34,7 +34,8 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -184,9 +185,8 @@ public class DefaultData extends Hashtable implements Serializable {
                 logger.info("Using JAXP/SAX XML parser.");
                 success = true;
             } catch (Exception e) {
-                logger.warn("Could not instantiate JAXP/SAX XML reader: "+
-                		e.getMessage());
-                logger.debug(e);
+                logger.log(Level.WARNING,"Could not instantiate JAXP/SAX XML reader: "+e.getMessage());
+                logger.log(Level.FINER,e.getMessage(),e);
             }
         }
         // Aelfred is first alternative.
@@ -195,11 +195,10 @@ public class DefaultData extends Hashtable implements Serializable {
                 parser = (XMLReader)MyIOUtilities.class.getClassLoader().
                         loadClass("gnu.xml.aelfred2.XmlReader").
                         newInstance();
-                logger.info("Using Aelfred2 XML parser.");
+                logger.fine("Using Aelfred2 XML parser.");
                 success = true;
             } catch (Exception e) {
-                logger.warn("Could not instantiate Aelfred2 XML reader!");
-                logger.debug(e);
+                logger.fine("Could not instantiate Aelfred2 XML reader!");
             }
         }
         // Xerces is second alternative
@@ -211,12 +210,11 @@ public class DefaultData extends Hashtable implements Serializable {
                 logger.info("Using Xerces XML parser.");
                 success = true;
             } catch (Exception e) {
-                logger.warn("Could not instantiate Xerces XML reader!");
-                logger.debug(e);
+                logger.fine("Could not instantiate Xerces XML reader!");
             }
         }
         if (!success) {
-            logger.error("Could not instantiate any XML parser!");
+        	logger.log(Level.FINER,"Could not instantiate any XML parser!");
         }
         return parser;
     }	
