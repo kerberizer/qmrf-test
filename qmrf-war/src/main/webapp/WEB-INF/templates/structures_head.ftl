@@ -9,18 +9,16 @@ $(document).ready(function() {
 
   	var oTable = defineStructuresTable(url,'${queryService}','${query.option!""}' == 'similarity');
     <!-- Details panel -->	
-	$('#structures tbody td .zoomstruc img').live(
+	$('#structures tbody td .zoomstruc').live(
 			'click',
 			function() {
 				var nTr = $(this).parents('tr')[0];
 				if (oTable.fnIsOpen(nTr)) {
-					this.src = "/qmrf/images/zoom_in.png";
-					this.alt = "Zoom in";
+					this.innerHTML  = "Show QMRF";
 					this.title='Click to show QMRF documents';
 					oTable.fnClose(nTr);
 				} else {
-				    this.alt = "Zoom out";
-					this.src = "/qmrf/images/zoom_out.png";
+				    this.innerHTML  = "Hide QMRF";
 					this.title='Click to close QMRF documents list';
 					var id = 'v'+getID();
 					oTable.fnOpen(nTr, fnStructureQMRFList(oTable,nTr,id),	'details');
