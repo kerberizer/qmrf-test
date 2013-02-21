@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.logging.Level;
 
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
@@ -87,7 +88,7 @@ public class QMRFBatchAction extends QMRFFileOpenAction {
 	        	reader.close();
 	        } catch (Exception x) {
 	        	error ++;
-	        	logger.error(x);
+	        	logger.log(Level.WARNING,x.getMessage(),x);
 	        }
 	        StringBuffer b = new StringBuffer();
 	        b.append(files.length);

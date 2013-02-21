@@ -27,6 +27,7 @@ package net.idea.ambit.swing.actions;
 import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.event.ActionEvent;
+import java.util.logging.Logger;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -37,7 +38,7 @@ import net.idea.ambit.swing.common.GUIWorker;
 import net.idea.ambit.swing.interfaces.IJobStatus;
 import net.idea.ambit.swing.interfaces.ISharedData;
 
-import ambit2.base.log.AmbitLogger;
+
 /**
  * 
  * An abstract action that executes in a separate thread. 
@@ -45,7 +46,7 @@ import ambit2.base.log.AmbitLogger;
  * <b>Modified</b> 2005-12-4
  */
 public abstract class AmbitAction extends AbstractAction {
-	protected static AmbitLogger logger = new AmbitLogger(AmbitAction.class);
+	protected static Logger logger = Logger.getLogger(AmbitAction.class.getName());
 	protected GUIWorker worker = null;
 	protected Object userData = null;
 	protected Object actionName ="";

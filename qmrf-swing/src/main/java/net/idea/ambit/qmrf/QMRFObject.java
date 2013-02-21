@@ -39,6 +39,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -93,7 +95,6 @@ import org.xml.sax.InputSource;
 
 import ambit2.base.interfaces.IAmbitEditor;
 import ambit2.base.io.SimpleErrorHandler;
-import ambit2.base.log.AmbitLogger;
 
 /**
  * QMRF document.
@@ -120,7 +121,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	 * 
 	 */
 	private static final long serialVersionUID = -6799167225641068546L;
-	protected static AmbitLogger logger = new AmbitLogger(QMRFObject.class);
+	protected static Logger logger = Logger.getLogger(QMRFObject.class.getName());
 	protected final static String qmrf_version = "1.2";
     protected final static String qmrf_chapters = "QMRF_chapters";
     protected final static String qmrf_catalogs = "Catalogs";    
@@ -236,7 +237,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	}
 	public void readDefaultCatalogs(Catalogs external) {
 		try {
-			
+			logger.info("Reading default catalogs ");
 			external.clear();
 	        String filename = "ambit2/qmrfeditor/catalogs.xml";
 	        try {
@@ -244,15 +245,15 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	        	
 	        	external.read(new InputSource(in));
 	        } catch (Exception x) {
-	        	x.printStackTrace();
-	        	
+	        	logger.log(Level.WARNING,x.getMessage(),x);
+	        	logger.info("Reading default catalogs");
 	        	InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename);
 				read(in);
 		        in.close();
 	        }
             setModified(true);
 		} catch (Exception x) {
-			x.printStackTrace();
+			logger.log(Level.WARNING,x.getMessage(),x);
         	
         }		
 	}	
@@ -377,7 +378,6 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 
                     QMRFChapter chapter = new QMRFChapter(nodes.item(i).getNodeName());
                     chapter.setCatalogs(catalogs);
-                    //System.out.println(chapter.getName());
                     chapter.fromXML((Element)nodes.item(i));
                     if ("10".equals(chapter.getChapter())) 
                     	chapter.setEditable(adminUser);
@@ -737,8 +737,8 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
             setOptions(line);
         }
         
-        catch( ParseException exp ) {
-            logger.error( exp);
+        catch( ParseException e ) {
+        	logger.log(Level.SEVERE,e.getMessage(),e);
         }
     }
     
@@ -752,7 +752,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
             try {
                 dtdSchema = url;
             } catch (Exception x) {
-                 logger.error(x);
+                 logger.log(Level.SEVERE,x.getMessage(),x);
                  dtdSchema = "http://ambit.acad.bg/qmrf/qmrf.dtd"; 
                  logger.info("Will be using DTD schema at "+dtdSchema);
             }
@@ -782,14 +782,18 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
         //if not -e option of read failure, get the remote settings
         if (external_catalogs.size()==0) {
         	InputStream in = null;
+        	url = "http://qmrf.sourceforge.net/editor/settings.properties";
 	        try {
-	        	url = "http://qmrf.sourceforge.net/editor/settings.properties";
 	        	Properties props = new Properties();
 	        	in = new URL(url).openStream();
 	        	props.load(in);
 	        	if (props.getProperty("authors")!=null)
 	        		readExternalCatalogs(props.getProperty("authors"));
 	        } catch (Exception x) {
+	        	if (logger.isLoggable(Level.FINE))
+	        		logger.log(Level.FINE,url,x);
+	        	else
+	        		logger.log(Level.WARNING,url + " " + x.toString());
 	        	
 	        } finally {
 	        	try {if (in !=null) in.close();} catch (Exception x) {}
@@ -817,10 +821,9 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	        	init();
 	        	readURI(remoteFile);
         	} catch (MalformedURLException x) {
-        		System.err.println(String.format("Invalid URL %s: %s", line.getOptionValue( "x" ),x.getMessage()));
+        		logger.log(Level.WARNING,String.format("Invalid URL %s", line.getOptionValue( "x" )),x);
         	}  catch (Exception x) {
-        		x.printStackTrace();
-        		System.err.println(String.format("Error reading URL %s: %s", remoteFile,x.getMessage()));
+        		logger.log(Level.WARNING,String.format("Error reading URL %s", remoteFile),x);
 	        } finally {
 	        	
 	        }
@@ -830,11 +833,11 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     
     protected void readExternalCatalogs(String url) {
     	try {
-    		System.out.println("reading catalogs from URL "+url);
+    		logger.info("Reading external catalogs from URL "+url);
     		external_catalogs.read(new InputSource(new InputStreamReader(new URL(url).openStream(),"UTF-8")));
 	    
     	} catch (Exception x) {
-    		System.err.println(x.getMessage());
+    		logger.log(Level.WARNING,url,x);
     	} finally {
 
     	}
@@ -842,7 +845,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 
     public void readURI(URI remoteFile) throws Exception {
     	HttpClient cli = new DefaultHttpClient();
-    		System.out.println(String.format("Reading QMRF XML from %s", remoteFile));
+    		logger.info(String.format("Reading QMRF XML from %s", remoteFile));
     		HttpGet httpGet = new HttpGet(remoteFile);
     		httpGet.addHeader("Accept","application/xml");
     		httpGet.addHeader("Accept-Charset", "utf-8");
@@ -854,7 +857,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     			in = entity.getContent();
     			if (response.getStatusLine().getStatusCode()== HttpStatus.SC_OK) {
         			transform_and_read(new InputStreamReader(in,"UTF-8"),true);    				
-    	        	System.out.println(String.format("Reading %s completed.", remoteFile));
+    	        	logger.info(String.format("Reading %s completed.", remoteFile));
 
     			} else 	
     				 throw new IOException(String.format("Error reading URL %s\n%s",remoteFile,response.getStatusLine()));
@@ -961,7 +964,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	public void setTtfFontUrl(String ttfFontUrl) {
 		this.ttfFontUrl = ttfFontUrl.trim();
 		if (ttfFontUrl.indexOf("http://") != -1) {
-			System.out.println("font have to be retrieved from URL '"+ttfFontUrl+"'");
+			logger.fine("font have to be retrieved from URL '"+ttfFontUrl+"'");
 		}	
 	}
 	public boolean isAttachmentReadOnly() {
@@ -984,43 +987,25 @@ class SimpleDeclHandler implements org.xml.sax.ext.DeclHandler {
                               java.lang.String valueDefault,
                               java.lang.String value)
     {
-    /*
-       System.out.println("ATTRIBUTE: ");
-       System.out.println("Element Name: " + elementName);
-       System.out.println("Attribute Name: " + attributeName);
-       System.out.println("Type: " + type);
-       System.out.println("Default Value: " + valueDefault);
-       System.out.println("Value: " + value);
-       System.out.println();
-       */
     }
     
     public void elementDecl(java.lang.String name,
                             java.lang.String model)
     {
-    /*
-       System.out.println("ELEMENT: ");
-       System.out.println("Name: " + name);
-       System.out.println("Model: " + model);
-       System.out.println();
-       */
+
     }
     
     public void externalEntityDecl(java.lang.String name,
                                    java.lang.String publicId,
                                    java.lang.String systemId)
     {
-      System.out.println("EXTERNAL ENTITY: " + name + publicId + systemId);
+     //logger.finer("EXTERNAL ENTITY: " + name + publicId + systemId);
     }
     
     public void internalEntityDecl(java.lang.String name,
                                   java.lang.String value)
     {
-      /*
-      if (name.startsWith("help")) {
-          System.out.println("INTERNAL ENTITY HELP: " + name + value);
-      } else System.out.println("INTERNAL ENTITY: " + name + value);
-      */
+
     }
 
 }

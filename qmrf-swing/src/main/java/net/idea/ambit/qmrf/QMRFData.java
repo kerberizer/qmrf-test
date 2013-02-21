@@ -29,7 +29,6 @@ import net.idea.ambit.swing.events.AmbitObjectChanged;
 import net.idea.ambit.swing.interfaces.DefaultSharedData;
 import net.idea.ambit.swing.interfaces.IAmbitObjectListener;
 import net.idea.ambit.swing.interfaces.JobStatus;
-import ambit2.base.log.AmbitLogger;
 
 
 public class QMRFData<OBJECT,LIST> extends DefaultSharedData<OBJECT,LIST>  implements IAmbitObjectListener<QMRFObject> {
@@ -48,7 +47,6 @@ public class QMRFData<OBJECT,LIST> extends DefaultSharedData<OBJECT,LIST>  imple
 	}
 	protected void init() {
 	    loadConfiguration();
-		AmbitLogger.configureLog4j(true);
 		jobStatus = new JobStatus();
 		jobStatus.setModified(true);
 	}

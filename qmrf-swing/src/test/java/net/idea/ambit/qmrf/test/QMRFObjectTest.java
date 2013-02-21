@@ -49,14 +49,12 @@ import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import ambit2.base.log.AmbitLogger;
-
 public class QMRFObjectTest {
 
 	
 	@BeforeClass
     public static void setUp() throws Exception {
-        AmbitLogger.configureLog4j(true);
+
     }
 
     

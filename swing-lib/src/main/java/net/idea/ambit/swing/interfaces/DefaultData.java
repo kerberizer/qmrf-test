@@ -35,6 +35,7 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -42,7 +43,6 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ambit2.base.io.MyIOUtilities;
-import ambit2.base.log.AmbitLogger;
 
 /**
  * Holds some default data for a database connection. Can save and load this setting into/from XML file.
@@ -170,7 +170,7 @@ public class DefaultData extends Hashtable implements Serializable {
 	}
 	
     public static XMLReader initParser() {
-        AmbitLogger logger = new AmbitLogger(MyIOUtilities.class);
+        Logger logger = Logger.getLogger(MyIOUtilities.class.getName());
         XMLReader parser = null;
 
         boolean success = false;

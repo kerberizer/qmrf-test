@@ -39,7 +39,6 @@ import javax.swing.JPanel;
 
 import net.idea.ambit.qmrf.QMRFData;
 import net.idea.ambit.swing.common.CoreApp;
-import ambit2.base.log.AmbitLogger;
 
 /**
  * QSAR Model Report Format Editor.
@@ -78,7 +77,6 @@ public class QMRFEditor extends CoreApp implements Observer {
         // Maximize the frame
         mainFrame.setExtendedState(state);
 		//centerScreen();
-        AmbitLogger.configureLog4j(true);
 		Package adPackage = null;//Package.getPackage("net.idea.ambit.qmrf.swing");
 		//version will be only available if started from jar file
 		//version is specified in package manifest 
