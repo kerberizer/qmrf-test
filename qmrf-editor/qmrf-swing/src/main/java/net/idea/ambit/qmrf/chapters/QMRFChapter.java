@@ -96,7 +96,6 @@ public class QMRFChapter extends AbstractQMRFChapter implements InterfaceQMRF, I
         
         for (int i=0; i < children.getLength();i++) {
             if (Node.ELEMENT_NODE==children.item(i).getNodeType()) {
-                //System.out.println(children.item(i).getNodeName());
             	String name = children.item(i).getNodeName();
             	if (name == null) continue;
             	AbstractQMRFChapter subchapter ;

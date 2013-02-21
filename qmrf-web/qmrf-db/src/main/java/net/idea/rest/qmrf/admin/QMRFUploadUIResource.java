@@ -20,7 +20,6 @@ import net.toxbank.client.resource.Organisation;
 import net.toxbank.client.resource.Project;
 import net.toxbank.client.resource.User;
 
-import org.apache.log4j.Level;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;

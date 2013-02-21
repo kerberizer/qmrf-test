@@ -26,18 +26,18 @@ package net.idea.ambit.qmrf.xml;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
-import ambit2.base.log.AmbitLogger;
-
 public class QMRFSchemaResolver implements EntityResolver {
 	public static final String defaultLocation="http://qmrf.sourceforge.net/qmrf.dtd";
-	protected AmbitLogger logger;
+	protected Logger logger;
     protected String location;
     protected boolean ignoreSystemID = false;
-    public QMRFSchemaResolver(String location, AmbitLogger logger) {
+    public QMRFSchemaResolver(String location, Logger logger) {
         super();
         this.location = location;
         this.logger = logger;
@@ -54,26 +54,26 @@ public class QMRFSchemaResolver implements EntityResolver {
             try {
             	if (ignoreSystemID) throw new Exception("Ignore systemID="+systemId);
             	if (logger != null)
-                logger.info("DTDSchema: Trying systemID "+ systemId);
+                logger.fine("DTDSchema: Trying systemID "+ systemId);
                 
                 in = new URL(systemId).openStream();
                 if (in == null) throw new Exception("SystemID not found");                
             } catch (Exception x) {
                 try {
                 	if (logger != null)
-                		logger.info("DTDSchema: Trying publicID "+ publicId);
+                		logger.fine("DTDSchema: Trying publicID "+ publicId);
                     in = new URL(publicId).openStream();
                     if (in == null) throw new Exception("PublicID not found");
             
                 } catch (Exception e) {
                     try {
                     	if (logger != null)
-                    		logger.info("DTDSchema: Trying predefined location "+ location);
+                    		logger.fine("DTDSchema: Trying predefined location "+ location);
                         in = new URL(location).openStream();
                         if (in == null) throw new Exception("location not found");
                     } catch (Exception xx) {
                     	if (logger != null)
-                    		logger.info("DTDSchema: Trying internal "+ "ambit2/qmrfeditor/qmrf.dtd");
+                    		logger.fine("DTDSchema: Trying internal "+ "ambit2/qmrfeditor/qmrf.dtd");
                         String filename = "ambit2/qmrfeditor/qmrf.dtd";
                         in = this.getClass().getClassLoader().getResourceAsStream(filename);
  
@@ -86,7 +86,7 @@ public class QMRFSchemaResolver implements EntityResolver {
         }
         catch (Exception e) { 
         	if (logger != null)
-        		logger.error(e);
+        		logger.log(Level.SEVERE,e.getMessage(),e);
             e.printStackTrace();
         }
         

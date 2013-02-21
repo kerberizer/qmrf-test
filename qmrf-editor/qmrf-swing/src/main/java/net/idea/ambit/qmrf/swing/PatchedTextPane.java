@@ -102,8 +102,7 @@ public class PatchedTextPane extends JTextPane {
 			public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
 			{
 				String mimeType = flavor.getMimeType();
-				System.out.println(mimeType);
-				
+			
 				if ( flavor.getPrimaryType().equals("text") &&
 						 (flavor.getSubType().equals("html") || flavor.getSubType().equals("plain")))  {
 

@@ -23,16 +23,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 */
 
 package net.idea.ambit.swing.common;
+import java.util.logging.Logger;
+
 import javax.swing.SwingUtilities;
 
-import ambit2.base.log.AmbitLogger;
+
 
 /**
  * An abstract class to run a job in a thread. 
  * Based on Sun Java tutorial 
  */
 public abstract class GUIWorker {
-	static AmbitLogger logger = new AmbitLogger(GUIWorker.class);
+	static Logger logger = Logger.getLogger(GUIWorker.class.getName());
     private Object value;  // see getValue(), setValue()
 
     private static class ThreadVar {

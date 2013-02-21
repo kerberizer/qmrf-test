@@ -2,10 +2,10 @@ package net.idea.rest;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 import net.idea.restnet.c.resource.CatalogResource;
 
-import org.apache.log4j.Logger;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;

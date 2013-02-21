@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
 
 import javax.swing.Icon;
 import javax.swing.JOptionPane;
@@ -95,7 +96,7 @@ public class QMRFFileOpenAction extends QMRFAction {
 	        			getQMRFData().getQmrf().transform_and_read(new InputStreamReader(in,"UTF-8"),true);
 	        			in.close();
         			} catch (Exception x) {
-        				logger.error(x);
+        				logger.log(Level.WARNING,x.getMessage(),x);
                         logger.info("Transformation failed, reading file without XSLT transform");
 	        			FileInputStream in = new FileInputStream(file);
 	        			getQMRFData().getQmrf().setSource(s);

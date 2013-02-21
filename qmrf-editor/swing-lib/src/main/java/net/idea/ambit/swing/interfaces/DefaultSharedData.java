@@ -30,13 +30,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import ambit2.base.interfaces.IBatchStatistics;
-import ambit2.base.log.AmbitLogger;
 import ambit2.base.processors.batch.DefaultBatchStatistics;
 
 public abstract class DefaultSharedData<OBJECT,LIST>   extends Observable implements ISharedData<OBJECT,LIST>  {
-	protected static AmbitLogger logger = new AmbitLogger(DefaultSharedData.class);
+	protected static Logger logger = Logger.getLogger(DefaultSharedData.class.getName());
 	protected String confFile = "ambitdb.xml";
 	protected DefaultData defaultData = null;
 	protected JobStatus jobStatus = null;
@@ -59,7 +60,7 @@ public abstract class DefaultSharedData<OBJECT,LIST>   extends Observable implem
             defaultData.writeXML(out);
             out.close();
         } catch (Exception x) {
-            logger.error(x);
+            logger.log(Level.SEVERE,x.getMessage(),x);
         } 
     }
     public void loadConfiguration() {
@@ -74,7 +75,7 @@ public abstract class DefaultSharedData<OBJECT,LIST>   extends Observable implem
 					return;
 		        } catch (IOException x) {
 		        	defaultData = new DefaultData();
-		            logger.error(x);
+		        	logger.log(Level.SEVERE,x.getMessage(),x);
 		        }
 		   else {
 		       defaultData = new DefaultData();

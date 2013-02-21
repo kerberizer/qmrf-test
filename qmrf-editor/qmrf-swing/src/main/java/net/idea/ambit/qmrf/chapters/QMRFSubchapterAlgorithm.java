@@ -51,25 +51,9 @@ public class QMRFSubchapterAlgorithm extends QMRFSubChapterReference {
         NodeList children = xml.getChildNodes();
         for (int i=0; i < children.getLength();i++) 
             if (Node.ELEMENT_NODE==children.item(i).getNodeType()) {
-                /*
-                System.out.print(children.item(i).getNodeType());
-                System.out.print("\t");
-                System.out.println(children.item(i).getLocalName());
-                */
                 if ("equation".equals(children.item(i).getLocalName())) {
                 	setText(((Element)children.item(i)).getTextContent());
                 }
-/*                
-                else {
-	                NamedNodeMap attributes = children.item(i).getAttributes();
-	                if (attributes != null)
-	                for (int j=0; j < attributes.getLength(); j++) 
-	                    if ("idref".equals(attributes.item(j).getNodeName())) { 
-	                        System.out.println(attributes.item(j).getNodeValue());
-	                        catalogReference.addReference(attributes.item(j).getNodeValue());
-	                    }
-                }
-                */
             }
      
     }

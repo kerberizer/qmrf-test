@@ -30,6 +30,8 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
@@ -51,7 +53,7 @@ import javax.swing.text.StyledEditorKit;
 
 import net.idea.ambit.swing.actions.InsertSymbolAction;
 
-import ambit2.base.log.AmbitLogger;
+
 
 /**
  * static finctions for icon loading and browser launch. 
@@ -59,7 +61,7 @@ import ambit2.base.log.AmbitLogger;
  * <b>Modified</b> 2006-2-24
  */
 public class UITools {
-	static AmbitLogger logger = new AmbitLogger(UITools.class);
+	static Logger logger = Logger.getLogger(UITools.class.getName());
 
     /**
      * 
@@ -73,7 +75,7 @@ public class UITools {
         if (imgURL != null) {
             return new ImageIcon(imgURL);
         } else {
-            logger.error("Couldn't find file: " + path);
+        	logger.log(Level.WARNING,"Couldn't find file: " + path);
             return null;
         }
     }	

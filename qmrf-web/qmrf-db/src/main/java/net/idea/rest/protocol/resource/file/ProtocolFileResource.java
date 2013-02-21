@@ -2,6 +2,7 @@ package net.idea.rest.protocol.resource.file;
 
 import java.io.File;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
@@ -11,7 +12,6 @@ import net.idea.rest.protocol.ProtocolURIReporter;
 import net.idea.rest.protocol.ProtocolsIterator;
 import net.toxbank.client.resource.Protocol;
 
-import org.apache.log4j.Level;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -25,7 +25,7 @@ public class ProtocolFileResource extends FileResource<Protocol> {
 			directoryPrefix =  System.getProperty("java.io.tmpdir");
 
 		} catch (Exception x) {
-			logger.log(Level.ERROR,x.getMessage(),x);
+			logger.log(Level.SEVERE,x.getMessage(),x);
 		}
 		File file = new File(String.format("%s%s", directoryPrefix,prefix));
 		if (!file.exists()) file.mkdir();
