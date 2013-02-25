@@ -790,6 +790,13 @@ td.w_td_value {
 	font-weight: bold;
 }
 
+span.zoomstruc {
+	text-decoration: underline;
+	cursor: pointer;
+	/* MSIE again has a mind of their own */
+	cursor: hand;
+}
+
 div.pusher {
 	height: 50px;
 }

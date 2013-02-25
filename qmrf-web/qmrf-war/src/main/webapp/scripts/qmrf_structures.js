@@ -14,7 +14,7 @@ function defineStructuresTable(url, query_service, similarity) {
 					"mDataProp" : null,
 					sWidth : "32px",
 					"fnRender" : function(o,val) {
-							return "<span class='zoomstruc' title='Click to show QMRF documents' style='text-decoration:underline;'>Show QMRF</span>";
+							return "<span class='zoomstruc' title='Click to show QMRF documents'>Show QMRF</span>";
 					}
 				},			
 				{ "mDataProp": "compound.URI" , "asSorting": [ "asc", "desc" ],
