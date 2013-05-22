@@ -1,7 +1,9 @@
 package net.idea.rest.protocol;
 
 import java.io.File;
+import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -117,6 +119,11 @@ public class ProtocolFactory {
 				    	QMRFObject qmrf = new QMRFObject();
 				    	try {
 				    		qmrf.read(new StringReader(protocol.getAbstract()));
+				    		qmrf.setSaveSelectedOnly(true);
+				    		qmrf.transform_and_read(new StringReader(protocol.getAbstract()),false);
+				    		StringWriter writer = new StringWriter();
+				    		qmrf.write(writer);
+				    		protocol.setAbstract(writer.toString());
 				    	} catch (Exception x) {
 				    		throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
 				    				String.format(msg_invalid_qmrf,x));
