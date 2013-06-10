@@ -10,7 +10,7 @@ $(document).ready(function() {
 	    $.ajax({
 	        dataType: "json",
 	        async: false,
-	        url: "/qmrf/register/confirm?code=${qmrf_reg_confirmed}&media=application%2Fjson",
+	        url: "/qmrf/register/confirm?code=${qmrf_reg_confirmed}&amp;media=application%2Fjson",
 	        success: function(data, status, xhr) {
 	           	$.each(data["confirmation"],function(index, entry) {
 	        		if ('confirmed' == entry["status"]) { 

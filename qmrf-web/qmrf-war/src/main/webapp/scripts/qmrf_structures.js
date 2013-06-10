@@ -37,7 +37,7 @@ function defineStructuresTable(url, query_service, similarity) {
 								/*
 "<a href=\"%s%s/%d?headless=true&details=false&media=text/html\" title=\"Molecule\">Molecule</a>", 
 								 */
-						return '<img class="ui-widget-content" title="'+val+'" border="0" src="'+cmpURI+'&w=150&h=150">';
+						return '<img class="ui-widget-content" title="'+val+'" border="0" src="'+cmpURI+'&amp;w=150&amp;h=150">';
 				  }
 				},
 				{ "mDataProp": "compound.name" , "asSorting": [ "asc", "desc" ],
@@ -75,7 +75,7 @@ function defineStructuresTable(url, query_service, similarity) {
 					  "sWidth" : "5%",
 					  "fnRender" : function(o,val) {
 							var uri = encodeURIComponent(val);
-							var qmrf_query = "/qmrf/protocol?structure=" + uri + "&media=text%2Fcsv";
+							var qmrf_query = "/qmrf/protocol?structure=" + uri + "&amp;media=text%2Fcsv";
 							return '<a href="'+qmrf_query+'" title="Download the QMRF list as CSV"><img class="draw" border="0" src="/qmrf/images/excel.png"></a>';
 					  }
 				},
@@ -155,7 +155,7 @@ function defineStructuresTable(url, query_service, similarity) {
 	    },
 		"fnRowCallback": function( nRow, aData, iDisplayIndex ) {
 			//retrieve identifiers
-			id_uri = query_service + "/query/compound/url/all?search=" + encodeURIComponent(aData.compound.URI) + "?max=1&media=application%2Fx-javascript";
+			id_uri = query_service + "/query/compound/url/all?search=" + encodeURIComponent(aData.compound.URI) + "?max=1&amp;media=application%2Fx-javascript";
 			$.ajax({
 			         dataType: "jsonp",
 			         url: id_uri,
@@ -197,7 +197,7 @@ function fnStructureQMRFList(oTable, nTr, id) {
 	sOut += "</div>";	
 
 	var uri = encodeURIComponent(obj["compound"]["URI"]);
-	var qmrf_query = "/qmrf/protocol?structure=" + uri + "&headless=true&details=false&media=text%2Fhtml&"+ new Date().getTime();
+	var qmrf_query = "/qmrf/protocol?structure=" + uri + "&amp;headless=true&amp;details=false&amp;media=text%2Fhtml&"+ new Date().getTime();
 
       $.ajax({
           dataType: "html",

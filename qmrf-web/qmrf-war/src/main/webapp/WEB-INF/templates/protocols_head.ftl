@@ -190,7 +190,7 @@ $(document).ready(function() {
 
 	      $.ajax({
 	          dataType: "html",
-	          url: qmrfDocument.uri + "/chapters?headless=true&media=text%2Fhtml&"+ new Date().getTime(),
+	          url: qmrfDocument.uri + "/chapters?headless=true&amp;media=text%2Fhtml&amp;"+ new Date().getTime(),
 	          success: function(data, status, xhr) {
 	        	  $('div#' + id + '_tabs' ).html(data);
 	        	  $('#' + id + ' .tabs').tabs('destroy').tabs({cache: true});
@@ -241,9 +241,9 @@ function cmp2image(val) {
 		//if ((opentox["model_uri"]==null) || (opentox["model_uri"] == undefined)) {
 			cmpURI = cmpURI + "?media=image/png";
 		//} else {
-		//		cmpURI = opentox["model_uri"] + "?dataset_uri=" + cmpURI + "&media=image/png";
+		//		cmpURI = opentox["model_uri"] + "?dataset_uri=" + cmpURI + "&amp;media=image/png";
 		//}
-		return '<a href="'+val+'" title="'+cmpURI+'"><img border="0" src="'+cmpURI+'&w=150&h=150"></a><div>Test</div>';
+		return '<a href="'+val+'" title="'+cmpURI+'"><img border="0" src="'+cmpURI+'&amp;w=150&amp;h=150"></a><div>Test</div>';
 }
 
 function renderEndpoint(code,name) {
