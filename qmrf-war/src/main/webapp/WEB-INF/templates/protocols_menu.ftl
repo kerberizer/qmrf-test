@@ -22,7 +22,7 @@
 				&nbsp;
 				<div class='structureright'>
 					<#if structure??>
-						<img border='0' title='Showing QMRF documents for this chemical' width='150' height='150' src='${structure}?media=image%2Fpng&w=150&h=150'>
+						<img border='0' title='Showing QMRF documents for this chemical' width='150' height='150' src='${structure}?media=image%2Fpng&amp;w=150&amp;h=150'>
 						<br>Showing QMRF documents
 					</#if>
 				</div>

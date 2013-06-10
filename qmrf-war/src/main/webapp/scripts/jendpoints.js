@@ -93,7 +93,7 @@ function fnEndpointQMRFList(oTable, nTr, id) {
 	sOut += "</div>";	
 
 	var code = encodeURIComponent(obj["code"]);
-	var qmrf_query = "/qmrf/protocol?option=endpointcode&search=" + code + "&headless=true&details=false&media=text%2Fhtml&"+ new Date().getTime();
+	var qmrf_query = "/qmrf/protocol?option=endpointcode&amp;search=" + code + "&amp;headless=true&amp;details=false&amp;media=text%2Fhtml&amp;"+ new Date().getTime();
       $.ajax({
           dataType: "html",
           url: qmrf_query,
