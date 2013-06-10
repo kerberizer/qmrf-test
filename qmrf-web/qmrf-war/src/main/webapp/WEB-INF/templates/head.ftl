@@ -1,5 +1,5 @@
-<meta property="dc:creator" content='${creator!""}'> 
-<meta property="dc:title" content="(Q)SAR Model Reporting Format Database"/>
+<meta property="author" content='${creator!""}'> 
+<meta property="title" content="(Q)SAR Model Reporting Format Database">
 <meta name="robots" content="index,follow"><META NAME="GOOGLEBOT" CONTENT="index,FOLLOW">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
