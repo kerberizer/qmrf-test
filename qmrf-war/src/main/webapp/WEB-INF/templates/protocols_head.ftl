@@ -1,4 +1,4 @@
-<script>$(function() {$( ".tabs" ).tabs({cache: true});});</script>
+<script type='text/javascript'>$(function() {$( ".tabs" ).tabs({cache: true});});</script>
 
 <script type='text/javascript' src='/qmrf/jquery/jquery.validate.min.js'></script>
 <script type='text/javascript' src='/qmrf/scripts/qmrfsearchform.js'></script>
