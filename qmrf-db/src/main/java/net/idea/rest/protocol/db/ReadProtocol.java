@@ -104,10 +104,12 @@ public class ReadProtocol  extends ReadProtocolAbstract<DBUser>  implements IQue
 					if (kw==null) return;
 					kw = kw.replace("&lt;html&gt;","").replace("&lt;head&gt;","").replace("&lt;/head&gt;","").
 							replace("&lt;body&gt;","").replace("&lt;/body&gt;","").replace("&lt;/html&gt;","");
-					String[] keywords = kw.split(";");
-					for (String keyword:keywords)
+					String[] keywords = kw.split(",|;");
+					for (String key:keywords) {
+						String keyword = key.trim();
 						if (!protocol.getKeywords().contains(keyword))
 							protocol.addKeyword(keyword);
+					}	
 				} catch (Exception x) {
 					throw new SQLException(x);
 				}
