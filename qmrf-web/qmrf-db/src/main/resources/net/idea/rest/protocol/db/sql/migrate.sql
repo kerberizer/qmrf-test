@@ -34,12 +34,14 @@ SELECT iduser,idorganisation,1 FROM `user` join organisation on user.institute=o
 insert into protocol
 SELECT ifnull(idqmrf_origin,idqmrf),version,ifnull(qmrf_title,uuid()),ifnull(qmrf_number,uuid()),xml,true,
 u.iduser,
-1,idorganisation,qmrf_number,null,"RESEARCH",updated,updated,replace(status," ","_")
+1,idorganisation,qmrf_number,null,"RESEARCH",updated,updated,replace(status," ","_"),0
 FROM qmrf_documents.documents docs, qmrf.`user` u, qmrf.`user_organisation` org
 where
 docs.user_name=u.username
 and
 u.iduser=org.iduser;
+
+update protocol p set p.updated=p.updated,qmrf_assigned=1 where published_status='published';
 
 -- authors
 insert into protocol_authors
