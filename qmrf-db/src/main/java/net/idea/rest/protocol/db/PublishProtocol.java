@@ -27,7 +27,8 @@ public class PublishProtocol extends AbstractUpdate<EndpointTest,DBProtocol>{
 	public static final String[] publish_sql = new String[] { 
 		"update protocol set \n" +
 		"qmrf_number=(select concat(\"Q\",substr(year(now()),3,2),'-',?,'-',lpad(n.nperyear,4,'0')) from\n" +
-		"(select count(idprotocol)+1 as nperyear from protocol where published_status='published' and year(updated)=year(now())) as n),\n"+
+		"(select count(idprotocol)+1 as nperyear from protocol where qmrf_assigned=1 and year(updated)=year(now())) as n),\n"+
+		"qmrf_assigned=1,\n"+
 		"abstract=\n" +
 		"updatexml(updatexml(updatexml(abstract,'/QMRF/Catalogs/endpoints_catalog/endpoint/@group',?),\n"+
 		"'/QMRF/Catalogs/endpoints_catalog/endpoint/@subgroup','subgroup=\"\"'),\n"+
