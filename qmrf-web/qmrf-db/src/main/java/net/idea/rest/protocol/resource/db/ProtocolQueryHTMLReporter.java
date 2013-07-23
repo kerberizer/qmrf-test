@@ -169,36 +169,14 @@ public class ProtocolQueryHTMLReporter extends QMRFHTMLReporter<DBProtocol, IQue
 			
 				output.write("<div class='socialPanel'><table class='socialTable'><tr><td class='socialTool'>\n"); // begin social
 
-				// Google +1
-				output.write(String.format("<g:plusone size='medium' href='%s'></g:plusone>\n", uri));
+				output.write("</td><td class='socialTool'>"); // next cell
 
 				output.write("</td><td class='socialTool'>"); // next cell
 
-				// Facebook
-				output.write(String.format("<div class='fb-like' data-href='%s' data-send='true' data-layout='button_count' " +
-							"data-show-faces='false' data-action='recommend' data-font='tahoma'></div>\n", uri));
-
 				output.write("</td><td class='socialTool'>"); // next cell
 
-				// Twitter
-				output.write(String.format("<a href='https://twitter.com/share' class='twitter-share-button'" +
-							"data-url='%s' data-text='%s' data-hashtags='qmrf' " +
-							"data-related='EC_JRC_IHCPnews'>Tweet</a>\n",
-							uri, item.getIdentifier()
-				));
-			
-				output.write("</td><td class='socialTool'>"); // next cell
-
-				// LinkedIn
-				output.write(String.format("<script type='IN/Share' data-url='%s' data-counter='right' data-showzero='true'></script>\n", uri));
-			
+		
 				output.write("</td><td class='socialToolVK'>"); // next cell, but VKontakte requires special styling
-
-				// ВКонтакте (VKontakte)
-				// Disabled for the time being, as there are issues with it.
-				//output.write(String.format("<script type=\"text/javascript\"><!--\n" + 
-				//			"document.write(VK.Share.button({url: \"%s\"},{type: \"round\", text: \"Share this\"}));\n" +
-				//			"--></script>", uri));
 				
 				output.write("</td></tr></table></div>\n"); // end social
 

@@ -70,9 +70,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			"fjs.parentNode.insertBefore(js, fjs);\n" +
 			"}(document, 'script', 'facebook-jssdk'));</script>\n";
 	
-
-	// LinkedIn
-	private final static String linkedInInit = "<script src='https://platform.linkedin.com/in.js' type='text/javascript'></script>\n";
 	
 	// ВКонтакте (VKontakte)
 	// Disabled for the time being, as there are issues with it.
@@ -339,18 +336,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					)); 			
 			w.write(String.format("<title>%s</title>\n",title));
 			
-			// Initialize Google +1, Twitter, Linked In and VKontakte buttons; Facebook is initialized at the beginning of BODY
-			// But don't load if Microsoft IE 7 is detected, because this produces JS parsing errors.
-			if (!isMsie7()) {
-				w.write(String.format("<script type='text/javascript' src='%s/scripts/init_gplus.js'></script>\n",baseReference));
-				//w.write(googlePlusInit);
-				w.write(String.format("<script type='text/javascript' src='%s/scripts/init_twitter.js'></script>\n",baseReference));
-				w.write(linkedInInit);
-			}
-			// Disabled for the time being, as there are issues with it.
-			//w.write(vKontakteInit);
-
-
 			//meta		
 			for (String tag : metaTag ) w.write(String.format(tag,baseReference));
 			//css			
@@ -618,7 +603,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// to top link (invisible in the beginning, scripted to show up on scroll down)
 			output.write(toTopLink);
 			
-			output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
+			//output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
 			output.write("\n</body>");
 			output.write("</html>");
 
