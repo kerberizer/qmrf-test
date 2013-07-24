@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.QMRFCatalogResource;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.i.task.ICallableTask;
 
 import org.restlet.Context;
@@ -24,7 +24,7 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
-public class RegistrationNotifyResource  extends CatalogResource<String> {
+public class RegistrationNotifyResource  extends QMRFCatalogResource<String> {
 	protected List<String> dummyuser = new ArrayList<String>();
 	
 	public RegistrationNotifyResource() {

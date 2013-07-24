@@ -13,6 +13,7 @@ import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
+import net.idea.rest.QMRFCatalogResource;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.task.RegistrationTaskHTMLReporter;
@@ -20,7 +21,6 @@ import net.idea.rest.user.QMRFCallableUserCreator;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.i.task.ICallableTask;
@@ -40,7 +40,7 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
-public class RegistrationResource extends CatalogResource<DBUser> {
+public class RegistrationResource extends QMRFCatalogResource<DBUser> {
 	protected List<DBUser> dummyuser = new ArrayList<DBUser>();
 	public RegistrationResource() {
 		super();

@@ -7,19 +7,22 @@ import java.util.List;
 
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.QMRFCatalogResource;
 import net.idea.rest.db.DatabaseResource;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.qmrf.admin.QMRFCatalogHTMLReporter;
 import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.c.resource.CatalogResource;
 
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.Form;
+import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 
-public class QMRFAdminResource extends CatalogResource<AdminItem> {
+public class QMRFAdminResource extends QMRFCatalogResource<AdminItem> {
 	public static final String resource = "admin";
 	protected List<AdminItem> topics = new ArrayList<AdminItem>();
 	public QMRFAdminResource() {

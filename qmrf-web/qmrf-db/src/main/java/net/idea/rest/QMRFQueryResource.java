@@ -148,12 +148,22 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 		        map.put("qmrf_request_csv",r.toString());
 		        return map;
 	}
-	
+
 	@Override
 	protected Representation getHTMLByTemplate(Variant variant) throws ResourceException {
 		getHTMLBeauty();
         return toRepresentation(getMap(variant), getTemplateName(), MediaType.TEXT_PLAIN);
 	}
-
+	
+	@Override
+	protected Representation get(Variant variant) throws ResourceException {
+		Form headers = (Form) getRequest().getAttributes().get("org.restlet.http.headers");
+		if (headers == null) {
+			headers = new Form();
+			getRequest().getAttributes().put("org.restlet.http.headers", headers);
+		}
+		headers.add("X-Frame-Options", "SAMEORIGIN");
+		return super.get(variant);
+	}
 	
 }
