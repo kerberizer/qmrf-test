@@ -136,7 +136,8 @@ public class StructureResource extends QMRFCatalogResource<Structure> {
 		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
 		//parameters.setDatasets(form.getValuesArray("dataset"));
 		String search = form.getFirstValue(QueryResource.search_param) == null ? ""
-				: form.getFirstValue(QueryResource.search_param).trim();
+							: form.getFirstValue(QueryResource.search_param).trim();
+		if ((search != null) && search.contains("script")) search = null; //not expected here
 		
 		if ((search == null) || "".equals(search))	search="benzene"; //let's have a default
 		
