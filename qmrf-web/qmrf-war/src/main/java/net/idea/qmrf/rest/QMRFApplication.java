@@ -70,7 +70,7 @@ import org.restlet.service.TunnelService;
  * 
  */
 public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
-
+	
 	public QMRFApplication() {
 		super();
 
@@ -80,7 +80,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		setAuthor("Developed by Ideaconsult Ltd. (2007-2012) on behalf of JRC");
 		setConfigFile("config/qmrf.properties");
 
-		setStatusService(new QMRFStatusService());
+		setStatusService(new QMRFStatusService(getStatusReportLevel()));
 		setTunnelService(new TunnelService(true, true) {
 			@Override
 			public Filter createInboundFilter(Context context) {
@@ -105,8 +105,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		getMetadataService().addExtension("smiles",
 				ChemicalMediaType.CHEMICAL_SMILES, true);
 
-		if (isInsecure())
-			insecureConfig();
+		if (isInsecure()) insecureConfig();
 
 		// to enable QMRF XML  DTD validation and XSLT stylesheets with idref
 		try {
@@ -119,6 +118,18 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 
 	}
 
+   	protected QMRFStatusService.REPORT_LEVEL getStatusReportLevel() {
+		try {
+			QMRFStatusService.REPORT_LEVEL aa = QMRFStatusService.REPORT_LEVEL.valueOf(getProperty(QMRFStatusService.qmrf_status));
+			if ((getContext()!=null) && 
+				(getContext().getParameters()!=null) && 
+				(getContext().getParameters().getFirstValue(QMRFStatusService.qmrf_status))!=null)
+				aa = QMRFStatusService.REPORT_LEVEL.valueOf(getContext().getParameters().getFirstValue(QMRFStatusService.qmrf_status));
+			return aa;
+		} catch (Exception x) {	}
+		return QMRFStatusService.REPORT_LEVEL.production;
+	}  
+   	
 	@Override
 	public Restlet createInboundRoot() {
 
