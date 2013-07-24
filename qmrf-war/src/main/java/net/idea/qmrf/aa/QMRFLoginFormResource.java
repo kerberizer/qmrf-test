@@ -6,6 +6,7 @@ import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.aa.local.UserLoginFormResource;
 import net.idea.restnet.c.html.HTMLBeauty;
 
+import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -25,6 +26,12 @@ public class QMRFLoginFormResource extends UserLoginFormResource<User> {
 
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
+		Form headers = (Form) getRequest().getAttributes().get("org.restlet.http.headers");
+		if (headers == null) {
+			headers = new Form();
+			getRequest().getAttributes().put("org.restlet.http.headers", headers);
+		}
+		headers.add("X-Frame-Options", "SAMEORIGIN");		
 		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
 			User user = getRequest().getClientInfo().getUser();
 			if ((user!=null) && (user.getIdentifier()!=null)) {

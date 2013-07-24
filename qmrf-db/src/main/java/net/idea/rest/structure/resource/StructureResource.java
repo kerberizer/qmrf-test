@@ -16,6 +16,7 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.QMRFCatalogResource;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.prediction.DBModel;
 import net.idea.rest.prediction.ReadModel;
@@ -26,7 +27,6 @@ import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.restnet.c.ChemicalMediaType;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.c.resource.CatalogResource;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryResource;
 
@@ -42,7 +42,7 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
-public class StructureResource extends CatalogResource<Structure> {
+public class StructureResource extends QMRFCatalogResource<Structure> {
 	protected String queryService;
 	protected boolean singleItem = false;
 	protected HTMLBeauty htmlBeauty = null;

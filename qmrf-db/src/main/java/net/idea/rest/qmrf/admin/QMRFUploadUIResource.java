@@ -9,13 +9,13 @@ import java.util.List;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
+import net.idea.rest.QMRFCatalogResource;
 import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.QMRF_HTMLBeauty.update_mode;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
-import net.idea.restnet.c.resource.CatalogResource;
 import net.toxbank.client.resource.Organisation;
 import net.toxbank.client.resource.Project;
 import net.toxbank.client.resource.User;
@@ -25,7 +25,7 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.resource.ResourceException;
 
-public class QMRFUploadUIResource extends CatalogResource<DBProtocol> {
+public class QMRFUploadUIResource extends QMRFCatalogResource<DBProtocol> {
 
 	/**
 	 * 
