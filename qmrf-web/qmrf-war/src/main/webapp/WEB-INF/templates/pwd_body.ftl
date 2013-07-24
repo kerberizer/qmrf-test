@@ -58,7 +58,7 @@ $().ready(function() {
 		<div class='ui-widget ' style='margin-top: 20px; padding: 0 .7em;'>
 		<div class='ui-widget-header ui-corner-top'><p>Password change</p></div>
 	    <div class='ui-widget-content ui-corner-bottom'>					
-			<form action="/qmrf/myaccount/reset?method=PUT" id="pwdForm"  method="POST" >		
+			<form action="/qmrf/myaccount/reset?method=PUT" id="pwdForm"  method="POST" autocomplete='off' >		
 	    	<table width='80%%'>
 			<tbody>
 			<tr><th colwidth='25%'><label for='pwdold'>Current password</label></th><td align='left'><input type='password' size='40' id='pwdold' name='pwdold' value='' required/></td></tr>
