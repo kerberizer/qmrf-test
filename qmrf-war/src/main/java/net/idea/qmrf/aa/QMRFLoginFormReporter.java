@@ -50,7 +50,7 @@ public class QMRFLoginFormReporter<U extends User> extends UserLoginHTMLReporter
 			if (item.getIdentifier()==null) {
 				header = "Sign In";
 	
-				writer.write(String.format("<form method='post' action='%s/protected/signin?targetUri=%s' id='loginForm'>",baseReference,redirect));
+				writer.write(String.format("<form method='post' action='%s/protected/signin?targetUri=%s' id='loginForm' autocomplete='off'>",baseReference,redirect));
 					
 				writer.write(String.format("<tr><th align='right'>%s</th><td><input type='text' size='40' id='login' name='%s' value='' required minLength='3'></td></tr>",
 							"User name:&nbsp;","login"));

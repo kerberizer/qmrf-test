@@ -53,7 +53,7 @@ public class DBHtmlReporter extends QueryHTMLReporter<DBVersion,DBVersionQuery> 
 	public Object processItem(DBVersion item) throws AmbitException {
 		try {
 			if (isCreate()) {
-				output.write("<form method='post' action='?method=post'>");
+				output.write("<form method='post' action='?method=post' autocomplete='off'>");
 				output.write(String.format("<h4>The database %s is empty. Please use the form below to create tables in database.</h4>",item.getDbname()));
 				output.write(String.format("<h5>If the database does not exist, please first create the database via MySQL console.</h5>",item.getDbname()));
 			}
