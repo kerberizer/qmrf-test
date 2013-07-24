@@ -280,10 +280,10 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			map.put("option",SearchMode.text.name());
 		}			
 		try {
-			map.put("pagesize",form.getFirstValue("pagesize").toString());
+			map.put("pagesize",queryObject.getPageSize());
 		} catch (Exception x) { }
 		try {
-			map.put("page",form.getFirstValue("page").toString());
+			map.put("page",queryObject.getPage());
 		} catch (Exception x) {}					
 		return map;
 	}
