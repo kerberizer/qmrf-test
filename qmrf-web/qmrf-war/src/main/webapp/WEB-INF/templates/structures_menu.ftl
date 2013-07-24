@@ -1,3 +1,4 @@
+<#escape x as x?html>
 				<#assign s = { query.option!"default":"checked"} >
 				<!-- different title if attachment -->
 				<#assign search_title = "Structure search">
@@ -43,3 +44,4 @@
 					</#if>
 				</div>
 				</div>		
+</#escape>				
