@@ -2,6 +2,8 @@ package net.idea.qmrf.rest;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
@@ -19,6 +21,13 @@ import org.restlet.resource.ResourceException;
 import org.restlet.service.StatusService;
 
 public class QMRFStatusService extends StatusService {
+	protected transient Logger logger = Logger.getLogger(getClass().getName());
+	protected REPORT_LEVEL reportLevel;
+	public final static String qmrf_status = "qmrf_status";
+	public enum REPORT_LEVEL {
+		production,
+		debug
+	}
 	protected HTMLBeauty htmlBeauty;
 	public HTMLBeauty getHtmlBeauty() {
 		return htmlBeauty;
@@ -28,10 +37,10 @@ public class QMRFStatusService extends StatusService {
 		this.htmlBeauty = htmlBeauty;
 	}
 
-	public QMRFStatusService() {
+	public QMRFStatusService(REPORT_LEVEL level) {
 		super();
 		setContactEmail("jeliazkova.nina@gmail.com");
-		
+		this.reportLevel = level;
 	}
 
 	@Override
@@ -62,17 +71,22 @@ public class QMRFStatusService extends StatusService {
 				
 				StringWriter details = null;
 
-				if (status.getThrowable()!= null) {
-					 details = new StringWriter();
-					status.getThrowable().printStackTrace(new PrintWriter(details) {
-						@Override
-						public void print(String s) {
-							super.print(String.format("%s<br>", s));
-							
-						}
-					});
-				} 
 				
+				if (status.getThrowable()!= null) {
+					if (REPORT_LEVEL.debug.equals(reportLevel)) {
+						details = new StringWriter();
+						status.getThrowable().printStackTrace(new PrintWriter(details) {
+							@Override
+							public void print(String s) {
+								super.print(String.format("%s<br>", s));
+								
+							}
+						});
+					} else {
+						logger.log(Level.SEVERE,status.toString(),status.getThrowable());
+					}
+				} 
+					
 				String detailsDiv = details==null?"":
 					String.format("<a href=\"#\" style=\"background-color: #fff; padding: 5px 10px;\" onClick=\"toggleDiv('%s'); return false;\">Details</a>\n",
 							"details");
