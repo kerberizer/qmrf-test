@@ -1,4 +1,4 @@
-	
+	<#escape x as x?html>
 	<#assign search_title = "QMRF documents search">
 				<#assign s = { query.option!"default":"checked"} >
 				
@@ -27,3 +27,5 @@
 					</#if>
 				</div>
 				</div>
+				
+    </#escape>				

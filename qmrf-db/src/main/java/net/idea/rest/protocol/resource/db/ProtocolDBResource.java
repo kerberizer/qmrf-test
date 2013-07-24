@@ -65,6 +65,7 @@ import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
+
 /**
  * Protocol resource
  * @author nina
@@ -269,11 +270,17 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		Form form = request.getResourceRef().getQueryAsForm();
 		Map<String,Object> map = new HashMap<String,Object>();
 		try {
-			map.put("search",form.getFirstValue("search").toString());
-		} catch (Exception x) {	}		
+			String value = form.getFirstValue("search").toString();
+			if (value.contains("script")) map.remove("search"); 
+			else map.put("search",value);
+		} catch (Exception x) {	
+			map.remove("search");
+		}		
 		try {
-			map.put("structure",form.getFirstValue("structure").toString());
-		} catch (Exception x) {}
+			String value = form.getFirstValue("structure").toString();
+			if (value.contains("script")) map.remove("structure"); 
+			else map.put("structure",value);
+		} catch (Exception x) { map.remove("structure"); }
 		try {
 			map.put("option",SearchMode.valueOf(form.getFirstValue("option").toLowerCase()).name());
 		} catch (Exception x) {
