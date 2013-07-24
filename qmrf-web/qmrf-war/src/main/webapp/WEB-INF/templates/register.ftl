@@ -55,11 +55,11 @@ $().ready(function() {
 			},		
 			'pwd1': {
 				required : true,
-				minlength: 6
+				minlength: 8
 			},
 			'pwd2': {
 				required : true,
-				minlength: 6,
+				minlength: 8,
 				equalTo: "#pwd1"
 			}
 			
@@ -84,11 +84,11 @@ $().ready(function() {
 			},
 			'pwd1'      : {
 				required: "Please provide a password",
-				minlength: "Your password must be at least 6 characters long"
+				minlength: "Your password must be at least 8 characters long"
 			},
 			'pwd2'      : {
 				required: "Please confirm the password",
-				minlength: "Your password must be at least 6 characters long",
+				minlength: "Your password must be at least 8 characters long",
 				equalTo: "Please enter the same password as above"
 			}			
 		}
