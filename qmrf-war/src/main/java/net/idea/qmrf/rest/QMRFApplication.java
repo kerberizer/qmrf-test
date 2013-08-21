@@ -118,7 +118,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 
 	}
 
-   	protected QMRFStatusService.REPORT_LEVEL getStatusReportLevel() {
+   	public QMRFStatusService.REPORT_LEVEL getStatusReportLevel() {
 		try {
 			QMRFStatusService.REPORT_LEVEL aa = QMRFStatusService.REPORT_LEVEL.valueOf(getProperty(QMRFStatusService.qmrf_status));
 			if ((getContext()!=null) && 
@@ -194,8 +194,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		setCookieUserRouter.attach(Resources.admin, createAdminRouter());
 		setCookieUserRouter.attach(Resources.editor, createEditorRouter());
 		setCookieUserRouter.attach(Resources.unpublished, createUnpublishedRouter());
-		setCookieUserRouter.attach(Resources.task, new QMRFTaskRouter(
-				getContext()));
+		setCookieUserRouter.attach(Resources.task, new QMRFTaskRouter(getContext()));
 
 		setCookieUserRouter.attach("", QMRFWelcomeResource.class);
 		setCookieUserRouter.attach("/", QMRFWelcomeResource.class);

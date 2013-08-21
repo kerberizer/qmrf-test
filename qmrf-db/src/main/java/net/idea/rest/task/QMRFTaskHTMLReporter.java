@@ -24,12 +24,14 @@ public class QMRFTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERID> {
 	 * 
 	 */
 	private static final long serialVersionUID = 8566674498695951801L;
-	
+	protected boolean debug = false;
 	public QMRFTaskHTMLReporter(ITaskStorage<USERID> storage,Request ref,ResourceDoc doc) {
-		this(storage,ref,doc,null);
+		this(storage,ref,doc,null,false);
 	}
-	public QMRFTaskHTMLReporter(ITaskStorage<USERID> storage,Request ref,ResourceDoc doc,HTMLBeauty htmlbeauty) {
+	public QMRFTaskHTMLReporter(ITaskStorage<USERID> storage,Request ref,ResourceDoc doc,HTMLBeauty htmlbeauty,
+			boolean debug) {
 		super(storage,ref,doc,htmlbeauty);
+		this.debug = debug;
 	}
 
 	public void header(Writer output, Iterator<UUID> query) {
@@ -89,7 +91,7 @@ public class QMRFTaskHTMLReporter<USERID> extends TaskHTMLReporter<USERID> {
 				TaskStatus.Completed.equals(item.getStatus())?"Ready. Results available.":
 				item.getStatus() , //status
 				baseReference,item.isDone()?item.getError()!=null?"cross.png":"tick.png":"progress.gif", //image
-				getErrorReport(item.getError())
+				debug?getErrorReport(item.getError()):""
 
 			//	item.getError()!=null?"Error":item.getTimeCompleted()>0?"Ready.":"",
 			//	item.getError()!=null?"":item.getTimeCompleted()>0?new Date(item.getTimeCompleted()):""

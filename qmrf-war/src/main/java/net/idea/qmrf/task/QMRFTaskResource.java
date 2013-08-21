@@ -7,6 +7,8 @@ import java.util.UUID;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
+import net.idea.qmrf.rest.QMRFApplication;
+import net.idea.qmrf.rest.QMRFStatusService.REPORT_LEVEL;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.task.QMRFTaskHTMLReporter;
 import net.idea.restnet.c.ResourceDoc;
@@ -29,12 +31,17 @@ public class QMRFTaskResource extends TaskResource<String> {
 	@Override
 	protected FactoryTaskConvertor getFactoryTaskConvertor(ITaskStorage storage)
 			throws ResourceException {
+		
+		final REPORT_LEVEL reportLevel = ((QMRFApplication) getApplication()).getStatusReportLevel();
 		return new FactoryTaskConvertorRDF<Object>(storage,getHTMLBeauty()) {
 			@Override
 			public synchronized Reporter<Iterator<UUID>, Writer> createTaskReporterHTML(
 					Request request,ResourceDoc doc,HTMLBeauty htmlbeauty) throws AmbitException, ResourceException {
-				return	new QMRFTaskHTMLReporter<Object>(storage,request,doc,htmlbeauty);
+				return	new QMRFTaskHTMLReporter<Object>(storage,request,doc,htmlbeauty,reportLevel.equals(REPORT_LEVEL.debug));
 			}			
 		};
 	}
+
+
+
 }

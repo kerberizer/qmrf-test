@@ -74,7 +74,7 @@ function checkTask(taskURI, resultDOM, statusDOM, imgReady, imgError, successMes
 				}, 1000);
 				break;
 			default:
-				document.getElementById(resultDOM).innerHTML = '<span title=\'' + request.status + ' ' + request.statusText + '\'>Error</span>';
+				document.getElementById(resultDOM).innerHTML = '<span>Error</span>';
 				document.getElementById(statusDOM).src = imgError;
 				document.getElementById(resultDOM).style.display = 'inline';
 				document.getElementById(statusDOM).style.display = 'inline';
