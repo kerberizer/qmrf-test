@@ -115,27 +115,46 @@ public class QMRFStatusService extends StatusService {
 							request.getRootRef(),Resources.register
 							);					
 				}
-				
-				w.write(
-						String.format(		
-						"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
-						"<div class=\"ui-widget-header ui-corner-top\">" +
-						"<span class=\"ui-icon ui-icon-alert\" style=\"float: left; margin-right: .3em;\" title='%s'></span>\n"+
-						"<p><a href='%s'>%s</a></p></div>\n"+
-						"<div class=\"ui-widget-content ui-corner-bottom \">\n"+
-						"<p>%s</p><p>"+
-						"%s\n"+	
-						"</p>\n"+
-						"<div class=\"ui-widget\" style='display: none;' id='details'><p>%s</p></div>\n"+
-						"</div></div>\n",
-						status.getName(),
-						status.getUri(),
-						errName,
-						errDescription,
-						detailsDiv,
-						details==null?"":details
-						)
-				);
+				if (REPORT_LEVEL.debug.equals(reportLevel))
+					w.write(
+							String.format(		
+							"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
+							"<div class=\"ui-widget-header ui-corner-top\">" +
+							"<span class=\"ui-icon ui-icon-alert\" style=\"float: left; margin-right: .3em;\" title='%s'></span>\n"+
+							"<p><a href='%s'>%s</a></p></div>\n"+
+							"<div class=\"ui-widget-content ui-corner-bottom \">\n"+
+							"<p>%s</p><p>"+
+							"%s\n"+	
+							"</p>\n"+
+							"<div class=\"ui-widget\" style='display: none;' id='details'><p>%s</p></div>\n"+
+							"</div></div>\n",
+							status.getName(),
+							status.getUri(),
+							errName,
+							errDescription,
+							detailsDiv,
+							details==null?"":details
+							)
+					);
+				else 
+					w.write(
+							String.format(		
+							"<div class=\"ui-widget \" style=\"margin-top: 20px; padding: 0 .7em;\">\n"+
+							"<div class=\"ui-widget-header ui-corner-top\">" +
+							"<span class=\"ui-icon ui-icon-alert\" style=\"float: left; margin-right: .3em;\"></span>\n"+
+							"<p>%s</p></div>\n"+
+							"<div class=\"ui-widget-content ui-corner-bottom \">\n"+
+							"<p>%s</p><p>"+
+							"%s\n"+	
+							"</p>\n"+
+							"<div class=\"ui-widget\" style='display: none;' id='details'><p>%s</p></div>\n"+
+							"</div></div>\n",
+							errName,
+							errDescription,
+							detailsDiv,
+							details==null?"":details
+							)
+					);
 				
 				if(htmlBeauty==null) htmlBeauty = new QMRF_HTMLBeauty(Resources.protocol);
 				htmlBeauty.writeHTMLFooter(w, status.getName(), request);
