@@ -255,6 +255,9 @@
 			<xsl:attribute name="href">
 			<xsl:value-of select="@url" />
 			</xsl:attribute>
+			<xsl:attribute name="class">qxternal</xsl:attribute>
+			<xsl:attribute name="title">External link</xsl:attribute>
+			<xsl:attribute name="onClick">return confirm('You are leaving the QMRF website and entering an external link.')</xsl:attribute>
 			<xsl:value-of select="@url"/>
 			</a> 
  </xsl:template>

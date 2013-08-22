@@ -835,6 +835,9 @@ crashes if using id(@idref)/@version  - apparently in some xml files the version
 			<xsl:attribute name="href">
 			<xsl:value-of select="id(@idref)/@url" disable-output-escaping="yes"/>
 			</xsl:attribute>
+			<xsl:attribute name="class">qxternal</xsl:attribute>
+			<xsl:attribute name="title">External link</xsl:attribute>
+			<xsl:attribute name="onClick">return confirm('You are leaving the QMRF website and entering an external link.')</xsl:attribute>
 			<xsl:attribute name="target">_blank</xsl:attribute>
 			<xsl:value-of select="id(@idref)/@url" disable-output-escaping="yes"/>
 			</a> 
