@@ -18,3 +18,14 @@
 <link rel="primarytopic" type="application/rdf+xml" href="/qmrf/protocol?media=application%252Frdf%252Bxml">
 <link rel="primarytopic" type="text/n3" href="/qmrf/protocol?media=application/rdf+xml">
 <title>(Q)SAR Model Reporting Format Database</title>
+
+<script type='text/javascript'>
+	$(document).ready(function() {
+		$(".external").click(function(event) {
+		   var confirmation = confirm("You are leaving the QMRF website and entering an external link.");
+		   if (!confirmation) {
+		     event.preventDefault();
+		   }
+		 });
+	});
+ </script>

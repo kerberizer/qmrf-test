@@ -826,3 +826,9 @@ div.pusher {
 	font-family: Frutiger, "Frutiger Linotype", Univers, "Droid Sans", Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans serif !important;
 	font-size: 8pt !important;
 }
+
+a.qxternal {
+	background: url("/qmrf/images/external.jpg") no-repeat scroll 0 0 transparent;
+	background-position:right;
+	padding: 0 20px 0 0;
+}
