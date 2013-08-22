@@ -249,6 +249,7 @@
 			<xsl:attribute name="href">
 			<xsl:value-of select="@url" />
 			</xsl:attribute>
+			<xsl:attribute name="class">external</xsl:attribute>
 			<xsl:value-of select="@url"/>
 			</a> 
  </xsl:template>
