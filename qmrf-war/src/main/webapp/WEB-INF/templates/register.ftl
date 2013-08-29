@@ -2,11 +2,14 @@
 <head>
 <#include "/head.ftl" >
 <script type='text/javascript' src='/qmrf/jquery/jquery.validate.min.js'></script>
+<script type='text/javascript' src='/qmrf/jquery/jquery.passstrength.min.js'></script>
+
 <script type='text/javascript'>
 
 
 $().ready(function() {
-
+    $('#pwd1').passStrengthify({minimum:8});
+    
 	$("#affiliation").autocomplete({
     		source: function (request, response) {
     		$.ajax({
@@ -83,8 +86,8 @@ $().ready(function() {
 				url: "Please provide valid web address"
 			},
 			'pwd1'      : {
-				required: "Please provide a password",
-				minlength: "Your password must be at least 8 characters long"
+				required: "",
+				minlength: ""
 			},
 			'pwd2'      : {
 				required: "Please confirm the password",

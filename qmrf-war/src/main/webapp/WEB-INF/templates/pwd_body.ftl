@@ -2,11 +2,13 @@
 <head>
 
 <#include "/head.ftl" >
+<script type='text/javascript' src='/qmrf/jquery/jquery.passstrength.min.js'></script>
 <script type='text/javascript' src='/qmrf/jquery/jquery.validate.min.js'></script>
 <script type='text/javascript'>
 
 
 $().ready(function() {
+    $('#pwd1').passStrengthify({minimum:8});
 	// validate the comment form when it is submitted
 	$("#pwdForm").validate({
 		rules : {
@@ -27,8 +29,8 @@ $().ready(function() {
 		messages : {
 			'pwdold' : "Please provide your current password",
 			'pwd1'   : {
-				required: "Please provide a new password",
-				minlength: "Your password must be at least 8 characters long"
+				required: "",
+				minlength: ""
 			},
 			'pwd2'   : {
 				required: "Please provide a new password",
