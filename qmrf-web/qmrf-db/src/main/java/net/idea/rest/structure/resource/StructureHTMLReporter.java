@@ -4,7 +4,6 @@ import java.io.Writer;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.prediction.DBModel;
@@ -53,7 +52,9 @@ public class StructureHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			while (keys.hasMoreElements()) {
 				if (properties==null) properties = new StringBuilder();
 				String key = keys.nextElement();
-				properties.append(String.format("<tr><th align='left' width='60%%'>%s</th><td align='center' width='40%%'>%s</td></tr>",key,item.getProperties().get(key)));
+				String value = item.getProperties().get(key);
+				if (value==null || "".equals(value)) continue;
+				properties.append(String.format("<tr><th align='left' width='60%%'>%s</th><td align='center' width='40%%'>%s</td></tr>",key,value));
 
 			}
 		} catch (Exception x) {}
