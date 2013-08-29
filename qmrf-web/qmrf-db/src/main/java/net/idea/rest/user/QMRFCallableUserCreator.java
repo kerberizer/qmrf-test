@@ -9,6 +9,8 @@ import net.idea.restnet.user.resource.UserURIReporter;
 
 import org.restlet.data.Form;
 import org.restlet.data.Method;
+import org.restlet.data.Status;
+import org.restlet.resource.ResourceException;
 
 public class QMRFCallableUserCreator extends CallableUserCreator {
 	
@@ -33,7 +35,16 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 		subject = "QMRF Database User Activation";
 	}
 
-	
+	@Override
+	protected DBUser getTarget(Form input) throws Exception {
+		DBUser user = super.getTarget(input);
+		if (credentials!=null) {
+			if (credentials.getNewpwd()==null || credentials.getOldpwd()==null) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+			if (!credentials.getNewpwd().equals(credentials.getOldpwd())) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+			if (credentials.getNewpwd().length()<8)throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+		}
+		return user;
+	}
 	@Override
 	protected String getConfig() {
 		return "config/qmrf.properties";
