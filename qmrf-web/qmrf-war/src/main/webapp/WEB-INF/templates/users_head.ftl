@@ -3,9 +3,9 @@
 <script type='text/javascript'>
 $(document).ready(function() {
 	<#if myprofile>
-		getMyAccount('${qmrf_request_json}',false);
+		getMyAccount("${qmrf_request_json}",false);
 	<#else>
-		getMyAccount('${qmrf_request_json}',true);
+		getMyAccount("${qmrf_request_json}",true);
 	</#if>
 	
 	

@@ -7,7 +7,7 @@ $(document).ready(function() {
 	
 	var url = "${qmrf_request_jsonp}";
 
-  	var oTable = defineStructuresTable(url,'${queryService}','${query.option!""}' == 'similarity');
+  	var oTable = defineStructuresTable(url,"${queryService}","${query.option!''}" == 'similarity');
     <!-- Details panel -->	
 	$('#structures tbody td .zoomstruc').live(
 			'click',

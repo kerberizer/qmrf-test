@@ -64,7 +64,7 @@
 	     		   <tr>	
 				   <th>${attachmentType.title}</th>
 				   <td>${attachment.description}</td>
-   				   <td><a href='${attachment.url}'>${attachment.name}.${attachment.filetype}</a></td>				   	     		   
+   				   <td><a href="${attachment.url}">${attachment.name}.${attachment.filetype}</a></td>				   	     		   
 	     		   </tr>
 	     		 </#list>
 	     	</#list>
@@ -98,7 +98,7 @@
 		    				    		
 		    		<!# -- Software -->
 		    		<#if entry.attributes.contact??><td>${entry.attributes.contact}</td></#if>
-		    		<#if entry.attributes.url??><td><a href='${entry.attributes.url}'>${entry.attributes.url}</a></td></#if>
+		    		<#if entry.attributes.url??><td><a href="${entry.attributes.url}">${entry.attributes.url}</a></td></#if>
 		    				    		
 					</tr>
    				</#list>
