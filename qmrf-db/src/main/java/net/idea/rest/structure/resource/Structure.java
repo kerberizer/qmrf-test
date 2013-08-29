@@ -65,7 +65,19 @@ public class Structure implements IIdentifiableResource<URL>, Serializable {
 			public String getTitle() {
 				return "REACH registration date";
 			}
-		};
+		},
+		TradeName {
+			@Override
+			public String getTitle() {
+				return "Trade name";
+			}			
+		},
+		IUCLID5_UUID {
+			@Override
+			public String getTitle() {
+				return "IUCLID5 UUID";
+			}						
+		};		
 		public String getTitle() {
 			return name();
 		}

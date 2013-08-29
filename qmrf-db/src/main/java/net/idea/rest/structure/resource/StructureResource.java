@@ -457,6 +457,12 @@ class PropertiesIterator extends CSVFeatureValuesIterator<Structure> {
 					r.setInChIKey(value);
 					break;
 				}
+				case TradeName: {
+					break;
+				}
+				case IUCLID5_UUID: {
+					break;
+				}
 				}
 			} catch (Exception x) {
 				if (header.get(i).toString().toUpperCase().startsWith("CAS"))
