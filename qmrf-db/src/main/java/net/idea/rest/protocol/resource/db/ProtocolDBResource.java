@@ -267,7 +267,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 	}
 	
 	protected Map<String,Object> query2map(Request request) {
-		Form form = request.getResourceRef().getQueryAsForm();
+		Form form = getParams();
 		Map<String,Object> map = new HashMap<String,Object>();
 		try {
 			String value = form.getFirstValue("search").toString();

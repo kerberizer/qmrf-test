@@ -131,7 +131,7 @@ public class StructureResource extends QMRFCatalogResource<Structure> {
 		return map;
 	}
 	protected void parseParameters(Context context, Request request,Response response) throws ResourceException {
-		Form form = request.getResourceRef().getQueryAsForm();
+		Form form = getParams();
 		
 		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
 		//parameters.setDatasets(form.getValuesArray("dataset"));
