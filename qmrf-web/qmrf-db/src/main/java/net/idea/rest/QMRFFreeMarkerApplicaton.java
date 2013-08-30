@@ -14,7 +14,17 @@ import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 
 public class QMRFFreeMarkerApplicaton<USERID> extends FreeMarkerApplicaton<USERID> {
+	protected String dbConfig = "conf/qmrf-db.pref";	
+	public String getDbConfig() {
+		return dbConfig;
+	}
+	
+	public QMRFFreeMarkerApplicaton(String dbConfig) {
+		super();
+		this.dbConfig = dbConfig;
+	}
 
+	
 	@Override
 	protected void initFreeMarkerConfiguration() {
 			setConfiguration(new Configuration());

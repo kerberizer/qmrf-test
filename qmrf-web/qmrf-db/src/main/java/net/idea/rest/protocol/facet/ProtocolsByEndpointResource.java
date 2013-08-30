@@ -3,6 +3,7 @@ package net.idea.rest.protocol.facet;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.facet.IFacet;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.QMRFFreeMarkerApplicaton;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
@@ -51,7 +52,7 @@ public class ProtocolsByEndpointResource extends FacetResource<IQueryRetrieval<I
 	
 	@Override
 	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
+		return ((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig();
 	}
 	@Override
 	protected boolean isAllowedMediaType(MediaType mediaType)

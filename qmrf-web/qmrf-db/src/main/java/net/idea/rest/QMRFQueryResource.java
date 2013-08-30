@@ -57,7 +57,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 
 	@Override
 	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
+		return ((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig();
 	}
 	
 	@Override

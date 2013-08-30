@@ -14,6 +14,7 @@ import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFCatalogResource;
+import net.idea.rest.QMRFFreeMarkerApplicaton;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.task.RegistrationTaskHTMLReporter;
@@ -116,7 +117,7 @@ public class RegistrationResource extends QMRFCatalogResource<DBUser> {
 	}
 	
 	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
+		return ((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig();
 	}
 	
 	@Override
