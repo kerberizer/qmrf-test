@@ -10,6 +10,7 @@ import net.idea.modbcum.p.UpdateExecutor;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.db.QDBConnection;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
@@ -89,7 +90,7 @@ public class RegistrationConfirmResource extends  QMRFQueryResource<ReadRegistra
 				String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
 				if (usersdbname==null) usersdbname = "tomcat_users";
 				UserURIReporter reporter = new UserURIReporter(getRequest(),"");
-				DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+				DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 				conn = dbc.getConnection();
 				UserRegistration reg = new  UserRegistration(code.toString());
 				ConfirmRegistration q = new ConfirmRegistration(reg);

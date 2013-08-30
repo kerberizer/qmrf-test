@@ -1,6 +1,8 @@
 package net.idea.qmrf.rest;
 
+import java.io.InputStream;
 import java.net.URL;
+import java.util.Properties;
 import java.util.UUID;
 
 import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
@@ -71,8 +73,8 @@ import org.restlet.service.TunnelService;
  */
 public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 
-	public QMRFApplication() {
-		super("config/qmrdb.properties");
+	public QMRFApplication()  {
+		super(loadProperties("config/qmrfdb.properties"),"config/qmrfdb.properties");
 		setName("(Q)SAR Model Reporting Format Database");
 		setDescription("(Q)SAR Model Reporting Format Database");
 		setOwner("Institute for Health and Consumer Protection, JRC");
@@ -272,9 +274,9 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 			cookieAuth.setLogoutPath("/signout");
 
 
-			cookieAuth.setVerifier(new DBVerifier(getContext(), dbConfig,
+			cookieAuth.setVerifier(new DBVerifier(getContext(), dbConfigFile,
 					usersdbname));
-			cookieAuth.setEnroler(new DbEnroller(getContext(), dbConfig,
+			cookieAuth.setEnroler(new DbEnroller(getContext(), dbConfigFile,
 					usersdbname));
 			return cookieAuth;
 		} else {
@@ -301,7 +303,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 				}
 
 			});
-			cookieAuth.setEnroler(new DbEnroller(getContext(), dbConfig,
+			cookieAuth.setEnroler(new DbEnroller(getContext(), dbConfigFile,
 					usersdbname));
 		}
 		return cookieAuth;
@@ -428,6 +430,21 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		};
 
 	}
+	protected static Properties loadProperties(String dbConfigFile)  {
+		InputStream in=null;
+		try {
+			Properties properties = new Properties();
+			in = QMRFApplication.class.getClassLoader().getResourceAsStream(dbConfigFile);
+			properties.load(in);
+			return properties;
+		} catch (Exception x) {
+			x.printStackTrace();
+			return null;
+		} finally {
+			try {in.close();} catch (Exception x) {}			
+		}
+		
+	}	
 	
 	/**
 	 * Standalone, for testing mainly

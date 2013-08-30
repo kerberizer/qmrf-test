@@ -95,7 +95,7 @@ public class DatabaseResource  extends QMRFQueryResource<DBVersionQuery,DBVersio
 
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-		DBConnection c = new DBConnection(getContext(),getConfigFile());
+		DBConnection c = new QDBConnection(getContext(),getDbConfig());
 		Connection connection = null;
 		try {
 			connection = c.getConnection();
@@ -134,7 +134,7 @@ public class DatabaseResource  extends QMRFQueryResource<DBVersionQuery,DBVersio
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,String.format("Expected %s dbname={databasename}",MediaType.APPLICATION_WWW_FORM));
 				
 		Form form = new Form(entity);
-		DBConnection c = new DBConnection(getContext(),getConfigFile());
+		DBConnection c = new QDBConnection(getContext(),getDbConfig());
 		
 		if (!c.allowDBCreate())
 			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,
@@ -182,7 +182,7 @@ public class DatabaseResource  extends QMRFQueryResource<DBVersionQuery,DBVersio
 		Statement st = null;
 		Connection connection = null;
 		try {
-    		DBConnection dbc = new DBConnection(getContext(),getConfigFile());
+    		DBConnection dbc = new QDBConnection(getContext(),getDbConfig());
     	
     		connection = dbc.getConnection();
 			
@@ -209,7 +209,7 @@ public class DatabaseResource  extends QMRFQueryResource<DBVersionQuery,DBVersio
 		
 		DbCreateDatabase dbCreate=null;
 		try {
-    		DBConnection dbc = new DBConnection(getContext(),getConfigFile());
+    		DBConnection dbc = new QDBConnection(getContext(),getDbConfig());
     		LoginInfo li = dbc.getLoginInfo();
 
 			c = dbc.getConnection();
@@ -257,7 +257,7 @@ public class DatabaseResource  extends QMRFQueryResource<DBVersionQuery,DBVersio
 			Variant variant) throws Exception {
 		try {
 			DBVersion db = new DBVersion();
-			DBConnection dbc = new DBConnection(getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getContext(),getDbConfig());
 			db.setDbname(dbc.getLoginInfo().getDatabase());
 			dbc = null;
 			return generateRepresentation(db, true);

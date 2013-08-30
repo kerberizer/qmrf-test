@@ -8,6 +8,7 @@ import java.util.UUID;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources.Config;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.task.UserTaskHTMLReporter;
 import net.idea.rest.user.QMRFCallableUserCreator;
 import net.idea.restnet.c.ResourceDoc;
@@ -63,7 +64,7 @@ public class PwdResetResource<T> extends MyAccountResource<T> {
 				String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
 
 				UserURIReporter reporter = new UserURIReporter(getRequest(),"");
-				DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+				DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 				conn = dbc.getConnection();
 				return new QMRFCallableUserCreator(
 							method,

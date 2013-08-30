@@ -6,6 +6,7 @@ import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.RepresentationConvertor;
@@ -202,7 +203,7 @@ public class AlertDBResource	extends QMRFQueryResource<ReadAlert,DBAlert> {
 		try {
 			DBUser user = getUser(getRequest().getAttributes().get(UserDBResource.resourceKey));
 			AlertURIReporter reporter = new AlertURIReporter(getRequest(),"");
-			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			return new CallableAlertCreator(method,item,
 					user,

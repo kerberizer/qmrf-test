@@ -3,6 +3,7 @@ package net.idea.rest.prediction;
 import java.io.File;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Properties;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -10,6 +11,7 @@ import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
@@ -25,7 +27,6 @@ import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.TaskCreator;
-import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.user.DBUser;
 
@@ -192,8 +193,8 @@ public class PredictionResource extends QMRFQueryResource<IQueryRetrieval<DBAtta
 		try {
 			
 			ProtocolQueryURIReporter r = new ProtocolQueryURIReporter(getRequest(),"");
-			class TDBConnection extends DBConnection {
-				public TDBConnection(Context context,String configFile) {
+			class TDBConnection extends QDBConnection {
+				public TDBConnection(Context context,Properties configFile) {
 					super(context,configFile);
 				}
 				public String getDir() {
@@ -201,7 +202,7 @@ public class PredictionResource extends QMRFQueryResource<IQueryRetrieval<DBAtta
 					return getAttachmentDir();
 				}
 			};
-			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getConfigFile());
+			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 
 			String dir = dbc.getDir();

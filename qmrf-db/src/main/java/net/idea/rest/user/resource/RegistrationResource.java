@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.UUID;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -16,6 +17,7 @@ import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFCatalogResource;
 import net.idea.rest.QMRFFreeMarkerApplicaton;
 import net.idea.rest.QMRFHTMLReporter;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.task.RegistrationTaskHTMLReporter;
 import net.idea.rest.user.QMRFCallableUserCreator;
@@ -106,7 +108,7 @@ public class RegistrationResource extends QMRFCatalogResource<DBUser> {
 		try {
 			String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
 			UserURIReporter reporter = new UserURIReporter(getRequest(),"");
-			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			return new QMRFCallableUserCreator(method,item,reporter, form,getRequest().getRootRef().toString(),
 					conn,getToken(),false,usersdbname==null?"tomcat_users":usersdbname);
@@ -116,10 +118,9 @@ public class RegistrationResource extends QMRFCatalogResource<DBUser> {
 		}
 	}
 	
-	public String getConfigFile() {
+	public Properties getDbConfig() {
 		return ((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig();
 	}
-	
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
 		return new QMRF_HTMLBeauty(Resources.register);
