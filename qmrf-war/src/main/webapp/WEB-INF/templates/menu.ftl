@@ -19,7 +19,7 @@
 			<!-- the menu begins here -->
 			<ul id='navmenu'>
 			<li><a class='selectable' title='Go to the welcome page' href='/qmrf'>
-				<img class='logo_home_menu' src='/qmrf/images/logo_menu.png'>
+				<img class='logo_home_menu' alt='QMRF' src='/qmrf/images/logo_menu.png'>
 				Home
 			</a></li>
 								

@@ -24,7 +24,8 @@
 		<th class='contentTable ' id='manageHeader'></th>
 		</tr>
 		</thead>
-		<tbody></tbody>
+		<tbody>
+		</tbody>
 		</table>
 		<!-- Download links for the entire list -->
 		<div style='float:right; width:100%; align:center; margin:20px 0 0 0;'>

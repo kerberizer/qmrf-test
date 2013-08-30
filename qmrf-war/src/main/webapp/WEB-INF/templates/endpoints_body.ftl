@@ -50,7 +50,8 @@ $(document).ready(function() {
 		<th><span title='Number of QMRF documents'>#</span></th>
 		</tr>
 		</thead>
-		<tbody></tbody>
+		<tbody>
+		</tbody>
 		</table>
 		</div>
 		   		</p>

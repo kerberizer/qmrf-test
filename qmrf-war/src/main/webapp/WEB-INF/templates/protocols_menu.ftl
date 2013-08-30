@@ -16,7 +16,7 @@
 				<tr><td colspan='2'><input ${s["qmrfnumber"]!""} type='radio' tabindex='6' name='option' value='qmrfnumber' title='Search by QMRF number'>QMRF&nbsp;number <a href='#' onClick="qHelp('qmrfnumber')">?</a></td></tr>
 				<tr><td>Max number of hits</td><td align='left'><input type='text' size='5' name='pagesize' value="${query.pagesize!'100'}"></td></tr>
 				<input type='hidden' name='structure' value="${query.structure!''}">
-				<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='8' value='Search'/></td></tr>
+				<tr><td colspan='2' align='center'><input type='submit' id='submit' tabindex='8' value='Search'></td></tr>
 				</table>
 				</form> 
 				&nbsp;

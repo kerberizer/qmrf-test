@@ -33,7 +33,7 @@
 		   		</td></tr>
 		   		<tr><td colspan='2'><input ${s["smarts"]!""} type='radio' name='option' value='smarts' title='Enter or draw a SMARTS query' size='20'>Substructure</td></tr>
 		   		<tr><td>Max number of hits</td><td align='left'><input type='text' size='3' name='pagesize' value="${query.pagesize}"></td></tr>
-		   		<tr><td colspan='2' align='center'><input tabindex='2' id='submit' type='submit' value='Search'/></td></tr>
+		   		<tr><td colspan='2' align='center'><input tabindex='2' id='submit' type='submit' value='Search'></td></tr>
 		   		<tr><td colspan='2' align='center'><input type='hidden' name='structure' value="${query.structure!''}"></td></tr>	   
 				
 				</table>
