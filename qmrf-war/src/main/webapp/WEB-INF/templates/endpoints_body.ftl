@@ -43,10 +43,12 @@ $(document).ready(function() {
 		<div>
 		<table id='endpoints'  cellpadding='0' border='0' width='100%' cellspacing='0'>
 		<thead>
+		<tr>
 		<th></th>
 		<th>Code</th>
 		<th>Name</th>
 		<th><span title='Number of QMRF documents'>#</span></th>
+		</tr>
 		</thead>
 		<tbody></tbody>
 		</table>

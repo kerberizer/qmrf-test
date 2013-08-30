@@ -19,11 +19,13 @@ $(document).ready(function() {
 		
 		<table id='users' cellpadding='0' border='0' width='100%' cellspacing='0' style="margin:0;padding:0;" >
 		<thead>	
+		<tr>
 		<th>Name</th>
 		<th>Affiliation</th>
 		<th>e-mail</th>
 		<th>Keywords</th>
 		<th>Reviewer</th>
+		</tr>
 		</thead>
 		<tbody></tbody>
 		</table>
