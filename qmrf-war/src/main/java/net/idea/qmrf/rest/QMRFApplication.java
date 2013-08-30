@@ -70,10 +70,9 @@ import org.restlet.service.TunnelService;
  * 
  */
 public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
-	
-	public QMRFApplication() {
-		super();
 
+	public QMRFApplication() {
+		super("config/qmrdb.properties");
 		setName("(Q)SAR Model Reporting Format Database");
 		setDescription("(Q)SAR Model Reporting Format Database");
 		setOwner("Institute for Health and Consumer Protection, JRC");
@@ -265,7 +264,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		try { sessionLength = Long.parseLong(getProperty(Resources.Config.sessiontimeout.name())); } catch (Exception x) {}
 		if (sessionLength<600000) sessionLength =  600000; //10 min in case the config is broken
 		cookieAuth.setSessionLength(sessionLength);
-		String config = "conf/qmrf-db.pref";
+		
 		if (!optional) {
 			// cookieAuth.setCookieName("subjectId");
 			cookieAuth.setLoginFormPath("/login");
@@ -273,9 +272,9 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 			cookieAuth.setLogoutPath("/signout");
 
 
-			cookieAuth.setVerifier(new DBVerifier(getContext(), config,
+			cookieAuth.setVerifier(new DBVerifier(getContext(), dbConfig,
 					usersdbname));
-			cookieAuth.setEnroler(new DbEnroller(getContext(), config,
+			cookieAuth.setEnroler(new DbEnroller(getContext(), dbConfig,
 					usersdbname));
 			return cookieAuth;
 		} else {
@@ -302,7 +301,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 				}
 
 			});
-			cookieAuth.setEnroler(new DbEnroller(getContext(), config,
+			cookieAuth.setEnroler(new DbEnroller(getContext(), dbConfig,
 					usersdbname));
 		}
 		return cookieAuth;

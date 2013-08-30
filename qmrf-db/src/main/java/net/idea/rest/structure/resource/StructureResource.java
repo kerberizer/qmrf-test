@@ -17,6 +17,7 @@ import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFCatalogResource;
+import net.idea.rest.QMRFFreeMarkerApplicaton;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.prediction.DBModel;
 import net.idea.rest.prediction.ReadModel;
@@ -296,7 +297,7 @@ public class StructureResource extends QMRFCatalogResource<Structure> {
 	
 
 	public String getConfigFile() {
-		return "conf/qmrf-db.pref";
+		return ((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig();
 	}
 	
 	protected String getAttachmentDir() {
