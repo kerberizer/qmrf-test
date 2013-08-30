@@ -1,5 +1,5 @@
-function defineQMRFDocumentsTable(root,url,isAdmin) {
-	var oTable = $('#protocols').dataTable( {
+function defineQMRFDocumentsTable(root,url,isAdmin,tableSelector,jQ,zoomEnabled) {
+	var oTable = $(tableSelector).dataTable( {
 		"sAjaxDataProp" : "qmrf",
 		"bProcessing": true,
 		"bServerSide": false,
@@ -33,7 +33,7 @@ function defineQMRFDocumentsTable(root,url,isAdmin) {
 					sWidth : "32px",
 					"bUseRendered" : "true",
 					"fnRender" : function(o,val) {
-							return "<span class='zoom'><img border='0' src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'></span>";
+						return zoomEnabled?"<span class='zoom'><img border='0' src='/qmrf/images/zoom_in.png' alt='zoom in' title='Click to show compound details'></span>":"";
 					}
 				},			              
 				{ "mDataProp": "visibleid" , "asSorting": [ "asc", "desc" ], "aTargets": [ 1 ], bUseRendered:false,	
@@ -100,7 +100,7 @@ function defineQMRFDocumentsTable(root,url,isAdmin) {
 				  "bVisible" : isAdmin
 				}
 			],
-		"bJQueryUI" : true,
+		"bJQueryUI" : jQ,
 		"bPaginate" : true,
 		"bDeferRender": true,
 		"bSearchable": true,
@@ -120,8 +120,21 @@ function defineQMRFDocumentsTable(root,url,isAdmin) {
 		*/
 		"oLanguage": {
 	            "sProcessing": "<img src='/qmrf/images/progress.gif' border='0'>",
-	            "sLoadingRecords": "No records found."
-	    }	
+	            "sLoadingRecords": "No QMRF documents found.",
+	            "sEmptyTable" : "No QMRF documents found.",
+	            "sInfo": "Showing _TOTAL_ QMRF documents (_START_ to _END_)",
+            "sLengthMenu": 'Display <select>' +
+              '<option value="10">10</option>' +
+              '<option value="20">20</option>' +
+              '<option value="50">50</option>' +
+              '<option value="100">100</option>' +
+              '<option value="-1">all</option>' +
+              '</select> QMRF documents.'	   				            
+		}	
 	} );
 	return oTable;
+}
+
+function renderEndpoint(code,name) {
+	return "<span title='"+ name +"'>" + code + "</span>";
 }

@@ -150,12 +150,21 @@ function defineStructuresTable(url, query_service, similarity) {
 		      } );
 		},
 		"oLanguage": {
-	            "sProcessing": "<img src='/qmrf/images/progress.gif' border='0'>",
-	            "sLoadingRecords": "No records found."
-	    },
+            "sProcessing": "<img src='/qmrf/images/progress.gif' border='0'>",
+            "sLoadingRecords": "No structures found.",
+            "sEmptyTable" : "No structures found.",
+            "sInfo": "Showing _TOTAL_ structures (_START_ to _END_)",
+        "sLengthMenu": 'Display <select>' +
+          '<option value="10">10</option>' +
+          '<option value="20">20</option>' +
+          '<option value="50">50</option>' +
+          '<option value="100">100</option>' +
+          '<option value="-1">all</option>' +
+          '</select> structures.'	   				            
+		},	    
 		"fnRowCallback": function( nRow, aData, iDisplayIndex ) {
 			//retrieve identifiers
-			id_uri = query_service + "/query/compound/url/all?search=" + encodeURIComponent(aData.compound.URI) + "?max=1&amp;media=application%2Fx-javascript";
+			id_uri = query_service + "/query/compound/url/all?search=" + encodeURIComponent(aData.compound.URI) + "?max=1&media=application%2Fx-javascript";
 			$.ajax({
 			         dataType: "jsonp",
 			         url: id_uri,
@@ -190,27 +199,17 @@ function getID() {
 }			
 
 	/* QMRF list per structure */
-function fnStructureQMRFList(oTable, nTr, id) {
-	var obj = oTable.fnGetData(nTr);
+function fnStructureQMRFList(oTable, nTr, id,root) {
+	
 	var sOut = '<div class="ui-widget-content ui-corner-all" id="' + id + '">';
-	sOut = sOut + "<div id='" + id + "_qmrf' >Please wait while QMRF documents list is loading...</div>";
+	//sOut = sOut + "<div id='" + id + "_qmrf' >Please wait while QMRF documents list is loading...</div>";
+	
+	sOut += "<table id='" + id + "_qmrf'  cellpadding='0' border='0' width='100%' cellspacing='0'>"+
+		"<thead><tr><th ></th><th>QMRF Number</th><th>Title</th><th>Endpoint</th><th>Last updated</th><th>Download</th>"+
+		"<th></th><th></th></tr></thead><tbody></tbody></table>";
+	
 	sOut += "</div>";	
 
-	var uri = encodeURIComponent(obj["compound"]["URI"]);
-	var qmrf_query = "/qmrf/protocol?structure=" + uri + "&amp;headless=true&amp;details=false&amp;media=text%2Fhtml&"+ new Date().getTime();
-
-      $.ajax({
-          dataType: "html",
-          url: qmrf_query,
-          success: function(data, status, xhr) {
-        	  $('div#' + id + '_qmrf').html(data);
-          },
-          error: function(xhr, status, err) {
-          },
-          complete: function(xhr, status) {
-          }
-       });
-       
 	return sOut;
 }
 

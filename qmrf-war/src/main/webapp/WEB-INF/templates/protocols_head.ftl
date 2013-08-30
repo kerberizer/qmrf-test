@@ -32,7 +32,7 @@ $(document).ready(function() {
 
 	$('#protocols .qmrfOwner').html(function() { return isAdmin?"Owner":""; });
 	$('#protocols #manageHeader').html(function() { return isAdmin?"Manage":""; });
-	var oTable = defineQMRFDocumentsTable("${qmrf_root}","${qmrf_request_json}",isAdmin);
+	var oTable = defineQMRFDocumentsTable("${qmrf_root}","${qmrf_request_json}",isAdmin,'#protocols',true,true);
 	$('#protocols tbody td .zoom img').live(
 			'click',
 			function() {
@@ -122,7 +122,5 @@ function cmp2image(val) {
 		return '<a href="'+val+'" title="'+cmpURI+'"><img border="0" src="'+cmpURI+'&amp;w=150&amp;h=150"></a><div>Test</div>';
 }
 
-function renderEndpoint(code,name) {
-	return "<span title='"+ name +"'>" + code + "</span>";
-}
+
 </script>
