@@ -9,6 +9,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.TaskApplication;
@@ -102,7 +103,7 @@ public class AttachmentDatasetResource extends ProtocolAttachmentResource {
 		Connection conn = null;
 		try {
 			AttachmentURIReporter r = new AttachmentURIReporter(getRequest(),String.format("%s/%s",Resources.protocol,key.toString()));
-			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			String ambituser = ((TaskApplication)getApplication()).getProperty(Resources.AMBIT_LOCAL_USER);
 			String ambitpass = ((TaskApplication)getApplication()).getProperty(Resources.AMBIT_LOCAL_PWD);

@@ -3,6 +3,7 @@ package net.idea.rest.protocol.attachments;
 import java.io.File;
 import java.sql.Connection;
 import java.util.List;
+import java.util.Properties;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -10,6 +11,7 @@ import net.idea.modbcum.i.processors.IProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.protocol.CallableProtocolUpload;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
@@ -202,7 +204,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 		AttachmentURIReporter reporter = new AttachmentURIReporter(getRequest(),"");
 		Connection conn = null;
 		try {
-			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			String ambituser = ((TaskApplication)getApplication()).getProperty(Resources.AMBIT_LOCAL_USER);
 			String ambitpass = ((TaskApplication)getApplication()).getProperty(Resources.AMBIT_LOCAL_PWD);
@@ -243,8 +245,8 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 		try {
 			
 			ProtocolQueryURIReporter r = new ProtocolQueryURIReporter(getRequest(),"");
-			class TDBConnection extends DBConnection {
-				public TDBConnection(Context context,String configFile) {
+			class TDBConnection extends QDBConnection {
+				public TDBConnection(Context context,Properties configFile) {
 					super(context,configFile);
 				}
 				public String getDir() {
@@ -252,7 +254,7 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 					return getAttachmentDir();
 				}
 			};
-			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getConfigFile());
+			TDBConnection dbc = new TDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 
 			String dir = dbc.getDir();

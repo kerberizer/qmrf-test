@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFCatalogResource;
@@ -94,10 +95,9 @@ public class RegistrationNotifyResource  extends QMRFCatalogResource<String> {
 		return null;
 	}
 	
-	public String getConfigFile() {
+	public Properties getDbConfig() {
 		return ((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig();
 	}
-	
 	@Override
 	protected HTMLBeauty getHTMLBeauty() {
 		return new QMRF_HTMLBeauty(Resources.notify);

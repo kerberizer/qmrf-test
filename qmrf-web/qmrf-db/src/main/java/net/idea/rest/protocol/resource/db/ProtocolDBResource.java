@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryObject;
@@ -15,6 +16,7 @@ import net.idea.modbcum.q.conditions.StringCondition;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.db.exceptions.InvalidQMRFNumberException;
 import net.idea.rest.db.exceptions.MethodNotAllowedException;
 import net.idea.rest.endpoints.EndpointTest;
@@ -503,8 +505,8 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 		DBConnection dbc = null;
 		try {
 			ProtocolQueryURIReporter r = new ProtocolQueryURIReporter(getRequest(),"");
-			class TDBConnection extends DBConnection {
-				public TDBConnection(Context context,String configFile) {
+			class TDBConnection extends QDBConnection {
+				public TDBConnection(Context context,Properties configFile) {
 					super(context,configFile);
 				}
 				public String getDir() {
@@ -512,7 +514,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					return getAttachmentDir();
 				}
 			};
-			dbc = new TDBConnection(getApplication().getContext(),getConfigFile());
+			dbc = new TDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 
 			String dir = ((TDBConnection)dbc).getDir();

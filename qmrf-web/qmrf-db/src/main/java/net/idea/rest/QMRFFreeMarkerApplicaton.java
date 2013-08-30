@@ -1,5 +1,8 @@
 package net.idea.rest;
 
+import java.io.InputStream;
+import java.util.Properties;
+
 import net.idea.ambit.qmrf.converters.QMRF_xml2rtf;
 import net.idea.restnet.c.freemarker.FreeMarkerApplicaton;
 
@@ -14,14 +17,21 @@ import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 
 public class QMRFFreeMarkerApplicaton<USERID> extends FreeMarkerApplicaton<USERID> {
-	protected String dbConfig = "conf/qmrf-db.pref";	
-	public String getDbConfig() {
-		return dbConfig;
-	}
+	protected String dbConfigFile = "conf/qmrf-db.pref";
+	protected Properties dbConfig;
 	
-	public QMRFFreeMarkerApplicaton(String dbConfig) {
+	public QMRFFreeMarkerApplicaton(Properties dbConfig,String dbConfigFile) {
 		super();
 		this.dbConfig = dbConfig;
+		this.dbConfigFile = dbConfigFile;
+	}
+	
+	public Properties getDbConfig() {
+		return dbConfig;
+	}
+
+	public String getDbConfigFile() {
+		return dbConfigFile;
 	}
 
 	

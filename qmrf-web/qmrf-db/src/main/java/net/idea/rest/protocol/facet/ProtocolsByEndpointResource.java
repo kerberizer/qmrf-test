@@ -1,5 +1,7 @@
 package net.idea.rest.protocol.facet;
 
+import java.util.Properties;
+
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.facet.IFacet;
 import net.idea.qmrf.client.Resources;
@@ -49,9 +51,12 @@ public class ProtocolsByEndpointResource extends FacetResource<IQueryRetrieval<I
 	protected HTMLBeauty getHTMLBeauty() {
 		return new QMRF_HTMLBeauty(Resources.protocol);
 	}
-	
+
 	@Override
 	public String getConfigFile() {
+		return null;
+	}
+	public Properties getDbConfig() {
 		return ((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig();
 	}
 	@Override

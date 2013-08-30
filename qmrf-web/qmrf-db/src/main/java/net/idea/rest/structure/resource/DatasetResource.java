@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import net.idea.modbcum.p.QueryExecutor;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
 import net.idea.restnet.db.DBConnection;
@@ -76,7 +77,7 @@ public class DatasetResource extends StructureResource {
 				attachment = new DBAttachment(new Integer(Reference.decode(aKey.toString().substring(1))));
 				query = new ReadAttachment(null,getAttachmentDir());
 				query.setValue(attachment);
-				DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+				DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 				conn = dbc.getConnection();
 				exec.setConnection(conn);
 				ResultSet rs = exec.process(query);

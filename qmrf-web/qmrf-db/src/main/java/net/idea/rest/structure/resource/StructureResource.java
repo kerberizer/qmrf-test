@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.reporter.Reporter;
@@ -19,6 +20,7 @@ import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFCatalogResource;
 import net.idea.rest.QMRFFreeMarkerApplicaton;
 import net.idea.rest.QMRFHTMLReporter;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.prediction.DBModel;
 import net.idea.rest.prediction.ReadModel;
 import net.idea.rest.prediction.ReadModelQuery;
@@ -295,8 +297,7 @@ public class StructureResource extends QMRFCatalogResource<Structure> {
 		return htmlBeauty;
 	}
 	
-
-	public String getConfigFile() {
+	public Properties getDbConfig() {
 		return ((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig();
 	}
 	
@@ -315,7 +316,7 @@ public class StructureResource extends QMRFCatalogResource<Structure> {
 			ReadAttachment query;
 			DBAttachment attachment = new DBAttachment();
 			query = new ReadAttachment(null,getAttachmentDir());
-			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			exec.setConnection(conn);
 			for (String aKey : attachmentKey) {
@@ -359,7 +360,7 @@ public class StructureResource extends QMRFCatalogResource<Structure> {
 			IQueryRetrieval<DBModel>  query;
 			DBModel model = new DBModel();
 			
-			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			exec.setConnection(conn);
 			for (String aKey : modelsKey) {

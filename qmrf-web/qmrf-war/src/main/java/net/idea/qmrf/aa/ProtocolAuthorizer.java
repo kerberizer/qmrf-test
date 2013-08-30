@@ -9,6 +9,7 @@ import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.FileResource;
 import net.idea.rest.QMRFFreeMarkerApplicaton;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.db.ReadProtocolAccessLocal;
 import net.idea.restnet.db.DBConnection;
@@ -104,7 +105,7 @@ public class ProtocolAuthorizer  extends RoleAuthorizer {
 			if (query==null) query = new ReadProtocolAccessLocal();
 			query.setFieldname(protocol);
 			query.setValue(username);
-			DBConnection dbc = new DBConnection(getApplication().getContext(),((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),((QMRFFreeMarkerApplicaton)getApplication()).getDbConfig());
 			c = dbc.getConnection();
 			if (executor==null)  executor = new QueryExecutor<ReadProtocolAccessLocal>();
 			executor.setConnection(c);

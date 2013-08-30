@@ -3,6 +3,7 @@ package net.idea.rest.groups.resource;
 import java.sql.Connection;
 
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
@@ -59,7 +60,7 @@ public class OrganisationDBResource extends GroupDBResource<DBOrganisation> {
 			} catch (Exception x) {}
 			
 			GroupQueryURIReporter r = new GroupQueryURIReporter(getRequest(),"");
-			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			return new CallableGroupCreator(method,item,GroupType.ORGANISATION,user,r,form,getRequest().getRootRef().toString(),conn,getToken());
 		} catch (Exception x) {

@@ -9,6 +9,7 @@ import net.idea.modbcum.i.IQueryCondition;
 import net.idea.modbcum.i.exceptions.NotFoundException;
 import net.idea.modbcum.p.MasterDetailsProcessor;
 import net.idea.qmrf.client.Resources;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.protocol.UserHTMLBeauty;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.c.TaskApplication;
@@ -110,7 +111,7 @@ public class NotificationResource<T> extends UserDBResource<T> {
 		Connection conn = null;
 		try {
 			UserURIReporter reporter = new UserURIReporter(getRequest(),"");
-			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			CallableNotification callable = new CallableNotification(method,item,reporter, form,getRequest().getRootRef().toString(),conn,getToken()) {
 				@Override

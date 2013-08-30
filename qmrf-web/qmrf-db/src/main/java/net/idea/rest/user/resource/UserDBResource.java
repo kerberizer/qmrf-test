@@ -13,6 +13,7 @@ import net.idea.modbcum.q.conditions.EQCondition;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFQueryResource;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.protocol.UserHTMLBeauty;
 import net.idea.rest.task.UserTaskHTMLReporter;
 import net.idea.rest.user.QMRFCallableUserCreator;
@@ -227,7 +228,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 		try {
 			String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
 			UserURIReporter reporter = new UserURIReporter(getRequest(),"");
-			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			return new QMRFCallableUserCreator(method,item,reporter, form,getRequest().getRootRef().toString(),
 					conn,getToken(),false,usersdbname==null?"tomcat_users":usersdbname);
