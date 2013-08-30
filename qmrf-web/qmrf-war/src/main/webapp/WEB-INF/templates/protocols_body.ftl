@@ -13,6 +13,7 @@
 		<div>
 		<table id='protocols'  cellpadding='0' border='0' width='100%' cellspacing='0'>
 		<thead>
+		<tr>
 		<th ></th>		
 		<th class='contentTable'>QMRF Number</th>
 		<th class='contentTable qmrfTitle'>Title</th>
@@ -21,6 +22,7 @@
 		<th class='contentTable qmrfDownloadLinks'>Download</th>
 		<th class='contentTable qmrfOwner' id='ownerHeader'></th>
 		<th class='contentTable ' id='manageHeader'></th>
+		</tr>
 		</thead>
 		<tbody></tbody>
 		</table>

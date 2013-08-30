@@ -10,10 +10,11 @@
 	<#include "/menu.ftl">
 
 	<div class='w_content'>
-		<p class='w_p'>
+
 		<div>
 		<table class='compoundtable' id='structures'  cellpadding='0' border='0' width='100%' cellspacing='0'>
 		<thead>
+		<tr>
 		<th></th>
 		<th>Structure</th>
 		<th>Name</th>
@@ -22,13 +23,13 @@
 		<th>Similarity</th>
 		<th>SMILES</th>
 		<th>InChI</th>
-		<th>InChI Key</th>		
+		<th>InChI Key</th>
+		</tr>
 		</thead>
 		<tbody></tbody>
 		</table>
 		</div>
-		   		</p>
-		   		
+
 		<!-- Download links for the entire list -->
 		<div style='float:right; width:100%; align:center; margin:20px 0 0 0;'>
 		<p>Download as&nbsp;
