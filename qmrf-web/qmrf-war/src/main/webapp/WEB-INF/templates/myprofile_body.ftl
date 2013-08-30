@@ -40,15 +40,15 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 
 			<h2><a href=''><span id='useruri'></span></a></h2>
 			<p><label for="username">User name</label><b><span id='username'></span></b></p>
-			<p><label for="title">Title</label><input type="text" ${ro} size='40' name='title' id='title' value=''/></p>
+			<p><label for="title">Title</label><input type="text" ${ro} size='40' name='title' id='title' value=''></p>
 			<p><label for="firstname">First name</label><input type="text" ${ro} size='40' name='firstname' id='firstname' value=''/><em>*</em></p>
 			<p><label for="lastname">Last name</label><input type="text" ${ro} size='40' name='lastname' id='lastname' value=''/><em>*</em></p>
 			<span id='organisations'></span>
-			<p><label for="email">e-mail</label><input type="text" ${ro} size='40' name='email' id='email' value=''/><em>*</em></p>
+			<p><label for="email">e-mail</label><input type="text" ${ro} size='40' name='email' id='email' value=''><em>*</em></p>
 			
-			<p><label for="homepage">WWW</label><input type="text" ${ro} size='40' name='homepage' id='homepage' value=''/></p>
-			<p><label for="keywords">Keywords</label><input type="text" ${ro} size='40' name='keywords' id='keywords' value=''/></p>
-			<p><label for="reviewer">Available as a reviewer</label><input type="checkbox" ${ro} name='reviewer' id='reviewer' value=''/></p>
+			<p><label for="homepage">WWW</label><input type="text" ${ro} size='40' name='homepage' id='homepage' value=''></p>
+			<p><label for="keywords">Keywords</label><input type="text" ${ro} size='40' name='keywords' id='keywords' value=''></p>
+			<p><label for="reviewer">Available as a reviewer</label><input type="checkbox" ${ro} name='reviewer' id='reviewer' value=''></p>
 			<#if myprofile>
 				<p><label for="update">&nbsp;</label><input id='update' name='update' type='submit' value='Update'></p>
 			</#if>

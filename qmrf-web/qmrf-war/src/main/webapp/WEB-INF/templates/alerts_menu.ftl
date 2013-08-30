@@ -7,9 +7,9 @@
 				<p>
 				<form action='/qmrf/myaccount/alert' method='POST'>
 					${alert_hint}
-					<input type='hidden' name='name' value='/protocol'/>
+					<input type='hidden' name='name' value='/protocol'>
 					<input type='hidden' name='query' value="${qmrf_query}"/>
-					<input type='hidden' name='qformat' value='FREETEXT'/>
+					<input type='hidden' name='qformat' value='FREETEXT'>
 					<input type='hidden' name='username' value="${username}"/>
 					<br>
 					<label for='rfrequency' title="${freq_hint}">Frequency of e-mail alert</label>
@@ -19,7 +19,7 @@
 					  <option value="daily">Daily</option>				
 					  <option value="" title="${freq_hint}">Never</option>
 				    </select>
-					<input type='submit' title="${alert_hint} ${freq_hint}" value='Save'/>
+					<input type='submit' title="${alert_hint} ${freq_hint}" value='Save'>
 				</form>
 				</p>
 				</div>

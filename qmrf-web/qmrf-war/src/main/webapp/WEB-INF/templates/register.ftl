@@ -120,19 +120,19 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 	    	<p>Registration as user is only necessary, if you wish to be informed about news issues and updates.</p>
 			<form action="/qmrf/register" id="registerForm"  method="POST" autocomplete='off' >		
 			
-			<p><label for="username">User name<em>*</em></label><input type="text" size='40' name='username' id='username' value=''/></p>
-			<p><label for="title">Title</label><input type="text" size='40' name='title' id='title' value=''/></p>
-			<p><label for="firstname">First name<em>*</em></label><input type="text" size='40' name='firstname' id='firstname' value=''/></p>
-			<p><label for="lastname">Last name<em>*</em></label><input type="text"  size='40' name='lastname' id='lastname' value=''/></p>
-			<p><label for="affiliation">Affiliation<em>*</em></label><input type="text"  size='40' name='affiliation' id='affiliation' value=''/></p>
-			<p><label for="email">e-mail<em>*</em></label><input type="text"size='40' name='email' id='email' value=''/></p>
+			<p><label for="username">User name<em>*</em></label><input type="text" size='40' name='username' id='username' value=''></p>
+			<p><label for="title">Title</label><input type="text" size='40' name='title' id='title' value=''></p>
+			<p><label for="firstname">First name<em>*</em></label><input type="text" size='40' name='firstname' id='firstname' value=''></p>
+			<p><label for="lastname">Last name<em>*</em></label><input type="text"  size='40' name='lastname' id='lastname' value=''></p>
+			<p><label for="affiliation">Affiliation<em>*</em></label><input type="text"  size='40' name='affiliation' id='affiliation' value=''></p>
+			<p><label for="email">e-mail<em>*</em></label><input type="text"size='40' name='email' id='email' value=''></p>
 			
-			<p><label for="homepage">WWW</label><input type="text"  size='40' name='homepage' id='homepage' value=''/></p>
-			<p><label for="keywords">Keywords</label><input type="text"  size='40' name='keywords' id='keywords' value=''/></p>
-			<p><label for="reviewer">Available as a reviewer</label><input type="checkbox" name='reviewer' id='reviewer' value=''/></p>
+			<p><label for="homepage">WWW</label><input type="text"  size='40' name='homepage' id='homepage' value=''></p>
+			<p><label for="keywords">Keywords</label><input type="text"  size='40' name='keywords' id='keywords' value=''></p>
+			<p><label for="reviewer">Available as a reviewer</label><input type="checkbox" name='reviewer' id='reviewer' value=''></p>
 					
-			<p><label for='pwd1'>Password<em>*</em></label><input type='password' size='40' id='pwd1' name='pwd1' value=''/></p>
-			<p><label for='pwd2'>Confirm password<em>*</em></label><input type='password' size='40' id='pwd2' name='pwd2' value=''/></p>
+			<p><label for='pwd1'>Password<em>*</em></label><input type='password' size='40' id='pwd1' name='pwd1' value=''></p>
+			<p><label for='pwd2'>Confirm password<em>*</em></label><input type='password' size='40' id='pwd2' name='pwd2' value=''></p>
 			<p><input id='register' name='register' type='submit' class='submit' value='Register'></p>
 
 			</form>		

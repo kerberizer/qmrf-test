@@ -64,8 +64,8 @@ $().ready(function() {
 	    	<table width='80%%'>
 			<tbody>
 			<tr><th colwidth='25%'><label for='pwdold'>Current password</label></th><td align='left'><input type='password' size='40' id='pwdold' name='pwdold' value='' required/></td></tr>
-			<tr><th><label for='pwd1'>New password</label></th><td align='left'><input type='password' size='40' id='pwd1' name='pwd1' value=''/></td></tr>
-			<tr><th><label for='pwd2'>Confirm new password</label></th><td align='left'><input type='password' size='40' id='pwd2' name='pwd2' value=''/></td></tr>
+			<tr><th><label for='pwd1'>New password</label></th><td align='left'><input type='password' size='40' id='pwd1' name='pwd1' value=''></td></tr>
+			<tr><th><label for='pwd2'>Confirm new password</label></th><td align='left'><input type='password' size='40' id='pwd2' name='pwd2' value=''></td></tr>
 			<tr><th></th><td align='left' ><input id='updatepwd' name='updatepwd' type='submit' class='submit' value='Submit'></td></tr>
 			</tbody>
 			</table>

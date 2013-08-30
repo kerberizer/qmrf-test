@@ -27,7 +27,8 @@ $(document).ready(function() {
 		<th>Reviewer</th>
 		</tr>
 		</thead>
-		<tbody></tbody>
+		<tbody>
+		</tbody>
 		</table>
 		
 		<!-- Download links for the entire list -->
