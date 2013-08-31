@@ -135,6 +135,35 @@ function defineQMRFDocumentsTable(root,url,isAdmin,tableSelector,jQ,zoomEnabled)
 	return oTable;
 }
 
+function publishString(qmrf_id,isPublished) {
+	if (isPublished) return "<span style='width:16px;'>&nbsp;</span>";
+	var sOut = "";
+	sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=publish'>";
+	sOut += "<img border='0' src='/qmrf/images/script_add.png'  title='Publish this document' alt='Publish'>";
+	sOut += "</a> ";
+	return sOut;
+}
+function deleteString(qmrf_id) {
+	var sOut = "";
+	sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=delete'>";
+	sOut += "<img border='0' src='/qmrf/images/script_delete.png'  title='Delete this document' alt='Delete'>";
+	sOut += "</a> ";
+	return sOut;
+}
+function updateString(qmrf_id,isPublished) {
+	var sOut = "";
+	if (isPublished) {
+		sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=newversion'>";
+		sOut += "<img border='0'  src='/qmrf/images/script_edit.png'  title='Create new version of this document' alt='New version'>";
+		sOut += "</a> ";
+	} else {
+		sOut = "<a href='/qmrf/editor/" + qmrf_id + "?mode=update'>";
+		sOut += "<img border='0' src='/qmrf/images/script_edit.png'  title='Update this document' alt='Update'>";
+		sOut += "</a> ";			
+	}
+	return sOut;
+}	
+
 function renderEndpoint(code,name) {
 	return "<span title='"+ name +"'>" + code + "</span>";
 }
