@@ -54,7 +54,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 	protected boolean headless = false;
 	protected QMRF_HTMLBeauty htmlBeauty;
 	protected transient Logger logger = Logger.getLogger(getClass().getName());
-	protected Form params;
+	protected Form params_get;
 	public QMRFQueryResource() {
 		super();
 		
@@ -197,21 +197,17 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 
 	@Override
 	protected Form getParams() {
-		if (params == null) 
-			if (Method.GET.equals(getRequest().getMethod())) {
-				params = getResourceRef(getRequest()).getQueryAsForm();
-				Iterator<Parameter> p = params.iterator();
-				while (p.hasNext()) {
-					Parameter param = p.next();
-					String value = param.getValue();
-					if (value==null) continue;
-					if (value.contains("script") || value.contains(">") || value.contains("<")) param.setValue(""); 
-					else param.setValue(value.replace("'","&quot;"));	
-				}
-			}	
-			//if POST, the form should be already initialized
-			else params = getRequest().getEntityAsForm();
-		return params;
+		if (params_get == null) 
+			params_get = getResourceRef(getRequest()).getQueryAsForm();
+			Iterator<Parameter> p = params_get.iterator();
+			while (p.hasNext()) {
+				Parameter param = p.next();
+				String value = param.getValue();
+				if (value==null) continue;
+				if (value.contains("script") || value.contains(">") || value.contains("<")) param.setValue(""); 
+				else param.setValue(value.replace("'","&quot;"));	
+			}
+		return params_get;
 	}
 	
 	@Override
