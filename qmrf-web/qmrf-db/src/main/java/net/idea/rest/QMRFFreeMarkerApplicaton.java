@@ -1,6 +1,5 @@
 package net.idea.rest;
 
-import java.io.InputStream;
 import java.util.Properties;
 
 import net.idea.ambit.qmrf.converters.QMRF_xml2rtf;
@@ -17,24 +16,26 @@ import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 
 public class QMRFFreeMarkerApplicaton<USERID> extends FreeMarkerApplicaton<USERID> {
-	protected String dbConfigFile = "conf/qmrf-db.pref";
 	protected Properties dbConfig;
+
+	protected static final String[] dbProps = new String[] {	
+				"Host","Port","Database","User","Password",
+				"database.user.root.password","database.test","database.test.port","database.user.test","database.user.test.password"
+	};
 	
-	public QMRFFreeMarkerApplicaton(Properties dbConfig,String dbConfigFile) {
+
+	public QMRFFreeMarkerApplicaton() {
 		super();
-		this.dbConfig = dbConfig;
-		this.dbConfigFile = dbConfigFile;
 	}
 	
-	public Properties getDbConfig() {
-		return dbConfig;
+	@Override
+	public void setConfigFile(String configFile) {
+		super.setConfigFile(configFile);
+		//hack over private TaskApplication properties 
+		dbConfig = new Properties();
+		for (String dbprop : dbProps)
+			dbConfig.put(dbprop,getProperty(dbprop));
 	}
-
-	public String getDbConfigFile() {
-		return dbConfigFile;
-	}
-
-	
 	@Override
 	protected void initFreeMarkerConfiguration() {
 			setConfiguration(new Configuration());
@@ -47,5 +48,9 @@ public class QMRFFreeMarkerApplicaton<USERID> extends FreeMarkerApplicaton<USERI
 	        MultiTemplateLoader mtl = new MultiTemplateLoader(loaders);
 	        getConfiguration().setTemplateLoader(mtl);
 	        getConfiguration().setObjectWrapper(ObjectWrapper.BEANS_WRAPPER); 
-		}
+	}
+	public Properties getDbConfig() {
+		return dbConfig;
+	}
+
 }

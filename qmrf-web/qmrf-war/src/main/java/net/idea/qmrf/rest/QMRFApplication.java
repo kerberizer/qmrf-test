@@ -1,6 +1,5 @@
 package net.idea.qmrf.rest;
 
-import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 import java.util.UUID;
@@ -72,9 +71,8 @@ import org.restlet.service.TunnelService;
  * 
  */
 public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
-
 	public QMRFApplication()  {
-		super(loadProperties("config/qmrfdb.properties"),"config/qmrfdb.properties");
+		super();
 		setName("(Q)SAR Model Reporting Format Database");
 		setDescription("(Q)SAR Model Reporting Format Database");
 		setOwner("Institute for Health and Consumer Protection, JRC");
@@ -274,9 +272,9 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 			cookieAuth.setLogoutPath("/signout");
 
 
-			cookieAuth.setVerifier(new DBVerifier(getContext(), dbConfigFile,
+			cookieAuth.setVerifier(new DBVerifier(getContext(), configFile,
 					usersdbname));
-			cookieAuth.setEnroler(new DbEnroller(getContext(), dbConfigFile,
+			cookieAuth.setEnroler(new DbEnroller(getContext(), configFile,
 					usersdbname));
 			return cookieAuth;
 		} else {
@@ -303,7 +301,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 				}
 
 			});
-			cookieAuth.setEnroler(new DbEnroller(getContext(), dbConfigFile,
+			cookieAuth.setEnroler(new DbEnroller(getContext(), configFile,
 					usersdbname));
 		}
 		return cookieAuth;
@@ -430,21 +428,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		};
 
 	}
-	protected static Properties loadProperties(String dbConfigFile)  {
-		InputStream in=null;
-		try {
-			Properties properties = new Properties();
-			in = QMRFApplication.class.getClassLoader().getResourceAsStream(dbConfigFile);
-			properties.load(in);
-			return properties;
-		} catch (Exception x) {
-			x.printStackTrace();
-			return null;
-		} finally {
-			try {in.close();} catch (Exception x) {}			
-		}
-		
-	}	
+
 	
 	/**
 	 * Standalone, for testing mainly

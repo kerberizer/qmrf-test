@@ -78,7 +78,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 
 	@Override
 	public String getConfigFile() {
-		return null;
+		return ((QMRFFreeMarkerApplicaton)getApplication()).getConfigFile();
 	}
 
 	public Properties getDbConfig() {
@@ -335,7 +335,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 				if (query==null) { //no db querying, just return the task
 					r =  taskCreator.process(null);
 				} else {
-					DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
+					DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 					conn = dbc.getConnection();	
 					
 					

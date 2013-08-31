@@ -8,6 +8,8 @@ import java.util.Map;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
+import net.idea.qmrf.rest.QMRFApplication;
+import net.idea.rest.db.QDBConnection;
 import net.idea.rest.user.author.db.VerifyUser;
 import net.idea.rest.user.resource.UserDBResource;
 import net.idea.restnet.db.DBConnection;
@@ -17,7 +19,6 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Reference;
 import org.restlet.routing.Template;
-import org.restlet.security.Role;
 import org.restlet.security.RoleAuthorizer;
 
 /**
@@ -74,7 +75,7 @@ public class UserAuthorizer extends RoleAuthorizer {
 			if (query==null) query = new VerifyUser();
 			query.setFieldname(iduser);
 			query.setValue(identifier);
-			DBConnection dbc = new DBConnection(getApplication().getContext(),"conf/qmrf-db.pref");
+			DBConnection dbc = new QDBConnection(getApplication().getContext(),((QMRFApplication)getApplication()).getDbConfig());
 			c = dbc.getConnection();
 			if (executor==null)  executor = new QueryExecutor<VerifyUser>();
 			executor.setConnection(c);
