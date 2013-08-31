@@ -120,8 +120,8 @@ public class UserResourceTest extends ResourceTest {
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair(ReadUser.fields.firstname.name(),  "Alice"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.lastname.name(),  "B."));
-		formparams.add(new BasicNameValuePair("pwd1",  "test"));
-		formparams.add(new BasicNameValuePair("pwd2",  "test"));
+		formparams.add(new BasicNameValuePair("pwd1",  "testtest"));
+		formparams.add(new BasicNameValuePair("pwd2",  "testtest"));
 		//formparams.add(new BasicNameValuePair("affiliation",  "test"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.username.name(),  "test"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.email.name(),  "noone@example.org"));
@@ -167,8 +167,8 @@ public class UserResourceTest extends ResourceTest {
 		List<NameValuePair> formparams = new ArrayList<NameValuePair>();
 		formparams.add(new BasicNameValuePair(ReadUser.fields.firstname.name(),  "Alice"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.lastname.name(),  "B."));
-		formparams.add(new BasicNameValuePair("pwd1",  "test"));
-		formparams.add(new BasicNameValuePair("pwd2",  "test"));
+		formparams.add(new BasicNameValuePair("pwd1",  "testtest"));
+		formparams.add(new BasicNameValuePair("pwd2",  "testtest"));
 		formparams.add(new BasicNameValuePair("username",  "username"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.email.name(),  "noone@example.org"));
 		
@@ -256,6 +256,7 @@ public class UserResourceTest extends ResourceTest {
 			Thread.sleep(100);
 			Thread.yield();
 		}
+		System.out.println(task.getResult());
 		Assert.assertTrue(task.getResult().toString().startsWith(String.format("http://localhost:%d/user/U3",port)));
 
         c = getConnection();	
