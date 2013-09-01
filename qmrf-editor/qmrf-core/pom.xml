@@ -3,11 +3,11 @@
   <parent>
     <artifactId>qmrf-editor</artifactId>
     <groupId>ambit</groupId>
-    <version>2.0.3-SNAPSHOT</version>
+    <version>2.0.3</version>
   </parent>
   <groupId>ambit</groupId>
   <artifactId>qmrf-core</artifactId>
-  <version>2.0.3-SNAPSHOT</version>
+  <version>2.0.3</version>
   <name>QMRF core classes</name>
   <description>QMRF core classes without UI</description>
  <dependencies>
