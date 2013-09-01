@@ -1,5 +1,5 @@
 #net.idea.rest.protocol.db.DbCreateDatabase
-#Wed Jan 02 16:08:54 EET 2013
+#Sat Aug 31 12:49:41 EEST 2013
 Host=localhost
 Scheme=jdbc\:mysql
 Port=3306
