@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import net.idea.qmrf.client.QMRFRoles;
 import net.idea.qmrf.client.Resources;
@@ -295,28 +296,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					);
 			
 			// HEAD starts here.
-			w.write(String.format("<head> <meta property=\"dc:creator\" content=\"%s\"/> <meta property=\"dc:title\" content=\"%s\"/>",
-					request.getResourceRef(),
+			w.write(String.format("<head> <meta property=\"dc:title\" content=\"%s\"/>",
 					title
 					));
 			
-			Reference ref = request.getResourceRef().clone();
-			ref.addQueryParameter("media", Reference.encode("application/rdf+xml"));
-			w.write(String.format("<link rel=\"meta\" type=\"application/rdf+xml\" title=\"%s\" href=\"%s\"/>\n",
-					title,
-					ref
-					)); 
-			w.write(String.format("<link rel=\"meta\" type=\"text/n3\" title=\"%s\" href=\"%s\"/>\n",
-					title,
-					ref
-					)); 
-			
-			w.write(String.format("<link rel=\"primarytopic\" type=\"application/rdf+xml\" href=\"%s\"/>",
-					ref
-					)); 		
-			w.write(String.format("<link rel=\"primarytopic\" type=\"text/n3\" href=\"%s\"/>",
-					ref
-					)); 			
 			w.write(String.format("<title>%s</title>\n",title));
 			
 			//meta		
@@ -534,7 +517,8 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 				w.append(String.format("<form action='%s%s%s' method='POST'>",request.getRootRef(),Resources.myaccount,Resources.alert));
 				w.append(alert_hint);
 				w.append(String.format("<input type='hidden' name='%s' value='%s'/>",DBAlert._fields.name.name(),Resources.protocol));
-				w.append(String.format("<input type='hidden' name='%s' value='%s'/>",DBAlert._fields.query.name(),request.getResourceRef().getQuery()));
+				w.append(String.format("<input type='hidden' name='%s' value='%s'/>",DBAlert._fields.query.name(),
+							generateQueryName(request.getResourceRef().getQuery())));
 				w.append(String.format("<input type='hidden' name='%s' value='%s'/>",DBAlert._fields.qformat.name(),Query.QueryType.FREETEXT.name()));
 				w.append(String.format("<input type='hidden' name='%s' value='%s'/>","username",request.getClientInfo().getUser()));
 				w.append(String.format("<br><label for='%s' title='%s'>Frequency of e-mail alert</label><select name='%s'>",DBAlert._fields.rfrequency.name(),freq_hint,DBAlert._fields.rfrequency.name()));
@@ -604,9 +588,10 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			String structure = null;
 			try {
 				if ((form != null) && (form.size()>0)) {
-					searchQuery = form.getFirstValue(AbstractResource.search_param)==null?"":form.getFirstValue(AbstractResource.search_param);
-					pageSize = form.getFirstValue("pagesize")==null?"100":form.getFirstValue("pagesize");
-					structure = form.getFirstValue("structure");
+					searchQuery = getFirstValue(form,AbstractResource.search_param)==null?"":form.getFirstValue(AbstractResource.search_param);
+					pageSize = getFirstValue(form,"pagesize")==null?"100":form.getFirstValue("pagesize");
+					structure = getFirstValue(form,"structure");
+					Long.parseLong(pageSize);
 				}
 			} catch (Exception x) {
 				searchQuery = "";
@@ -614,13 +599,13 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			}
 			option = SearchMode.text;
 			try {
-				option = SearchMode.valueOf(form.getFirstValue("option").toLowerCase());
+				option = SearchMode.valueOf(getFirstValue(form,"option").toLowerCase());
 			} catch (Exception x) {
 				option = SearchMode.text;
 			}
 			condition = "";
 			try {
-				condition = form.getFirstValue("condition").toLowerCase();
+				condition = getFirstValue(form,"condition").toLowerCase();
 			} catch (Exception x) {
 				condition = "";
 			}
@@ -953,4 +938,13 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			String redirect = Reference.encode(String.format("%s/", baseReference));
 			return String.format("<form id='logoutForm' action='%s/protected/signout?targetUri=%s' method='POST'></form>", baseReference, redirect);
 		}	
+		
+		protected String getFirstValue(Form form,String name) {
+			String value = form.getFirstValue(name);
+			if (value.contains("script") || value.contains(">") || value.contains("<")) return "";
+			else return value;
+		}
+		protected String generateQueryName(String value) {
+			return UUID.randomUUID().toString();
+		}
 }
