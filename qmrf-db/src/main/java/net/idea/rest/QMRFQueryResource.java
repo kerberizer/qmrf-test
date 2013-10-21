@@ -186,12 +186,13 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 	
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-		Form headers = (Form) getRequest().getAttributes().get("org.restlet.http.headers");
+		Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
 		if (headers == null) {
 			headers = new Form();
-			getRequest().getAttributes().put("org.restlet.http.headers", headers);
+			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
+
 		return super.get(variant);
 	}
 
@@ -383,5 +384,12 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 				try { if (conn != null) conn.close(); } catch  (Exception x) {}
 			}
 		
+	}
+	
+	@Override
+	protected Representation toRepresentation(Map<String, Object> map,
+			String templateName, MediaType mediaType) {
+		
+		return super.toRepresentation(map, templateName, mediaType);
 	}
 }
