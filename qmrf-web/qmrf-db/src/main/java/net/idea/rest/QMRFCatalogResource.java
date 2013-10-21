@@ -21,10 +21,10 @@ public abstract class QMRFCatalogResource<T> extends CatalogResource<T> {
 	protected Form params;
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-		Form headers = (Form) getRequest().getAttributes().get("org.restlet.http.headers");
+		Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
 		if (headers == null) {
 			headers = new Form();
-			getRequest().getAttributes().put("org.restlet.http.headers", headers);
+			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
 		return super.get(variant);
