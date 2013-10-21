@@ -44,7 +44,6 @@ public class Resources {
 		qmrf_default_owner,
 		qmrf_default_project,
 		qmrf_default_organisation,
-		google_analytics,
 		logo_left,
 		logo_right,
 		secret,

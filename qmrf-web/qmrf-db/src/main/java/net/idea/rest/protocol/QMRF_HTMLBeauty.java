@@ -582,7 +582,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			// to top link (invisible in the beginning, scripted to show up on scroll down)
 			output.write(toTopLink);
 			
-			//output.write(jsGoogleAnalytics()==null?"":jsGoogleAnalytics());
 			output.write("\n</body>");
 			output.write("</html>");
 
