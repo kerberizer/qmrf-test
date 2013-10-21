@@ -58,23 +58,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 		"<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n"
 	};
 	
-
-	// Facebook JavaScript SDK
-	private final static String facebookInit =
-			"<div id=\"fb-root\"></div>\n" +
-			"<script>(function(d, s, id) {\n" +
-			"var js, fjs = d.getElementsByTagName(s)[0];\n" +
-			"if (d.getElementById(id)) return;\n" +
-			"js = d.createElement(s); js.id = id;\n" +
-			"js.src = \"//connect.facebook.net/en_GB/all.js#xfbml=1\";\n" +
-			"fjs.parentNode.insertBefore(js, fjs);\n" +
-			"}(document, 'script', 'facebook-jssdk'));</script>\n";
-	
-	
-	// ВКонтакте (VKontakte)
-	// Disabled for the time being, as there are issues with it.
-	//final static String vKontakteInit = "<script type=\"text/javascript\" src=\"https://vk.com/js/api/share.js?11\" charset=\"windows-1251\"></script>";
-	
 	// table row expander script
 	private final static String toggleDivScript =
 			"<script type='text/javascript'>function toggleDiv(divId) {\n" +
@@ -378,10 +361,6 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 			
 			// HTML body begins here.
 			w.write("<body>\n");
-			
-			// Initialize Facebook button; Google +1, Twitter, Linked In and VKontakte are initialized in the HEAD
-			// But don't load if Microsoft IE 7 is detected, because this produces JS parsing errors.
-			if (!isMsie7()) w.write(facebookInit);
 			
 			w.write("<div id='wrap'>\n");
 			
