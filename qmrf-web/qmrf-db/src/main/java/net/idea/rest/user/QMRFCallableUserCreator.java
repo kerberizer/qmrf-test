@@ -49,7 +49,7 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 		
 		if (credentials!=null) {
 			if (credentials.getNewpwd()!=null && credentials.getOldpwd()!=null) { 
-				if (!credentials.getNewpwd().equals(credentials.getOldpwd())) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+				if (!passwordChange && !credentials.getNewpwd().equals(credentials.getOldpwd())) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 				if (credentials.getNewpwd().length()<8)throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			}
 		}
@@ -80,6 +80,7 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 			} else
 				return new TaskResult(getURI(target,method),false);
 		} catch (ResourceException x) {
+			x.printStackTrace();
 			if (!isAutoCommit())
 				try { connection.rollback();} catch (Exception xx) {}
 				throw x;
