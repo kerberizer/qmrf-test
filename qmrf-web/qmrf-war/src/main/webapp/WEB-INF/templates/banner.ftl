@@ -27,7 +27,7 @@
 				</li>
 				<li class='topLinks'>|</li>
 				<li class='topLinks'>
-				<a class='topLinks register' title='Registration as user is only necessary, if you wish to be informed about news issues and updates.' href='/qmrf/register'>Register</a>
+				<a class='topLinks register' title='Register for news, issues and updates, and to save your searches and subscribe for alerts.' href='/qmrf/register'>Register</a>
 				</li>
 			</#if>			
 			
