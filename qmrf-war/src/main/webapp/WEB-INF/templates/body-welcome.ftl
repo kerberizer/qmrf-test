@@ -23,8 +23,8 @@
     	<p class='w_p_send'>Please send us your models to have them included in the database:
     		<a class='email' href='mailto:${qmrf_email}'>${qmrf_email}</a>.	
     	</p>
-    	<p class='w_p'>
- 			Registration as user is only necessary, if you wish to be informed about news issues and updates.
+    	<p class='w_p_em'>
+ 			Note: Registration is only necessary if you wish to be informed about news, issues and updates. Once registered and logged in, you will also be able to save your searches for future use and subscribe for alerts.
     	</p>
 	</div> <#-- w_content -->
 	

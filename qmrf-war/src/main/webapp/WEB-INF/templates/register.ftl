@@ -117,7 +117,7 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 		<div class='ui-widget ' style='padding: 0 .7em;'>
 		<div class='ui-widget-header ui-corner-top'><p>Registration form</p></div>
 	    <div class='ui-widget-content ui-corner-bottom'>				
-	    	<p>Registration as user is only necessary, if you wish to be informed about news issues and updates.</p>
+	    	<p>Registration is only necessary if you wish to be informed about news, issues and updates. Once registered and logged in, you will also be able to save your searches for future use and subscribe for alerts.</p>
 			<form action="/qmrf/register" id="registerForm"  method="POST" autocomplete='off' >		
 			
 			<p><label for="username">User name<em>*</em></label><input type="text" size='40' name='username' id='username' value=''></p>
