@@ -125,6 +125,7 @@ public class UserResourceTest extends ResourceTest {
 		//formparams.add(new BasicNameValuePair("affiliation",  "test"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.username.name(),  "test"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.email.name(),  "noone@example.org"));
+		formparams.add(new BasicNameValuePair("privacy",  "Accept"));
 		
         IDatabaseConnection c = getConnection();	
 		ITable table = 	c.createQueryTable("EXPECTED","SELECT * FROM user");
@@ -171,7 +172,9 @@ public class UserResourceTest extends ResourceTest {
 		formparams.add(new BasicNameValuePair("pwd2",  "testtest"));
 		formparams.add(new BasicNameValuePair("username",  "username"));
 		formparams.add(new BasicNameValuePair(ReadUser.fields.email.name(),  "noone@example.org"));
-		
+		if (Resources.register.equals(resource)) {
+			formparams.add(new BasicNameValuePair("privacy",  "Accept"));
+		}
 		for (ReadUser.fields field : ReadUser.fields.values()) {
 			switch (field) {
 			case iduser: continue;
