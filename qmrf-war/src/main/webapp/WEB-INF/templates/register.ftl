@@ -64,6 +64,9 @@ $().ready(function() {
 				required : true,
 				minlength: 8,
 				equalTo: "#pwd1"
+			},
+			'privacy' : {
+				required : true
 			}
 			
 		},
@@ -93,7 +96,10 @@ $().ready(function() {
 				required: "Please confirm the password",
 				minlength: "Your password must be at least 8 characters long",
 				equalTo: "Please enter the same password as above"
-			}			
+			},
+			'privacy' : {
+				required : "Please read the privacy statement!"
+			}		
 		}
 	});
 	
@@ -106,11 +112,15 @@ $().ready(function() {
       		buttons: {
 		        "I Accept": function() {
 		          $('input:radio[name=privacy]:nth(0)').attr('checked',true);
+		          $('input:radio[name=privacy]:nth(0)').attr('disabled',false);
+
 		          $('#register').prop('disabled', false);
 		          $( this ).dialog( "close" );
 		        },
 		        "I Reject": function() {
 		          $('input:radio[name=privacy]:nth(1)').attr('checked',true);
+		          $('input:radio[name=privacy]:nth(1)').attr('disabled',false);
+		           $('#privacy').prop('disabled', false);
 		          $('#register').prop('disabled', true);
 		          $( this ).dialog( "close" );
 		        }

@@ -8,6 +8,7 @@ import net.idea.modbcum.p.ProcessorException;
 import net.idea.restnet.i.task.TaskResult;
 import net.idea.restnet.user.CallableUserCreator;
 import net.idea.restnet.user.DBUser;
+import net.idea.restnet.user.db.ReadUser;
 import net.idea.restnet.user.resource.UserURIReporter;
 
 import org.restlet.data.Form;
@@ -41,6 +42,11 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 	@Override
 	protected DBUser getTarget(Form input) throws Exception {
 		DBUser user = super.getTarget(input);
+		
+		if (!passwordChange && Method.POST.equals(method) && (!"Accept".equals(input.getFirstValue("privacy")))) {
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Privacy statement not accepted");
+		}
+		
 		if (credentials!=null) {
 			if (credentials.getNewpwd()!=null && credentials.getOldpwd()!=null) { 
 				if (!credentials.getNewpwd().equals(credentials.getOldpwd())) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
