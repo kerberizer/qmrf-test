@@ -96,6 +96,34 @@ $().ready(function() {
 			}			
 		}
 	});
+	
+	$(function() {
+    	$( "#readstatement" ).dialog({
+    	    autoOpen: false,
+      		height:480,
+      		width:640,
+      		modal: true,
+      		buttons: {
+		        "I Accept": function() {
+		          $('input:radio[name=privacy]:nth(0)').attr('checked',true);
+		          $('#register').prop('disabled', false);
+		          $( this ).dialog( "close" );
+		        },
+		        "I Reject": function() {
+		          $('input:radio[name=privacy]:nth(1)').attr('checked',true);
+		          $('#register').prop('disabled', true);
+		          $( this ).dialog( "close" );
+		        }
+      		}    	
+    	});
+    	
+  	});
+	$( "#open_statement" ).click(function() {
+		var helpURI =  "${qmrf_root}/static/privacy.html?media=text/html";
+		console.log(helpURI);
+		$( "#readstatement p" ).load( helpURI);
+		$( "#readstatement" ).dialog( "open" );		
+    });  	
 });
 	
 </script>
@@ -133,7 +161,13 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 					
 			<p><label for='pwd1'>Password<em>*</em></label><input type='password' size='40' id='pwd1' name='pwd1' value=''></p>
 			<p><label for='pwd2'>Confirm password<em>*</em></label><input type='password' size='40' id='pwd2' name='pwd2' value=''></p>
-			<p><input id='register' name='register' type='submit' class='submit' value='Register'></p>
+			<p><label for="privacy">&nbsp;</label>
+			<a href="#" id="open_statement" >JRC PRIVACY STATEMENT</a>
+			<input type="radio" name='privacy' disabled value='Accept'>I Accept
+			<input type="radio" name='privacy' disabled value='Reject'>I Reject
+			</p>
+		
+			<p><input id='register' name='register' type='submit' class='submit' disabled value='Register'></p>
 
 			</form>		
 		</div>
@@ -148,5 +182,9 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 	
 <#include "/footer.ftl">
 <#include "/scripts-welcome.ftl">
+
+<div id="readstatement" style="display:none" title="JRC Privacy Statement">
+  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
 </body>
 </html>

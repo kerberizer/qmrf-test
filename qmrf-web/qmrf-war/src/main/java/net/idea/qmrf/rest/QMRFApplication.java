@@ -393,7 +393,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 
 		Directory metaDir = new Directory(getContext(), "war:///META-INF");
 		Directory imgDir = new Directory(getContext(), "war:///images");
-		Directory jmolDir = new Directory(getContext(), "war:///jmol");
+		Directory staticDir = new Directory(getContext(), "war:///static");
 		Directory jmeDir = new Directory(getContext(), "war:///jme");
 		Directory styleDir = new Directory(getContext(), "war:///style");
 		Directory scriptsDir = new Directory(getContext(), "war:///scripts");
@@ -401,11 +401,11 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 
 		router.attach("/meta/", metaDir);
 		router.attach("/images/", imgDir);
-		router.attach("/jmol/", jmolDir);
 		router.attach("/jme/", jmeDir);
 		router.attach("/jquery/", jquery);
 		router.attach("/style/", styleDir);
 		router.attach("/scripts/", scriptsDir);
+		router.attach("/static/", staticDir);
 
 	}
 
