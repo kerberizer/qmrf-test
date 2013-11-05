@@ -11,11 +11,6 @@
 <script type='text/javascript' src='/qmrf/jquery/jquery-ui-1.8.18.custom.min.js'></script>
 <script type='text/javascript' charset='utf8' src='/qmrf/jquery/jquery.dataTables-1.9.0.min.js'></script>
 <script type='text/javascript' src='/qmrf/jquery/jquery.cookies.2.2.0.min.js'></script>
-
-<link rel="meta" type="application/rdf+xml" title="(Q)SAR Model Reporting Format Database" href="/qmrf/protocol?media=application%252Frdf%252Bxml">
-<link rel="meta" type="text/n3" title="(Q)SAR Model Reporting Format Database" href="/qmrf/protocol?media=application%252Frdf%252Bxml">
-<link rel="primarytopic" type="application/rdf+xml" href="/qmrf/protocol?media=application%252Frdf%252Bxml">
-<link rel="primarytopic" type="text/n3" href="/qmrf/protocol?media=application/rdf+xml">
 <title>(Q)SAR Model Reporting Format Database</title>
 
 <script type='text/javascript'>
