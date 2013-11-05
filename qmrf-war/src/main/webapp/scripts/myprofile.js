@@ -18,8 +18,8 @@ function getMyAccount(url,readonly) {
         		$("#keywords").prop("value",entry["keywords"]);
         		$("#reviewer").attr("checked",entry["reviewer"]);
         	        		
-        		var protocolURI = "/qmrf/user/" + entry.id + "/protocol?headless=true&amp;details=false&amp;media=text/html";
-        		var alertURI = "/qmrf/user/" + entry.id + "/alert?headless=true&amp;details=false&amp;media=text/html";
+        		var protocolURI = "/qmrf/user/" + entry.id + "/protocol?headless=true&details=false&media=text/html";
+        		var alertURI = "/qmrf/user/" + entry.id + "/alert?headless=true&details=false&media=text/html";
         		
         		$("#protocoluri").prop("href",protocolURI);
         		$("#alerturi").prop("href",alertURI);
@@ -39,7 +39,7 @@ function getMyAccount(url,readonly) {
     				$(".affiliation").autocomplete({
     					source: function (request, response) {
     						$.ajax({
-    			                url: "/qmrf/organisation?media=application/json&amp;search="+request.term,
+    			                url: "/qmrf/organisation?media=application/json&search="+request.term,
     			                contentType: "application/json; charset=utf-8",
     			                dataType: "json",
     			                success: function (data) {
