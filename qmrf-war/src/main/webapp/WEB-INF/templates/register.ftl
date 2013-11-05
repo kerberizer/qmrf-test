@@ -130,7 +130,6 @@ $().ready(function() {
   	});
 	$( "#open_statement" ).click(function() {
 		var helpURI =  "${qmrf_root}/static/privacy.html?media=text/html";
-		console.log(helpURI);
 		$( "#readstatement p" ).load( helpURI);
 		$( "#readstatement" ).dialog( "open" );		
     });  	
