@@ -13,7 +13,7 @@ $().ready(function() {
 	$("#affiliation").autocomplete({
     		source: function (request, response) {
     		$.ajax({
-                   url: "/qmrf/organisation?media=application/json&amp;search="+request.term,
+                   url: "/qmrf/organisation?media=application/json&search="+request.term,
                    contentType: "application/json; charset=utf-8",
                    dataType: "json",
                    success: function (data) {
