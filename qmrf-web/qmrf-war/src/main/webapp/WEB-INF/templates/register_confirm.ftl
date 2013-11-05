@@ -29,7 +29,6 @@ $(document).ready(function() {
 	            }
 	        },
 	        error: function(xhr, status, err) {
-	            console.log(err);
 	       		$("#failure").show();
         		$("#success").hide();
         		$("#progress").hide();
