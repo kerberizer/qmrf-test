@@ -37,6 +37,7 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.CookieSetting;
+import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
@@ -103,6 +104,14 @@ public class ProtocolsByEndpointResource extends FacetResource<IQueryRetrieval<I
 	@Override
 	protected Representation getRepresentation(Variant variant) throws ResourceException {
 		try {
+			Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
+			if (headers == null) {
+				headers = new Form();
+				getResponse().getAttributes().put("org.restlet.http.headers", headers);
+			}
+			headers.add("X-Frame-Options", "SAMEORIGIN");
+
+			
 			CookieSetting cS = new CookieSetting(0, "subjectid", getToken());
 			cS.setPath("/");
 	        this.getResponse().getCookieSettings().add(cS);

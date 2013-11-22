@@ -47,6 +47,13 @@ public class QMRFStatusService extends StatusService {
 	public Representation getRepresentation(Status status, Request request,
 			Response response) {
 		try {
+			Form headers = (Form) response.getAttributes().get("org.restlet.http.headers");
+			if (headers == null) {
+				headers = new Form();
+				response.getAttributes().put("org.restlet.http.headers", headers);
+			}
+			headers.add("X-Frame-Options", "SAMEORIGIN");
+			
 			boolean wrapInHTML = true;
 			
 			if ((status.getThrowable() !=null) && (status.getThrowable() instanceof RResourceException)) 
@@ -56,7 +63,6 @@ public class QMRFStatusService extends StatusService {
 				if ((request.getClientInfo() != null) && "MSIE".equals(request.getClientInfo().getAgentName())) 
 					wrapInHTML = true;
 				else {
-					Form headers = (Form) request.getAttributes().get("org.restlet.http.headers"); 
 					String acceptHeader = headers.getValues("accept");
 					if (acceptHeader!=null)
 						wrapInHTML = acceptHeader.contains("text/html");
