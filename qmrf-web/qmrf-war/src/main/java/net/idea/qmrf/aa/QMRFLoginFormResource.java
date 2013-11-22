@@ -26,10 +26,10 @@ public class QMRFLoginFormResource extends UserLoginFormResource<User> {
 
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-		Form headers = (Form) getRequest().getAttributes().get("org.restlet.http.headers");
+		Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
 		if (headers == null) {
 			headers = new Form();
-			getRequest().getAttributes().put("org.restlet.http.headers", headers);
+			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");		
 		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
