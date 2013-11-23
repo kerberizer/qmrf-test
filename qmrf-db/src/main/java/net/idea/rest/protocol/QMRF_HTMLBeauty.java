@@ -55,8 +55,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	//meta
 	private final static String[] metaTag = new String[] {
 		"<meta name=\"robots\" content=\"index,follow\"><META NAME=\"GOOGLEBOT\" CONTENT=\"index,FOLLOW\">\n",
-		"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n",
-		"<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />\n"
+		"<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/>\n"
 	};
 	
 	// table row expander script
