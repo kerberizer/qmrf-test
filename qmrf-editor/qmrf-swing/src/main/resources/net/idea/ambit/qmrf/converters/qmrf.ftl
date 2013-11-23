@@ -6,7 +6,6 @@
 <link href="http://ambit.uni-plovdiv.bg:8080/qmrf/style/ambit.css" rel="stylesheet" type="text/css">
 <link href="http://ambit.uni-plovdiv.bg:8080/qmrf/style/jquery-ui-1.8.18.custom.css" rel="stylesheet" type="text/css">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-<meta http-equiv='content-type' content='text/html; charset=iso-8859-1' />
 
 <head>
   <title>Welcome!</title>
