@@ -130,7 +130,7 @@ public class PredictionResource extends QMRFQueryResource<IQueryRetrieval<DBAtta
 			else if (MediaType.APPLICATION_MSOFFICE_PPTX.equals(mediaType))
 				return ".pptx";
 			else if (MediaType.APPLICATION_MSOFFICE_XLSX.equals(mediaType))
-				return ".xslx";
+				return ".xlsx";
 			else if (MediaType.APPLICATION_OPENOFFICE_ODT.equals(mediaType))
 				return ".odt";
 			else if (MediaType.APPLICATION_LATEX.equals(mediaType))
