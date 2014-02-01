@@ -33,8 +33,6 @@ import java.net.URL;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
-
 import org.w3c.dom.NodeList;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -173,10 +171,8 @@ public class QMRF_xml2pdf extends QMRFConverter {
 				docBuilder = docBuilderFactory.newDocumentBuilder();
 			docBuilder.setErrorHandler(new SimpleErrorHandler(getClass()
 					.getName()));
-			QMRFSchemaResolver resolver = new QMRFSchemaResolver(
-					QMRFSchemaResolver.defaultLocation, null);
-			resolver.setIgnoreSystemID(true);
-			docBuilder.setEntityResolver(resolver);
+
+			docBuilder.setEntityResolver(getDtdresolver());
 
 			org.w3c.dom.Document doc = null;
 			try {

@@ -34,6 +34,8 @@ import java.util.Map;
 
 import net.idea.ambit.qmrf.QMRFObject;
 
+import org.xml.sax.EntityResolver;
+
 import com.joliciel.freemarker.rtf.RtfConverter;
 
 import freemarker.cache.ClassTemplateLoader;
@@ -79,8 +81,8 @@ public class QMRF_xml2rtf  {
         configuration.setTemplateLoader(mtl);
         configuration.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER); 
 	}	
-	public synchronized void  xml2rtf(Reader reader, Writer out) throws Exception {
-		xml2rtf(getQMRF(reader),out);
+	public synchronized void  xml2rtf(Reader reader, Writer out, EntityResolver dtdresolver) throws Exception {
+		xml2rtf(getQMRF(reader,dtdresolver),out);
 	}
 	public synchronized void  xml2rtf(QMRFObject qmrf, Writer out) throws Exception {
 	       Template temp = configuration.getTemplate("qmrf_rtf.ftl", Locale.UK);
@@ -99,8 +101,9 @@ public class QMRF_xml2rtf  {
 	}
 	
 	
-	public QMRFObject getQMRF(Reader reader) throws Exception {
+	public QMRFObject getQMRF(Reader reader, EntityResolver dtdresolver) throws Exception {
 		QMRFObject qmrf = new QMRFObject();
+		qmrf.setDtdresolver(dtdresolver);
 		qmrf.transform_and_read(reader,true);
 		reader.close();
 		return qmrf;

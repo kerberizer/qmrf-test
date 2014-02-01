@@ -34,14 +34,19 @@ import org.xml.sax.InputSource;
 
 public class QMRFSchemaResolver implements EntityResolver {
 	public static final String defaultLocation="http://qmrf.sourceforge.net/qmrf.dtd";
-	protected Logger logger;
+	protected transient Logger logger = Logger.getLogger(getClass().getName());
     protected String location;
     protected boolean ignoreSystemID = false;
-    public QMRFSchemaResolver(String location, Logger logger) {
+    public QMRFSchemaResolver(String location) {
         super();
         this.location = location;
-        this.logger = logger;
     }
+    
+    private final static String _l_system = "systemID";
+    private final static String _l_public = "publicID";
+    private final static String _l_predefined = "predefined location";
+    private final static String _l_internal = "internal";
+    private final static String internal_dtd =  "ambit2/qmrfeditor/qmrf.dtd";
     
     // This method is called whenever an external entity is accessed
     // for the first time.
@@ -52,29 +57,27 @@ public class QMRFSchemaResolver implements EntityResolver {
             
         	InputStream in = null;
             try {
-            	if (ignoreSystemID) throw new Exception("Ignore systemID="+systemId);
-            	if (logger != null)
-                logger.fine("DTDSchema: Trying systemID "+ systemId);
+            	if (ignoreSystemID || (systemId==null)) throw new Exception("Ignore systemID="+systemId);
+            	dtdlog(_l_system,systemId);
                 
                 in = new URL(systemId).openStream();
-                if (in == null) throw new Exception("SystemID not found");                
+                if (in == null) throw new LocationNotFoundException(_l_system,systemId);                
             } catch (Exception x) {
                 try {
-                	if (logger != null)
-                		logger.fine("DTDSchema: Trying publicID "+ publicId);
+                	if (publicId==null) throw new Exception("PublicID not defined");
+                	dtdlog(_l_public,publicId);
                     in = new URL(publicId).openStream();
-                    if (in == null) throw new Exception("PublicID not found");
+                    if (in == null) throw new LocationNotFoundException(_l_public,publicId);
             
                 } catch (Exception e) {
                     try {
-                    	if (logger != null)
-                    		logger.fine("DTDSchema: Trying predefined location "+ location);
+                    	if (location==null) throw new Exception("The predefined location is not defined");
+                    	dtdlog(_l_predefined, location);
                         in = new URL(location).openStream();
-                        if (in == null) throw new Exception("location not found");
+                        if (in == null) throw new LocationNotFoundException(_l_predefined, location);
                     } catch (Exception xx) {
-                    	if (logger != null)
-                    		logger.fine("DTDSchema: Trying internal "+ "ambit2/qmrfeditor/qmrf.dtd");
-                        String filename = "ambit2/qmrfeditor/qmrf.dtd";
+                    	dtdlog(_l_internal,internal_dtd);
+                        String filename = internal_dtd;
                         in = this.getClass().getClassLoader().getResourceAsStream(filename);
  
                     }
@@ -87,13 +90,18 @@ public class QMRFSchemaResolver implements EntityResolver {
         catch (Exception e) { 
         	if (logger != null)
         		logger.log(Level.SEVERE,e.getMessage(),e);
-            e.printStackTrace();
         }
         
         // Returning null causes the caller to try accessing the systemid
         return null;
     }
-
+    
+    private void dtdlog(String location, String message) {
+    	if (location==null) logger.info(message);
+    	else if (location.startsWith("http")) logger.warning(message + " " + location);
+    	else logger.fine("trying DTDSchema " + message + " " + location);
+    }
+    
 	public boolean isIgnoreSystemID() {
 		return ignoreSystemID;
 	}
@@ -102,8 +110,10 @@ public class QMRFSchemaResolver implements EntityResolver {
 		this.ignoreSystemID = ignoreSystemID;
 	}
     
-
-
 }
 
-
+class LocationNotFoundException extends Exception {
+	public LocationNotFoundException(String locationtype,String location) {
+		super(locationtype + " " + location + " not found");
+	}
+}
