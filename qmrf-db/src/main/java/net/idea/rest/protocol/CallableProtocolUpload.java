@@ -39,10 +39,12 @@ import org.apache.commons.fileupload.FileItem;
 import org.restlet.data.Method;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
+import org.xml.sax.EntityResolver;
 
 
 public class CallableProtocolUpload extends CallableProtectedTask<String> {
 	protected transient Logger logger = Logger.getLogger(getClass().getName());
+	
 	public enum UpdateMode {
 		create {
 			@Override
@@ -80,6 +82,7 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 	protected DBProtocol protocol;
 	protected Method method;
 	protected UpdateMode updateMode = UpdateMode.create;
+	protected EntityResolver dtdresolver;
 	
 	public UpdateMode getUpdateMode() {
 		return updateMode;
@@ -108,13 +111,16 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 	 * @param baseReference
 	 * @param dir
 	 */
-	public CallableProtocolUpload(Method method,DBProtocol protocol,DBUser user,List<FileItem> input,
+	public CallableProtocolUpload(
+					Method method,DBProtocol protocol,DBUser user,List<FileItem> input,
 					Connection connection,
 					ProtocolQueryURIReporter r,
 					String token,
 					String baseReference,
-					File dir) throws Exception {
+					File dir,
+					EntityResolver dtdresolver) throws Exception {
 		super(token);
+		this.dtdresolver = dtdresolver;
 		this.method = method;
 		this.protocol = protocol;
 		this.connection = connection;
@@ -188,7 +194,8 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 			
 		}
 		try {
-			protocol = ProtocolFactory.getProtocol(protocol,input, 10000000,dir,policy,updateMode);
+			
+			protocol = ProtocolFactory.getProtocol(protocol,input, 10000000,dir,policy,updateMode,dtdresolver);
 			if (user!=null) protocol.setOwner(user);
 			else {
 				user = (DBUser)protocol.getOwner();
@@ -363,8 +370,8 @@ public class CallableProtocolUpload extends CallableProtectedTask<String> {
 		AccessRights policy = new AccessRights(null);
 		try {
 			//get only fields from the web form
-		
-			DBProtocol newProtocol = ProtocolFactory.getProtocol(null,input, 10000000,dir,policy,updateMode);
+			
+			DBProtocol newProtocol = ProtocolFactory.getProtocol(null,input, 10000000,dir,policy,updateMode,dtdresolver);
 			newProtocol.setID(protocol.getID());
 			newProtocol.setVersion(protocol.getVersion());
 			if (newProtocol.getIdentifier()==null)

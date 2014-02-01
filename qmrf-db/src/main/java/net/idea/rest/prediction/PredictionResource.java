@@ -24,6 +24,7 @@ import net.idea.rest.protocol.resource.db.DownloadDocumentConvertor;
 import net.idea.rest.protocol.resource.db.FileReporter;
 import net.idea.rest.protocol.resource.db.ProtocolQueryURIReporter;
 import net.idea.restnet.c.StringConvertor;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.TaskCreator;
@@ -208,7 +209,8 @@ public class PredictionResource extends QMRFQueryResource<IQueryRetrieval<DBAtta
 			String dir = dbc.getDir();
 			if ("".equals(dir)) dir = null;
 			CallableProtocolUpload callable = new CallableProtocolUpload(method,protocol,user,input,conn,r,getToken(),getRequest().getRootRef().toString(),
-						dir==null?null:new File(dir)
+						dir==null?null:new File(dir),
+						((TaskApplication)getApplication()).getResolver()
 			);
 			callable.setSetDataTemplateOnly(true);
 			return callable;

@@ -30,6 +30,7 @@ import net.toxbank.client.resource.User;
 import org.apache.commons.fileupload.FileItem;
 import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
+import org.xml.sax.EntityResolver;
 
 public class ProtocolFactory {
 	protected static final String msg_invalid_qmrf = "Invalid QMRF document!";
@@ -39,7 +40,8 @@ public class ProtocolFactory {
 				long maxSize,
 				File dir, 
 				AccessRights accessRights,
-				UpdateMode updateMode) throws ResourceException {
+				UpdateMode updateMode,
+				EntityResolver dtdresolver) throws ResourceException {
 		
 		if (protocol==null) protocol = new DBProtocol();
 		for (final Iterator<FileItem> it = items.iterator(); it.hasNext();) {
@@ -118,6 +120,7 @@ public class ProtocolFactory {
 				        protocol.setAbstract(fi.getString(utf8));
 				    	QMRFObject qmrf = new QMRFObject();
 				    	try {
+				    		qmrf.setDtdresolver(dtdresolver);
 				    		qmrf.read(new StringReader(protocol.getAbstract()));
 				    		qmrf.setSaveSelectedOnly(true);
 				    		qmrf.transform_and_read(new StringReader(protocol.getAbstract()),false);

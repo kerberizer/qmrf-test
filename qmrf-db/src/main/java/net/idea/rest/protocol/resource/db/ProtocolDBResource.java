@@ -179,7 +179,8 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			
 			Object fileNamePrefix = getRequest().getAttributes().get(FileResource.resourceKey);
 			return new OutputStreamConvertor(new QMRFReporter(getRequest(),variant.getMediaType(),
-					((FreeMarkerApplicaton<String>)getApplication()).getConfiguration()
+					((FreeMarkerApplicaton<String>)getApplication()).getConfiguration(),
+					((TaskApplication)getApplication()).getResolver()
 					),
 					variant.getMediaType(),filenamePrefix);		
 		} else return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);		
@@ -520,7 +521,8 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 			String dir = ((TDBConnection)dbc).getDir();
 			if ("".equals(dir)) dir = null;
 			return new CallableProtocolUpload(method,item,user,input,conn,r,getToken(),getRequest().getRootRef().toString(),
-						dir==null?null:new File(dir)
+						dir==null?null:new File(dir),
+						((TaskApplication)getApplication()).getResolver()
 			);
 		} catch (ResourceException x) {
 			throw x;
