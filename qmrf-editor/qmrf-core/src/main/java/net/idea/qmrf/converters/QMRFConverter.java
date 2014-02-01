@@ -36,6 +36,8 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
+
 import org.htmlcleaner.CleanerProperties;
 import org.htmlcleaner.CompactHtmlSerializer;
 import org.htmlcleaner.ContentNode;
@@ -48,8 +50,22 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.EntityResolver;
 
 public abstract class QMRFConverter {
+	EntityResolver dtdresolver;
+	public EntityResolver getDtdresolver() {
+		if (dtdresolver==null) {
+			QMRFSchemaResolver resolver = new QMRFSchemaResolver(QMRFSchemaResolver.defaultLocation);
+			resolver.setIgnoreSystemID(true);
+			dtdresolver = resolver;
+		}
+		return dtdresolver;
+	}
+
+	public void setDtdresolver(EntityResolver dtdresolver) {
+		this.dtdresolver = dtdresolver;
+	}
 	public enum Mode {
 		chapter, title, text, reference, answer, dataset, attachments
 	};

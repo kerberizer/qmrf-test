@@ -124,7 +124,20 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	protected static Logger logger = Logger.getLogger(QMRFObject.class.getName());
 	protected final static String qmrf_version = "1.2";
     protected final static String qmrf_chapters = "QMRF_chapters";
-    protected final static String qmrf_catalogs = "Catalogs";    
+    protected final static String qmrf_catalogs = "Catalogs";
+    protected EntityResolver dtdresolver;
+	public EntityResolver getDtdresolver() {
+		if (dtdresolver==null) {
+	    	QMRFSchemaResolver resolver = new QMRFSchemaResolver(dtdSchema);
+	    	resolver.setIgnoreSystemID(true);
+	    	dtdresolver = resolver;
+		}
+		return dtdresolver;
+	}
+
+	public void setDtdresolver(EntityResolver dtdresolver) {
+		this.dtdresolver = dtdresolver;
+	}
 	protected QMRFAttributes attributes;
 	protected ArrayList<QMRFChapter> chapters;
 	public ArrayList<QMRFChapter> getChapters() {
@@ -533,7 +546,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	
 	public void xsltTransform(Reader input, InputStream xslt, Result result)   throws IOException, TransformerException {
 		try {
-            transform(new DOMSource(readDocument(new InputSource(input),true,new QMRFSchemaResolver(dtdSchema,logger))), 
+            transform(new DOMSource(readDocument(new InputSource(input),true,getDtdresolver())), 
                     new StreamSource(xslt), result);
 
 		} catch (Exception x) {
@@ -644,9 +657,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
     }
     public void read(Reader reader) throws Exception {
         
-    	QMRFSchemaResolver resolver = new QMRFSchemaResolver(dtdSchema,logger);
-    	resolver.setIgnoreSystemID(true);
-        Document doc = readDocument(new InputSource(reader),false,resolver);
+        Document doc = readDocument(new InputSource(reader),false,getDtdresolver());
         
         //Schema schema = factory.getSchema();
         fromXML(doc.getDocumentElement());

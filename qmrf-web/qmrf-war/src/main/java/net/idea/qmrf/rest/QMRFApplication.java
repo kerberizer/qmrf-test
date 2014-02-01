@@ -109,7 +109,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		// to enable QMRF XML  DTD validation and XSLT stylesheets with idref
 		try {
 			URL uri = this.getClass().getClassLoader().getResource("ambit2/qmrfeditor/qmrf.dtd");
-			resolver = new QMRFSchemaResolver(uri==null?null:uri.getFile(), null);
+			resolver = new QMRFSchemaResolver(uri==null?null:uri.getFile());
 			((QMRFSchemaResolver) resolver).setIgnoreSystemID(true);
 		} catch (Exception x) {
 			x.printStackTrace();

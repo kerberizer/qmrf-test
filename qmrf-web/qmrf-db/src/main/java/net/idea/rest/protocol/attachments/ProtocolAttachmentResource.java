@@ -260,7 +260,8 @@ public class ProtocolAttachmentResource extends QMRFQueryResource<IQueryRetrieva
 			String dir = dbc.getDir();
 			if ("".equals(dir)) dir = null;
 			CallableProtocolUpload callable = new CallableProtocolUpload(method,protocol,user,input,conn,r,getToken(),getRequest().getRootRef().toString(),
-						dir==null?null:new File(dir)
+						dir==null?null:new File(dir),
+						((TaskApplication)getApplication()).getResolver()								
 			);
 			callable.setSetDataTemplateOnly(true);
 			return callable;

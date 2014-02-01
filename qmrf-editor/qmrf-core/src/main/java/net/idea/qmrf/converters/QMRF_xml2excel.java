@@ -209,9 +209,7 @@ public class QMRF_xml2excel extends QMRFConverter {
  		    DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docBuilderFactory.newDocumentBuilder();
 
-			QMRFSchemaResolver resolver = new QMRFSchemaResolver(QMRFSchemaResolver.defaultLocation,null);
-			resolver.setIgnoreSystemID(true);
-			docBuilder.setEntityResolver(resolver);
+			docBuilder.setEntityResolver(getDtdresolver());
 
 			org.w3c.dom.Document doc = docBuilder.parse(source);
 
