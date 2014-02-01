@@ -148,7 +148,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	protected Catalogs external_catalogs;
     protected String dtdSchema = "http://qmrf.sourceforge.net/qmrf.dtd";
     protected String xmlSample = "http://ambit.sourceforge.net/qmrf/qmrf.xml";
-    protected String ttfFontUrl = "http://ambit.sourceforge.net/qmrf/jws/times.ttf";
+    private String ttfFontUrl = "http://ambit.sourceforge.net/qmrf/jws/times.ttf";
     protected boolean adminUser = false;
     protected String source = "New";
     protected QMRFChapter selectedChapter = null;
@@ -975,7 +975,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	public void setTtfFontUrl(String ttfFontUrl) {
 		this.ttfFontUrl = ttfFontUrl.trim();
 		if (ttfFontUrl.indexOf("http://") != -1) {
-			logger.fine("font have to be retrieved from URL '"+ttfFontUrl+"'");
+			logger.warning("font have to be retrieved from URL '"+ttfFontUrl+"'");
 		}	
 	}
 	public boolean isAttachmentReadOnly() {

@@ -360,20 +360,7 @@ public class AmbitObjectPanel<T extends AmbitObject> extends CorePanel implement
 			      		edit.addPropertyChangeListener("value",this);		      		
 			      	}
  				}
-		      	/*
-		         System.out.println("Name: " + methodString);
-		         String returnString = theMethods[i].getReturnType().getName();
-		         
-		         System.out.println("   Return Type: " + returnString);
-		         
-	         
-		         System.out.print("   Parameter Types:");
-		         for (int k = 0; k < parameterTypes.length; k ++) {
-		            String parameterString = parameterTypes[k].getName();
-		            System.out.print(" " + parameterString);
-		         }
-		         System.out.println();
-		        */
+
 		       }
 		   }
 

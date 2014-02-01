@@ -1520,21 +1520,7 @@ public class QMRF_xml2excel extends QMRFConverter {
 
 		    wb.write(excel);
 		    excel.close();		
-
-/*		
-			catch (SAXParseException err) {
-	        System.out.println ("** Parsing error" + ", line "
-	             + err.getLineNumber () + ", uri " + err.getSystemId ());
-	        System.out.println(space + err.getMessage ());
-
-	        }catch (SAXException e) {
-	        Exception x = e.getException ();
-	        ((x == null) ? e : x).printStackTrace ();
-
-	        }catch (Throwable t) {
-	        t.printStackTrace ();
-	        }
-*/	        
+     
 	
 	}
 
