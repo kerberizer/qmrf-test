@@ -99,33 +99,13 @@ public class QMRF_xml2pdf extends QMRFConverter {
 			// pri.
 			BaseFont baseFont = null;
 			if (ttffont == null) {
-				URL url = getClass().getClassLoader().getResource(
-						"ambit2/qmrfeditor/font/calibri.ttf");
-				System.out.println(url);
+				URL url = getClass().getClassLoader().getResource("ambit2/qmrfeditor/font/calibri.ttf");
 				ttffont = url.getFile();
 			}
 
-			/*
-			 * try {
-			 * 
-			 * baseFont = BaseFont.createFont(ttffont, BaseFont.IDENTITY_H,
-			 * BaseFont.EMBEDDED);
-			 * 
-			 * } catch (Exception x) { x.printStackTrace(); baseFont =
-			 * BaseFont.createFont("c:\\windows\\fonts\\times.ttf",
-			 * BaseFont.IDENTITY_H, BaseFont.EMBEDDED); ttffont =
-			 * FontFactory.TIMES; }
-			 */
-
-			// font = FontFactory.getFont(ttffont,
-			// FontFactory.defaultEncoding,true, 11,Font.NORMAL);
-			// //FontFactory.getFont(FontFactory.TIMES, "UTF-8",true,
-			// 11,Font.NORMAL);
-			// if (font==null)
+		
 			font = FontFactory.getFont(FontFactory.HELVETICA,
 					FontFactory.defaultEncoding, true, 10, Font.NORMAL);
-			System.out.println(font.getFamilyname());
-			System.out.println(ttffont);
 
 			bfont = FontFactory.getFont(FontFactory.TIMES,
 					FontFactory.defaultEncoding, true, 11, Font.BOLD);

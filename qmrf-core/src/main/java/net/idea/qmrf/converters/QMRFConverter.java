@@ -621,7 +621,7 @@ public abstract class QMRFConverter {
 						printnewline = true;
 					}
 				} catch (Exception x) {
-					System.out.println(attributes[i] + x.getMessage());
+					System.err.println(x.getMessage());
 					// x.printStackTrace();
 				}
 			r++;
