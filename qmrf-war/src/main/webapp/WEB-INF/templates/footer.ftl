@@ -29,13 +29,12 @@
 		});
 </script>
 		
-<div id='footer-out'>
-<div id='footer-in'>
+
 <div id='footer'>
+<!--
 	<a class='footerLink external' href='http://www.ideaconsult.net/'>
 		IDEAconsult Ltd.</a> (2007-2012) on behalf of 
 		<a class='footerLink' href='http://ihcp.jrc.ec.europa.eu/'>IHCP, JRC Ispra, Italy</a>
-</div>
-</div>
+-->
 </div>
 
