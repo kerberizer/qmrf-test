@@ -24,7 +24,7 @@
 			<li><a class='selectable ' title='Click here to read about the OECD Principles' href="${qmrf_oecd}">OECD Principles</a></li>
 			<li><a class='selectable external' title='Click here to access the QMRF user manual' href="${qmrf_manual}">User Manual</a></li>
 			<li><a class='selectable external' title='Click here to read the FAQ' href="${qmrf_faq}">FAQ</a></li>
-			<li><a class='selectable external' title='Click here to access the general help pages' href='http://qmrf.sf.net/'>Help</a></li>
+			<li><a class='selectable external' title='Click here to access the general help pages' href='http://qmrf.sf.net/'>User support</a></li>
 	
 		
 		</ul>

@@ -10,7 +10,7 @@
 			</li>
 			<li class='topLinks'>|</li>
 			<li class='topLinks'>
-			<a class='topLinks external' href='http://qmrf.sf.net/'>Help</a>
+			<a class='topLinks external' href='http://qmrf.sf.net/'>User support</a>
 			</li>
 			<li class='topLinks'>|</li>
 
