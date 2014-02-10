@@ -3,9 +3,9 @@
 <#include "/head.ftl" >
 <script type='text/javascript' src='/qmrf/jquery/jquery.validate.min.js'></script>
 <script type='text/javascript' src='/qmrf/jquery/jquery.passstrength.min.js'></script>
+<script type='text/javascript' src='/qmrf/scripts/myprofile.js'></script>
 
 <script type='text/javascript'>
-
 
 $().ready(function() {
     $('#pwd1').passStrengthify({minimum:8});
@@ -31,6 +31,9 @@ $().ready(function() {
     	   });
     				
 	// validate the comment form when it is submitted
+	
+	pwdStrengthValidatorSetup();
+	
 	$("#registerForm").validate({
 		rules : {
 			'username': {
@@ -58,11 +61,12 @@ $().ready(function() {
 			},		
 			'pwd1': {
 				required : true,
-				minlength: 8
+				strength : true,
+				minlength: 12
 			},
 			'pwd2': {
 				required : true,
-				minlength: 8,
+				minlength: 12,
 				equalTo: "#pwd1"
 			},
 			'privacy' : {

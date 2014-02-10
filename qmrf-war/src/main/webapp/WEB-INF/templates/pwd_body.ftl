@@ -4,11 +4,15 @@
 <#include "/head.ftl" >
 <script type='text/javascript' src='/qmrf/jquery/jquery.passstrength.min.js'></script>
 <script type='text/javascript' src='/qmrf/jquery/jquery.validate.min.js'></script>
+<script type='text/javascript' src='/qmrf/scripts/myprofile.js'></script>
+
 <script type='text/javascript'>
 
 
 $().ready(function() {
-    $('#pwd1').passStrengthify({minimum:8});
+	pwdStrengthValidatorSetup();
+	
+    $('#pwd1').passStrengthify({minimum:12});
 	// validate the comment form when it is submitted
 	$("#pwdForm").validate({
 		rules : {
@@ -17,11 +21,12 @@ $().ready(function() {
 			},
 			'pwd1': {
 				required : true,
-				minlength: 8
+				strength : true,
+				minlength: 12
 			},
 			'pwd2': {
 				required : true,
-				minlength: 8,
+				minlength: 12,
 				equalTo: "#pwd1"
 			}
 			
@@ -34,7 +39,7 @@ $().ready(function() {
 			},
 			'pwd2'   : {
 				required: "Please provide a new password",
-				minlength: "Your password must be at least 8 characters long",
+				minlength: "Your password must be at least 12 characters long",
 				equalTo: "Please enter the same password as above"
 			}			
 		}
