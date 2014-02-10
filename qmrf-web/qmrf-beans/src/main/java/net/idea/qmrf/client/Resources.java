@@ -55,6 +55,7 @@ public class Resources {
 		qmrf_faq,
 		qmrf_oecd,
 		qmrf_jrc,
+		qmrf_disclaimer,
 		sessiontimeout,
 		users_dbname
 	}

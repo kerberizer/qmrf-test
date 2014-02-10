@@ -16,7 +16,11 @@
 <script type='text/javascript'>
 	$(document).ready(function() {
 		$(".external").click(function(event) {
-		   var confirmation = confirm("You are leaving the JRC QSAR Model database website. The European Commission accepts no responsibility or liability whatsoever with regard to the information on the site you are moving to.");
+			var msg = "You are leaving the JRC QSAR Model database website. The European Commission accepts no responsibility or liability whatsoever with regard to the information on the site you are moving to."; 		
+		   <#if qmrf_disclaimer??>
+		   		msg = "${qmrf_disclaimer}";
+		   </#if>	
+		   var confirmation = confirm(msg);
 		   if (!confirmation) {
 		     event.preventDefault();
 		   }
