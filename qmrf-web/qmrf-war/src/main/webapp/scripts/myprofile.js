@@ -266,3 +266,18 @@ function defineAlertsTable(root,url) {
 	} );
 	return oTable;
 }
+
+function pwdStrengthValidatorSetup(){
+	$.validator.addMethod("strength", pwdStrength, "Please enter at least 12 symbols, including one number and one uppercase letter.");	
+}
+
+function pwdStrength(value, element){
+	//var abc_lo = value.match(/[a-z]/);
+	var abc_up = value.match(/[A-Z]/);
+	var num = value.match(/[0-9]/);
+	//var special = value.match(/.[!,@,#,$,%,^,&,*,?,_,~,-,£,(,)]/);
+
+	if (!abc_up) return false;
+	if (!num) return false;
+	return true;
+}

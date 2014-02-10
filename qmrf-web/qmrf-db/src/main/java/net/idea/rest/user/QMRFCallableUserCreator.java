@@ -17,7 +17,8 @@ import org.restlet.data.Status;
 import org.restlet.resource.ResourceException;
 
 public class QMRFCallableUserCreator extends CallableUserCreator {
-	
+	private static final String[] numbers = {"0","1","2","3","4","5","6","7","8","9"};
+	private static final String[] abc = {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","W","X","Y","Z"};
 	protected String getSenderName() { return "The QMRF Database Support Team"; };
 	@Override
 	protected String getSender() {
@@ -50,7 +51,13 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 		if (credentials!=null) {
 			if (credentials.getNewpwd()!=null && credentials.getOldpwd()!=null) { 
 				if (!passwordChange && !credentials.getNewpwd().equals(credentials.getOldpwd())) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
-				if (credentials.getNewpwd().length()<8)throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+				if (credentials.getNewpwd().length()<12) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+				int nums = 0; //at least one number
+				for (int i=0;i<numbers.length;i++) if (credentials.getNewpwd().indexOf(numbers[i])>=0) nums++;
+				if (nums<0) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+				nums = 0; //at least one uppercase
+				for (int i=0;i<abc.length;i++) if (credentials.getNewpwd().indexOf(abc[i])>=0) nums++;
+				if (nums<0) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 			}
 		}
 		return user;
