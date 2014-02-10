@@ -1,7 +1,10 @@
 package net.idea.rest;
 
 import java.util.Iterator;
+import java.util.Map;
 
+import net.idea.qmrf.client.Resources;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.resource.CatalogResource;
 
 import org.restlet.data.Form;
@@ -46,5 +49,10 @@ public abstract class QMRFCatalogResource<T> extends CatalogResource<T> {
 			//if POST, the form should be already initialized
 			else params = getRequest().getEntityAsForm();
 		return params;
+	}
+	@Override
+	public void configureTemplateMap(Map<String, Object> map) {
+		super.configureTemplateMap(map);
+		map.put(Resources.Config.qmrf_disclaimer.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_disclaimer.name()));
 	}
 }
