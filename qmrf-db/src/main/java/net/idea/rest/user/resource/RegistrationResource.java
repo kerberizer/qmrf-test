@@ -83,7 +83,7 @@ public class RegistrationResource extends QMRFCatalogResource<DBUser> {
 		map.put("creator","Ideaconsult Ltd.");
 	    map.put("qmrf_root",getRequest().getRootRef());
 	    map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
-	    
+	    map.put(Resources.Config.qmrf_editor.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_editor.name()));
 	}
 	
 	@Override

@@ -28,7 +28,7 @@ import org.restlet.security.User;
 
 public class QMRF_HTMLBeauty extends HTMLBeauty {
 	
-	private final static String qmrfEditorDownloadLink = "http://qmrf.sf.net/editor";
+	public static String qmrfEditorDownloadLink = "http://qmrf.sf.net/editor";
 	private final static String qmrfEditorEmail = "JRC-IHCP-COMPUTOX@ec.europa.eu";
 	private final static String qmrfHelpURL = "http://qmrf.sf.net/";
 	private final static String QMRF_title = "(Q)SAR Model Reporting Format Database";

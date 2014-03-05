@@ -108,6 +108,7 @@ public class StructureResource extends QMRFCatalogResource<Structure> {
 	    map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
 	    map.put(Resources.Config.qmrf_email.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_email.name()));
 	    map.put("query", query2map(parameters));
+	    map.put(Resources.Config.qmrf_editor.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_editor.name()));
 	}
 	
 	

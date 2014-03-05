@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.UserHTMLBeauty;
+import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.user.DBUser;
@@ -108,6 +109,7 @@ public class MyAccountResource<T> extends UserDBResource<T> {
 			throws ResourceException {
 		Map<String, Object> map = super.getMap(variant);
 		map.put("myprofile", true);
+		map.put(Resources.Config.qmrf_editor.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_editor.name()));
 		return map;
 	}
 }
