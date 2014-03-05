@@ -4,16 +4,14 @@
 		$('a.selectable').mouseout(function  () { $(this).removeClass('hovered'); } );
 
 		try {
-			$('span#valueDatasets').load(  "${queryService}/admin/stats/dataset"   );
-			$('span#valueStructures').load( "${queryService}/admin/stats/structures");
+			var uri = "${qmrf_root}/channel?uri=" + encodeURIComponent("${queryService}/admin/stats/dataset?media=text/plain");
+			$('span#valueDatasets').load(uri);
+			uri = "${qmrf_root}/channel?uri=" + encodeURIComponent("${queryService}/admin/stats/structures?media=text/plain" );
+			$('span#valueStructures').load(uri);
 		} catch (e) {
-
+			console.log(e);
 		}
-		
-<#-- XXX Remove these two lines when the above issue is fixed. 
-		$('span#valueDatasets').replaceWith('47');
-		$('span#valueStructures').replaceWith('12049');
-	-->
+
 	});
 
 </script>
