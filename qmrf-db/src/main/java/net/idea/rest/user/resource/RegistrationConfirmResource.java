@@ -11,6 +11,7 @@ import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.db.QDBConnection;
+import net.idea.rest.user.QMRFUserRegistration;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
@@ -92,7 +93,8 @@ public class RegistrationConfirmResource extends  QMRFQueryResource<ReadRegistra
 				UserURIReporter reporter = new UserURIReporter(getRequest(),"");
 				DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 				conn = dbc.getConnection();
-				UserRegistration reg = new  UserRegistration(code.toString());
+				UserRegistration reg = new  QMRFUserRegistration(code.toString());
+				((QMRFUserRegistration)reg).setTitle("Confirm registration");
 				ConfirmRegistration q = new ConfirmRegistration(reg);
 				q.setDatabaseName(usersdbname);
 				exec = new UpdateExecutor();

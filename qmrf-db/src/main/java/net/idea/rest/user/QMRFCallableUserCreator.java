@@ -8,7 +8,6 @@ import net.idea.modbcum.p.ProcessorException;
 import net.idea.restnet.i.task.TaskResult;
 import net.idea.restnet.user.CallableUserCreator;
 import net.idea.restnet.user.DBUser;
-import net.idea.restnet.user.db.ReadUser;
 import net.idea.restnet.user.resource.UserURIReporter;
 
 import org.restlet.data.Form;
