@@ -52,10 +52,10 @@ public class QMRFLoginFormReporter<U extends User> extends UserLoginHTMLReporter
 	
 				writer.write(String.format("<form method='post' action='%s/protected/signin?targetUri=%s' id='loginForm' autocomplete='off'>",baseReference,redirect));
 					
-				writer.write(String.format("<tr><th align='right'>%s</th><td><input type='text' size='40' id='login' name='%s' value='' required minLength='3'></td></tr>",
+				writer.write(String.format("<tr><th align='right'>%s</th><td><input type='text' size='40' id='login' name='%s' value='' required minLength='3'></td><td></td></tr>",
 							"User name:&nbsp;","login"));
-				writer.write(String.format("<tr><th align='right'>%s</th><td><input type='password' size='40' id='password' name='%s' value='' required></td></tr>",
-						"Password:&nbsp;","password"));
+				writer.write(String.format("<tr><th align='right'>%s</th><td><input type='password' size='40' id='password' name='%s' value='' required></td><td><a href='%s/forgotten' title='Click to request one time password reset'>Forgotten password?</a></td></tr>",
+						"Password:&nbsp;","password",baseReference));
 				writer.write("<tr><td></td><td><input align='bottom' class='submit' type=\"submit\" value=\"Log in\"></td></tr>");
 				//writer.write(String.format("<tr><th align='right'></th><td><input type='hidden' size='40' name='targetURI' value='%s/login'></td></tr>",baseReference));
 				

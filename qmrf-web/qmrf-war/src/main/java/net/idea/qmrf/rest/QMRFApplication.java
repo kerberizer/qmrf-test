@@ -1,7 +1,6 @@
 package net.idea.qmrf.rest;
 
 import java.net.URL;
-import java.util.Properties;
 import java.util.UUID;
 
 import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
@@ -29,6 +28,10 @@ import net.idea.rest.user.UserRouter;
 import net.idea.rest.user.alerts.resource.AlertRouter;
 import net.idea.rest.user.author.resource.AuthorsResource;
 import net.idea.rest.user.resource.MyAccountResource;
+import net.idea.rest.user.resource.PwdForgottenConfirmResource;
+import net.idea.rest.user.resource.PwdForgottenFailedResource;
+import net.idea.rest.user.resource.PwdForgottenNotifyResource;
+import net.idea.rest.user.resource.PwdForgottenResource;
 import net.idea.rest.user.resource.PwdResetResource;
 import net.idea.rest.user.resource.RegistrationConfirmResource;
 import net.idea.rest.user.resource.RegistrationNotifyResource;
@@ -229,6 +232,13 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		router.attach(String.format("%s%s", Resources.register, Resources.confirm), RegistrationConfirmResource.class);
 		router.attach(String.format("%s%s", Resources.register, Resources.notify), RegistrationNotifyResource.class);
 
+		router.attach(Resources.forgotten, PwdForgottenResource.class);
+		router.attach(String.format("%s%s", Resources.forgotten, Resources.confirm), PwdForgottenConfirmResource.class);
+		router.attach(String.format("%s%s", Resources.forgotten, Resources.notify), PwdForgottenNotifyResource.class);
+		router.attach(String.format("%s%s", Resources.forgotten, Resources.failed), PwdForgottenFailedResource.class);
+		
+
+		
 		router.setDefaultMatchingMode(Template.MODE_STARTS_WITH);
 		router.setRoutingMode(Router.MODE_BEST_MATCH);
 		/*
