@@ -1,4 +1,4 @@
-function getMyAccount(url,readonly) {
+function getMyAccount(url,readonly,admin) {
 	var facet = {};	
 
     $.ajax({
@@ -35,6 +35,10 @@ function getMyAccount(url,readonly) {
         			sOrg += "<em></em></p>\n";
         		};
     			$("#organisations").html(sOrg);
+    			if (admin) {
+    				var userURI = "/qmrf/user/" + entry.id + "?method=put"; 
+    				$("#form_myaccount").attr("action",userURI);
+    			}
     			if (!readonly) {
     				$(".affiliation").autocomplete({
     					source: function (request, response) {
