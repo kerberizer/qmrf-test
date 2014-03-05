@@ -44,6 +44,7 @@ public class QMRFWelcomeResource extends ServerResource {
 	        map.put(Resources.Config.qmrf_jrc.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_jrc.name()));
 	        map.put(Resources.Config.qmrf_disclaimer.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_disclaimer.name()));
 	        map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
+	        map.put("qmrf_root",getRequest().getRootRef().toString()) ;
 	        return toRepresentation(map, "body-welcome.ftl", MediaType.TEXT_PLAIN);
 	}
 	
