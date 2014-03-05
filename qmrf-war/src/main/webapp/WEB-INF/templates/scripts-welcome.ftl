@@ -9,7 +9,7 @@
 			uri = "${qmrf_root}/channel?uri=" + encodeURIComponent("${queryService}/admin/stats/structures?media=text/plain" );
 			$('span#valueStructures').load(uri);
 		} catch (e) {
-			console.log(e);
+			
 		}
 
 	});
