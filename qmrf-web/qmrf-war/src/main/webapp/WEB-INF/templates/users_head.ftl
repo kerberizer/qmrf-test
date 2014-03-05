@@ -2,10 +2,23 @@
 <script type='text/javascript' src='/qmrf/jquery/jquery.validate.min.js'></script>
 <script type='text/javascript'>
 $(document).ready(function() {
+
+	<#assign admin = false>
+	<#if managerRole??>
+		<#if managerRole == 'true'>
+			<#assign admin = true>
+		</#if>					
+	</#if>
+					
+
 	<#if myprofile>
-		getMyAccount("${qmrf_request_json}",false);
+		getMyAccount("${qmrf_request_json}",false,false);
 	<#else>
-		getMyAccount("${qmrf_request_json}",true);
+		<#if admin>
+			getMyAccount("${qmrf_request_json}",false,true);
+		<#else>
+			getMyAccount("${qmrf_request_json}",true,false);
+		</#if>	
 	</#if>
 	
 	

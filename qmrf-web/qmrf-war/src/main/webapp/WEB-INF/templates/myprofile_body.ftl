@@ -31,11 +31,16 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 		<!-- user details tab -->
 			<div id='tabs-id'>
 			<span class='summary'>
-			<form action="/qmrf/myaccount/?method=put" id="form_myaccount" method="POST" >			
+			
+			<form action="/qmrf/myaccount/?method=put" id="form_myaccount" method="POST" >					
 			<#if myprofile>
 				<#assign ro=''>
 			<#else>
-				<#assign ro='readonly'>
+				<#if admin>
+					<#assign ro=''>
+				<#else>
+					<#assign ro='readonly'>
+				</#if>	
 			</#if>
 
 			<h2><a href=''><span id='useruri'></span></a></h2>
@@ -51,8 +56,12 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 			<p><label for="reviewer">Available as a reviewer</label><input type="checkbox" ${ro} name='reviewer' id='reviewer' value=''></p>
 			<#if myprofile>
 				<p><label for="update">&nbsp;</label><input id='update' name='update' type='submit' value='Update'></p>
+			<#else>
+				<#if admin>
+					<p><label for="update">&nbsp;</label><input id='update' name='update' type='submit' value='Update'></p>
+				</#if>	
 			</#if>
-			
+
 			<#if myprofile>
 				<hr>
 				<p><a href="/qmrf/myaccount/reset">Change password</a></p>			
