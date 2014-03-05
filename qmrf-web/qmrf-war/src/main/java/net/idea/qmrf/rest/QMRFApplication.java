@@ -20,6 +20,7 @@ import net.idea.rest.endpoints.EndpointsResource;
 import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
+import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.rest.protocol.facet.ProtocolsByEndpointResource;
 import net.idea.rest.protocol.resource.db.UnpublishedProtocolsResource;
 import net.idea.rest.structure.resource.DatasetResource;
@@ -117,7 +118,11 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
-
+		try {
+			QMRF_HTMLBeauty.qmrfEditorDownloadLink = getProperty(Resources.Config.qmrf_editor.name());
+		} catch (Exception x) {
+			
+		}
 	}
 
    	public QMRFStatusService.REPORT_LEVEL getStatusReportLevel() {

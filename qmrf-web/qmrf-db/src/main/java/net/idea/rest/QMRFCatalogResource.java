@@ -54,5 +54,6 @@ public abstract class QMRFCatalogResource<T> extends CatalogResource<T> {
 	public void configureTemplateMap(Map<String, Object> map) {
 		super.configureTemplateMap(map);
 		map.put(Resources.Config.qmrf_disclaimer.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_disclaimer.name()));
+		map.put(Resources.Config.qmrf_editor.name(),((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_editor.name()));
 	}
 }

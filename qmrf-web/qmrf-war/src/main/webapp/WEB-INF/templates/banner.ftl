@@ -2,7 +2,11 @@
 
 			<ul class='topLinks'>
 			<li class='topLinks'>
-			<a class='topLinks external' href='http://qmrf.sf.net/editor'>Download QMRF Editor</a>
+			<#if qmrf_editor??>
+				<a class='topLinks external' href='${qmrf_editor}'>Download QMRF Editor</a>
+			<#else>
+				<a class='topLinks external' href='http://qmrf.sf.net/editor'>Download QMRF Editor</a>
+			</#if>
 			</li>
 			<li class='topLinks'>|</li>
 			<li class='topLinks'>
