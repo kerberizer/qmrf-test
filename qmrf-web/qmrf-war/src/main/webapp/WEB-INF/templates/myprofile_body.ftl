@@ -11,6 +11,18 @@ p { clear: both; }
 em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 </style>
 
+<script type='text/javascript'>
+$(document).ready(function() {
+	$('#form_removeuser').validate({
+	    submitHandler: function(form) {
+	        if (confirm('Please confirm user removal!')) {
+	            form.submit();
+	        }
+	    }
+	});
+});
+</script>
+
 </head>
 <body>
 	<div class='w_wrap'>
@@ -61,12 +73,21 @@ em { font-weight: bold; padding-right: 1em; vertical-align: top; }
 					<p><label for="update">&nbsp;</label><input id='update' name='update' type='submit' value='Update'></p>
 				</#if>	
 			</#if>
-
+			</form>
+			
 			<#if myprofile>
 				<hr>
 				<p><a href="/qmrf/myaccount/reset">Change password</a></p>			
+			<#else>
+				<#if admin>
+					<hr>
+					<form action="" id="form_removeuser" method="POST" >
+					<p><input type="hidden" name='user' id='user_to_delete' value=''></p>					
+					<p><label for="delete">&nbsp;</label><input id='delete' name='delete' type='submit' value='Remove this user'></p>
+					</form>
+				</#if>	
 			</#if>
-			</form>
+			
 			</span></div>
 		<!-- protocols -->
 			<div id='QMRF_documents'></div>
