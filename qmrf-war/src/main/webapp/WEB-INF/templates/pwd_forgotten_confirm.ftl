@@ -86,7 +86,7 @@ $(document).ready(function() {
 	    
 		<#if qmrf_reg_confirmed??>
 			
-			<form action="${qmrf_root}/forgotten/confirm?code=${qmrf_reg_confirmed}&method=PUT" id="pwdForm"  method="POST" >
+			<form action="${qmrf_root}/forgotten/confirm?code=${qmrf_reg_confirmed}&method=PUT" id="pwdForm"  method="POST" autocomplete='off' >
 				<table class='success' width='80%%'>
 				<tbody>	
 				<tr>

@@ -45,7 +45,7 @@ $().ready(function() {
 		<div class='ui-widget ' style='margin-top: 20px; padding: 0 .7em;'>
 		<div class='ui-widget-header ui-corner-top'><p>QMRF password reset</p></div>
 	    <div class='ui-widget-content ui-corner-bottom'>					
-			<form action="${qmrf_root}/forgotten" id="pwdresetForm"  method="POST" >		
+			<form action="${qmrf_root}/forgotten" id="pwdresetForm"  method="POST" autocomplete='off' >		
 	    	<table width='80%%' style='margin-left:20px;'>
 			<tbody>
 			<tr>
