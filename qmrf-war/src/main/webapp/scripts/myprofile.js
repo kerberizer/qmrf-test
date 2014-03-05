@@ -36,8 +36,10 @@ function getMyAccount(url,readonly,admin) {
         		};
     			$("#organisations").html(sOrg);
     			if (admin) {
-    				var userURI = "/qmrf/user/" + entry.id + "?method=put"; 
-    				$("#form_myaccount").attr("action",userURI);
+    				var userURI = "/qmrf/user/" + entry.id;; 
+    				$("#form_myaccount").attr("action",userURI + "?method=put");
+    				$("#form_removeuser").attr("action",userURI + "?method=delete");
+    				$("#user_to_delete").text(userURI);
     			}
     			if (!readonly) {
     				$(".affiliation").autocomplete({
@@ -285,3 +287,4 @@ function pwdStrength(value, element){
 	if (!num) return false;
 	return true;
 }
+
