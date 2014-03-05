@@ -105,4 +105,17 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 			try {connection.close();} catch (Exception x) {}
 		}
 	}
+	@Override
+	public String toString() {
+		if (passwordChange)
+			return String.format("Password change");
+		else if (Method.POST.equals(method)) {
+			return String.format("Create user");
+		} else if (Method.PUT.equals(method)) {
+			return String.format("Update user");
+		} else if (Method.DELETE.equals(method)) {
+			return String.format("Delete user");
+		}
+		return "Read user";
+	}
 }
