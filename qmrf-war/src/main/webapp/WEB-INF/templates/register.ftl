@@ -8,7 +8,7 @@
 <script type='text/javascript'>
 
 $().ready(function() {
-    $('#pwd1').passStrengthify({minimum:8});
+    $('#pwd1').passStrengthify({minimum:12});
     
 	$("#affiliation").autocomplete({
     		source: function (request, response) {
@@ -98,7 +98,7 @@ $().ready(function() {
 			},
 			'pwd2'      : {
 				required: "Please confirm the password",
-				minlength: "Your password must be at least 8 characters long",
+				minlength: "Your password must be at least 12 characters long",
 				equalTo: "Please enter the same password as above"
 			},
 			'privacy' : {

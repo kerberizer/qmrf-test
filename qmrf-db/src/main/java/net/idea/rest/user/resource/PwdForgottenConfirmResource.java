@@ -14,6 +14,8 @@ import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFQueryResource;
 import net.idea.rest.task.RegistrationTaskHTMLReporter;
+import net.idea.rest.user.QMRFReadRegistration;
+import net.idea.rest.user.QMRFUserRegistration;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.StringConvertor;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -82,7 +84,7 @@ public class PwdForgottenConfirmResource extends  QMRFQueryResource<ReadRegistra
 			Response response) throws ResourceException {
 		Object code = getRequest().getResourceRef().getQueryAsForm().getFirstValue(confirmationCode);
 		if (code==null) return null;
-		ReadRegistration q = new ReadRegistration(code.toString());
+		ReadRegistration q = new QMRFReadRegistration(new QMRFUserRegistration(code.toString()));
 		String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
 		q.setDatabaseName(usersdbname==null?"tomcat_users":usersdbname);
 		return q;
@@ -127,6 +129,7 @@ public class PwdForgottenConfirmResource extends  QMRFQueryResource<ReadRegistra
 			UserURIReporter reporter = new UserURIReporter(getRequest(),"");
 			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 			conn = dbc.getConnection();
+			if (item instanceof QMRFUserRegistration) ((QMRFUserRegistration)item).setTitle("(forgotten password)");
 			return new CallablePasswordReset(method,item,reporter, form,getRequest().getRootRef().toString(),
 					conn,getToken(),usersdbname==null?"tomcat_users":usersdbname);
 		} catch (Exception x) {

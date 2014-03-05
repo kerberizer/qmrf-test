@@ -1,11 +1,16 @@
 <#include "/html.ftl" >
 <head>
 <#include "/head.ftl" >
+<script type='text/javascript' src='/qmrf/jquery/jquery.passstrength.min.js'></script>
 <script type='text/javascript' src='${qmrf_root}/jquery/jquery.validate.min.js'></script>
+<script type='text/javascript' src='/qmrf/scripts/myprofile.js'></script>
 
 <script type='text/javascript'>
 $(document).ready(function() {
 	$.ajaxSetup({cache:false});//while dev
+	pwdStrengthValidatorSetup();
+	 $('#pwd1').passStrengthify({minimum:12});
+	 
 	$("#pwdForm").validate({
 		rules : {
 			'pwd1': {
@@ -85,26 +90,27 @@ $(document).ready(function() {
 				<table class='success' width='80%%'>
 				<tbody>	
 				<tr>
-				<th colwidth='25%'>				
+				<th>				
 					<label class='three columns alpha' for="pwd1">New password</label>
 				</th>
-				<td align='left'>
+				</tr>
+				<tr>
+				<td>
 					<input class="five columns alpha half-bottom" type='password' size='40' id='pwd1' name='pwd1' value=''/>
 				</td>
 				</tr>		
 				<tr>
-				<th colwidth='25%'>		 	
+				<th>		 	
 					<label class='three columns alpha' for="pwd2">Confirm new password</label>
 				</th>
-				<td align='left'>				
+				</tr>
+				<tr>
+				<td>				
 					<input class="five columns alpha half-bottom"  type='password' size='40' id='pwd2' name='pwd2' value=''/>
 				</td>
 				</tr>	
 				<tr>
-				<th colwidth='25%'>				
-					<label class='three columns alpha' >&nbsp;</label>
-				</th>
-				<td align='left'>
+				<td>
 					<input class="three columns alpha half-bottom" id='updatepwd' name='updatepwd' type='submit' class='submit' value='Update'>
 				</td>		
 				<tr>

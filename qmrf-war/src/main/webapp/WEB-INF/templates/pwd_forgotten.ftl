@@ -46,29 +46,32 @@ $().ready(function() {
 		<div class='ui-widget-header ui-corner-top'><p>QMRF password reset</p></div>
 	    <div class='ui-widget-content ui-corner-bottom'>					
 			<form action="${qmrf_root}/forgotten" id="pwdresetForm"  method="POST" >		
-	    	<table width='80%%'>
+	    	<table width='80%%' style='margin-left:20px;'>
 			<tbody>
 			<tr>
-				<th colwidth='25%'>
+				<th>
 					<label class='three columns alpha' for="username">User name <em>*</em></label>
 				</th>
-				<td align='left'>
-					<input class='three columns alpha half-bottom' type="text" size='40' name='username' id='username' value=''/>
-				</td>
-			</tr>
-			<tr >
-				<th colwidth='25%'>
-					<label class='three columns alpha'  for="email">e-mail <em>*</em></label>
-				</th>
-				<td align='left'>
-					<input class='eight columns alpha half-bottom' type="text"size='40' name='email' id='email' value=''/>
-				</td>
 			</tr>
 			<tr>
-				<th  colwidth='25%'>&nbsp;</th>
-				<td align='left' >
+				<th>
+					<input class='three columns alpha half-bottom' type="text" size='40' name='username' id='username' value=''/>
+				</th>
+			</tr>
+			<tr >
+				<th>
+					<label class='three columns alpha'  for="email">e-mail <em>*</em></label>
+				</th>
+			</tr>			
+			<tr >
+				<th>
+					<input class='eight columns alpha half-bottom' type="text"size='40' name='email' id='email' value=''/>
+				</th>
+			</tr>
+			<tr>
+				<th>
 					<input class='three columns alpha' id='register' name='register' type='submit' class='submit' value='Reset'>
-				</td>
+				</th>
 			</tr>
 			</tbody>
 			</table>
