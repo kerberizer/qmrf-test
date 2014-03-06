@@ -233,7 +233,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		auth.setNext(protectedRouter);
 		router.attach("/protected", auth);
 		
-		router.attach(Resources.channel, ChannelResource.class);
+		router.attach(Resources.proxy, ProxyResource.class);
 		
 		router.attach(Resources.register, RegistrationResource.class);
 		router.attach(String.format("%s%s", Resources.register, Resources.confirm), RegistrationConfirmResource.class);

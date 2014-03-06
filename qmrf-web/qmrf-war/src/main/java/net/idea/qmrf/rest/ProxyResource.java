@@ -18,7 +18,7 @@ import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 
-public class ChannelResource<T> extends AbstractResource<URL,T,RemoteStreamConvertor>  {
+public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvertor>  {
 
 	@Override
 	public RemoteStreamConvertor createConvertor(Variant variant) throws AmbitException,
