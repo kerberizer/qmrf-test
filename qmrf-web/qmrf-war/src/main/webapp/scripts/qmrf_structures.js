@@ -1,6 +1,7 @@
 function defineStructuresTable(root,url, query_service, similarity) {
 
-	
+	var proxyURI = (root + "/proxy?uri=" + encodeURIComponent(url));
+	console.log(proxyURI);
 	var oTable = $('#structures').dataTable( {
 		"bProcessing": true,
 		"bServerSide": false,
@@ -130,15 +131,15 @@ function defineStructuresTable(root,url, query_service, similarity) {
 		"bPaginate" : true,
 		"bDeferRender": true,
 		"bSearchable": true,
-		"sAjaxSource": url,
+		"sAjaxSource": proxyURI,
 		"sAjaxDataProp" : "dataEntry",
 		"fnServerData": function ( sSource, aoData, fnCallback, oSettings ) {
 		      oSettings.jqXHR = $.ajax( {
 		        "type": "GET",
 		        "url": sSource ,
 		        "data": aoData,
-		        "dataType": "jsonp", 
-		        "contentType" : "application/x-javascript",
+		        "dataType": "json", 
+		        "contentType" : "application/json",
 		        "success": function(json) {
 		        	identifiers(json);
 		        	fnCallback(json);
@@ -166,7 +167,7 @@ function defineStructuresTable(root,url, query_service, similarity) {
 			//retrieve identifiers
 			id_uri = query_service + "/query/compound/url/all?search=" + encodeURIComponent(aData.compound.URI) + "?max=1&media=application%2Fx-javascript";
 			$.ajax({
-			         dataType: "jsonp",
+			         dataType: "json",
 			         url: (root + "/proxy?uri=" + encodeURIComponent(id_uri)),
 			         success: function(data, status, xhr) {
 			        	identifiers(data);
