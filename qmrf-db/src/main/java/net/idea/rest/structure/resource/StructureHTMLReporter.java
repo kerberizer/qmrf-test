@@ -258,10 +258,17 @@ class StructureHTMLBeauty extends QMRF_HTMLBeauty {
 		*/
 		String hint = "Enter any chemical compound identifier (CAS, Name, EINECS, SMILES or InChI). The the input type is guessed automatically.";
 		
+		String cmpProxy = String.format("%s/proxy/img?uri=%s",
+				baseReference,
+				Reference.encode(String.format("%s/depict/cdk/any?search=%s&media=%s&w=150&h=150",
+						queryService,Reference.encode(searchQuery),Reference.encode("image/png")
+						)));
+
+		
 		String imgURI = searchQuery==null?"":
-				String.format("<img title='%s' alt='%s' border='1' width='150' height='150' src='%s/depict/cdk/any?search=%s&media=%s&w=150&h=150' onError=\"hideDiv('querypic')\">",
+				String.format("<img title='%s' alt='%s' border='1' width='150' height='150' src='%s' onError=\"hideDiv('querypic')\">",
 						getSearchQuery(),getSearchQuery(),
-						 queryService,Reference.encode(searchQuery),Reference.encode("image/png"));
+						cmpProxy);
 		
 		final double[] thresholds = new double[] {0.9,0.8,0.7,0.6,0.5};
 		StringBuilder threshold_option = new StringBuilder();
