@@ -1,7 +1,6 @@
 function defineStructuresTable(root,url, query_service, similarity) {
 
 	var proxyURI = (root + "/proxy?uri=" + encodeURIComponent(url));
-	console.log(proxyURI);
 	var oTable = $('#structures').dataTable( {
 		"bProcessing": true,
 		"bServerSide": false,

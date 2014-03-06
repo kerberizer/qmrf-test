@@ -136,7 +136,7 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 			registration = new UserRegistration();
 			return  new CreateUser(user,registration,getDatabaseName());
 		}
-		else if (Method.DELETE.equals(method)) return  new QMRFDeleteUser(user);
+		else if (Method.DELETE.equals(method)) return  new QMRFDeleteUser(user,getDatabaseName());
 		else if (Method.PUT.equals(method)) return new  UpdateUser(user);
 		throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
 	}	
