@@ -65,9 +65,14 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			}
 		} catch (Exception x) {}
 		//TODO smarts highlight
+		
+		String cmpProxy = String.format("%s/proxy/img?uri=%s",
+				baseReference,
+				Reference.encode(String.format("%s?media=%s&w=150&h=150",item.getResourceIdentifier(),Reference.encode("image/png"))));
+		
 		String structure = 	String.format(
 					"<div class='structureright'><a href='%s%s%s%s%s%s%s' >" +
-					"<img src='%s?media=%s&w=150&h=150' alt='%s' title='%s' width='150' height='150'></a><br>%s\n</div>\n",
+					"<img src='%s' alt='%s' title='%s' width='150' height='150'></a><br>%s\n</div>\n",
 					baseReference,
 					Resources.chemical,
 					item.idchemical>0?"/":"",
@@ -75,8 +80,7 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 					item.idstructure>0?Resources.structure:"",
 					item.idstructure>0?"/":"",
 					item.idstructure>0?Integer.toString(item.idstructure):"",
-					item.getResourceIdentifier(),
-					Reference.encode("image/png"),
+					cmpProxy,
 					item.cas==null?"":item.cas,
 					item.name==null?"":item.name,
 					item.cas==null?"":item.cas
