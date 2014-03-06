@@ -117,6 +117,7 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 		Reference uri = new Reference(queryService);
 		
 		HttpClient client = createHTTPClient(uri.getHostDomain(),uri.getHostPort());
+		
 		RemoteTask task = new RemoteTask(client, 
 					new URL(String.format("%s/dataset",queryService)), 
 					"text/uri-list", createPOSTEntity(attachment), HttpPost.METHOD_NAME);
@@ -218,8 +219,7 @@ public class CallableAttachmentImporter extends  CallableDBUpdateTask<DBAttachme
 			@Override
 			public void process(HttpRequest request, HttpContext context)
 					throws HttpException, IOException {
-				//if (ssoToken != null)
-					//request.addHeader("subjectid",ssoToken.getToken());
+					request.addHeader("Referer",queryService);
 			}
 		});
 		return cli;
