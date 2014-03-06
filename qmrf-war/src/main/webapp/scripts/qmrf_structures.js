@@ -30,15 +30,9 @@ function defineStructuresTable(root,url, query_service, similarity) {
 						if (val.indexOf("/conformer")>=0) {
 								cmpURI = val.substring(0,val.indexOf("/conformer"));
 						}								
-						//if ((opentox["model_uri"]==null) || (opentox["model_uri"] == undefined)) {
-								cmpURI = cmpURI + "?media=image/png";
-						//} else {
-						//		cmpURI = opentox["model_uri"] + "?dataset_uri=" + cmpURI + "&media=image/png";
-						//}
-								/*
-"<a href=\"%s%s/%d?headless=true&details=false&media=text/html\" title=\"Molecule\">Molecule</a>", 
-								 */
-						return '<img class="ui-widget-content" title="'+val+'" border="0" src="'+cmpURI+'&w=150&h=150">';
+						cmpURI = cmpURI + "?media=image/png&w=150&h=150";
+						var cmpProxy = (root + "/proxy/img?uri=" + encodeURIComponent(cmpURI));
+						return '<img class="ui-widget-content" title="'+val+'" border="0" src="'+cmpProxy+'">';
 				  }
 				},
 				{ "mDataProp": "compound.name" , "asSorting": [ "asc", "desc" ],

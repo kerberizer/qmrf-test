@@ -12,24 +12,30 @@ import net.idea.restnet.i.tools.DownloadTool;
 
 import org.restlet.Context;
 import org.restlet.data.MediaType;
+import org.restlet.data.Status;
 import org.restlet.representation.OutputRepresentation;
 import org.restlet.representation.Representation;
+import org.restlet.resource.ResourceException;
 
 
 public class RemoteStreamConvertor extends DefaultAmbitProcessor<URL,Representation> {
 	private String root = "http://localhost";
+	private MediaType media = MediaType.APPLICATION_JSON ;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5395806328786966562L;
 
-	public RemoteStreamConvertor(String root) {
+	public RemoteStreamConvertor(String root,MediaType media) {
 		super();
 		this.root = root;
+		this.media = media;
 	}
 	@Override
 	public Representation process(final URL url) throws Exception {
-		OutputRepresentation rep = new OutputRepresentation(MediaType.APPLICATION_JSON) {
+		//we don't want to proxy everything ;)
+		if (!url.toExternalForm().startsWith(root)) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+		OutputRepresentation rep = new OutputRepresentation(media) {
             @Override
             public void write(OutputStream stream) throws IOException {
             	InputStream in = null;

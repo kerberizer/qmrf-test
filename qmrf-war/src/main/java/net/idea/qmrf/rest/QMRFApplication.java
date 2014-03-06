@@ -234,6 +234,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		router.attach("/protected", auth);
 		
 		router.attach(Resources.proxy, ProxyResource.class);
+		router.attach(String.format("%s/{media}", Resources.proxy), ProxyResource.class);
 		
 		router.attach(Resources.register, RegistrationResource.class);
 		router.attach(String.format("%s%s", Resources.register, Resources.confirm), RegistrationConfirmResource.class);
