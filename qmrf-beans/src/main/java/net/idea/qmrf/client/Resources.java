@@ -26,7 +26,7 @@ public class Resources {
 	public static final String login = String.format("/%s",UserLoginFormResource.resource);
 	public static final String myaccount = "/myaccount";
 	public static final String register = "/register";
-	public static final String channel = "/channel";
+	public static final String proxy = "/proxy";
 	public static final String confirm = "/confirm";
 	public static final String notify = "/notify";
 	public static final String admin = String.format("/%s",AdminResource.resource);

@@ -1,4 +1,4 @@
-function defineStructuresTable(url, query_service, similarity) {
+function defineStructuresTable(root,url, query_service, similarity) {
 
 	
 	var oTable = $('#structures').dataTable( {
@@ -167,7 +167,7 @@ function defineStructuresTable(url, query_service, similarity) {
 			id_uri = query_service + "/query/compound/url/all?search=" + encodeURIComponent(aData.compound.URI) + "?max=1&media=application%2Fx-javascript";
 			$.ajax({
 			         dataType: "jsonp",
-			         url: id_uri,
+			         url: (root + "/proxy?uri=" + encodeURIComponent(id_uri)),
 			         success: function(data, status, xhr) {
 			        	identifiers(data);
 			        	$.each(data.dataEntry,function(index, entry) {
