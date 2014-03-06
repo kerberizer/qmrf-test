@@ -21,17 +21,35 @@ import org.restlet.resource.ResourceException;
 
 
 public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvertor>  {
-
+	protected enum supported_media {
+		json,
+		img {
+			@Override
+			public MediaType getMediaType() {
+				return MediaType.IMAGE_PNG;
+			}
+		};
+		public MediaType getMediaType() {
+			return MediaType.APPLICATION_JSON;
+		}
+		
+	};
+	protected supported_media media = supported_media.json;
 	@Override
 	public RemoteStreamConvertor createConvertor(Variant variant) throws AmbitException,
 			ResourceException {
-		return new RemoteStreamConvertor(getQueryService());
+		return new RemoteStreamConvertor(getQueryService(),media.getMediaType());
 	}
 
 	@Override
 	protected URL createQuery(Context context, Request request, Response response)
 			throws ResourceException {
 		try {
+			try {
+				media = supported_media.valueOf(request.getAttributes().get("media").toString());
+			} catch (Exception x) {
+				media = supported_media.json; 
+			}	
 			Form form = request.getResourceRef().getQueryAsForm();
 			return new URL(form.getFirstValue("uri"));
 		} catch (MalformedURLException x) {
@@ -54,7 +72,7 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 	
 	@Override
 	protected Representation get() throws ResourceException {
-		return get(new Variant(MediaType.APPLICATION_JSON));
+		return get(new Variant(media.getMediaType()));
 	}
 	protected String getQueryService() {
 		return ((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name());
