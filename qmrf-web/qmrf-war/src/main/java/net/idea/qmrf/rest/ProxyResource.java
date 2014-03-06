@@ -4,7 +4,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
+import net.idea.qmrf.client.Resources;
 import net.idea.restnet.c.AbstractResource;
+import net.idea.restnet.c.TaskApplication;
 
 import org.restlet.Context;
 import org.restlet.Request;
@@ -23,7 +25,7 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 	@Override
 	public RemoteStreamConvertor createConvertor(Variant variant) throws AmbitException,
 			ResourceException {
-		return new RemoteStreamConvertor();
+		return new RemoteStreamConvertor(getQueryService());
 	}
 
 	@Override
@@ -53,5 +55,8 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 	@Override
 	protected Representation get() throws ResourceException {
 		return get(new Variant(MediaType.APPLICATION_JSON));
+	}
+	protected String getQueryService() {
+		return ((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name());
 	}
 }

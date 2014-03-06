@@ -3,7 +3,9 @@ package net.idea.qmrf.rest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 import net.idea.modbcum.p.DefaultAmbitProcessor;
 import net.idea.restnet.i.tools.DownloadTool;
@@ -15,12 +17,16 @@ import org.restlet.representation.Representation;
 
 
 public class RemoteStreamConvertor extends DefaultAmbitProcessor<URL,Representation> {
-
+	private String root = "http://localhost";
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5395806328786966562L;
 
+	public RemoteStreamConvertor(String root) {
+		super();
+		this.root = root;
+	}
 	@Override
 	public Representation process(final URL url) throws Exception {
 		OutputRepresentation rep = new OutputRepresentation(MediaType.APPLICATION_JSON) {
@@ -28,7 +34,14 @@ public class RemoteStreamConvertor extends DefaultAmbitProcessor<URL,Representat
             public void write(OutputStream stream) throws IOException {
             	InputStream in = null;
             	try {
-                	in = url.openStream();
+            		URLConnection conn = url.openConnection();
+            		if (conn instanceof HttpURLConnection) {
+            			HttpURLConnection cnx = (HttpURLConnection)conn;
+            			cnx.setAllowUserInteraction(false);         
+            			cnx.setDoOutput(true);
+            			cnx.addRequestProperty("Referer", root);
+            		}
+                	in = conn.getInputStream();
                		DownloadTool.download(in, stream);
             		//writer.flush();
             		//stream.flush();
