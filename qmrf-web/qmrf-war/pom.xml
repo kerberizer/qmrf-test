@@ -4,11 +4,11 @@
   <parent>
     <artifactId>qmrf-rest</artifactId>
     <groupId>net.idea</groupId>
-    <version>2.0.5</version>
+    <version>2.0.6-SNAPSHOT</version>
   </parent>
   <groupId>net.idea</groupId>
   <artifactId>qmrf-war</artifactId>
-  <version>2.0.5</version>
+  <version>2.0.6-SNAPSHOT</version>
   <packaging>war</packaging>
   <name>QMRF REST web services</name>
   <dependencies>

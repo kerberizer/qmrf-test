@@ -4,6 +4,7 @@ import java.io.Writer;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.r.QueryReporter;
+import net.idea.rest.JSONUtils;
 import ambit2.base.data.Dictionary;
 
 public class DictionaryJSONReporter<D extends Dictionary> extends QueryReporter<D, IQueryRetrieval<D>,Writer>  {
@@ -32,10 +33,10 @@ public class DictionaryJSONReporter<D extends Dictionary> extends QueryReporter<
 			if (comma!=null) getOutput().write(comma);
 			getOutput().write(String.format("\n{\"parentCode\":\"%s\",\"parentName\":\"%s\",\"code\":\"%s\",\"name\":\"%s\",\"label\":\"%s %s\"}",
 					((EndpointTest)item).getParentCode()==null?"":((EndpointTest)item).getParentCode(),		
-					item.getParentTemplate()==null?"":item.getParentTemplate(),			
+					item.getParentTemplate()==null?"":JSONUtils.jsonEscape(item.getParentTemplate()),			
 					code,
-					name,
-					code,name
+					JSONUtils.jsonEscape(name),
+					code,JSONUtils.jsonEscape(name)
 					));
 			comma = ",";
 		} catch (Exception x) {

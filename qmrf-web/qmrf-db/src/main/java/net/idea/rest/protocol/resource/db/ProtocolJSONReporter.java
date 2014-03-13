@@ -11,6 +11,7 @@ import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.modbcum.p.DefaultAmbitProcessor;
 import net.idea.modbcum.p.MasterDetailsProcessor;
 import net.idea.modbcum.r.QueryReporter;
+import net.idea.rest.JSONUtils;
 import net.idea.rest.protocol.DBProtocol;
 import net.idea.rest.protocol.attachments.AttachmentURIReporter;
 import net.idea.rest.protocol.attachments.DBAttachment;
@@ -114,7 +115,7 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 			getOutput().write("\",\n\t\"identifier\": \"");
 			getOutput().write(item.getIdentifier());
 			getOutput().write("\",\n\t\"title\": \"");
-			getOutput().write(item.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+			getOutput().write(JSONUtils.jsonEscape(item.getTitle()));
 			getOutput().write("\",\n\t\"published\": ");
 			getOutput().write(Boolean.toString(item.isPublished()));
 			getOutput().write(",\n\t\"endpoint\": {\n\t\t\"parentCode\" :\"");
@@ -132,11 +133,11 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 			getOutput().write("\",\n\t\"owner\": {\n\t\t\"uri\" :\"");
 			getOutput().write(item.getOwner().getResourceURL().toExternalForm());
 			getOutput().write("\",\n\t\t\"username\": \"");
-			getOutput().write(item.getOwner().getUserName()==null?"":item.getOwner().getUserName());
+			getOutput().write(item.getOwner().getUserName()==null?"":JSONUtils.jsonEscape(item.getOwner().getUserName()));
 			getOutput().write("\",\n\t\t\"firstname\": \"");
-			getOutput().write(item.getOwner().getFirstname()==null?"":item.getOwner().getFirstname());
+			getOutput().write(item.getOwner().getFirstname()==null?"":JSONUtils.jsonEscape(item.getOwner().getFirstname()));
 			getOutput().write("\",\n\t\t\"lastname\": \"");
-			getOutput().write(item.getOwner().getLastname()==null?"":item.getOwner().getLastname());
+			getOutput().write(item.getOwner().getLastname()==null?"":JSONUtils.jsonEscape(item.getOwner().getLastname()));
 			getOutput().write("\"\n\t}");
 			/*
 			getOutput().write(String.format(format,
@@ -168,11 +169,11 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 						getOutput().write("\n\t\t{\n\t\t\"uri\":\"");
 						getOutput().write(attachment.getResourceURL().toExternalForm());
 						getOutput().write("\",\n\t\t\"title\":\"");
-						getOutput().write(attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+						getOutput().write(JSONUtils.jsonEscape(attachment.getTitle()));
 						getOutput().write("\",\n\t\t\"description\":\"");
-						getOutput().write(attachment.getDescription().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+						getOutput().write(JSONUtils.jsonEscape(attachment.getDescription()));
 						getOutput().write("\",\n\t\t\"type\":\"");
-						getOutput().write(attachment.getType().toString());
+						getOutput().write(JSONUtils.jsonEscape(attachment.getType().toString()));
 						getOutput().write("\"\n\t\t}");
 						/*
 						getOutput().write(String.format(formatAttachmentDocument,
@@ -185,11 +186,11 @@ public class ProtocolJSONReporter extends QueryReporter<DBProtocol, IQueryRetrie
 						getOutput().write("\n\t\t{\n\t\t\"uri\":\"" );
 						getOutput().write(attachment.getResourceURL().toExternalForm());
 						getOutput().write("\",\n\t\t\"title\":\"" );
-						getOutput().write(attachment.getTitle().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+						getOutput().write(JSONUtils.jsonEscape(attachment.getTitle()));
 						getOutput().write("\",\n\t\t\"description\":\"");
-						getOutput().write(attachment.getDescription().replace("\n", " ").replace("\r", " ").replace("\"", "'"));
+						getOutput().write(JSONUtils.jsonEscape(attachment.getDescription()));
 						getOutput().write("\",\n\t\t\"type\":\"");
-						getOutput().write(attachment.getType().toString());
+						getOutput().write(JSONUtils.jsonEscape(attachment.getType().toString()));
 						getOutput().write("\",\n\t\t\t\"dataset\": {\"uri\": \"");
 						getOutput().write(queryService);
 						getOutput().write("/dataset/");
