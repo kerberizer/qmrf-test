@@ -103,7 +103,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 					MediaType.TEXT_CSV);
 		} else if (variant.getMediaType().equals(MediaType.APPLICATION_JSON)) {
 			return new OutputWriterConvertor(
-					new UserJSONReporter<IQueryRetrieval<DBUser>>(getRequest()),
+					new net.idea.rest.user.resource.UserJSONReporter(getRequest()),
 					MediaType.APPLICATION_JSON);			
 		} else if (variant.getMediaType().equals(MediaType.TEXT_XML)) {
 			return new OutputWriterConvertor(
