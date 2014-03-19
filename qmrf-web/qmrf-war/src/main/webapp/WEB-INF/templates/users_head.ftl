@@ -12,12 +12,12 @@ $(document).ready(function() {
 					
 
 	<#if myprofile>
-		getMyAccount("${qmrf_request_json}",false,false);
+		getMyAccount("${qmrf_request_json}",false,false,errorHandler);
 	<#else>
 		<#if admin>
-			getMyAccount("${qmrf_request_json}",false,true);
+			getMyAccount("${qmrf_request_json}",false,true,errorHandler);
 		<#else>
-			getMyAccount("${qmrf_request_json}",true,false);
+			getMyAccount("${qmrf_request_json}",true,false,errorHandler);
 		</#if>	
 	</#if>
 	
