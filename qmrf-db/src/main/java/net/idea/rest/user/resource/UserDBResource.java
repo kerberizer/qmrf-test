@@ -33,7 +33,6 @@ import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 import net.idea.restnet.user.DBUser;
 import net.idea.restnet.user.db.ReadUser;
-import net.idea.restnet.user.resource.UserJSONReporter;
 import net.idea.restnet.user.resource.UserRDFReporter;
 import net.idea.restnet.user.resource.UserURIReporter;
 import net.toxbank.client.io.rdf.TOXBANK;
@@ -56,7 +55,7 @@ import org.restlet.resource.ResourceException;
  * @param <Q>
  */
 public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
-		
+	protected boolean readRegistrationStatus;	
 	public static final String resourceKey = "user";
 	
 	protected boolean singleItem = false;
@@ -65,6 +64,7 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	public UserDBResource() {
 		super();
 		setHtmlbyTemplate(true);
+		readRegistrationStatus = true;
 	}
 
 	@Override
@@ -92,6 +92,9 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 			
 		} else
 		*/ 
+		String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
+		if (usersdbname==null) usersdbname = "tomcat_users";
+		
 		String filenamePrefix = getRequest().getResourceRef().getPath();
 		if (variant.getMediaType().equals(MediaType.TEXT_URI_LIST)) {
 				return new StringConvertor(	
@@ -102,8 +105,9 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 					new UserCSVReporter<IQueryRetrieval<DBUser>>(getRequest()),
 					MediaType.TEXT_CSV);
 		} else if (variant.getMediaType().equals(MediaType.APPLICATION_JSON)) {
+			
 			return new OutputWriterConvertor(
-					new net.idea.rest.user.resource.UserJSONReporter(getRequest()),
+					new net.idea.rest.user.resource.UserJSONReporter(getRequest(),readRegistrationStatus?usersdbname:null),
 					MediaType.APPLICATION_JSON);			
 		} else if (variant.getMediaType().equals(MediaType.TEXT_XML)) {
 			return new OutputWriterConvertor(
@@ -133,7 +137,10 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless)
 			throws ResourceException {
-		UserHTMLReporter rep = new UserHTMLReporter(getRequest(),!singleItem,editable,(UserHTMLBeauty)getHTMLBeauty());
+		String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
+		if (usersdbname==null) usersdbname = "tomcat_users";
+				
+		UserHTMLReporter rep = new UserHTMLReporter(getRequest(),!singleItem,editable,(UserHTMLBeauty)getHTMLBeauty(),readRegistrationStatus?usersdbname:null);
 		rep.setHeadless(headless);
 		return rep;
 	}
