@@ -13,11 +13,14 @@ import net.idea.modbcum.p.MasterDetailsProcessor;
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.QMRFHTMLReporter;
 import net.idea.rest.protocol.UserHTMLBeauty;
+import net.idea.rest.user.QMRFUser;
+import net.idea.rest.user.ReadRegistrationStatus;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.groups.DBOrganisation;
 import net.idea.restnet.groups.db.ReadOrganisation;
 import net.idea.restnet.groups.resource.GroupQueryURIReporter;
+import net.idea.restnet.u.UserRegistration;
 import net.idea.restnet.user.DBUser;
 import net.idea.restnet.user.resource.UserURIReporter;
 import net.toxbank.client.resource.Organisation;
@@ -25,7 +28,7 @@ import net.toxbank.client.resource.Organisation;
 import org.restlet.Request;
 
 public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<DBUser>> {
-	
+	protected String usersdbname;
 	private static final long serialVersionUID = -7959033048710547839L;
 	DBUser.fields[] entryFields = DBUser.fields.values();
 	protected GroupQueryURIReporter groupURIReporter ;
@@ -35,14 +38,16 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 		DBUser.fields.homepage,
 		DBUser.fields.keywords,
 		DBUser.fields.reviewer
+		
 	};
 	
-	public UserHTMLReporter(String searchURI) {
-		this(null, true, false, new UserHTMLBeauty(searchURI));
+	public UserHTMLReporter(String searchURI,String usersdbname) {
+		this(null, true, false, new UserHTMLBeauty(searchURI),usersdbname);
 	}
 	
-	public UserHTMLReporter(Request request, boolean collapsed, boolean editable, UserHTMLBeauty htmlBeauty) {
+	public UserHTMLReporter(Request request, boolean collapsed, boolean editable, UserHTMLBeauty htmlBeauty,String usersdbname) {
 		super(request, collapsed, null, htmlBeauty);
+		this.usersdbname = usersdbname;
 		setTitle("User");
 		getProcessors().clear();
 		groupURIReporter = new GroupQueryURIReporter(request);
@@ -56,8 +61,41 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 				return target;
 			}
 		};
-		
-		getProcessors().add(orgReader);
+		getProcessors().add(orgReader);		
+		if (usersdbname!=null) { 
+			final IQueryRetrieval<UserRegistration> queryR = new ReadRegistrationStatus();
+			((ReadRegistrationStatus)queryR).setDatabaseName(usersdbname);
+			MasterDetailsProcessor<DBUser, UserRegistration, IQueryCondition> regReader = new MasterDetailsProcessor<DBUser, UserRegistration, IQueryCondition>(queryR) {
+				@Override
+				public DBUser process(DBUser target) throws Exception {
+					if (target==null || target.getUserName()==null) return target;
+					return super.process(target);
+				}
+				@Override
+				protected DBUser processDetail(DBUser target, UserRegistration detail) throws Exception {
+					if (detail!=null) {
+						QMRFUser user = new QMRFUser();
+						user.setEmail(target.getEmail());
+						user.setID(target.getID());
+						user.setFirstname(target.getFirstname());
+						user.setLastname(target.getLastname());
+						user.setKeywords(target.getKeywords());
+						user.setReviewer(target.isReviewer());
+						user.setTitle(target.getTitle());
+						user.setHomepage(target.getHomepage());
+						user.setOrganisations(target.getOrganisations());
+						user.setRegisteredAt(detail.getTimestamp_created());
+						user.setRegistrationStatus(detail.getStatus());
+						user.setUserName(target.getUserName());
+						return user;
+					} else 	
+						return target;
+				}
+			};
+			getProcessors().add(regReader);
+		}
+
+
 		processors.add(new DefaultAmbitProcessor<DBUser, DBUser>() {
 			public DBUser process(DBUser target) throws AmbitException {
 				processItem(target);
@@ -94,6 +132,8 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			output.write(String.format("<th>%s</th>", "E-mail"));
 			output.write(String.format("<th>%s</th>", "Keywords"));
 			output.write(String.format("<th>%s</th>", "Reviewer"));
+			if (usersdbname!=null)
+			output.write(String.format("<th>%s</th>", "Registration status"));
 			output.write("</thead>\n");
 			output.write("<tbody>\n");
 		}
@@ -155,11 +195,12 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 				rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", "Affiliation", 
 						org.getTitle()));					
 			
-			for (DBUser.fields field : displayFields) 
+			for (DBUser.fields field : displayFields) {
 					rendering.append(String.format("<tr><th>%s</th><td align='left'>%s</td></tr>", 
 							field.toString(),
 							field.getValue(user)==null?"":field.getValue(user)
 					));
+			}		
 	
 			rendering.append("</table>");
 			rendering.append("</span></div>");
@@ -191,13 +232,13 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 			item.getTitle()==null?"":item.getTitle(),
 			item.getFirstname(),
 			item.getLastname(),
-			item.getUserName()==null?"":
-				String.format("<br>[<a href='%s%s/U%d'>%s</a>]",
-					uriReporter.getBaseReference(),
-					Resources.user,
-					item.getID(),
-					item.getUserName()
-				)
+			item.getID()<=0?"":
+			String.format("<br>[<a href='%s%s/U%d'>%s</a>]",
+				uriReporter.getBaseReference(),
+				Resources.user,
+				item.getID(),
+				(item.getUserName()==null)?("U"+item.getID()):item.getUserName()
+			)
 		));
 		
 		rendering.append(String.format("<td>%s%s</td>",
@@ -215,6 +256,14 @@ public class UserHTMLReporter extends QMRFHTMLReporter<DBUser, IQueryRetrieval<D
 		));
 		rendering.append(String.format("<td>%s</td>", item.getKeywords()==null?"":item.getKeywords()));
 		rendering.append(String.format("<td>%s</td>", item.isReviewer()?"Yes":""));
+		
+		if (usersdbname!=null) {
+			rendering.append("<td>");
+			if (item instanceof QMRFUser) rendering.append(((QMRFUser)item).getRegistrationStatus());
+			rendering.append("</td>");					
+		}
+		rendering.append("</tr>");
+		
 		
 		return rendering.toString();
 	}

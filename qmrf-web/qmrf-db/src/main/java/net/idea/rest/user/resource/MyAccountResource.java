@@ -5,6 +5,7 @@ import java.util.logging.Level;
 
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.qmrf.client.Resources;
+import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.protocol.UserHTMLBeauty;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.html.HTMLBeauty;
@@ -80,7 +81,10 @@ public class MyAccountResource<T> extends UserDBResource<T> {
 	@Override
 	protected QueryHTMLReporter createHTMLReporter(boolean headless)
 			throws ResourceException {
-		UserHTMLReporter rep = new UserHTMLReporter(getRequest(),!singleItem,editable,(UserHTMLBeauty)getHTMLBeauty()) {
+		String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
+		if (usersdbname==null) usersdbname = "tomcat_users";
+		
+		UserHTMLReporter rep = new UserHTMLReporter(getRequest(),!singleItem,editable,(UserHTMLBeauty)getHTMLBeauty(),usersdbname) {
 			@Override
 			public String getTitle() {
 				return null;

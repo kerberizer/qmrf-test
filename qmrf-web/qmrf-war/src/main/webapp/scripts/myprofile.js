@@ -149,7 +149,16 @@ function defineUsersTable(root,url) {
 					  "fnRender" : function(o,val) {
 						  return "<input type='checkbox' id='"+o.aData["uri"]+"' disabled='disabled' "+ (val?"checked":"") +">";
 					  }
-				}				
+				},
+				{ "mDataProp": "status" , "asSorting": [ "asc", "desc" ],
+					  "aTargets": [ 4 ],
+					  "bSearchable" : true,
+					  "bSortable" : true,
+					  "bUseRendered" : false,
+					  "fnRender" : function(o,val) {
+						  return (val==null?"":val)
+					  }
+				}					
 			],
 		
 		"bJQueryUI" : true,

@@ -11,10 +11,13 @@ import net.idea.modbcum.p.DefaultAmbitProcessor;
 import net.idea.modbcum.p.MasterDetailsProcessor;
 import net.idea.modbcum.r.QueryReporter;
 import net.idea.rest.JSONUtils;
+import net.idea.rest.user.QMRFUser;
+import net.idea.rest.user.ReadRegistrationStatus;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.groups.DBOrganisation;
 import net.idea.restnet.groups.db.ReadOrganisation;
 import net.idea.restnet.groups.resource.GroupQueryURIReporter;
+import net.idea.restnet.u.UserRegistration;
 import net.idea.restnet.user.DBUser;
 import net.idea.restnet.user.resource.UserURIReporter;
 import net.toxbank.client.resource.Organisation;
@@ -44,7 +47,7 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 		return baseReference;
 	}
 
-	public UserJSONReporter(Request request) {
+	public UserJSONReporter(Request request,String usersdbname) {
 		this.baseReference = (request==null?null:request.getRootRef());
 		setRequest(request);
 		uriReporter = new UserURIReporter(request,"");
@@ -55,6 +58,11 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 		
 		MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition> orgReader = new MasterDetailsProcessor<DBUser, DBOrganisation, IQueryCondition>(queryO) {
 			@Override
+			public DBUser process(DBUser target) throws Exception {
+				if (target==null || target.getUserName()==null) return target;
+				return super.process(target);
+			}
+			@Override
 			protected DBUser processDetail(DBUser target, DBOrganisation detail) throws Exception {
 				if (target.getID()>0) {
 					detail.setResourceURL(new URL(groupURIReporter.getURI(detail)));
@@ -63,8 +71,35 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 				return target;
 			}
 		};
+		getProcessors().add(orgReader);		
+		if (usersdbname!=null) {
+			final IQueryRetrieval<UserRegistration> queryR = new ReadRegistrationStatus();
+			((ReadRegistrationStatus)queryR).setDatabaseName(usersdbname);
+			MasterDetailsProcessor<DBUser, UserRegistration, IQueryCondition> regReader = new MasterDetailsProcessor<DBUser, UserRegistration, IQueryCondition>(queryR) {
+				@Override
+				protected DBUser processDetail(DBUser target, UserRegistration detail) throws Exception {
+					if (detail!=null) {
+						QMRFUser user = new QMRFUser();
+						user.setEmail(target.getEmail());
+						user.setID(target.getID());
+						user.setFirstname(target.getFirstname());
+						user.setLastname(target.getLastname());
+						user.setKeywords(target.getKeywords());
+						user.setReviewer(target.isReviewer());
+						user.setTitle(target.getTitle());
+						user.setHomepage(target.getHomepage());
+						user.setOrganisations(target.getOrganisations());
+						user.setRegisteredAt(detail.getTimestamp_created());
+						user.setRegistrationStatus(detail.getStatus());
+						user.setUserName(target.getUserName());
+						return user;
+					} else 	
+						return target;
+				}
+			};
+			getProcessors().add(regReader);
+		}
 		
-		getProcessors().add(orgReader);
 		processors.add(new DefaultAmbitProcessor<DBUser, DBUser>() {
 			public DBUser process(DBUser target) throws Exception {
 				processItem(target);
@@ -73,7 +108,7 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 		});			
 	}	
 
-	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"id\": %s,\n\t\"username\": \"%s\",\n\t\"title\": \"%s\",\n\t\"firstname\": \"%s\",\n\t\"lastname\": \"%s\",\n\t\"email\": \"%s\",\n\t\"homepage\": \"%s\",\n\t\"keywords\": \"%s\",\n\t\"reviewer\": %s,\n\t\"organisation\": [\n\t\t%s\n\t]\n}";
+	private static String format = "\n{\n\t\"uri\":\"%s\",\n\t\"id\": %s,\n\t\"username\": \"%s\",\n\t\"title\": \"%s\",\n\t\"firstname\": \"%s\",\n\t\"lastname\": \"%s\",\n\t\"email\": \"%s\",\n\t\"homepage\": \"%s\",\n\t\"keywords\": \"%s\",\n\t\"reviewer\": %s,\n\t\"status\": %s,\n\t\"organisation\": [\n\t\t%s\n\t]\n}";
 	private static String formatGroup = "{\n\t\t\"uri\":\"%s\",\n\t\t\"title\": \"%s\"\n\t\t}";
 	//output.write("Title,First name,Last name,user name,email,Keywords,Reviewer\n");
 
@@ -106,6 +141,7 @@ public class UserJSONReporter <Q extends IQueryRetrieval<DBUser>>  extends Query
 					user.getHomepage()==null?"":JSONUtils.jsonEscape(user.getHomepage().toExternalForm()),
 					user.getKeywords()==null?"":JSONUtils.jsonEscape(user.getKeywords()),
 					user.isReviewer(),
+					JSONUtils.jsonQuote(JSONUtils.jsonEscape((user instanceof QMRFUser)?((QMRFUser)user).getRegistrationStatus().name():null)),
 					group==null?"":group.toString()
 					));
 			comma = ",";

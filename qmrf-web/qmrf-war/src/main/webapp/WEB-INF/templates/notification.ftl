@@ -25,6 +25,7 @@ $(document).ready(function() {
 		<th>e-mail</th>
 		<th>Keywords</th>
 		<th>Reviewer</th>
+		<th>Status</th>
 		</tr>
 		</thead>
 		<tbody>

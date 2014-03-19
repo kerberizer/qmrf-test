@@ -18,6 +18,10 @@ import org.restlet.resource.ResourceException;
 
 public class AuthorsResource extends  UserDBResource<DBProtocol> {
 
+	public AuthorsResource() {
+		super();
+		readRegistrationStatus = false;
+	}
 	@Override
 	protected Representation post(Representation entity, Variant variant)
 			throws ResourceException {
