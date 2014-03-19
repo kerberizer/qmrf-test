@@ -78,4 +78,6 @@
 			<#else>	
 			</#if>
 			
+			<div id='errorStatus' class='error' style='display:none;'></div>
+			
 	</div> <#-- w_menu -->

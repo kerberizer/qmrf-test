@@ -1,4 +1,4 @@
-function getMyAccount(url,readonly,admin) {
+function getMyAccount(url,readonly,admin,errHandler) {
 	var facet = {};	
 
     $.ajax({
@@ -67,11 +67,23 @@ function getMyAccount(url,readonly,admin) {
         	});
         },
         error: function(xhr, status, err) {
+        	if (errHandler != undefined && errHandler != null)
+        		errHandler(xhr,status,err);
         },
         complete: function(xhr, status) {
         }
      });
     return facet;
+}
+
+function errorHandler(xhr, status, err ) {
+	$("#errorStatus").show();
+	$("#errorStatus").text(err);
+	try {
+		console.log(status);
+		console.log(xhr.responseText);
+	} catch (err) {}
+	
 }
 
 
