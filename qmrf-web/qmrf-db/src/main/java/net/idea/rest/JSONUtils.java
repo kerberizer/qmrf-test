@@ -1,5 +1,10 @@
 package net.idea.rest;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
+
 /**
  * http://www.ietf.org/rfc/rfc4627.txt
  * @author nina
@@ -51,5 +56,20 @@ public class JSONUtils {
 	public static String jsonSanitizeCallback(String functionName) {
 		if(functionName==null) return null;
 		else return functionName.replace("(","").replace(")","");
+	}
+	
+	/**
+	 * 
+	 * @param txt
+	 * @return true if alphanumeric & special
+	 */
+	private static final Pattern regex = Pattern.compile("[$&+_~,:;=?@#|%(){}\\[\\]\\.\\^\\!\\-]");
+	
+	public static boolean acceptString(String txt) {
+		Matcher matcher = regex.matcher(txt);
+		//remove special and check if the rest is alphanumeric
+		String nospecial = matcher.replaceAll("");
+		return (StringUtils.isAlphanumeric(nospecial));
+
 	}
 }

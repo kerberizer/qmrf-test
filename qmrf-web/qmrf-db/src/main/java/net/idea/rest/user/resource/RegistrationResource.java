@@ -17,6 +17,7 @@ import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.modbcum.p.QueryExecutor;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
+import net.idea.rest.JSONUtils;
 import net.idea.rest.QMRFCatalogResource;
 import net.idea.rest.QMRFFreeMarkerApplicaton;
 import net.idea.rest.QMRFHTMLReporter;
@@ -116,11 +117,14 @@ public class RegistrationResource extends QMRFCatalogResource<DBUser> {
 			DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
 			conn = dbc.getConnection();
 			
+			String userName = form.getFirstValue("username");
+			if (!JSONUtils.acceptString(userName))
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid user name");
+			
 			QueryExecutor qx = null;
 			ResultSet rs = null;
 			boolean found = false;
 			try {
-				String userName = form.getFirstValue("username");
 				DBUser user = new DBUser();
 				user.setUserName(userName);
 				ReadUser q = new ReadUser(user);
