@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import net.idea.modbcum.i.IQueryRetrieval;
 import net.idea.modbcum.i.query.IQueryUpdate;
 import net.idea.modbcum.p.ProcessorException;
+import net.idea.rest.JSONUtils;
 import net.idea.restnet.i.task.TaskResult;
 import net.idea.restnet.resources.Resources;
 import net.idea.restnet.u.UserRegistration;
@@ -54,13 +55,17 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 	protected DBUser getTarget(Form input) throws Exception {
 		DBUser user = super.getTarget(input);
 		
-		if (!passwordChange && Method.POST.equals(method) && (!"Accept".equals(input.getFirstValue("privacy")))) {
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Privacy statement not accepted");
+		if (!passwordChange) {
+			if (Method.POST.equals(method) && (!"Accept".equals(input.getFirstValue("privacy")))) 
+				throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Privacy statement not accepted");
+			if (!JSONUtils.acceptString(user.getUserName()))
+					throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,"Invalid user name");
 		}
 		
 		if (credentials!=null) {
 			if (credentials.getNewpwd()!=null && credentials.getOldpwd()!=null) { 
 				if (!passwordChange && !credentials.getNewpwd().equals(credentials.getOldpwd())) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+				if (!JSONUtils.acceptString(credentials.getNewpwd())) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 				if (credentials.getNewpwd().length()<12) throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 				int nums = 0; //at least one number
 				for (int i=0;i<numbers.length;i++) if (credentials.getNewpwd().indexOf(numbers[i])>=0) nums++;
