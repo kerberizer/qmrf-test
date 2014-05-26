@@ -19,6 +19,9 @@ import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
 import org.restlet.Request;
+import org.restlet.data.Form;
+import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
 public class QMRFTaskResource extends TaskResource<String> {
@@ -42,6 +45,26 @@ public class QMRFTaskResource extends TaskResource<String> {
 		};
 	}
 
+	@Override
+	protected Representation get(Variant variant) throws ResourceException {
+		Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
+		if (headers == null) {
+			headers = new Form();
+			getResponse().getAttributes().put("org.restlet.http.headers", headers);
+		}
+		headers.add("X-Frame-Options", "SAMEORIGIN");
+		return super.get(variant);
+	}
 
+	@Override
+	protected Representation get() throws ResourceException {
+		Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
+		if (headers == null) {
+			headers = new Form();
+			getResponse().getAttributes().put("org.restlet.http.headers", headers);
+		}
+		headers.add("X-Frame-Options", "SAMEORIGIN");
+		return super.get();
+	}
 
 }

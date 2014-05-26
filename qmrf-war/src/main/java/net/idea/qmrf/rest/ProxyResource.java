@@ -57,6 +57,7 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 		}
 	}
 
+	
 	@Override
 	protected Representation processAndGenerateTask(Method method,
 			Representation entity, Variant variant, boolean async)
@@ -66,7 +67,12 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-
+		Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
+		if (headers == null) {
+			headers = new Form();
+			getResponse().getAttributes().put("org.restlet.http.headers", headers);
+		}
+		headers.add("X-Frame-Options", "SAMEORIGIN");
 		return super.get(variant);
 	}
 	
