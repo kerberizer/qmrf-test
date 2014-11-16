@@ -66,10 +66,10 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 				MediaType.TEXT_HTML,
 				MediaType.TEXT_URI_LIST,
 				MediaType.APPLICATION_JSON,
-				MediaType.APPLICATION_RDF_XML,
-				MediaType.APPLICATION_RDF_TURTLE,
-				MediaType.TEXT_RDF_N3,
-				MediaType.TEXT_RDF_NTRIPLES,				
+				//MediaType.APPLICATION_RDF_XML,
+				//MediaType.APPLICATION_RDF_TURTLE,
+				//MediaType.TEXT_RDF_N3,
+				//MediaType.TEXT_RDF_NTRIPLES,				
 				MediaType.APPLICATION_JAVA_OBJECT
 				});
 

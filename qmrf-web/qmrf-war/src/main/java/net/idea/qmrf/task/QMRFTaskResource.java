@@ -20,6 +20,7 @@ import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
 import org.restlet.Request;
 import org.restlet.data.Form;
+import org.restlet.data.ServerInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
@@ -53,6 +54,7 @@ public class QMRFTaskResource extends TaskResource<String> {
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
+		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}
 
@@ -64,6 +66,7 @@ public class QMRFTaskResource extends TaskResource<String> {
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
+		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get();
 	}
 
