@@ -14,6 +14,7 @@ import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
+import org.restlet.data.ServerInfo;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.representation.StringRepresentation;
@@ -53,7 +54,7 @@ public class QMRFStatusService extends StatusService {
 				response.getAttributes().put("org.restlet.http.headers", headers);
 			}
 			headers.add("X-Frame-Options", "SAMEORIGIN");
-			
+			ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 			boolean wrapInHTML = true;
 			
 			if ((status.getThrowable() !=null) && (status.getThrowable() instanceof RResourceException)) 

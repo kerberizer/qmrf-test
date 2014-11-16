@@ -10,6 +10,7 @@ import net.idea.restnet.c.resource.CatalogResource;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Parameter;
+import org.restlet.data.ServerInfo;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
@@ -30,6 +31,7 @@ public abstract class QMRFCatalogResource<T> extends CatalogResource<T> {
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
+		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}
 	

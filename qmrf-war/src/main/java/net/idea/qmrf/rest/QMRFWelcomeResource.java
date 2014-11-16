@@ -9,6 +9,7 @@ import net.idea.restnet.c.TaskApplication;
 
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
+import org.restlet.data.ServerInfo;
 import org.restlet.ext.freemarker.TemplateRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.representation.Variant;
@@ -30,7 +31,8 @@ public class QMRFWelcomeResource extends ServerResource {
 				headers = new Form();
 				getResponse().getAttributes().put("org.restlet.http.headers", headers);
 			}
-			headers.add("X-Frame-Options", "SAMEORIGIN");		
+			headers.add("X-Frame-Options", "SAMEORIGIN");
+			ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 	        Map<String, Object> map = new HashMap<String, Object>();
 	        if (getClientInfo().getUser()!=null) 
 	        	map.put("username", getClientInfo().getUser().getIdentifier());

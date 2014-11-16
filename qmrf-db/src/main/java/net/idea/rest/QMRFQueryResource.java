@@ -44,6 +44,7 @@ import org.restlet.data.MediaType;
 import org.restlet.data.Method;
 import org.restlet.data.Parameter;
 import org.restlet.data.Reference;
+import org.restlet.data.ServerInfo;
 import org.restlet.data.Status;
 import org.restlet.representation.ObjectRepresentation;
 import org.restlet.representation.Representation;
@@ -193,7 +194,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
-
+		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}
 
