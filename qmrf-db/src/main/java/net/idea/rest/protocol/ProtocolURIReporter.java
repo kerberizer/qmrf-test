@@ -3,9 +3,9 @@ package net.idea.rest.protocol;
 import net.idea.qmrf.client.Resources;
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.reporters.CatalogURIReporter;
+import net.toxbank.client.resource.Protocol;
 
 import org.restlet.Request;
-import org.restlet.data.Protocol;
 import org.restlet.data.Reference;
 
 public class ProtocolURIReporter extends CatalogURIReporter<Protocol> {
@@ -27,7 +27,7 @@ public class ProtocolURIReporter extends CatalogURIReporter<Protocol> {
 	}		
 	@Override
 	public String getURI(String ref, Protocol item) {
-		return String.format("%s%s/%s",ref,Resources.protocol,item.toString());
+		return String.format("%s%s/%s",ref,item.isPublished()?Resources.protocol:Resources.unpublished,item.toString());
 	}
 	@Override
 	public String getURI(Protocol item) {
