@@ -1,6 +1,7 @@
 package net.idea.qmrf.rest;
 
 import java.net.URL;
+import java.util.List;
 import java.util.UUID;
 
 import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
@@ -15,19 +16,26 @@ import net.idea.qmrf.client.Resources.Config;
 import net.idea.qmrf.task.QMRFAdminRouter;
 import net.idea.qmrf.task.QMRFEditorRouter;
 import net.idea.qmrf.task.QMRFTaskRouter;
+import net.idea.rest.FileResource;
 import net.idea.rest.QMRFFreeMarkerApplicaton;
 import net.idea.rest.endpoints.EndpointsResource;
 import net.idea.rest.groups.OrganisationRouter;
 import net.idea.rest.groups.ProjectRouter;
 import net.idea.rest.protocol.ProtocolRouter;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
+import net.idea.rest.protocol.attachments.AttachmentDatasetResource;
+import net.idea.rest.protocol.attachments.ProtocolAttachmentResource;
 import net.idea.rest.protocol.facet.ProtocolsByEndpointResource;
+import net.idea.rest.protocol.resource.db.ProtocolChaptersResource;
+import net.idea.rest.protocol.resource.db.ProtocolDBResource;
+import net.idea.rest.protocol.resource.db.ProtocolVersionDBResource;
 import net.idea.rest.protocol.resource.db.UnpublishedProtocolsResource;
 import net.idea.rest.structure.resource.DatasetResource;
 import net.idea.rest.structure.resource.StructureRouter;
 import net.idea.rest.user.UserRouter;
 import net.idea.rest.user.alerts.resource.AlertRouter;
 import net.idea.rest.user.author.resource.AuthorsResource;
+import net.idea.rest.user.author.resource.ProtocolAuthorsResource;
 import net.idea.rest.user.resource.MyAccountResource;
 import net.idea.rest.user.resource.PwdForgottenConfirmResource;
 import net.idea.rest.user.resource.PwdForgottenFailedResource;
@@ -374,6 +382,21 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 			@Override
 			protected void init() {
 				attachDefault(UnpublishedProtocolsResource.class);
+				attach(String.format("/{%s}",FileResource.resourceKey), ProtocolDBResource.class);
+				attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.attachment), ProtocolAttachmentResource.class);
+				attach(String.format("/{%s}%s/{%s}",FileResource.resourceKey,
+										Resources.attachment,ProtocolAttachmentResource.resourceKey), 
+										ProtocolAttachmentResource.class);
+				attach(String.format("/{%s}%s/{%s}%s",FileResource.resourceKey,Resources.attachment,
+												ProtocolAttachmentResource.resourceKey,Resources.dataset), 
+												AttachmentDatasetResource.class);
+				attach(String.format("/{%s}%s/{%s}%s/{%s}",FileResource.resourceKey,Resources.attachment,
+									ProtocolAttachmentResource.resourceKey,Resources.dataset,DatasetResource.datasetKey), 
+									DatasetResource.class);
+				attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.versions), ProtocolVersionDBResource.class);
+				attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.authors), ProtocolAuthorsResource.class);
+				attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.chapter), ProtocolChaptersResource.class);
+				attach(String.format("/{%s}%s",FileResource.resourceKey,Resources.endpoint), EndpointsResource.class);
 			}
 		});
 		
@@ -509,8 +532,13 @@ class ProtocolAuthorizer extends RoleAuthorizer {
 
 	@Override
 	public boolean authorize(Request request, Response response) {
-		if (Method.GET.equals(request.getMethod()))
-			return true;
+		
+		if (Method.GET.equals(request.getMethod())) {
+			List<String> segments = request.getResourceRef().getSegments();
+			if (segments.size()>2 && "protocol".equals(segments.get(1)) && !segments.get(2).startsWith("Q")) {
+				//role based
+			} else return true;
+		}	
 		if (skip) return true;
 		if (Protocol.RIAP.equals(request.getProtocol())) return true;
 		if ((request.getClientInfo() == null)

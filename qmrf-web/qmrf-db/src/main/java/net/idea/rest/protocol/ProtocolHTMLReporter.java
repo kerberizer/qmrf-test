@@ -5,9 +5,9 @@ import java.util.Iterator;
 
 import net.idea.restnet.c.ResourceDoc;
 import net.idea.restnet.c.html.HTMLBeauty;
+import net.toxbank.client.resource.Protocol;
 
 import org.restlet.Request;
-import org.restlet.data.Protocol;
 
 public class ProtocolHTMLReporter  extends ProtocolURIReporter {
 

@@ -45,7 +45,7 @@ public class ProtocolQueryURIReporter <Q extends IQueryRetrieval<DBProtocol>> ex
 	public String getURI(String ref, DBProtocol item) {
 		StringBuilder b = new StringBuilder();
 		b.append(ref);
-		b.append(Resources.protocol);
+		b.append(item.isPublished()?Resources.protocol:Resources.unpublished);
 		b.append("/");
 		b.append(ReadProtocolByAuthor.generateIdentifier(item));
 		b.append(suffix==null?"":suffix);
