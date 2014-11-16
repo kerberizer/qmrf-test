@@ -113,20 +113,6 @@ public class UserDBResource<T>	extends QMRFQueryResource<ReadUser<T>,DBUser> {
 			return new OutputWriterConvertor(
 					new UserXMLReporter<IQueryRetrieval<DBUser>>(getRequest().getResourceRef()),
 					MediaType.TEXT_XML);			
-		} else if (variant.getMediaType().equals(MediaType.APPLICATION_RDF_XML) ||
-					variant.getMediaType().equals(MediaType.APPLICATION_RDF_TURTLE) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_N3) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES) 
-					) {
-				return new RDFJenaConvertor<DBUser, IQueryRetrieval<DBUser>>(
-						new UserRDFReporter<IQueryRetrieval<DBUser>>(
-								getRequest(),variant.getMediaType(),getDocumentation())
-						,variant.getMediaType(),filenamePrefix) {
-					@Override
-					protected String getDefaultNameSpace() {
-						return TOXBANK.URI;
-					}					
-				};
 		} else //html
 				return new OutputWriterConvertor(
 						createHTMLReporter(headless),
