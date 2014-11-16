@@ -82,21 +82,7 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 			throws net.idea.modbcum.i.exceptions.AmbitException,
 			ResourceException {
 		String filenamePrefix = getRequest().getResourceRef().getPath();
-		/*
-		if (variant.getMediaType().equals(MediaType.APPLICATION_RDF_XML) ||
-					variant.getMediaType().equals(MediaType.APPLICATION_RDF_TURTLE) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_N3) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES) ||
-					variant.getMediaType().equals(MediaType.APPLICATION_JSON)
-					) {
-				return new RDFJenaConvertor<Property, IQueryRetrieval<Property>>(
-						new TemplateRDFReporter<IQueryRetrieval<Property>>(
-								getRequest(),getDocumentation(),variant.getMediaType(),isRecursive())
-						,variant.getMediaType(),filenamePrefix);		
-				
-				
-		} else 
-		*/
+
 		if (variant.getMediaType().equals(MediaType.TEXT_URI_LIST)) {
 				DictionaryURIReporter r = new DictionaryURIReporter(getRequest(),null);
 				r.setDelimiter("\n");

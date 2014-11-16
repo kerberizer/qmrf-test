@@ -47,12 +47,10 @@ import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.db.convertors.OutputStreamConvertor;
 import net.idea.restnet.db.convertors.OutputWriterConvertor;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
-import net.idea.restnet.db.convertors.RDFJenaConvertor;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 import net.idea.restnet.user.DBUser;
 import net.idea.restnet.user.db.ReadUser;
-import net.toxbank.client.io.rdf.TOXBANK;
 
 import org.apache.commons.fileupload.FileItem;
 import org.restlet.Context;
@@ -120,9 +118,9 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 				MediaType.APPLICATION_JSON,
 				MediaType.TEXT_URI_LIST,
 				MediaType.TEXT_CSV,
-				MediaType.APPLICATION_RDF_XML,
-				MediaType.APPLICATION_RDF_TURTLE,
-				MediaType.TEXT_RDF_N3,
+				//MediaType.APPLICATION_RDF_XML,
+				//MediaType.APPLICATION_RDF_TURTLE,
+				//MediaType.TEXT_RDF_N3,
 				MediaType.APPLICATION_PDF,
 				MediaType.APPLICATION_EXCEL,
 				MediaType.APPLICATION_WORD,
@@ -150,22 +148,6 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 									.getProperty(Resources.Config.qmrf_ambit_service.name());
 			ProtocolCSVReporter r = new ProtocolCSVReporter(getRequest(),variant.getMediaType(),queryService);
 			return new StringConvertor(	r,MediaType.TEXT_CSV,filenamePrefix);
-											
-		} else if (variant.getMediaType().equals(MediaType.APPLICATION_RDF_XML) ||
-					variant.getMediaType().equals(MediaType.APPLICATION_RDF_TURTLE) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_N3) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES)
-					
-					) {
-				return new RDFJenaConvertor<DBProtocol, IQueryRetrieval<DBProtocol>>(
-						new ProtocolRDFReporter<IQueryRetrieval<DBProtocol>>(
-								getRequest(),variant.getMediaType(),getDocumentation())
-						,variant.getMediaType(),filenamePrefix) {
-					@Override
-					protected String getDefaultNameSpace() {
-						return TOXBANK.URI;
-					}					
-				};
 		} else if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
 			return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);
 		} else if (variant.getMediaType().equals(MediaType.APPLICATION_WORD)) {

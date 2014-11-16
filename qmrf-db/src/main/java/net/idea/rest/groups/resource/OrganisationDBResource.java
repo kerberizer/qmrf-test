@@ -99,21 +99,6 @@ public class OrganisationDBResource extends GroupDBResource<DBOrganisation> {
 					new QMRFGroupJSONReporter<IQueryRetrieval<IDBGroup>>(getRequest()),
 					MediaType.APPLICATION_JSON);					
 		
-		} else if (variant.getMediaType().equals(MediaType.APPLICATION_RDF_XML) ||
-					variant.getMediaType().equals(MediaType.APPLICATION_RDF_TURTLE) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_N3) ||
-					variant.getMediaType().equals(MediaType.TEXT_RDF_NTRIPLES) 
-					
-					) {
-				return new RDFJenaConvertor<IDBGroup, IQueryRetrieval<IDBGroup>>(
-						new GroupRDFReporter<IQueryRetrieval<IDBGroup>>(
-								getRequest(),variant.getMediaType(),getDocumentation())
-						,variant.getMediaType(),filenamePrefix) {
-					@Override
-					protected String getDefaultNameSpace() {
-						return TOXBANK.URI;
-					}					
-				};
 		} else //if (variant.getMediaType().equals(MediaType.TEXT_HTML))
 				return new OutputWriterConvertor(
 						createHTMLReporter(headless),MediaType.TEXT_HTML);
