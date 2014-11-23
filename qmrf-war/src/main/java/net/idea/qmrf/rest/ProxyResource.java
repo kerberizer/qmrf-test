@@ -9,6 +9,7 @@ import net.idea.qmrf.client.Resources;
 import net.idea.restnet.c.AbstractResource;
 import net.idea.restnet.c.TaskApplication;
 
+
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -74,7 +75,7 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 				Parameter param = p.next();
 				String value = param.getValue();
 				if (value==null) continue;
-				if (value.contains("script") || value.contains(">") || value.contains("<")) param.setValue(""); 
+				if (value.contains(">") || value.contains("<")) param.setValue(""); 
 				else param.setValue(value.replace("'","&quot;"));	
 			}
 			return params_get;
