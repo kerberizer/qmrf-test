@@ -56,6 +56,7 @@ public class QMRFTaskResource extends TaskResource<String> {
 			headers = new Form();
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
+		headers.removeAll("X-Frame-Options");
 		headers.add("X-Frame-Options", "SAMEORIGIN");
 		getResponse().getCacheDirectives().add(CacheDirective.noCache());
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
@@ -69,6 +70,7 @@ public class QMRFTaskResource extends TaskResource<String> {
 			headers = new Form();
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
+		headers.removeAll("X-Frame-Options");
 		headers.add("X-Frame-Options", "SAMEORIGIN");
 		getResponse().getCacheDirectives().add(CacheDirective.noCache());
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);

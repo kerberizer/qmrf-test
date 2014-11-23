@@ -35,6 +35,7 @@ public class QMRFLoginFormResource extends UserLoginFormResource<User> {
 			headers = new Form();
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
+		headers.removeAll("X-Frame-Options");
 		headers.add("X-Frame-Options", "SAMEORIGIN");
 		getResponse().getCacheDirectives().add(CacheDirective.noCache());
 		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
