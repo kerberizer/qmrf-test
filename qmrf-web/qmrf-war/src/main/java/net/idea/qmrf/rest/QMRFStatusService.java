@@ -53,6 +53,7 @@ public class QMRFStatusService extends StatusService {
 				headers = new Form();
 				response.getAttributes().put("org.restlet.http.headers", headers);
 			}
+			headers.removeAll("X-Frame-Options");
 			headers.add("X-Frame-Options", "SAMEORIGIN");
 			ServerInfo si = response.getServerInfo();si.setAgent("Restlet");response.setServerInfo(si);
 			boolean wrapInHTML = true;

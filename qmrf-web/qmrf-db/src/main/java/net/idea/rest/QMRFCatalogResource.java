@@ -31,6 +31,7 @@ public abstract class QMRFCatalogResource<T> extends CatalogResource<T> {
 			headers = new Form();
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
+		headers.removeAll("X-Frame-Options");
 		headers.add("X-Frame-Options", "SAMEORIGIN");
 		getResponse().getCacheDirectives().add(CacheDirective.privateInfo());
 		getResponse().getCacheDirectives().add(CacheDirective.maxAge(2700));
