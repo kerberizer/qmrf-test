@@ -3,6 +3,7 @@ package net.idea.rest;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -36,7 +37,9 @@ import net.idea.restnet.i.task.Task;
 import net.idea.restnet.i.task.TaskResult;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
+import org.owasp.encoder.Encode;
 import org.restlet.Context;
+import org.restlet.data.CacheDirective;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.CookieSetting;
 import org.restlet.data.Form;
@@ -160,10 +163,10 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 		        map.put("searchURI",htmlBeauty==null || htmlBeauty.getSearchURI()==null?"":htmlBeauty.getSearchURI());
 		        map.put("queryService",((TaskApplication)getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name()));
 		        //remove paging
-		        Form query = getRequest().getResourceRef().getQueryAsForm();
+		        Form query = getParams();
 		        //query.removeAll("page");query.removeAll("pagesize");query.removeAll("max");
 		        query.removeAll("media");
-		        Reference r = getRequest().getResourceRef().clone();
+		        Reference r = cleanedResourceRef(getRequest().getResourceRef());
 		        r.setQuery(query.getQueryString());
 		        map.put("qmrf_root",getRequest().getRootRef().toString()) ;
 		        map.put("qmrf_request",r.toString()) ;
@@ -179,7 +182,10 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 		        map.put("qmrf_request_csv",r.toString());
 		        return map;
 	}
-
+	
+	protected Reference cleanedResourceRef(Reference ref) {
+		return new Reference(Encode.forJavaScriptSource(ref.toString()));
+	}	
 	@Override
 	protected Representation getHTMLByTemplate(Variant variant) throws ResourceException {
 		getHTMLBeauty();
@@ -194,6 +200,9 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
+		List<CacheDirective> cache = new ArrayList<CacheDirective>();
+		cache.add(new CacheDirective("Cache-Control","max-age=2700, private"));
+		getResponse().setCacheDirectives(cache);
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}

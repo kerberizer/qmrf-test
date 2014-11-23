@@ -1,12 +1,15 @@
 package net.idea.rest;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.restnet.c.TaskApplication;
 import net.idea.restnet.c.resource.CatalogResource;
 
+import org.restlet.data.CacheDirective;
 import org.restlet.data.Form;
 import org.restlet.data.Method;
 import org.restlet.data.Parameter;
@@ -31,6 +34,9 @@ public abstract class QMRFCatalogResource<T> extends CatalogResource<T> {
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
+		List<CacheDirective> cache = new ArrayList<CacheDirective>();
+		cache.add(new CacheDirective("Cache-Control","max-age=2700, private"));
+		getResponse().setCacheDirectives(cache);
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}
