@@ -29,15 +29,8 @@ public class QMRFWelcomeResource extends ServerResource {
 
 	@Override
 	protected Representation get(Variant variant) throws ResourceException {
-			Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
-			if (headers == null) {
-				headers = new Form();
-				getResponse().getAttributes().put("org.restlet.http.headers", headers);
-			}
-			headers.add("X-Frame-Options", "SAMEORIGIN");
-			getResponse().getCacheDirectives().add(CacheDirective.publicInfo());
-			getResponse().getCacheDirectives().add(CacheDirective.maxAge(0));
-			ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
+			setXHeaders();
+			setCacheHeaders();
 	        Map<String, Object> map = new HashMap<String, Object>();
 	        if (getClientInfo().getUser()!=null) 
 	        	map.put("username", getClientInfo().getUser().getIdentifier());
@@ -55,10 +48,25 @@ public class QMRFWelcomeResource extends ServerResource {
 	        return toRepresentation(map, "body-welcome.ftl", MediaType.TEXT_PLAIN);
 	}
 	
-
+	protected void setCacheHeaders() {
+		getResponse().getCacheDirectives().add(CacheDirective.publicInfo());
+		getResponse().getCacheDirectives().add(CacheDirective.maxAge(0));
+	}
+	protected void setXHeaders() {
+		Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
+		if (headers == null) {
+			headers = new Form();
+			getResponse().getAttributes().put("org.restlet.http.headers", headers);
+		}
+		headers.remove("X-Frame-Options");
+		headers.add("X-Frame-Options", "SAMEORIGIN");
+		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
+	}
     protected Representation toRepresentation(Map<String, Object> map,
             String templateName, MediaType mediaType) {
-        
+		setXHeaders();
+		setCacheHeaders();
+
         return new TemplateRepresentation(
         		templateName,
         		((QMRFApplication)getApplication()).getConfiguration(),
