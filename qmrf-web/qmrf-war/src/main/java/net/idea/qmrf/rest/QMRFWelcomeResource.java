@@ -1,12 +1,15 @@
 package net.idea.qmrf.rest;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import net.idea.qmrf.client.Resources;
 import net.idea.rest.protocol.QMRF_HTMLBeauty;
 import net.idea.restnet.c.TaskApplication;
 
+import org.restlet.data.CacheDirective;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.ServerInfo;
@@ -32,6 +35,9 @@ public class QMRFWelcomeResource extends ServerResource {
 				getResponse().getAttributes().put("org.restlet.http.headers", headers);
 			}
 			headers.add("X-Frame-Options", "SAMEORIGIN");
+			List<CacheDirective> cache = new ArrayList<CacheDirective>();
+			cache.add(new CacheDirective("Cache-Control","max-age=0, public"));
+			getResponse().setCacheDirectives(cache);
 			ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 	        Map<String, Object> map = new HashMap<String, Object>();
 	        if (getClientInfo().getUser()!=null) 

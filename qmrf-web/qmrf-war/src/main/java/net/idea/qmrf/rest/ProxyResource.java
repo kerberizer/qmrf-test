@@ -2,6 +2,9 @@ package net.idea.qmrf.rest;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.qmrf.client.Resources;
@@ -11,9 +14,11 @@ import net.idea.restnet.c.TaskApplication;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.CacheDirective;
 import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.data.Method;
+import org.restlet.data.Parameter;
 import org.restlet.data.ServerInfo;
 import org.restlet.data.Status;
 import org.restlet.representation.Representation;
@@ -35,6 +40,13 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 		}
 		
 	};
+	protected void doInit() throws ResourceException {
+		super.doInit();
+		customizeVariants(new MediaType[] {
+				MediaType.APPLICATION_JSON,
+				MediaType.APPLICATION_JAVASCRIPT,
+				MediaType.IMAGE_PNG});
+	}	
 	protected supported_media media = supported_media.json;
 	@Override
 	public RemoteStreamConvertor createConvertor(Variant variant) throws AmbitException,
@@ -49,14 +61,27 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 			try {
 				media = supported_media.valueOf(request.getAttributes().get("media").toString());
 			} catch (Exception x) {
-				media = supported_media.json; 
+				media = supported_media.json;
 			}	
-			Form form = request.getResourceRef().getQueryAsForm();
+			Form form = getParams(request.getResourceRef().getQueryAsForm());
 			return new URL(form.getFirstValue("uri"));
 		} catch (MalformedURLException x) {
-			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST,x.getMessage());
+			throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
 		}
 	}
+
+	protected Form getParams(Form params_get) {
+			Iterator<Parameter> p = params_get.iterator();
+			while (p.hasNext()) {
+				Parameter param = p.next();
+				String value = param.getValue();
+				if (value==null) continue;
+				if (value.contains("script") || value.contains(">") || value.contains("<")) param.setValue(""); 
+				else param.setValue(value.replace("'","&quot;"));	
+			}
+			return params_get;
+	}
+	
 
 	
 	@Override
@@ -74,6 +99,9 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
+		List<CacheDirective> cache = new ArrayList<CacheDirective>();
+		cache.add(new CacheDirective("Cache-Control","max-age=2700, private"));
+		getResponse().setCacheDirectives(cache);
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}

@@ -18,6 +18,7 @@ import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.db.convertors.OutputWriterConvertor;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 
+import org.owasp.encoder.Encode;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
@@ -117,7 +118,7 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 			Response response) throws ResourceException {
 		String term = null;
 		try {
-			Form form = getResourceRef(getRequest()).getQueryAsForm();
+			Form form = getParams();
 			term = form.getFirstValue("term");
 			if (term!=null) {
 				QueryOntology q = new QueryOntology();
@@ -185,4 +186,20 @@ public class EndpointsResource<D extends Dictionary> extends QMRFQueryResource<I
 			Request baseReference) throws ResourceException {
 		return new DictionaryURIReporter(getRequest(),getDocumentation());
 	}
+	/*
+	@Override
+	protected Reference cleanedResourceRef(Reference ref) {
+		Object parent =  getRequest().getAttributes().get(resourceParent);
+		Object key =  getRequest().getAttributes().get(resourceKey);
+		Object view = getRequest().getAttributes().get("tree");
+		Reference cref = getRequest().getRootRef().addSegment(resource);
+		if (parent!=null) {
+			cref.addSegment(Encode.forUriComponent(parent.toString()));
+			if (key!=null) {
+				cref.addSegment(Encode.forUriComponent(key.toString()));
+			}
+		}
+		return cref;
+	}
+	*/
 }

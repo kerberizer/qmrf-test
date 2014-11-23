@@ -1,7 +1,9 @@
 package net.idea.qmrf.task;
 
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
@@ -19,6 +21,7 @@ import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 
 import org.restlet.Request;
+import org.restlet.data.CacheDirective;
 import org.restlet.data.Form;
 import org.restlet.data.ServerInfo;
 import org.restlet.representation.Representation;
@@ -54,6 +57,10 @@ public class QMRFTaskResource extends TaskResource<String> {
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
+		List<CacheDirective> cache = new ArrayList<CacheDirective>();
+		cache.add(new CacheDirective("Cache-Control","no-cache"));
+		getResponse().setCacheDirectives(cache);		
+
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}
@@ -66,6 +73,9 @@ public class QMRFTaskResource extends TaskResource<String> {
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
+		List<CacheDirective> cache = new ArrayList<CacheDirective>();
+		cache.add(new CacheDirective("Cache-Control","no-cache"));
+		getResponse().setCacheDirectives(cache);		
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get();
 	}

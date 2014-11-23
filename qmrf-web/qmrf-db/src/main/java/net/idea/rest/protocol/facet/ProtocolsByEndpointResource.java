@@ -3,6 +3,7 @@ package net.idea.rest.protocol.facet;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
@@ -35,6 +36,7 @@ import net.idea.restnet.i.task.TaskResult;
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
+import org.restlet.data.CacheDirective;
 import org.restlet.data.CharacterSet;
 import org.restlet.data.CookieSetting;
 import org.restlet.data.Form;
@@ -111,6 +113,9 @@ public class ProtocolsByEndpointResource extends FacetResource<IQueryRetrieval<I
 				getResponse().getAttributes().put("org.restlet.http.headers", headers);
 			}
 			headers.add("X-Frame-Options", "SAMEORIGIN");
+			List<CacheDirective> cache = new ArrayList<CacheDirective>();
+			cache.add(new CacheDirective("Cache-Control","max-age=2700, private"));
+			getResponse().setCacheDirectives(cache);
 			ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 			
 			CookieSetting cS = new CookieSetting(0, "subjectid", getToken());
