@@ -191,17 +191,25 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>,T extends S
         return toRepresentation(getMap(variant), getTemplateName(), MediaType.TEXT_PLAIN);
 	}
 	
-	@Override
-	protected Representation get(Variant variant) throws ResourceException {
+	
+	protected void setCacheHeaders() {
+		getResponse().getCacheDirectives().add(CacheDirective.privateInfo());
+		getResponse().getCacheDirectives().add(CacheDirective.maxAge(2700));
+	}
+	protected void setXHeaders() {
 		Form headers = (Form) getResponse().getAttributes().get("org.restlet.http.headers");
 		if (headers == null) {
 			headers = new Form();
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
+		headers.remove("X-Frame-Options");
 		headers.add("X-Frame-Options", "SAMEORIGIN");
-		getResponse().getCacheDirectives().add(CacheDirective.privateInfo());
-		getResponse().getCacheDirectives().add(CacheDirective.maxAge(2700));
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
+	}
+	@Override
+	protected Representation get(Variant variant) throws ResourceException {
+		setXHeaders();
+		setCacheHeaders();
 		return super.get(variant);
 	}
 
