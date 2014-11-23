@@ -36,9 +36,7 @@ public class QMRFLoginFormResource extends UserLoginFormResource<User> {
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
-		List<CacheDirective> cache = new ArrayList<CacheDirective>();
-		cache.add(new CacheDirective("Cache-Control","no-cache"));
-		getResponse().setCacheDirectives(cache);
+		getResponse().getCacheDirectives().add(CacheDirective.noCache());
 		if (variant.getMediaType().equals(MediaType.TEXT_HTML)) {
 			User user = getRequest().getClientInfo().getUser();
 			if ((user!=null) && (user.getIdentifier()!=null)) {

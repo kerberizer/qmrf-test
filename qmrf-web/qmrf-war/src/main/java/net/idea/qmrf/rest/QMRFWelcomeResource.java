@@ -35,9 +35,8 @@ public class QMRFWelcomeResource extends ServerResource {
 				getResponse().getAttributes().put("org.restlet.http.headers", headers);
 			}
 			headers.add("X-Frame-Options", "SAMEORIGIN");
-			List<CacheDirective> cache = new ArrayList<CacheDirective>();
-			cache.add(new CacheDirective("Cache-Control","max-age=0, public"));
-			getResponse().setCacheDirectives(cache);
+			getResponse().getCacheDirectives().add(CacheDirective.publicInfo());
+			getResponse().getCacheDirectives().add(CacheDirective.maxAge(0));
 			ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 	        Map<String, Object> map = new HashMap<String, Object>();
 	        if (getClientInfo().getUser()!=null) 

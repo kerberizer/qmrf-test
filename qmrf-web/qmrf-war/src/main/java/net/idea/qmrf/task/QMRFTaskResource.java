@@ -57,10 +57,7 @@ public class QMRFTaskResource extends TaskResource<String> {
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
-		List<CacheDirective> cache = new ArrayList<CacheDirective>();
-		cache.add(new CacheDirective("Cache-Control","no-cache"));
-		getResponse().setCacheDirectives(cache);		
-
+		getResponse().getCacheDirectives().add(CacheDirective.noCache());
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}
@@ -73,9 +70,7 @@ public class QMRFTaskResource extends TaskResource<String> {
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
-		List<CacheDirective> cache = new ArrayList<CacheDirective>();
-		cache.add(new CacheDirective("Cache-Control","no-cache"));
-		getResponse().setCacheDirectives(cache);		
+		getResponse().getCacheDirectives().add(CacheDirective.noCache());
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get();
 	}

@@ -2,9 +2,7 @@ package net.idea.qmrf.rest;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import net.idea.modbcum.i.exceptions.AmbitException;
 import net.idea.qmrf.client.Resources;
@@ -99,9 +97,7 @@ public class ProxyResource<T> extends AbstractResource<URL,T,RemoteStreamConvert
 			getResponse().getAttributes().put("org.restlet.http.headers", headers);
 		}
 		headers.add("X-Frame-Options", "SAMEORIGIN");
-		List<CacheDirective> cache = new ArrayList<CacheDirective>();
-		cache.add(new CacheDirective("Cache-Control","max-age=2700, private"));
-		getResponse().setCacheDirectives(cache);
+		getResponse().getCacheDirectives().add(CacheDirective.proxyMustRevalidate());
 		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}
