@@ -3,11 +3,11 @@
   <parent>
     <artifactId>qmrf-rest</artifactId>
     <groupId>net.idea</groupId>
-    <version>2.0.6</version>
+    <version>2.0.7-SNAPSHOT</version>
   </parent>
   <groupId>net.idea</groupId>
   <artifactId>qmrf-beans</artifactId>
-  <version>2.0.6</version>
+  <version>2.0.7-SNAPSHOT</version>
   <name>QMRF beans</name>
   <dependencies>
   	<dependency>
