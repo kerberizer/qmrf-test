@@ -1,457 +1,420 @@
 <?xml version="1.0" encoding="utf-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>net.idea</groupId>
-  <artifactId>qmrf-rest</artifactId>
-  <version>2.0.6</version>
-  <packaging>pom</packaging>
-  <name>QMRF</name>
-  <description>QMRF</description>
-  <url>https://github.com/vedina/QMRF</url>
-  <scm>
-    <connection>svn://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web</connection>
-    <developerConnection>scm:svn:http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web</developerConnection>
-    <url>http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web</url>
-  </scm>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <junit.version>4.8.1</junit.version>
-    <restlet.version>2.0-M6</restlet.version>
-    <restnet.version>0.0.10</restnet.version>
-    <opentoxcli.version>1.0.4-SNAPSHOT</opentoxcli.version>
-    <qmrfeditor.version>2.0.6</qmrfeditor.version>
-  </properties>
-  <issueManagement>
-    <system></system>
-    <url>http://sourceforge.net/p/qmrf/tickets/</url>
-  </issueManagement>
-  <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>ambit</groupId>
-      <artifactId>opentox-client</artifactId>
-      <version>${opentoxcli.version}</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.ideaconsult.restnet</groupId>
-      <artifactId>restnet-i</artifactId>
-      <version>${restnet.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>net.ideaconsult.restnet</groupId>
-      <artifactId>restnet-c</artifactId>
-      <version>${restnet.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>net.ideaconsult.restnet</groupId>
-      <artifactId>restnet-a</artifactId>
-      <version>${restnet.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>net.ideaconsult.restnet</groupId>
-      <artifactId>restnet-rdf</artifactId>
-      <version>${restnet.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.restlet.jee</groupId>
-      <artifactId>org.restlet.ext.servlet</artifactId>
-      <version>${restlet.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
-      <scope>provided</scope>
-    </dependency>
-     <dependency>
-        <groupId>org.owasp.encoder</groupId>
-        <artifactId>encoder</artifactId>
-        <version>1.1.1</version>
-	</dependency>    
-  </dependencies>
-  <repositories>
-    <repository>
-      <id>maven-restlet</id>
-      <name>Public online Restlet repository</name>
-      <url>http://maven.restlet.org</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>ambit-plovdiv</id>
-      <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/thirdparty</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>ambit-plovdiv-opennms</id>
-      <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/opennms-repo</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>ambit-plovdiv-releases</id>
-      <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/releases</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>ambit-plovdiv-snapshots</id>
-      <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/snapshots</url>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>toxbank-releases</id>
-      <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/toxbank-releases</url>
-    </repository>
-    <repository>
-      <id>toxbank-snapshots</id>
-      <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/toxbank-snapshots</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>mvnrepository</id>
-      <name>mvnrepository</name>
-      <url>http://mvnrepository.com/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
-  <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>jar</goal>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <goals>
-              <goal>test-jar</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      
-      <!--  http://mojo.codehaus.org/buildnumber-maven-plugin/plugin-info.html  -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.2</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>create</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <doCheck>false</doCheck>
-          <doUpdate>false</doUpdate>
-        </configuration>
-      </plugin>
-    </plugins>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.3.1</version>
-          <configuration>
-            <source>1.6</source>
-            <target>1.6</target>
-          </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <configuration>
-            <skip>true</skip>
-            <disableXmlReport>true</disableXmlReport>
-            <argLine>-Xmx1024m</argLine>
-          </configuration>
-        </plugin>
-        <plugin>
-          <!-- Create jars for test classes -->
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <executions>
-            <execution>
-              <goals>
-                <goal>test-jar</goal>
-              </goals>
-            </execution>
-          </executions>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-  <modules>
-    <module>qmrf-war</module>
-    <module>qmrf-db</module>
-    <module>qmrf-resource</module>
-    <module>qmrf-beans</module>
-  </modules>
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ambit-plovdiv-snapshots</id>
-      <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/snapshots</url>
-      <uniqueVersion>false</uniqueVersion>
-    </snapshotRepository>
-    <repository>
-      <id>ambit-plovdiv-releases</id>
-      <url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/releases</url>
-    </repository>
-  </distributionManagement>
-  <inceptionYear>2007</inceptionYear>
-  <licenses>
-    <license>
-      <name>LGPL3</name>
-      <url>http://www.gnu.org/licenses/lgpl.html</url>
-      <distribution>repo</distribution>
-      <comments>LGPL 3</comments>
-    </license>
-  </licenses>
-  <reporting>
-    <plugins>
-      <!-- 
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jxr-maven-plugin</artifactId>
-      </plugin>
--->
-      <!-- 
-      <plugin>
-        <artifactId>maven-surefire-plugin</artifactId>
-      </plugin>
-     <plugin>
-        <artifactId>maven-clover-plugin</artifactId>
-      </plugin>      
-	-->
-      <plugin>
-        <!-- UML class diagrams  -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.7</version>
-        <!-- <docletPath>/path/to/UmlGraph.jar</docletPath> -->
-        <configuration>
-          <source>1.5</source>
-          <aggregate>false</aggregate>
-          <doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet>
-          <docletArtifact>
-            <groupId>gr.spinellis</groupId>
-            <artifactId>UmlGraph</artifactId>
-            <version>4.6</version>
-          </docletArtifact>
-          <additionalparam>
-            <!--  http://www.umlgraph.org/doc/cd-opt.html 
-	          	-attributes
-	          	-views
-	          	-types 
-	            -inferrel -inferdep -quiet -hide java.*
-	            -collpackages java.util.* -qualify
-	            -postfixpackage 
-	            --> 
-	            -all
-	          </additionalparam>
-        </configuration>
-      </plugin>
-      <!-- 
-		<plugin>
-		    <groupId>org.apache.maven.plugins</groupId>
-		    <artifactId>maven-project-info-reports-plugin</artifactId>
- 			<version>2.1</version> 		    
-		    <configuration>
-		      <dependencyLocationsEnabled>false</dependencyLocationsEnabled>
-		    </configuration>
-		  </plugin>
-		   -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-pmd-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <linkXref>false</linkXref>
-          <sourceEncoding>utf-8</sourceEncoding>
-          <minimumTokens>100</minimumTokens>
-          <targetJdk>
-					1.5
-				</targetJdk>
-          <excludes>
-            <exclude>*/generated/.java</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-      <!-- 
-          <plugin>
-          	<groupId>org.codehaus.mojo</groupId>
-          	<artifactId>taglist-maven-plugin</artifactId>
-			<configuration>
-				<tags>
-					<tag>TODO</tag>
-					<tag>@todo</tag>
-					<tag>FIXME</tag>
-					<tag>XXX</tag>
-				</tags>
-			</configuration>          	
-          </plugin>
-          -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jdepend-maven-plugin</artifactId>
-        <version>2.0-beta-2</version>
-      </plugin>
-      <!-- 
-          <plugin>
-          	<groupId>org.codehaus.mojo</groupId>
-          	<artifactId>cobertura-maven-plugin</artifactId>
-          </plugin>
-           -->
-      <!-- Develop our own rules or follow foreign ones ...
-          <plugin>
-          	<groupId>org.apache.maven.plugins</groupId>
-          	<artifactId>maven-checkstyle-plugin</artifactId>
-          	<configuration>
-				<configLocation>config/maven_checks.xml</configLocation>
-			</configuration>
-          </plugin>
-           -->
-      <!-- needs svn executable  
- 	  <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-changelog-plugin</artifactId>
-      </plugin> -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <aggregate>true</aggregate>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
-  <profiles>
-    <profile>
-      <id>development</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <debug>true</debug>
-              <optimize>false</optimize>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>production</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <configuration>
-              <debug>false</debug>
-              <optimize>true</optimize>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>qmrf</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <properties>
-        <!-- After deployment, these settings could be found (and modified) in {servlet-container}/webapps/{this-app}/WEB-INF/conf/qmrf-db.pref -->
-        <!-- The host where MySQL is running -->
-        <qmrf.db.host>localhost</qmrf.db.host>
-        <!-- The database name -->
-        <qmrf.db>qmrf</qmrf.db>
-        <!-- The user name -->
-        <qmrf.db.user>guest</qmrf.db.user>
-        <qmrf.db.user.password>guest</qmrf.db.user.password>
-        <!-- The folder where attachment files are stored -->
-        <qmrf.dir.attachments></qmrf.dir.attachments>
-        <!-- How to serialize RDF - by Jena or StAX  jena|stax -->
-        <rdf.writer>jena</rdf.writer>
-        <!-- Protect /admin resource by AA -->
-        <qmrf.aa.admin>false</qmrf.aa.admin>
-        <!-- Not used so far -->
-        <aa.admin>false</aa.admin>
-        <!-- Controls whether database could be created by 
-			curl -X POST -d "dbname=qmrf" http://host:port/{this-app}/admin/database  
-			-->
-        <qmrf.db.create.allow>true</qmrf.db.create.allow>
-        <!-- Whether to protect resources based on local users database. True by default. 
-			Consider changing only for testing purposes  -->
-        <qmrf_protected>true</qmrf_protected>
-        <!-- File path to store attachments_ If notdefined will use the temp folder -->
-        <qmrf_attachments_dir></qmrf_attachments_dir>
-        <!-- #URI of Ambit web service to store and query structures and data via OpenTox REST API
-				 #The service (ambit2.war) could be downloaded from http://ambit_sf_net
-				 #If not defined, structure search will not be available 
-  			 -->
-        <qmrf_ambit_service>http://localhost:8080/qmrfdata</qmrf_ambit_service>
-        <!-- Default project for submitting new documents -->
-        <qmrf_default_project>/project/G1</qmrf_default_project>
-        <!-- Default project for submitting new documents -->
-        <qmrf_default_organisation>/organisation/G2</qmrf_default_organisation>
-        <!-- Default owner for submitting new documents -->
-        <qmrf_default_owner>/user/U66</qmrf_default_owner>
-	<!-- Allow insecure connections to SSL/TLS sites (similar to curl -k option). -->
-	<insecure>true</insecure>
-        <!-- Used in surefire tests only-->
-        <!-- Database for tests -->
-        <qmrf.db.test>qmrf-test</qmrf.db.test>
-        <!-- DB user for tests -->
-        <qmrf.db.user.test>guest</qmrf.db.user.test>
-        <!-- DB password for tests -->
-        <qmrf.db.user.password.test>guest</qmrf.db.user.password.test>
-        <!-- attachment uploads related. More in WEB-INF/config/qmrf.properties -->
-        <aa.local.admin.name>admin</aa.local.admin.name>
-        <aa.local.admin.pass>changeit</aa.local.admin.pass>
-      </properties>
-    </profile>
-  </profiles>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.idea</groupId>
+	<artifactId>qmrf-rest</artifactId>
+	<version>2.0.7-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>QMRF</name>
+	<description>QMRF</description>
+	<url>https://github.com/vedina/QMRF</url>
+	<scm>
+		<connection>svn://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web</connection>
+		<developerConnection>scm:svn:http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web</developerConnection>
+		<url>http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-web</url>
+	</scm>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<junit.version>4.8.1</junit.version>
+		<restlet.version>2.0-M6</restlet.version>
+		<restnet.version>0.0.10</restnet.version>
+		<opentoxcli.version>1.0.4-SNAPSHOT</opentoxcli.version>
+		<qmrfeditor.version>2.0.7-SNAPSHOT</qmrfeditor.version>
+	</properties>
+	<issueManagement>
+		<system></system>
+		<url>http://sourceforge.net/p/qmrf/tickets/</url>
+	</issueManagement>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>ambit</groupId>
+			<artifactId>opentox-client</artifactId>
+			<version>${opentoxcli.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.ideaconsult.restnet</groupId>
+			<artifactId>restnet-i</artifactId>
+			<version>${restnet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.ideaconsult.restnet</groupId>
+			<artifactId>restnet-c</artifactId>
+			<version>${restnet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.ideaconsult.restnet</groupId>
+			<artifactId>restnet-a</artifactId>
+			<version>${restnet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.ideaconsult.restnet</groupId>
+			<artifactId>restnet-rdf</artifactId>
+			<version>${restnet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.restlet.jee</groupId>
+			<artifactId>org.restlet.ext.servlet</artifactId>
+			<version>${restlet.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.owasp.encoder</groupId>
+			<artifactId>encoder</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>maven-restlet</id>
+			<name>Public online Restlet repository</name>
+			<url>http://maven.restlet.org</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>ambit-plovdiv</id>
+			<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/thirdparty</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>ambit-plovdiv-opennms</id>
+			<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/opennms-repo</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>ambit-plovdiv-releases</id>
+			<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>ambit-plovdiv-snapshots</id>
+			<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>toxbank-releases</id>
+			<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/toxbank-releases</url>
+		</repository>
+		<repository>
+			<id>toxbank-snapshots</id>
+			<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/toxbank-snapshots</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>mvnrepository</id>
+			<name>mvnrepository</name>
+			<url>http://mvnrepository.com/</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>codehaus-mule-repo</id>
+			<name>codehaus-mule-repo</name>
+			<url>https://repository-master.mulesoft.org/nexus/content/groups/public/</url>
+			<layout>default</layout>
+		</repository>
+
+	</repositories>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- http://mojo.codehaus.org/buildnumber-maven-plugin/plugin-info.html -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>1.2</version>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<doCheck>false</doCheck>
+					<doUpdate>false</doUpdate>
+				</configuration>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.3.1</version>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<configuration>
+						<skip>true</skip>
+						<disableXmlReport>true</disableXmlReport>
+						<argLine>-Xmx1024m</argLine>
+					</configuration>
+				</plugin>
+				<plugin>
+					<!-- Create jars for test classes -->
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<executions>
+						<execution>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<modules>
+		<module>qmrf-war</module>
+		<module>qmrf-db</module>
+		<module>qmrf-resource</module>
+		<module>qmrf-beans</module>
+	</modules>
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ambit-plovdiv-snapshots</id>
+			<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/snapshots</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+		<repository>
+			<id>ambit-plovdiv-releases</id>
+			<url>http://ambit.uni-plovdiv.bg:8083/nexus/content/repositories/releases</url>
+		</repository>
+	</distributionManagement>
+	<inceptionYear>2007</inceptionYear>
+	<licenses>
+		<license>
+			<name>LGPL3</name>
+			<url>http://www.gnu.org/licenses/lgpl.html</url>
+			<distribution>repo</distribution>
+			<comments>LGPL 3</comments>
+		</license>
+	</licenses>
+	<reporting>
+		<plugins>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>jxr-maven-plugin</artifactId> 
+				</plugin> -->
+			<!-- <plugin> <artifactId>maven-surefire-plugin</artifactId> </plugin> 
+				<plugin> <artifactId>maven-clover-plugin</artifactId> </plugin> -->
+			<plugin>
+				<!-- UML class diagrams -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+				<!-- <docletPath>/path/to/UmlGraph.jar</docletPath> -->
+				<configuration>
+					<source>1.5</source>
+					<aggregate>false</aggregate>
+					<doclet>gr.spinellis.umlgraph.doclet.UmlGraphDoc</doclet>
+					<docletArtifact>
+						<groupId>gr.spinellis</groupId>
+						<artifactId>UmlGraph</artifactId>
+						<version>4.6</version>
+					</docletArtifact>
+					<additionalparam>
+						<!-- http://www.umlgraph.org/doc/cd-opt.html -attributes -views -types 
+							-inferrel -inferdep -quiet -hide java.* -collpackages java.util.* -qualify 
+							-postfixpackage -->
+						-all
+					</additionalparam>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-project-info-reports-plugin</artifactId> 
+				<version>2.1</version> <configuration> <dependencyLocationsEnabled>false</dependencyLocationsEnabled> 
+				</configuration> </plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<linkXref>false</linkXref>
+					<sourceEncoding>utf-8</sourceEncoding>
+					<minimumTokens>100</minimumTokens>
+					<targetJdk>
+						1.5
+					</targetJdk>
+					<excludes>
+						<exclude>*/generated/.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>taglist-maven-plugin</artifactId> 
+				<configuration> <tags> <tag>TODO</tag> <tag>@todo</tag> <tag>FIXME</tag> 
+				<tag>XXX</tag> </tags> </configuration> </plugin> -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jdepend-maven-plugin</artifactId>
+				<version>2.0-beta-2</version>
+			</plugin>
+			<!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>cobertura-maven-plugin</artifactId> 
+				</plugin> -->
+			<!-- Develop our own rules or follow foreign ones ... <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-checkstyle-plugin</artifactId> <configuration> <configLocation>config/maven_checks.xml</configLocation> 
+				</configuration> </plugin> -->
+			<!-- needs svn executable <plugin> <groupId>org.apache.maven.plugins</groupId> 
+				<artifactId>maven-changelog-plugin</artifactId> </plugin> -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<aggregate>true</aggregate>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+	<profiles>
+		<profile>
+			<id>development</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<debug>true</debug>
+							<optimize>false</optimize>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>production</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<configuration>
+							<debug>false</debug>
+							<optimize>true</optimize>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>qmrf</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- After deployment, these settings could be found (and modified) in 
+					{servlet-container}/webapps/{this-app}/WEB-INF/conf/qmrf-db.pref -->
+				<!-- The host where MySQL is running -->
+				<qmrf.db.host>localhost</qmrf.db.host>
+				<!-- The database name -->
+				<qmrf.db>qmrf</qmrf.db>
+				<!-- The user name -->
+				<qmrf.db.user>guest</qmrf.db.user>
+				<qmrf.db.user.password>guest</qmrf.db.user.password>
+				<!-- The folder where attachment files are stored -->
+				<qmrf.dir.attachments></qmrf.dir.attachments>
+				<!-- How to serialize RDF - by Jena or StAX jena|stax -->
+				<rdf.writer>jena</rdf.writer>
+				<!-- Protect /admin resource by AA -->
+				<qmrf.aa.admin>false</qmrf.aa.admin>
+				<!-- Not used so far -->
+				<aa.admin>false</aa.admin>
+				<!-- Controls whether database could be created by curl -X POST -d "dbname=qmrf" 
+					http://host:port/{this-app}/admin/database -->
+				<qmrf.db.create.allow>true</qmrf.db.create.allow>
+				<!-- Whether to protect resources based on local users database. True 
+					by default. Consider changing only for testing purposes -->
+				<qmrf_protected>true</qmrf_protected>
+				<!-- File path to store attachments_ If notdefined will use the temp 
+					folder -->
+				<qmrf_attachments_dir></qmrf_attachments_dir>
+				<!-- #URI of Ambit web service to store and query structures and data 
+					via OpenTox REST API #The service (ambit2.war) could be downloaded from http://ambit_sf_net 
+					#If not defined, structure search will not be available -->
+				<qmrf_ambit_service>http://localhost:8080/qmrfdata</qmrf_ambit_service>
+				<!-- Default project for submitting new documents -->
+				<qmrf_default_project>/project/G1</qmrf_default_project>
+				<!-- Default project for submitting new documents -->
+				<qmrf_default_organisation>/organisation/G2</qmrf_default_organisation>
+				<!-- Default owner for submitting new documents -->
+				<qmrf_default_owner>/user/U66</qmrf_default_owner>
+				<!-- Allow insecure connections to SSL/TLS sites (similar to curl -k 
+					option). -->
+				<insecure>true</insecure>
+				<!-- Used in surefire tests only -->
+				<!-- Database for tests -->
+				<qmrf.db.test>qmrf-test</qmrf.db.test>
+				<!-- DB user for tests -->
+				<qmrf.db.user.test>guest</qmrf.db.user.test>
+				<!-- DB password for tests -->
+				<qmrf.db.user.password.test>guest</qmrf.db.user.password.test>
+				<!-- attachment uploads related. More in WEB-INF/config/qmrf.properties -->
+				<aa.local.admin.name>admin</aa.local.admin.name>
+				<aa.local.admin.pass>changeit</aa.local.admin.pass>
+			</properties>
+		</profile>
+	</profiles>
 </project>
