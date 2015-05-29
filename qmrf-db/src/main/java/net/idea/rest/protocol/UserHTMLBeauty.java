@@ -37,7 +37,7 @@ public class UserHTMLBeauty extends QMRF_HTMLBeauty {
 		final String searchMenuTemplate =
 			"<div class='search ui-widget'>\n" +
 			"<p title='%s'>%s</p>\n" +
-			"<form method='GET' action='%s%s>\n" +
+			"<form method='GET' action='%s%s autocomplete='off'>\n" +
 			"<table width='200px'>\n" +
 			"<tr><td colspan='2'><input type='text' name='search' size='20' value='%s' tabindex='0' title='Search by first or last name'></td></tr>\n" +
 			"<tr><td colspan='2'><input type='text' name='username' size='20' value='%s' tabindex='0' title='Search by user name'></td></tr>\n" +
