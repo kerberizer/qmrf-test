@@ -295,9 +295,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 					);
 			
 			// HEAD starts here.
-			w.write(String.format("<head> <meta property=\"dc:title\" content=\"%s\"/>",
-					title
-					));
+			w.write("<head>");
 			
 			w.write(String.format("<title>%s</title>\n",title));
 			
