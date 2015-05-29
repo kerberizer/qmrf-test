@@ -249,8 +249,8 @@ public final class Protocol_crud_test<T extends Object>  extends CRUDTest<T,DBPr
 				);
 		Assert.assertEquals("1.Physical Chemical Properties",table.getValue(0,"g"));
 		Assert.assertEquals("1.4.Vapour Pressure",table.getValue(0,"n"));
-		Assert.assertEquals("Q13-14-0001",table.getValue(0,"qxml"));
-		Assert.assertEquals("Q13-14-0001",table.getValue(0,"qmrf_number"));
+		Assert.assertEquals("Q15-14-0001",table.getValue(0,"qxml"));
+		Assert.assertEquals("Q15-14-0001",table.getValue(0,"qmrf_number"));
 		Assert.assertNotSame("To be entered by ECB",table.getValue(0,"u"));
 		table = 	c.createQueryTable("EXPECTED","SELECT idprotocol,version,idtemplate from protocol_endpoints where idprotocol=2 and version=1 and idtemplate=10");
 		Assert.assertEquals(1,table.getRowCount());
