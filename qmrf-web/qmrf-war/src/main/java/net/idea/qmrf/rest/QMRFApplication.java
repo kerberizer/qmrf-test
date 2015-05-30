@@ -433,13 +433,13 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 		 * LocalReference.createFileReference("/webapps/images")));
 		 */
 
-		Directory metaDir = new Directory(getContext(), "war:///META-INF");
-		Directory imgDir = new Directory(getContext(), "war:///images");
-		Directory staticDir = new Directory(getContext(), "war:///static");
-		Directory jmeDir = new Directory(getContext(), "war:///jme");
-		Directory styleDir = new Directory(getContext(), "war:///style");
-		Directory scriptsDir = new Directory(getContext(), "war:///scripts");
-		Directory jquery = new Directory(getContext(), "war:///jquery");
+		Directory metaDir = new ParanoidDirectory(getContext(), "war:///META-INF");
+		Directory imgDir = new ParanoidDirectory(getContext(), "war:///images");
+		Directory staticDir = new ParanoidDirectory(getContext(), "war:///static");
+		Directory jmeDir = new ParanoidDirectory(getContext(), "war:///jme");
+		Directory styleDir = new ParanoidDirectory(getContext(), "war:///style");
+		Directory scriptsDir = new ParanoidDirectory(getContext(), "war:///scripts");
+		Directory jquery = new ParanoidDirectory(getContext(), "war:///jquery");
 
 		router.attach("/meta/", metaDir);
 		router.attach("/images/", imgDir);
