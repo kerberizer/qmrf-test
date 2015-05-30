@@ -119,6 +119,7 @@ public class ProtocolsByEndpointResource extends FacetResource<IQueryRetrieval<I
 			
 			CookieSetting cS = new CookieSetting(0, "subjectid", getToken());
 			cS.setPath("/");
+			cS.setAccessRestricted(true);
 	        this.getResponse().getCookieSettings().add(cS);
 	        
 	        /*
