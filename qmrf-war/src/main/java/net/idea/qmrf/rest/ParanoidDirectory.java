@@ -24,7 +24,7 @@ public class ParanoidDirectory extends Directory {
 	headers.add("X-Frame-Options", "SAMEORIGIN");
 	response.getCacheDirectives().add(CacheDirective.noCache());
 	ServerInfo si = response.getServerInfo();
-	si.setAgent("Restlet");
+	si.setAgent("I'm a teapot (RFC 2324)");
 	super.handle(request, response);
     }
 }

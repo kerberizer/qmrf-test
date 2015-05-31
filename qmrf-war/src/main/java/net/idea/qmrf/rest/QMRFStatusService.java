@@ -55,7 +55,7 @@ public class QMRFStatusService extends StatusService {
 			}
 			headers.removeAll("X-Frame-Options");
 			headers.add("X-Frame-Options", "SAMEORIGIN");
-			ServerInfo si = response.getServerInfo();si.setAgent("Restlet");response.setServerInfo(si);
+			ServerInfo si = response.getServerInfo();si.setAgent("QMRF");response.setServerInfo(si);
 			boolean wrapInHTML = true;
 			
 			if ((status.getThrowable() !=null) && (status.getThrowable() instanceof RResourceException)) 

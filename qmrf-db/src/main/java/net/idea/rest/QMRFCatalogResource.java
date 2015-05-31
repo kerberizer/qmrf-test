@@ -38,7 +38,7 @@ public abstract class QMRFCatalogResource<T> extends CatalogResource<T> {
 	getResponse().getCacheDirectives().add(CacheDirective.privateInfo());
 	getResponse().getCacheDirectives().add(CacheDirective.maxAge(2700));
 	ServerInfo si = getResponse().getServerInfo();
-	si.setAgent("Restlet");
+	si.setAgent("QMRF");
 	getResponse().setServerInfo(si);
 	return super.get(variant);
     }

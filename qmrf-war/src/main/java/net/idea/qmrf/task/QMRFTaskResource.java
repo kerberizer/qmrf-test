@@ -59,7 +59,7 @@ public class QMRFTaskResource extends TaskResource<String> {
 		headers.removeAll("X-Frame-Options");
 		headers.add("X-Frame-Options", "SAMEORIGIN");
 		getResponse().getCacheDirectives().add(CacheDirective.noCache());
-		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
+		ServerInfo si = getResponse().getServerInfo();si.setAgent("QMRF");getResponse().setServerInfo(si);
 		return super.get(variant);
 	}
 
@@ -73,7 +73,7 @@ public class QMRFTaskResource extends TaskResource<String> {
 		headers.removeAll("X-Frame-Options");
 		headers.add("X-Frame-Options", "SAMEORIGIN");
 		getResponse().getCacheDirectives().add(CacheDirective.noCache());
-		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
+		ServerInfo si = getResponse().getServerInfo();si.setAgent("QMRF");getResponse().setServerInfo(si);
 		return super.get();
 	}
 
