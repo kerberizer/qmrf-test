@@ -60,7 +60,7 @@ public class QMRFWelcomeResource extends ServerResource {
 		}
 		headers.removeAll("X-Frame-Options");
 		headers.add("X-Frame-Options", "SAMEORIGIN");
-		ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
+		ServerInfo si = getResponse().getServerInfo();si.setAgent("QMRF");getResponse().setServerInfo(si);
 	}
     protected Representation toRepresentation(Map<String, Object> map,
             String templateName, MediaType mediaType) {

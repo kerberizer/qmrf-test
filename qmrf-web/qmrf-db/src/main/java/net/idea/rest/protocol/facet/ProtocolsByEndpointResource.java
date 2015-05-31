@@ -115,7 +115,7 @@ public class ProtocolsByEndpointResource extends FacetResource<IQueryRetrieval<I
 			headers.add("X-Frame-Options", "SAMEORIGIN");
 			getResponse().getCacheDirectives().add(CacheDirective.privateInfo());
 			getResponse().getCacheDirectives().add(CacheDirective.maxAge(2700));
-			ServerInfo si = getResponse().getServerInfo();si.setAgent("Restlet");getResponse().setServerInfo(si);
+			ServerInfo si = getResponse().getServerInfo();si.setAgent("QMRF");getResponse().setServerInfo(si);
 			
 			CookieSetting cS = new CookieSetting(0, "subjectid", getToken());
 			cS.setPath("/");
