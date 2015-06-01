@@ -49,16 +49,6 @@
 			<groupId>net.ideaconsult.restnet</groupId>
 			<artifactId>restnet-c</artifactId>
 			<version>${restnet.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>c3p0</groupId>
-					<artifactId>c3p0</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>mysql</groupId>
-					<artifactId>mysql-connector-java</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.ideaconsult.restnet</groupId>
@@ -86,6 +76,7 @@
 			<artifactId>encoder</artifactId>
 			<version>1.1.1</version>
 		</dependency>
+<!-- 		
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>c3p0</artifactId>
@@ -96,6 +87,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.34</version>
 		</dependency>
+ -->		
 	</dependencies>
 	<repositories>
 		<repository>
