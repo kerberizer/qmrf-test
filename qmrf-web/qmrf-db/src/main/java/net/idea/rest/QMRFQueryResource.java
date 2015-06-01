@@ -277,7 +277,7 @@ public abstract class QMRFQueryResource<Q extends IQueryRetrieval<T>, T extends 
 		    QDBConnection dbc = null;
 		    try {
 			dbc = new QDBConnection(getContext(), getDbConfig());
-			dbc.setTestConnection(retry>0);
+			//dbc.setTestConnection(retry>0);
 			configureRDFWriterOption(dbc.rdfWriter());
 			configureDatasetMembersPrefixOption(dbc.dataset_prefixed_compound_uri());
 			convertor = createConvertor(variant);
