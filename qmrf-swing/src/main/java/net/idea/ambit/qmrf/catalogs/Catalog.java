@@ -41,6 +41,7 @@ import net.idea.ambit.swing.interfaces.AmbitList;
 import net.idea.ambit.swing.interfaces.AmbitObject;
 import net.idea.ambit.swing.interfaces.IAmbitObjectListener;
 import net.idea.ambit.swing.interfaces.IAmbitSearchable;
+import net.idea.modbcum.i.exceptions.AmbitException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -48,7 +49,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import ambit2.base.exceptions.AmbitException;
 import ambit2.base.interfaces.IAmbitEditor;
 
 public class Catalog extends AmbitList<CatalogEntry> implements InterfaceQMRF, IAmbitSearchable, IAmbitObjectListener<CatalogEntry> {

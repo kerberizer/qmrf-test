@@ -45,7 +45,7 @@ import javax.swing.SpringLayout;
 import net.idea.ambit.qmrf.chapters.AbstractQMRFChapter;
 import net.idea.ambit.swing.common.AmbitColors;
 import net.idea.ambit.swing.common.SpringUtilities;
-import ambit2.base.exceptions.AmbitException;
+import net.idea.modbcum.i.exceptions.AmbitException;
 import ambit2.base.interfaces.IAmbitEditor;
 
 public abstract class AbstractQMRFChapterEditor<T extends AbstractQMRFChapter> extends JPanel implements IAmbitEditor<T> {

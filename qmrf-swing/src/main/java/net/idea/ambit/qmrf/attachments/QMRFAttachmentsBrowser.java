@@ -54,7 +54,7 @@ import javax.swing.table.TableModel;
 
 import net.idea.ambit.swing.common.ColorTableCellRenderer;
 import net.idea.ambit.swing.common.UITools;
-import ambit2.base.exceptions.AmbitException;
+import net.idea.modbcum.i.exceptions.AmbitException;
 import ambit2.base.interfaces.IAmbitEditor;
 import ambit2.base.io.AmbitFileFilter;
 import ambit2.base.io.MyIOUtilities;

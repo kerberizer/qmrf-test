@@ -160,7 +160,7 @@
 		</repository>
 	</distributionManagement>
 	<properties>
-		<ambit.version>2.4.10</ambit.version>
+		<ambit.version>2.7.4</ambit.version>
 		<junit.version>4.8.1</junit.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

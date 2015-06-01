@@ -43,8 +43,7 @@ import javax.swing.JToolBar.Separator;
 import net.idea.ambit.swing.actions.AbstractActionWithTooltip;
 import net.idea.ambit.swing.interfaces.AmbitList;
 import net.idea.ambit.swing.interfaces.AmbitObject;
-
-import ambit2.base.exceptions.AmbitException;
+import net.idea.modbcum.i.exceptions.AmbitException;
 import ambit2.base.interfaces.IAmbitEditor;
 
 public class AbstractAmbitListEditor<L extends AmbitList> extends JPanel implements IAmbitEditor<L> {
