@@ -205,6 +205,7 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 				ProtocolsByEndpointResource.class);
 		setCookieUserRouter.attach(Resources.chemical, new StructureRouter(getContext()));
 
+		//setCookieUserRouter.attach(String.format("%s/{%s}",Resources.dataset,DatasetResource.datasetKey), DatasetResource.class);
 		setCookieUserRouter.attach(String.format("%s/{%s}",Resources.dataset,DatasetResource.datasetKey), DatasetResource.class);
 		setCookieUserRouter.attach(Resources.admin, createAdminRouter());
 		setCookieUserRouter.attach(Resources.editor, createEditorRouter());
@@ -460,12 +461,15 @@ public class QMRFApplication extends QMRFFreeMarkerApplicaton<String> {
 			
 			@Override
 			protected AlertsNotifier createAlertsNotifier() {
+			    return null;
+			    /*
 				return new AlertsNotifier() {
 					@Override
 					protected String getConfig() {
 						return "config/qmrf.properties";
 					}
 				};
+				*/
 			}
 		};
 

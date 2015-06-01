@@ -85,7 +85,7 @@ public class AlertJSONReporter<Q extends IQueryRetrieval<DBAlert>> extends Query
 	} catch (IOException x) {
 	    Context.getCurrentLogger().severe(x.getMessage());
 	}
-	return null;
+	return alert;
     }
 
     @Override

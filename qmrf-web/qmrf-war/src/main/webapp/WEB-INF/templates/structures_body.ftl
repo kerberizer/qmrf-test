@@ -21,6 +21,7 @@
 		<th>CAS</th>
 		<th>QMRF documents</th>
 		<th>Similarity</th>
+		<th>Properties</th>
 		<th>SMILES</th>
 		<th>InChI</th>
 		<th>InChI Key</th>
