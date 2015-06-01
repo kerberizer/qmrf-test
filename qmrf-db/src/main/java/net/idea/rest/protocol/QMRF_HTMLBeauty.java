@@ -164,10 +164,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	private final static String footerText =
 		"<div id='footer-out'>\n" +
 		"<div id='footer-in'>\n" +
-		"<div id='footer'>\n" +
-		"Developed by <a class='footerLink' href='http://www.ideaconsult.net/'>" +
-		"IDEAconsult Ltd.</a> (2007-2012) on behalf of " +
-		"<a class='footerLink' href='http://ihcp.jrc.ec.europa.eu/'>IHCP, JRC Ispra, Italy</a>" +
+		"<div id='footer'><!-- 2007-2012-2015 -->" +
 		"</div>\n" +
 		"</div>\n" +
 		"</div>\n";
