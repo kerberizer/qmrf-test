@@ -53,7 +53,7 @@ public class ProtocolVersion_crud_test<T extends Object>  extends CRUDTest<T,DBP
 		Assert.assertEquals(2,table.getRowCount());
 		Assert.assertEquals("published",table.getValue(1,"published_status"));
 		Assert.assertEquals("archived",table.getValue(0,"published_status"));
-		Assert.assertEquals("Q2-10-14-119-v1",table.getValue(0,"qmrf_number"));
+		Assert.assertEquals("119A1-Q2-10-14-119-v1",table.getValue(0,"qmrf_number"));
 		Assert.assertEquals("Q2-10-14-119",table.getValue(1,"qmrf_number"));
 		c.close();	
 		
