@@ -272,6 +272,7 @@ public class UserResourceTest extends ResourceTest {
 	c.close();
     }
 
+
     @Test
     public void testUpdateUser() throws Exception {
 
@@ -279,7 +280,7 @@ public class UserResourceTest extends ResourceTest {
 	formparams.add(new BasicNameValuePair(ReadUser.fields.firstname.name(), "Alice"));
 	formparams.add(new BasicNameValuePair(ReadUser.fields.lastname.name(), "B."));
 	formparams.add(new BasicNameValuePair(ReadUser.fields.email.name(), "email@example.org"));
-	formparams.add(new BasicNameValuePair(ReadUser.fields.username.name(), "guest"));
+	formparams.add(new BasicNameValuePair(ReadUser.fields.username.name(), "xyz"));
 
 	IDatabaseConnection c = getConnection();
 	ITable table = c.createQueryTable("EXPECTED", "SELECT * FROM user where iduser=3");
@@ -301,7 +302,7 @@ public class UserResourceTest extends ResourceTest {
 	table = c.createQueryTable("EXPECTED", "SELECT * FROM user");
 	Assert.assertEquals(5, table.getRowCount());
 	table = c.createQueryTable("EXPECTED",
-		"SELECT iduser,title from user where iduser=3 and firstName='Alice' and lastName='B.'");
+		"SELECT iduser,title from user where iduser=3 and username='guest' and firstName='Alice' and lastName='B.'");
 	Assert.assertEquals(1, table.getRowCount());
 	c.close();
 
