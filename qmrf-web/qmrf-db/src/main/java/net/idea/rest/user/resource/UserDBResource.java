@@ -28,14 +28,11 @@ import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.QueryURIReporter;
 import net.idea.restnet.db.convertors.OutputWriterConvertor;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
-import net.idea.restnet.db.convertors.RDFJenaConvertor;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
 import net.idea.restnet.user.DBUser;
 import net.idea.restnet.user.db.ReadUser;
-import net.idea.restnet.user.resource.UserRDFReporter;
 import net.idea.restnet.user.resource.UserURIReporter;
-import net.toxbank.client.io.rdf.TOXBANK;
 
 import org.restlet.Context;
 import org.restlet.Request;
