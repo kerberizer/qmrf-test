@@ -53,7 +53,7 @@ public class CustomDBConnection extends DBConnection{
 		return c;
 	    } catch (SQLException x) {
 		error = x;
-		Context.getCurrentLogger().severe(x.getMessage());
+		Context.getCurrentLogger().warning(x.getMessage());
 		// remove the connection from the pool
 		try {
 		    if (c != null)

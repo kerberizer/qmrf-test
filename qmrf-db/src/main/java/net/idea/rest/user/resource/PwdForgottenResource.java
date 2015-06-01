@@ -4,7 +4,7 @@ import java.sql.Connection;
 
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFFreeMarkerApplicaton;
-import net.idea.rest.db.CustomDBConnection;
+import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.i.task.ICallableTask;
 import net.idea.restnet.user.DBUser;
 import net.idea.restnet.user.resource.UserURIReporter;
@@ -28,7 +28,7 @@ public class PwdForgottenResource extends RegistrationResource {
 		try {
 			String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
 			UserURIReporter reporter = new UserURIReporter(getRequest(),"");
-			CustomDBConnection dbc = new CustomDBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 			conn = dbc.getConnection();
 			return new CallablePasswordReset(method,null,reporter, form,getRequest().getRootRef().toString(),
 					conn,getToken(),usersdbname==null?"tomcat_users":usersdbname);

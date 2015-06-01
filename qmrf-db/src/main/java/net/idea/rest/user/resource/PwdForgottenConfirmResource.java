@@ -13,7 +13,6 @@ import net.idea.modbcum.i.reporter.Reporter;
 import net.idea.qmrf.client.Resources;
 import net.idea.qmrf.client.Resources.Config;
 import net.idea.rest.QMRFQueryResource;
-import net.idea.rest.db.CustomDBConnection;
 import net.idea.rest.task.RegistrationTaskHTMLReporter;
 import net.idea.rest.user.QMRFReadRegistration;
 import net.idea.rest.user.QMRFUserRegistration;
@@ -23,6 +22,7 @@ import net.idea.restnet.c.html.HTMLBeauty;
 import net.idea.restnet.c.task.CallableProtectedTask;
 import net.idea.restnet.c.task.FactoryTaskConvertor;
 import net.idea.restnet.c.task.TaskCreator;
+import net.idea.restnet.db.DBConnection;
 import net.idea.restnet.db.convertors.QueryHTMLReporter;
 import net.idea.restnet.i.task.ITaskStorage;
 import net.idea.restnet.rdf.FactoryTaskConvertorRDF;
@@ -127,7 +127,7 @@ public class PwdForgottenConfirmResource extends  QMRFQueryResource<ReadRegistra
 		try {
 			String usersdbname = getContext().getParameters().getFirstValue(Config.users_dbname.name());
 			UserURIReporter reporter = new UserURIReporter(getRequest(),"");
-			CustomDBConnection dbc = new CustomDBConnection(getApplication().getContext(),getConfigFile());
+			DBConnection dbc = new DBConnection(getApplication().getContext(),getConfigFile());
 			conn = dbc.getConnection();
 			if (item instanceof QMRFUserRegistration) ((QMRFUserRegistration)item).setTitle("(forgotten password)");
 			return new CallablePasswordReset(method,item,reporter, form,getRequest().getRootRef().toString(),
