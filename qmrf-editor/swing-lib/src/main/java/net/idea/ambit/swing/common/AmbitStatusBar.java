@@ -38,7 +38,7 @@ import javax.swing.JProgressBar;
 import javax.swing.border.BevelBorder;
 
 import net.idea.ambit.swing.interfaces.JobStatus;
-import ambit2.base.interfaces.IBatchStatistics;
+import net.idea.modbcum.i.batch.IBatchStatistics;
 
 /**
  * Status bar. See example for {@link ambit.database.data.AmbitDatabaseToolsData}.

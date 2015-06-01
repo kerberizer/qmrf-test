@@ -35,11 +35,11 @@ import net.idea.ambit.qmrf.xml.InterfaceQMRF;
 import net.idea.ambit.qmrf.xml.XMLException;
 import net.idea.ambit.swing.interfaces.AmbitObject;
 import net.idea.ambit.swing.interfaces.IAmbitSearchable;
+import net.idea.modbcum.i.exceptions.AmbitException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import ambit2.base.exceptions.AmbitException;
 import ambit2.base.interfaces.IAmbitEditor;
 
 public class CatalogEntry extends AmbitObject implements InterfaceQMRF , IAmbitSearchable{

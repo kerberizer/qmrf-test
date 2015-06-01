@@ -34,8 +34,7 @@ import javax.swing.event.EventListenerList;
 
 import net.idea.ambit.swing.common.AmbitObjectPanel;
 import net.idea.ambit.swing.events.AmbitObjectChanged;
-
-import ambit2.base.exceptions.AmbitException;
+import net.idea.modbcum.i.exceptions.AmbitException;
 import ambit2.base.exceptions.AmbitIOException;
 import ambit2.base.interfaces.IAmbitEditor;
 

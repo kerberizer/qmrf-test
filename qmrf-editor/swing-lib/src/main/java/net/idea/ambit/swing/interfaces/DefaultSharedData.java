@@ -33,8 +33,8 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import ambit2.base.interfaces.IBatchStatistics;
-import ambit2.base.processors.batch.DefaultBatchStatistics;
+import net.idea.modbcum.i.batch.DefaultBatchStatistics;
+import net.idea.modbcum.i.batch.IBatchStatistics;
 
 public abstract class DefaultSharedData<OBJECT,LIST>   extends Observable implements ISharedData<OBJECT,LIST>  {
 	protected static Logger logger = Logger.getLogger(DefaultSharedData.class.getName());

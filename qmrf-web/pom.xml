@@ -19,7 +19,7 @@
 		<junit.version>4.8.1</junit.version>
 		<restlet.version>2.0-M6</restlet.version>
 		<restnet.version>0.0.10</restnet.version>
-		<opentoxcli.version>1.0.4-SNAPSHOT</opentoxcli.version>
+		<opentoxcli.version>2.0.1-SNAPSHOT</opentoxcli.version>
 		<qmrfeditor.version>2.0.7-SNAPSHOT</qmrfeditor.version>
 	</properties>
 	<issueManagement>

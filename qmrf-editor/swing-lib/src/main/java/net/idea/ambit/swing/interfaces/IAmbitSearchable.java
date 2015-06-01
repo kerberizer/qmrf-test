@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 
 package net.idea.ambit.swing.interfaces;
 
-import ambit2.base.exceptions.AmbitException;
+import net.idea.modbcum.i.exceptions.AmbitException;
 
 
 public interface IAmbitSearchable {
