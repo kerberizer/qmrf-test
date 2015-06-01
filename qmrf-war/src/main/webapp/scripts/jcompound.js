@@ -10,7 +10,8 @@ function identifiers(opentox) {
 	    reachdate : [],
 		smiles : [],
 		inchi : [],
-		inchikey : []
+		inchikey : [],
+		feature : []
 	};
 	//names
 
@@ -31,6 +32,7 @@ function identifiers(opentox) {
 	        	if (opentox.feature[k]) {lookup.inchi.push(k);   }
 	        } else if (value.sameAs == "http://www.opentox.org/api/1.1#InChIKey") { 
 	        	if (opentox.feature[k]) {lookup.inchikey.push(k);   }	        
+	        } else lookup.feature[k] = value;  	
 	        	/*
 	        } else {
 	        	//console.log(k);
@@ -44,8 +46,9 @@ function identifiers(opentox) {
 					var source = opentox.feature[k]["source"]["type"];
 					if (source=="Algorithm" || source=="Model") { thclass += " calculated"; visible |= opentox["showCalculated"]; }	
 	        	}
-	        	*/
+	        	
 	        }
+	        */
 	    });
     
     	$.each(opentox.dataEntry, function(k, value) {

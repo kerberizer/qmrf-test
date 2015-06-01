@@ -1,101 +1,82 @@
 package net.idea.rest.structure.resource;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
-import net.idea.modbcum.p.QueryExecutor;
-import net.idea.rest.db.QDBConnection;
+import net.idea.modbcum.i.IQueryRetrieval;
+import net.idea.rest.protocol.attachments.AttachmentDatasetResource;
 import net.idea.rest.protocol.attachments.DBAttachment;
 import net.idea.rest.protocol.attachments.db.ReadAttachment;
-import net.idea.restnet.db.DBConnection;
 
 import org.restlet.Context;
 import org.restlet.Request;
 import org.restlet.Response;
 import org.restlet.data.Reference;
 import org.restlet.data.Status;
+import org.restlet.representation.Representation;
+import org.restlet.representation.Variant;
 import org.restlet.resource.ResourceException;
 
-public class DatasetResource extends StructureResource {
-	public static String datasetKey = "datasetKey";
-	
-	public DatasetResource() {
-		super();
-		setHtmlbyTemplate(false);
+public class DatasetResource extends AttachmentDatasetResource {
+    public static final String datasetKey = "datasetkey";
+    public DatasetResource() {
+	super();
+	setHtmlbyTemplate(true);
+    }
+    @Override
+    public String getTemplateName() {
+        return "dataset.ftl";
+    }
+    @Override
+    protected IQueryRetrieval<DBAttachment> createQuery(Context context, Request request, Response response)
+	    throws ResourceException {
+	try {
+	    Object key = getRequest().getAttributes().get(DatasetResource.datasetKey);
+	    if ((key == null) || "".equals(key))
+		throw new ResourceException(Status.CLIENT_ERROR_NOT_FOUND);
+	    String aKey = Reference.decode(key.toString());
+	    ReadAttachment query;
+	    DBAttachment attachment = null;
+	    if ((aKey != null) && aKey.toString().startsWith("A")) {
+		attachment = new DBAttachment(new Integer(Reference.decode(aKey.toString().substring(1))));
+		query = new ReadAttachment(null, getAttachmentDir());
+		query.setValue(attachment);
+		return query;
+	    }
+	    throw new ResourceException(Status.CLIENT_ERROR_BAD_REQUEST);
+	} catch (NumberFormatException x) {
+	    return null;
+	} catch (ResourceException x) {
+	    throw x;
+	} catch (Exception x) {
+	    throw new ResourceException(Status.SERVER_ERROR_INTERNAL, x);
 	}
-	
-	@Override	
-	protected Iterator<Structure> createQuery(Context context, Request request,
-			Response response) throws ResourceException {
-		parseParameters(context,request,response);
-		StructureHTMLBeauty parameters = ((StructureHTMLBeauty)getHTMLBeauty());
-		
-		Object key = getRequest().getAttributes().get(datasetKey);
-		if ((key == null) || "".equals(key))	return Collections.EMPTY_LIST.iterator();
-		String search = Reference.decode(key.toString());
-		DBAttachment attachment = null;
-		try {
-			attachment = verifyDataset(search);
-			if (attachment==null) return null;
-		} catch (Exception x) {return Collections.EMPTY_LIST.iterator();}
-		((StructureHTMLBeauty)getHTMLBeauty()).setAttachment(attachment);
-		
-		Reference ref = null;
-		
-		try {
-			ref = new Reference(String.format("%s/dataset/%s",queryService, 
-					attachment.getIdquerydatabase()>0?Integer.toString(attachment.getIdquerydatabase()):
-					Reference.encode(attachment.getTitle())));
-			ref.addQueryParameter("pagesize", Long.toString(parameters.getPageSize()));
-			ref.addQueryParameter("page", Integer.toString(parameters.getPage()));
+    }
 
-			List<Structure> records = Structure.retrieveStructures(
-					queryService, ref.toString());
-			return records.iterator();
+    @Override
+    protected Representation post(Representation entity) throws ResourceException {
+	throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
+    }
 
-		} catch (ResourceException x) {
-			throw x;
-		} catch (Exception x) {
-			throw createException(Status.CLIENT_ERROR_BAD_REQUEST, search,
-					null, ref.toString(), x);
-		}
-	
+    @Override
+    protected Representation post(Representation entity, Variant variant) throws ResourceException {
+	throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
+    }
 
-	}
-	
-	protected DBAttachment verifyDataset(String aKey) throws Exception {
-		DBAttachment result = null;
-		Connection conn = null;
-		QueryExecutor  exec = new QueryExecutor();
-		try {
-			ReadAttachment query;
-			DBAttachment attachment = null;
-			if ((aKey!=null) && aKey.toString().startsWith("A")) {
-				attachment = new DBAttachment(new Integer(Reference.decode(aKey.toString().substring(1))));
-				query = new ReadAttachment(null,getAttachmentDir());
-				query.setValue(attachment);
-				DBConnection dbc = new QDBConnection(getApplication().getContext(),getDbConfig());
-				conn = dbc.getConnection();
-				exec.setConnection(conn);
-				ResultSet rs = exec.process(query);
-				while (rs.next()) {
-					result = query.getObject(rs);
-				}
-				rs.close();
-				return result;
-			} else return null;
-		} catch (NumberFormatException x) {
-			return null;
-		} catch (Exception x) {
-			try { if (exec!=null) exec.close(); } catch (Exception xx) {}
-			try { if (conn!=null) conn.close(); } catch (Exception xx) {}
-			throw new ResourceException(Status.SERVER_ERROR_INTERNAL,x);
-		}
-		
-	}
-	
+    @Override
+    protected Representation put(Representation entity, Variant variant) throws ResourceException {
+	throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
+    }
 
+    @Override
+    protected Representation put(Representation representation) throws ResourceException {
+	throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
+    }
+
+    @Override
+    protected Representation delete(Variant variant) throws ResourceException {
+	throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
+    }
+
+    @Override
+    protected Representation delete() throws ResourceException {
+	throw new ResourceException(Status.CLIENT_ERROR_METHOD_NOT_ALLOWED);
+    }
 }

@@ -1,4 +1,4 @@
-function defineStructuresTable(root,url, query_service, similarity) {
+function defineStructuresTable(root,url, query_service, similarity, properties) {
 
 	var proxyURI = (root + "/proxy?uri=" + encodeURIComponent(url));
 	var oTable = $('#structures').dataTable( {
@@ -40,6 +40,7 @@ function defineStructuresTable(root,url, query_service, similarity) {
 				  "bSortable" : true,
 				  "bUseRendered" : false,
 				  "sClass" : "names",	
+				  "sWidth" : "15%",
 				  "fnRender" : function(o,val) {
 					  	if ((val === undefined) || (val == ""))
 					  		return formatValues(o.aData,"names");
@@ -82,8 +83,36 @@ function defineStructuresTable(root,url, query_service, similarity) {
 						  "sWidth" : "5%",
 						  "bVisible"  : similarity
 				},
-				{ "mDataProp": null , "asSorting": [ "asc", "desc" ],
+				{ "mDataProp": "values" , "asSorting": [ "asc", "desc" ],
 					  "aTargets": [ 6 ],
+					  "bSearchable" : true,
+					  "bSortable" : true,
+					  "bVisible"  : properties,
+						"bUseRendered" : false,
+						"fnRender" : function(o,val) {
+							var sOut = "<table style='border:1px dashed gray;'>";
+							$.each(val,function(index, entry) {
+				        		try {
+				        			var v = entry;
+				        			var name = o.aData.lookup["feature"][index].title;
+				        			var units = o.aData.lookup["feature"][index].units;
+				        			sOut += "<b>";
+				        			sOut += name;
+				        			sOut += "</b>&nbsp;  ";
+				        			sOut += v;
+				        			sOut += " ";				        				
+				        			sOut += units;				        				
+				        			sOut += "<br/>";
+				        		} catch (err) {
+				        		}
+				        	});
+							sOut += "</table>";
+							return sOut;
+						}					  
+					  
+				},	
+				{ "mDataProp": null , "asSorting": [ "asc", "desc" ],
+					  "aTargets": [ 7 ],
 					  "bSearchable" : true,
 					  "bSortable" : true,
 					  "bUseRendered" : true,
@@ -95,7 +124,7 @@ function defineStructuresTable(root,url, query_service, similarity) {
 					  "bVisible" : false
 				},		
 				{ "mDataProp": null , "asSorting": [ "asc", "desc" ],
-					  "aTargets": [ 7 ],
+					  "aTargets": [ 8 ],
 					  "bSearchable" : true,
 					  "bSortable" : true,
 					  "bUseRendered" : true,
@@ -108,7 +137,7 @@ function defineStructuresTable(root,url, query_service, similarity) {
 				},	
 				{ "mDataProp": null , "asSorting": [ "asc", "desc" ],
 					  "sClass" : "inchikey",	
-					  "aTargets": [ 8 ],
+					  "aTargets": [ 9 ],
 					  "bSearchable" : true,
 					  "bSortable" : true,
 					  "bUseRendered" : true,
@@ -135,6 +164,7 @@ function defineStructuresTable(root,url, query_service, similarity) {
 		        "contentType" : "application/json",
 		        "success": function(json) {
 		        	identifiers(json);
+		        	//_features = json.feature;
 		        	fnCallback(json);
 		        },
 		        "cache": false,
