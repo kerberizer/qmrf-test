@@ -41,9 +41,9 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			if (headless) output.write(renderItem(item));
 			else {
 				output.write(htmlBeauty.printWidget(
-						item.cas!=null && !"".equals(item.cas)?item.cas:
-						item.name!=null && !"".equals(item.name)?item.name:
-						item.InChIKey!=null && !"".equals(item.InChIKey)?item.InChIKey:"Molecule",
+						item.getCas()!=null && !"".equals(item.getCas())?item.getCas():
+						item.getName()!=null && !"".equals(item.getName())?item.getName():
+						item.getInChIKey()!=null && !"".equals(item.getInChIKey())?item.getInChIKey():"Molecule",
 						renderItem(item)));
 
 			}	
@@ -75,15 +75,15 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 					"<img src='%s' alt='%s' title='%s' width='150' height='150'></a><br>%s\n</div>\n",
 					baseReference,
 					Resources.chemical,
-					item.idchemical>0?"/":"",
-					item.idchemical>0?Integer.toString(item.idchemical):"",
-					item.idstructure>0?Resources.structure:"",
-					item.idstructure>0?"/":"",
-					item.idstructure>0?Integer.toString(item.idstructure):"",
+					item.getIdchemical()>0?"/":"",
+					item.getIdchemical()>0?Integer.toString(item.getIdchemical()):"",
+					item.getIdstructure()>0?Resources.structure:"",
+					item.getIdstructure()>0?"/":"",
+					item.getIdstructure()>0?Integer.toString(item.getIdstructure()):"",
 					cmpProxy,
-					item.cas==null?"":item.cas,
-					item.name==null?"":item.name,
-					item.cas==null?"":item.cas
+					item.getCas()==null?"":item.getCas(),
+					item.getName()==null?"":item.getName(),
+					item.getCas()==null?"":item.getCas()
 					);
 		
 		StringBuilder rendering = new StringBuilder();
@@ -105,16 +105,16 @@ public class MoleculeHTMLReporter extends QMRFCatalogHTMLReporter<Structure> {
 			"</div>",
 			tabID,
 			structure,
-			(item.cas==null)||"".equals(item.cas)?"":"CAS RN",
-			item.cas==null?"":item.cas,
-			(item.name==null)||"".equals(item.name)?"":"Name",
-			item.name==null?"":item.name,
-			(item.SMILES==null)||"".equals(item.SMILES)?"":"SMILES",
-			item.SMILES==null?"":item.SMILES,
-			(item.InChI==null)||"".equals(item.InChI)?"":"InChI",
-			item.InChI==null?"":item.InChI,
-			(item.InChIKey==null)||"".equals(item.InChIKey)?"":"InChI Key",
-			item.InChIKey==null?"":item.InChIKey,
+			(item.getCas()==null)||"".equals(item.getCas())?"":"CAS RN",
+			item.getCas()==null?"":item.getCas(),
+			(item.getName()==null)||"".equals(item.getName())?"":"Name",
+			item.getName()==null?"":item.getName(),
+			(item.getSMILES()==null)||"".equals(item.getSMILES())?"":"SMILES",
+			item.getSMILES()==null?"":item.getSMILES(),
+			(item.getInChI()==null)||"".equals(item.getInChI())?"":"InChI",
+			item.getInChI()==null?"":item.getInChI(),
+			(item.getInChIKey()==null)||"".equals(item.getInChIKey())?"":"InChI Key",
+			item.getInChIKey()==null?"":item.getInChIKey(),
 			properties==null?"":properties,
 			item.getSimilarity()==null?"":item.getSimilarity()
 			));
