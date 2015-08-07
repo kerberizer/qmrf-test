@@ -165,7 +165,7 @@ public class ProtocolDBResource<Q extends IQueryRetrieval<DBProtocol>> extends Q
 					((TaskApplication)getApplication()).getResolver()
 					),
 					variant.getMediaType(),filenamePrefix);		
-		} else throw new ResourceException(Status.CLIENT_ERROR_UNSUPPORTED_MEDIA_TYPE);	
+		} else return new OutputWriterConvertor(createHTMLReporter(headless),MediaType.TEXT_HTML);	
 	}
 	
 	@Override
