@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ambit</groupId>
 	<artifactId>qmrf-editor</artifactId>
-	<version>2.0.7</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>QMRF editor</name>
 	<description>QMRF editor</description>
