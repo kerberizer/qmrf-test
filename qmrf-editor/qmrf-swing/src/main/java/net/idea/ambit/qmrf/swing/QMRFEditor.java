@@ -39,7 +39,6 @@ import javax.swing.JPanel;
 
 import net.idea.ambit.qmrf.QMRFData;
 import net.idea.ambit.swing.common.CoreApp;
-import net.idea.ambit.swing.common.JTermPanel;
 
 /**
  * QSAR Model Report Format Editor.

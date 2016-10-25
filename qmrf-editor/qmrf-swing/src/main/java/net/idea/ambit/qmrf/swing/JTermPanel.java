@@ -1,4 +1,4 @@
-package net.idea.ambit.swing.common;
+package net.idea.ambit.qmrf.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.lang.reflect.Method;
 import java.net.URI;
 
-import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -41,11 +40,11 @@ public class JTermPanel extends JPanel {
 	 */
 	protected Font font = new Font("serif", Font.BOLD, 18);
 	protected static String query;
-	protected Action searchAction;
+	protected TermSearchAction searchAction;
 	protected final JEditorPane ft = new JEditorPane();
 	protected final JFormattedTextField term = new JFormattedTextField("");
 
-	public JTermPanel(Action searchAction) {
+	public JTermPanel(TermSearchAction searchAction) {
 		super(new BorderLayout());
 		this.searchAction = searchAction;
 		addWidgets();
@@ -108,7 +107,7 @@ public class JTermPanel extends JPanel {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				term.setText(query);
-				searchAction(term.getText(), ft);
+				doSearch(term.getText(), ft);
 			}
 		});
 		bar.add(searchButton);
@@ -124,7 +123,7 @@ public class JTermPanel extends JPanel {
 		term.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				searchAction(term.getText(), ft);
+				doSearch(term.getText(), ft);
 			}
 		});
 	}
@@ -136,10 +135,11 @@ public class JTermPanel extends JPanel {
 					if (e.getDescription().startsWith("#")) {
 						query = e.getDescription().replaceAll("#", "");
 						term.setText(query);
-						searchAction(query, ft);
+						doSearch(query, ft);
 					} else {
 						String url = e.getURL() == null ? String.format("http://aber-owl.net/#!%s", e.getDescription())
 								: e.getURL().toString();
+						searchAction.copyTerm(url);
 						try {
 							if (Desktop.isDesktopSupported()) {
 								Desktop.getDesktop().browse(new URI(url));
@@ -156,7 +156,7 @@ public class JTermPanel extends JPanel {
 		}
 	}
 
-	protected void searchAction(String query, JEditorPane f) {
+	protected void doSearch(String query, JEditorPane f) {
 		try {
 			setEnabled(false);
 			term.setEnabled(false);

@@ -34,7 +34,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
 
 import net.idea.ambit.annotation.AnnotationTools;
-import net.idea.ambit.swing.common.JTermPanel;
+import net.idea.ambit.qmrf.swing.JTermPanel;
 import net.idea.ambit.swing.events.AmbitObjectChanged;
 import net.idea.ambit.swing.interfaces.DefaultSharedData;
 import net.idea.ambit.swing.interfaces.IAmbitObjectListener;
