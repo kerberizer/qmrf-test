@@ -39,12 +39,13 @@ import javax.swing.JPanel;
 
 import net.idea.ambit.qmrf.QMRFData;
 import net.idea.ambit.swing.common.CoreApp;
+import net.idea.ambit.swing.common.JTermPanel;
 
 /**
  * QSAR Model Report Format Editor.
  *
-
-<pre>
+ * 
+ * <pre>
 usage: QMRFEditor
  -d,--dtd <url>          			DTD schema location - URL where DTD schema
                          			resides (e.g. -dfile:///D:/myfolder/qmrf.dtd or
@@ -58,50 +59,55 @@ usage: QMRFEditor
  -h,--help              			 This screen
  -t,--ttf <URL>         			 URL to retrieve TrueType font
  -x,--xmlcontent <URL>  			 URL to retrieve XML content
-</pre> 
-
+ * </pre>
+ * 
  * @author Nina Jeliazkova
  *
  */
 public class QMRFEditor extends CoreApp implements Observer {
 	protected QMRFData qmrfData;
-    
+
 	protected final String QmrfEditorVersion = "2.0.0";
-	public QMRFEditor(String title, int w , int h,String[] args) {
-		super(title, w, h,args);
-        int state = mainFrame.getExtendedState();
-	    
-        // Set the maximized bits
-        state |= Frame.MAXIMIZED_BOTH;
-    
-        // Maximize the frame
-        mainFrame.setExtendedState(state);
-		//centerScreen();
-		Package adPackage = null;//Package.getPackage("net.idea.ambit.qmrf.swing");
-		//version will be only available if started from jar file
-		//version is specified in package manifest 
+
+	public QMRFEditor(String title, int w, int h, String[] args) {
+		super(title, w, h, args);
+		int state = mainFrame.getExtendedState();
+
+		// Set the maximized bits
+		state |= Frame.MAXIMIZED_BOTH;
+
+		// Maximize the frame
+		mainFrame.setExtendedState(state);
+		// centerScreen();
+		Package adPackage = null;// Package.getPackage("net.idea.ambit.qmrf.swing");
+		// version will be only available if started from jar file
+		// version is specified in package manifest
 		// See MANIFEST.MFT file
 		String pTitle = null;
 		String version = null;
 		if (adPackage != null) {
-		    pTitle = adPackage.getSpecificationTitle();
+			pTitle = adPackage.getSpecificationTitle();
 			version = adPackage.getImplementationVersion();
 		}
-		
-		if (pTitle == null) pTitle = title;
-		if (version == null) version = QmrfEditorVersion;
-		
-		//mainFrame = new JFrame(pTitle+version);
-		setCaption(pTitle+version);
-        
-        //qmrfData.setParameters(args);
-		
-	}	
-    protected JPanel createStatusBar() {
-    	statusBar = QMRFGUITools.createStatusBar(qmrfData, w,24);
-        return statusBar;   
 
-    }   
+		if (pTitle == null)
+			pTitle = title;
+		if (version == null)
+			version = QmrfEditorVersion;
+
+		// mainFrame = new JFrame(pTitle+version);
+		setCaption(pTitle + version);
+
+		// qmrfData.setParameters(args);
+
+	}
+
+	protected JPanel createStatusBar() {
+		statusBar = QMRFGUITools.createStatusBar(qmrfData, w, 24);
+		return statusBar;
+
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		// TODO Auto-generated method stub
@@ -110,63 +116,74 @@ public class QMRFEditor extends CoreApp implements Observer {
 
 	@Override
 	protected JMenuBar createMenuBar() {
-		return QMRFGUITools.createMenuBar(toolBar,qmrfData,mainFrame);
+		return QMRFGUITools.createMenuBar(toolBar, qmrfData, mainFrame);
 	}
+
 	@Override
 	protected JComponent createToolbar() {
 		return null;
 	}
-	
 
 	@Override
 	protected void createWidgets(JFrame aFrame, JPanel aPanel) {
 		QMRFPanel p = new QMRFPanel(qmrfData.getQmrf());
 		aPanel.setLayout(new BorderLayout());
-		aPanel.add(p,BorderLayout.CENTER);
-		aFrame.setLayout(new BorderLayout());
+		aPanel.add(p, BorderLayout.CENTER);
 
+		JTermPanel termsPanel = new JTermPanel(new TermSearchAction("Search", qmrfData));
+		aPanel.add(termsPanel, BorderLayout.EAST);
+		aFrame.setLayout(new BorderLayout());
+		qmrfData.setTermsPanel(termsPanel);
 	}
 
 	@Override
 	protected void initSharedData(String[] args) {
- 
-		qmrfData = new QMRFData(args,"qmrfeditor.xml",false);
-        qmrfData.addObserver(this);
+
+		qmrfData = new QMRFData(args, "qmrfeditor.xml", false);
+		qmrfData.addObserver(this);
 
 	}
+
 	@Override
 	protected boolean canClose() {
 		// TODO Auto-generated method stub
 		boolean c = super.canClose();
-		if (c) qmrfData.saveConfiguration();
+		if (c)
+			qmrfData.saveConfiguration();
 		return c;
 	}
-	public static void main(final String[] args) {
-        javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-                QMRFEditor app = new QMRFEditor("QMRF Editor ",580,360,args);
-            }
-        });
-   }	
-	public void update(Observable o, Object arg) {
-        StringBuffer b = new StringBuffer();
-        b.append("QMRF Editor ");
-        b.append(QmrfEditorVersion);
-        b.append(" ");
-        b.append( qmrfData.getQmrf().getSource());
-        if (qmrfData.getQmrf().isModified()) b.append( " *");
-	    mainFrame.setTitle( b.toString());
-	    
+	@Override
+	protected void doClose() {
+		try {qmrfData.close();} catch (Exception x) {}
+		super.doClose();
 	}
-	
+	public static void main(final String[] args) {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				createAndShowGUI();
+				QMRFEditor app = new QMRFEditor("QMRF Editor ", 580, 360, args);
+			}
+		});
+	}
+
+	public void update(Observable o, Object arg) {
+		StringBuffer b = new StringBuffer();
+		b.append("QMRF Editor ");
+		b.append(QmrfEditorVersion);
+		b.append(" ");
+		b.append(qmrfData.getQmrf().getSource());
+		if (qmrfData.getQmrf().isModified())
+			b.append(" *");
+		mainFrame.setTitle(b.toString());
+
+	}
+
 	@Override
 	protected ImageIcon getIcon() {
 		URL iconURL = QMRFEditor.class.getClassLoader().getResource("ambit/ui/images/qmrf.png");
 		if (iconURL != null) {
 			return new ImageIcon(iconURL);
-		} else return null;
+		} else
+			return null;
 	}
 }
-
-

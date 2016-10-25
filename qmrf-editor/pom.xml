@@ -18,6 +18,7 @@
 		<module>qmrf-swing</module>
 		<module>qmrf-core</module>
 		<module>freemarker_rtf</module>
+		<module>qmrf-annotation</module>
 	</modules>
 	<repositories>
 		<repository>
@@ -64,27 +65,18 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+				<excludes>
+					<exclude>**.gz</exclude>
+				</excludes>
 			</resource>
 		</resources>
 		<plugins>
 			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-source-plugin</artifactId> 
 				<executions> <execution> <id>attach-sources</id> <goals> <goal>jar</goal> 
 				</goals> </execution> </executions> </plugin> -->
-				<!-- 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.9</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
- -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
+				<version>2.9</version> <executions> <execution> <id>attach-javadocs</id> 
+				<goals> <goal>jar</goal> </goals> </execution> </executions> </plugin> -->
 			<!-- http://mojo.codehaus.org/buildnumber-maven-plugin/plugin-info.html -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -103,6 +95,8 @@
 					<doUpdate>false</doUpdate>
 				</configuration>
 			</plugin>
+
+
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -129,7 +123,7 @@
 					<!-- Create jars for test classes -->
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					  <version>2.6</version>
+					<version>2.6</version>
 					<executions>
 						<execution>
 							<goals>
@@ -137,6 +131,18 @@
 							</goals>
 						</execution>
 					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.1</version>
+					<configuration>
+						<nonFilteredFileExtensions>
+							<nonFilteredFileExtension>gz</nonFilteredFileExtension>
+							<nonFilteredFileExtension>rdf</nonFilteredFileExtension>
+							<nonFilteredFileExtension>zip</nonFilteredFileExtension>
+						</nonFilteredFileExtensions>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -161,8 +167,10 @@
 		</repository>
 	</distributionManagement>
 	<properties>
-		<ambit.version>2.7.4</ambit.version>
 		<junit.version>4.8.1</junit.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<loom.version>1.1.3-SNAPSHOT</loom.version>
+		<ambit.version>3.0.3-SNAPSHOT</ambit.version>
+		<apache.jena.version>2.13.0</apache.jena.version>
 	</properties>
 </project>

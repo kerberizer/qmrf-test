@@ -52,7 +52,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledEditorKit;
 
 import net.idea.ambit.swing.actions.InsertSymbolAction;
-import net.idea.ambit.swing.actions.InsertTermAction;
 
 /**
  * static finctions for icon loading and browser launch.
@@ -140,18 +139,13 @@ public class UITools {
 		return mainMenu;
 	}
 
-	public static JMenu createOntologyMenu(Container mainFrame) {
-		JMenu mainMenu = new JMenu("Ontology");
-		mainMenu.setMnemonic(KeyEvent.VK_O);
-
+	public static JMenu createOntologyMenu(Container mainFrame, Action action) {
+		JMenu menu = new JMenu("Help");
 		JMenuItem menuItem;
-		menuItem = new JMenuItem(new InsertTermAction(mainFrame, "Insert term"));
-		menuItem.setIcon(UITools.createImageIcon("ambit/ui/images/text_letter_omega.png"));
-		menuItem.setText("Insert term");
-		menuItem.setMnemonic(KeyEvent.VK_T);
-		mainMenu.add(menuItem);
-
-		return mainMenu;
+		menuItem = new JMenuItem(action);
+		menuItem.setMnemonic(KeyEvent.VK_F7);
+		menu.add(menuItem);
+		return menu;
 	}
 
 	public static JMenu createStyleMenu() {

@@ -56,7 +56,6 @@ public class StructureResource extends QMRFCatalogResource<Structure> {
     public StructureResource() {
 	super();
 	queryService =
-	// "http://ambit.uni-plovdiv.bg:8080/qmrfdata";
 	((TaskApplication) getApplication()).getProperty(Resources.Config.qmrf_ambit_service.name());
 	setHtmlbyTemplate(true);
     }
