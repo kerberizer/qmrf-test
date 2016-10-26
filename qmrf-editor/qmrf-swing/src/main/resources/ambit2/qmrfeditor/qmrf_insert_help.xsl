@@ -175,7 +175,7 @@ g.	there exists a (graphical) expression of how the descriptor values of the che
 					</xsl:when>
 
 					<xsl:when test="@chapter=6.2">
-					<xsl:text>Indicate whether the following information for the training set is reported as supporting information (see field 9.3): a) Chemical names (common names and/or IUPAC names); b) CAS numbers; c) SMILES; d) InChI codes; e) MOL files; f) Structural formula; g) Any other structural information.</xsl:text>
+					<xsl:text>Indicate whether the following information for the training set is reported as supporting information (see field 9.3): a) Chemical names (common names and/or IUPAC names); b) CAS numbers; c) SMILES; d) InChI codes; e) MOL files; f) Structural formula; g) If the dataset contains nanomaterials e) Any other structural information.</xsl:text>
 					</xsl:when>
 
 					<xsl:when test="@chapter=6.3">

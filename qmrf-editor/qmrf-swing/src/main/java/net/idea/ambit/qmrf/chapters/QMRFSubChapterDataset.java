@@ -34,7 +34,7 @@ public class QMRFSubChapterDataset extends QMRFSubChapterText {
 	 * 
 	 */
 	private static final long serialVersionUID = 1185708664455395244L;
-	protected String[] options = {"chemname","cas","smiles","inchi","mol","formula"};
+	protected String[] options = {"chemname","cas","smiles","inchi","mol","formula","nanomaterial"};
 										
 	public String[] getOptions() {
 		return options;

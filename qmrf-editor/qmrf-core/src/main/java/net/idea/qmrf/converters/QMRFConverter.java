@@ -702,7 +702,7 @@ public abstract class QMRFConverter {
 		final String[][] attr = { { "cas", "CAS RN" },
 				{ "chemname", "Chemical Name" }, { "smiles", "Smiles" },
 				{ "formula", "Formula" }, { "inchi", "INChI" },
-				{ "mol", "MOL file" } };
+				{ "mol", "MOL file" },{"nanomaterial","NanoMaterial"} };
 		StringBuilder b = new StringBuilder();
 		for (int i = 0; i < attr.length; i++) {
 			b.append(attr[i][1]);

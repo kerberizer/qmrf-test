@@ -14,6 +14,263 @@ Catalogs available in QMRF Database in XML format as defined in QMRF DTD schema
   <algorithms_catalog></algorithms_catalog>
   <descriptors_catalog></descriptors_catalog>
   <endpoints_catalog>
+
+<endpoint id="GI_GENERAL_INFORM" group="P-CHEM" protocol="" name="4.1. Appearance/physical state/colour" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_888" protocol_uri=""/>
+<endpoint id="PC_MELTING" group="P-CHEM" protocol="" name="4.2. Melting point / freezing point" ontology_term="http://semanticscience.org/resource/CHEMINF_000256" protocol_uri=""/>
+<endpoint id="PC_MELTING" group="P-CHEM" protocol="OECD TG 102" name="4.2. Melting point / freezing point" ontology_term="http://semanticscience.org/resource/CHEMINF_000256" protocol_uri=""/>
+<endpoint id="PC_BOILING" group="P-CHEM" protocol="" name="4.3. Boiling point" ontology_term="http://semanticscience.org/resource/CHEMINF_000257" protocol_uri=""/>
+<endpoint id="PC_BOILING" group="P-CHEM" protocol="OECD TG 103" name="4.3. Boiling point" ontology_term="http://semanticscience.org/resource/CHEMINF_000257" protocol_uri=""/>
+<endpoint id="PC_DENSITY" group="P-CHEM" protocol="" name="4.4. Density" ontology_term="http://semanticscience.org/resource/CHEMINF_000416" protocol_uri=""/>
+<endpoint id="PC_DENSITY" group="P-CHEM" protocol="OECD TG 109" name="4.4. Density" ontology_term="http://semanticscience.org/resource/CHEMINF_000416" protocol_uri=""/>
+<endpoint id="PC_GRANULOMETRY" group="P-CHEM" protocol="" name="4.5. Particle size distribution (Granulometry)" ontology_term="http://purl.obolibrary.org/obo/CHMO_0002119" protocol_uri=""/>
+<endpoint id="PC_GRANULOMETRY" group="P-CHEM" protocol="OECD TG 110" name="4.5. Particle size distribution (Granulometry)" ontology_term="http://purl.obolibrary.org/obo/CHMO_0002119" protocol_uri=""/>
+<endpoint id="PC_VAPOUR" group="P-CHEM" protocol="" name="4.6. Vapour pressure" ontology_term="http://semanticscience.org/resource/CHEMINF_000419" protocol_uri=""/>
+<endpoint id="PC_VAPOUR" group="P-CHEM" protocol="OECD TG 104" name="4.6. Vapour pressure" ontology_term="http://semanticscience.org/resource/CHEMINF_000419" protocol_uri=""/>
+<endpoint id="PC_PARTITION" group="P-CHEM" protocol="" name="4.7. Partition coefficient" ontology_term="http://www.bioassayontology.org/bao#BAO_0002130" protocol_uri=""/>
+<endpoint id="PC_PARTITION" group="P-CHEM" protocol="OECD TG 107" name="4.7. Partition coefficient" ontology_term="http://www.bioassayontology.org/bao#BAO_0002130" protocol_uri=""/>
+<endpoint id="PC_PARTITION" group="P-CHEM" protocol="OECD TG 117" name="4.7. Partition coefficient" ontology_term="http://www.bioassayontology.org/bao#BAO_0002130" protocol_uri=""/>
+<endpoint id="PC_PARTITION" group="P-CHEM" protocol="OECD TG 123" name="4.7. Partition coefficient" ontology_term="http://www.bioassayontology.org/bao#BAO_0002130" protocol_uri=""/>
+<endpoint id="PC_WATER_SOL" group="P-CHEM" protocol="" name="4.8. Water solubility" ontology_term="http://www.bioassayontology.org/bao#BAO_0002775" protocol_uri=""/>
+<endpoint id="PC_WATER_SOL" group="P-CHEM" protocol="OECD TG 105" name="4.8. Water solubility" ontology_term="http://www.bioassayontology.org/bao#BAO_0002775" protocol_uri=""/>
+<endpoint id="PC_SOL_ORGANIC" group="P-CHEM" protocol="" name="4.9. Solubility in organic solvents" ontology_term="http://www.bioassayontology.org/bao#BAO_0002135" protocol_uri=""/>
+<endpoint id="PC_SOL_ORGANIC" group="P-CHEM" protocol="OECD TG 116" name="4.9. Solubility in organic solvents" ontology_term="http://www.bioassayontology.org/bao#BAO_0002135" protocol_uri=""/>
+<endpoint id="PC_SURFACE_TENSION" group="P-CHEM" protocol="" name="4.10. Surface tension" ontology_term="http://semanticscience.org/resource/CHEMINF_000420" protocol_uri=""/>
+<endpoint id="PC_SURFACE_TENSION" group="P-CHEM" protocol="OECD TG 115" name="4.10. Surface tension" ontology_term="http://semanticscience.org/resource/CHEMINF_000420" protocol_uri=""/>
+<endpoint id="PC_FLASH_POINT" group="P-CHEM" protocol="" name="4.11. Flash point" ontology_term="http://semanticscience.org/resource/CHEMINF_000417" protocol_uri=""/>
+<endpoint id="PC_AUTOIGNITION" group="P-CHEM" protocol="" name="4.12. Auto-ignition temperature" ontology_term="http://semanticscience.org/resource/CHEMINF_000444" protocol_uri=""/>
+<endpoint id="PC_FLAMMABILITY" group="P-CHEM" protocol="" name="4.13. Flammability" ontology_term="" protocol_uri=""/>
+<endpoint id="PC_EXPLOSIVES" group="P-CHEM" protocol="" name="4.14. Explosives" ontology_term="" protocol_uri=""/>
+<endpoint id="PC_OXIDISING_PROPERTIES" group="P-CHEM" protocol="" name="4.15. Oxidising properties" ontology_term="" protocol_uri=""/>
+<endpoint id="PC_REDOX" group="P-CHEM" protocol="" name="4.16. Oxidation reduction potential" ontology_term="" protocol_uri=""/>
+<endpoint id="PC_STABILITY_ORGANICSOLVENTS" group="P-CHEM" protocol="" name="4.17. Stability in organic solvents and identity of relevant degradation products" ontology_term="" protocol_uri=""/>
+<endpoint id="PC_STORAGE_STABILITY" group="P-CHEM" protocol="" name="4.18. Storage stability and reactivity towards container material" ontology_term="" protocol_uri=""/>
+<endpoint id="PC_STABILITY" group="P-CHEM" protocol="" name="4.19. Stability: thermal, sunlight, metals" ontology_term="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C54072" protocol_uri=""/>
+<endpoint id="PC_STABILITY" group="P-CHEM" protocol="OECD TG 113" name="4.19. Stability: thermal, sunlight, metals" ontology_term="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C54072" protocol_uri=""/>
+<endpoint id="PC_NON_SATURATED_PH" group="P-CHEM" protocol="" name="4.20. pH" ontology_term="http://purl.obolibrary.org/obo/UO_0000196" protocol_uri=""/>
+<endpoint id="PC_NON_SATURATED_PH" group="P-CHEM" protocol="OECD TG 122" name="4.20. pH" ontology_term="http://purl.obolibrary.org/obo/UO_0000196" protocol_uri=""/>
+<endpoint id="PC_DISSOCIATION" group="P-CHEM" protocol="" name="4.21. Dissociation constant" ontology_term="http://semanticscience.org/resource/CHEMINF_000194" protocol_uri=""/>
+<endpoint id="PC_DISSOCIATION" group="P-CHEM" protocol="OECD TG 112" name="4.21. Dissociation constant" ontology_term="http://semanticscience.org/resource/CHEMINF_000194" protocol_uri=""/>
+<endpoint id="PC_VISCOSITY" group="P-CHEM" protocol="" name="4.12. Viscosity" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_1857" protocol_uri=""/>
+<endpoint id="PC_VISCOSITY" group="P-CHEM" protocol="OECD TG 114" name="4.12. Viscosity" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_1857" protocol_uri=""/>
+<endpoint id="AGGLOMERATION_AGGREGATION" group="P-CHEM" protocol="" name="4.24. Agglomeration/aggregation" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_1967 NPO_1968" protocol_uri=""/>
+<endpoint id="AGGLOMERATION_AGGREGATION" group="P-CHEM" protocol="OECD TG 110" name="4.24. Agglomeration/aggregation" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_1967 NPO_1968" protocol_uri=""/>
+<endpoint id="CRYSTALLINE_PHASE" group="P-CHEM" protocol="" name="4.25. Crystalline phase" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_1512" protocol_uri=""/>
+<endpoint id="CRYSTALLITE_AND_GRAIN_SIZE" group="P-CHEM" protocol="" name="4.26. Crystallite and grain phase" ontology_term="" protocol_uri=""/>
+<endpoint id="CRYSTALLITE_AND_GRAIN_SIZE" group="P-CHEM" protocol="OECD TG 110" name="4.26. Crystallite and grain phase" ontology_term="" protocol_uri=""/>
+<endpoint id="ASPECT_RATIO_SHAPE" group="P-CHEM" protocol="" name="4.27. Aspect ratio/shape" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_274 NPO_1365" protocol_uri=""/>
+<endpoint id="ASPECT_RATIO_SHAPE" group="P-CHEM" protocol="OECD TG 110" name="4.27. Aspect ratio/shape" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_274 NPO_1365" protocol_uri=""/>
+<endpoint id="SPECIFIC_SURFACE_AREA" group="P-CHEM" protocol="" name="4.28. Specific surface area" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_1235" protocol_uri=""/>
+<endpoint id="ZETA_POTENTIAL" group="P-CHEM" protocol="" name="4.29. Zeta potential" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_1302" protocol_uri=""/>
+<endpoint id="SURFACE_CHEMISTRY" group="P-CHEM" protocol="" name="4.30. Surface chemistry" ontology_term="" protocol_uri=""/>
+<endpoint id="DUSTINESS" group="P-CHEM" protocol="" name="4.31. Dustiness" ontology_term="http://purl.enanomapper.org/onto/ENM_9000003" protocol_uri=""/>
+<endpoint id="POROSITY" group="P-CHEM" protocol="" name="4.32. Porosity" ontology_term="PATO_0000973" protocol_uri=""/>
+<endpoint id="POUR_DENSITY" group="P-CHEM" protocol="" name="4.33. Nanomaterial pour density" ontology_term="http://purl.enanomapper.org/onto/ENM_9000004" protocol_uri=""/>
+<endpoint id="PHOTOCATALYTIC_ACTIVITY" group="P-CHEM" protocol="" name="4.34. Nanomaterial photocatalytic activity" ontology_term="" protocol_uri=""/>
+<endpoint id="CATALYTIC_ACTIVITY" group="P-CHEM" protocol="" name="4.36. Nanomaterial catalytic activity" ontology_term="" protocol_uri=""/>
+<endpoint id="PC_UNKNOWN" group="P-CHEM" protocol="" name="4.99. PC UNKNOWN" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_PHOTOTRANS_AIR" group="ENV FATE" protocol="" name="5.1.1. Phototransformation in Air" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_PHOTOTRANS_WATER" group="ENV FATE" protocol="" name="5.1.1. Phototransformation in Water" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_PHOTOTRANS_WATER" group="ENV FATE" protocol="OECD TG 316" name="5.1.1. Phototransformation in Water" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_PHOTOTRANS_SOIL" group="ENV FATE" protocol="" name="5.1.1. Phototransformation in soil" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_HYDROLYSIS" group="ENV FATE" protocol="" name="5.1.2. Hydrolysis" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_HYDROLYSIS" group="ENV FATE" protocol="OECD TG 111" name="5.1.2. Hydrolysis" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SCREEN" group="ENV FATE" protocol="" name="5.2.1. Biodegradation in water - screening tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SCREEN" group="ENV FATE" protocol="OECD TG 301" name="5.2.1. Biodegradation in water - screening tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SCREEN" group="ENV FATE" protocol="OECD TG 302A" name="5.2.1. Biodegradation in water - screening tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SCREEN" group="ENV FATE" protocol="OECD TG 302B" name="5.2.1. Biodegradation in water - screening tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SCREEN" group="ENV FATE" protocol="OECD TG 302C" name="5.2.1. Biodegradation in water - screening tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SCREEN" group="ENV FATE" protocol="OECD TG 306" name="5.2.1. Biodegradation in water - screening tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SCREEN" group="ENV FATE" protocol="OECD TG 310" name="5.2.1. Biodegradation in water - screening tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SCREEN" group="ENV FATE" protocol="OECD TG 311" name="5.2.1. Biodegradation in water - screening tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="OECD TG 303A" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="OECD TG 303B" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="OECD TG 308" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="OECD TG 309" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="OECD TG 314A" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="OECD TG 314B" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="OECD TG 314C" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="OECD TG 314D" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BIODEG_WATER_SIM" group="ENV FATE" protocol="OECD TG 314E" name="5.2.2. Biodegradation in water and sediment: simulation tests" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_STABILITY_IN_SOIL" group="ENV FATE" protocol="" name="5.2.3. Biodegradation in Soil" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_STABILITY_IN_SOIL" group="ENV FATE" protocol="OECD TG 304A" name="5.2.3. Biodegradation in Soil" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_STABILITY_IN_SOIL" group="ENV FATE" protocol="OECD TG 307" name="5.2.3. Biodegradation in Soil" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_BIOACCUMULATION" group="ENV FATE" protocol="" name="5.3.1. Bioaccumulation: aquatic / sediment" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_BIOACCUMULATION" group="ENV FATE" protocol="OECD TG 305" name="5.3.1. Bioaccumulation: aquatic / sediment" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_BIOACCUMULATION" group="ENV FATE" protocol="OECD TG 315" name="5.3.1. Bioaccumulation: aquatic / sediment" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_BIOACCU_TERR" group="ENV FATE" protocol="" name="5.3.2. Bioaccumulation: terrestrial" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_BIOACCU_TERR" group="ENV FATE" protocol="OECD TG 317" name="5.3.2. Bioaccumulation: terrestrial" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_ADSORPTION" group="ENV FATE" protocol="" name="5.4.1. Adsorption / Desorption" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_ADSORPTION" group="ENV FATE" protocol="OECD TG 106" name="5.4.1. Adsorption / Desorption" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_ADSORPTION" group="ENV FATE" protocol="OECD TG 121" name="5.4.1. Adsorption / Desorption" ontology_term="" protocol_uri=""/>
+<endpoint id="EN_HENRY_LAW" group="ENV FATE" protocol="" name="5.4.2. Henry's Law constant" ontology_term="http://semanticscience.org/resource/CHEMINF_000433" protocol_uri=""/>
+<endpoint id="EC_FISHTOX" group="ECOTOX" protocol="" name="6.1.1. Short-term toxicity to fish" ontology_term="http://purl.enanomapper.org/onto/ENM_0000010" protocol_uri=""/>
+<endpoint id="EC_FISHTOX" group="ECOTOX" protocol="OECD TG 203" name="6.1.1. Short-term toxicity to fish" ontology_term="http://purl.enanomapper.org/onto/ENM_0000010" protocol_uri=""/>
+<endpoint id="EC_FISHTOX" group="ECOTOX" protocol="OECD TG 204" name="6.1.1. Short-term toxicity to fish" ontology_term="http://purl.enanomapper.org/onto/ENM_0000010" protocol_uri=""/>
+<endpoint id="EC_FISHTOX" group="ECOTOX" protocol="OECD TG 236" name="6.1.1. Short-term toxicity to fish" ontology_term="http://purl.enanomapper.org/onto/ENM_0000010" protocol_uri=""/>
+<endpoint id="EC_CHRONFISHTOX" group="ECOTOX" protocol="" name="6.1.2. Long-term toxicity to fish" ontology_term="http://purl.enanomapper.org/onto/ENM_0000011" protocol_uri=""/>
+<endpoint id="EC_CHRONFISHTOX" group="ECOTOX" protocol="OECD TG 204" name="6.1.2. Long-term toxicity to fish" ontology_term="http://purl.enanomapper.org/onto/ENM_0000011" protocol_uri=""/>
+<endpoint id="EC_CHRONFISHTOX" group="ECOTOX" protocol="OECD TG 210" name="6.1.2. Long-term toxicity to fish" ontology_term="http://purl.enanomapper.org/onto/ENM_0000011" protocol_uri=""/>
+<endpoint id="EC_CHRONFISHTOX" group="ECOTOX" protocol="OECD TG 212" name="6.1.2. Long-term toxicity to fish" ontology_term="http://purl.enanomapper.org/onto/ENM_0000011" protocol_uri=""/>
+<endpoint id="EC_CHRONFISHTOX" group="ECOTOX" protocol="OECD TG 215" name="6.1.2. Long-term toxicity to fish" ontology_term="http://purl.enanomapper.org/onto/ENM_0000011" protocol_uri=""/>
+<endpoint id="EC_DAPHNIATOX" group="ECOTOX" protocol="" name="6.1.3. Short-term toxicity to aquatic inverterbrates" ontology_term="http://purl.enanomapper.org/onto/ENM_0000006" protocol_uri=""/>
+<endpoint id="EC_DAPHNIATOX" group="ECOTOX" protocol="OECD TG 202" name="6.1.3. Short-term toxicity to aquatic inverterbrates" ontology_term="http://purl.enanomapper.org/onto/ENM_0000006" protocol_uri=""/>
+<endpoint id="EC_CHRONDAPHNIATOX" group="ECOTOX" protocol="" name="6.1.4. Long-term toxicity to aquatic inverterbrates" ontology_term="" protocol_uri=""/>
+<endpoint id="EC_CHRONDAPHNIATOX" group="ECOTOX" protocol="OECD TG 211" name="6.1.4. Long-term toxicity to aquatic inverterbrates" ontology_term="" protocol_uri=""/>
+<endpoint id="EC_ALGAETOX" group="ECOTOX" protocol="" name="6.1.5. Toxicity to aquatic algae and cyanobacteria" ontology_term="http://purl.enanomapper.org/onto/ENM_0000005" protocol_uri=""/>
+<endpoint id="EC_ALGAETOX" group="ECOTOX" protocol="OECD TG 201" name="6.1.5. Toxicity to aquatic algae and cyanobacteria" ontology_term="http://purl.enanomapper.org/onto/ENM_0000005" protocol_uri=""/>
+<endpoint id="EC_AQUATICPLANTS" group="ECOTOX" protocol="" name="6.1.6. Toxicity to aquatic plants other than algae" ontology_term="" protocol_uri=""/>
+<endpoint id="EC_AQUATICPLANTS" group="ECOTOX" protocol="OECD TG 221" name="6.1.6. Toxicity to aquatic plants other than algae" ontology_term="" protocol_uri=""/>
+<endpoint id="EC_BACTOX" group="ECOTOX" protocol="" name="6.1.7. Toxicity to microorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000015" protocol_uri=""/>
+<endpoint id="EC_BACTOX" group="ECOTOX" protocol="OECD TG 209" name="6.1.7. Toxicity to microorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000015" protocol_uri=""/>
+<endpoint id="EC_BACTOX" group="ECOTOX" protocol="OECD TG 224" name="6.1.7. Toxicity to microorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000015" protocol_uri=""/>
+<endpoint id="EC_SEDIMENTDWELLINGTOX" group="ECOTOX" protocol="" name="6.2. Sediment toxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000009" protocol_uri=""/>
+<endpoint id="EC_SEDIMENTDWELLINGTOX" group="ECOTOX" protocol="OECD TG 218" name="6.2. Sediment toxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000009" protocol_uri=""/>
+<endpoint id="EC_SEDIMENTDWELLINGTOX" group="ECOTOX" protocol="OECD TG 219" name="6.2. Sediment toxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000009" protocol_uri=""/>
+<endpoint id="EC_SEDIMENTDWELLINGTOX" group="ECOTOX" protocol="OECD TG 225" name="6.2. Sediment toxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000009" protocol_uri=""/>
+<endpoint id="EC_SEDIMENTDWELLINGTOX" group="ECOTOX" protocol="OECD TG 233" name="6.2. Sediment toxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000009" protocol_uri=""/>
+<endpoint id="EC_SOILDWELLINGTOX" group="ECOTOX" protocol="" name="6.3.1. Toxicity to soil macroorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000013" protocol_uri=""/>
+<endpoint id="EC_SOILDWELLINGTOX" group="ECOTOX" protocol="OECD TG 207" name="6.3.1. Toxicity to soil macroorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000013" protocol_uri=""/>
+<endpoint id="EC_SOILDWELLINGTOX" group="ECOTOX" protocol="OECD TG 220" name="6.3.1. Toxicity to soil macroorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000013" protocol_uri=""/>
+<endpoint id="EC_SOILDWELLINGTOX" group="ECOTOX" protocol="OECD TG 222" name="6.3.1. Toxicity to soil macroorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000013" protocol_uri=""/>
+<endpoint id="EC_HONEYBEESTOX" group="ECOTOX" protocol="" name="6.3.2. Toxicity to terrestrial arthropods" ontology_term="http://purl.enanomapper.org/onto/ENM_0000016" protocol_uri=""/>
+<endpoint id="EC_HONEYBEESTOX" group="ECOTOX" protocol="OECD TG 213" name="6.3.2. Toxicity to terrestrial arthropods" ontology_term="http://purl.enanomapper.org/onto/ENM_0000016" protocol_uri=""/>
+<endpoint id="EC_HONEYBEESTOX" group="ECOTOX" protocol="OECD TG 214" name="6.3.2. Toxicity to terrestrial arthropods" ontology_term="http://purl.enanomapper.org/onto/ENM_0000016" protocol_uri=""/>
+<endpoint id="EC_HONEYBEESTOX" group="ECOTOX" protocol="OECD TG 226" name="6.3.2. Toxicity to terrestrial arthropods" ontology_term="http://purl.enanomapper.org/onto/ENM_0000016" protocol_uri=""/>
+<endpoint id="EC_HONEYBEESTOX" group="ECOTOX" protocol="OECD TG 228" name="6.3.2. Toxicity to terrestrial arthropods" ontology_term="http://purl.enanomapper.org/onto/ENM_0000016" protocol_uri=""/>
+<endpoint id="EC_HONEYBEESTOX" group="ECOTOX" protocol="OECD TG 232" name="6.3.2. Toxicity to terrestrial arthropods" ontology_term="http://purl.enanomapper.org/onto/ENM_0000016" protocol_uri=""/>
+<endpoint id="EC_PLANTTOX" group="ECOTOX" protocol="" name="6.3.3. Toxicity to terrestrial plants" ontology_term="http://purl.enanomapper.org/onto/ENM_0000017" protocol_uri=""/>
+<endpoint id="EC_PLANTTOX" group="ECOTOX" protocol="OECD TG 208" name="6.3.3. Toxicity to terrestrial plants" ontology_term="http://purl.enanomapper.org/onto/ENM_0000017" protocol_uri=""/>
+<endpoint id="EC_PLANTTOX" group="ECOTOX" protocol="OECD TG 227" name="6.3.3. Toxicity to terrestrial plants" ontology_term="http://purl.enanomapper.org/onto/ENM_0000017" protocol_uri=""/>
+<endpoint id="EC_SOIL_MICRO_TOX" group="ECOTOX" protocol="" name="6.3.4. Toxicity to soil microorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000008" protocol_uri=""/>
+<endpoint id="EC_SOIL_MICRO_TOX" group="ECOTOX" protocol="OECD TG 216" name="6.3.4. Toxicity to soil microorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000008" protocol_uri=""/>
+<endpoint id="EC_SOIL_MICRO_TOX" group="ECOTOX" protocol="OECD TG 217" name="6.3.4. Toxicity to soil microorganisms" ontology_term="http://purl.enanomapper.org/onto/ENM_0000008" protocol_uri=""/>
+<endpoint id="EC_TOXICITY_BIRDS" group="ECOTOX" protocol="" name="10.65. Toxicity to birds" ontology_term="http://purl.enanomapper.org/onto/ENM_0000002" protocol_uri=""/>
+<endpoint id="EC_TOXICITY_BIRDS" group="ECOTOX" protocol="OECD TG 205" name="10.65. Toxicity to birds" ontology_term="http://purl.enanomapper.org/onto/ENM_0000002" protocol_uri=""/>
+<endpoint id="EC_TOXICITY_BIRDS" group="ECOTOX" protocol="OECD TG 206" name="10.65. Toxicity to birds" ontology_term="http://purl.enanomapper.org/onto/ENM_0000002" protocol_uri=""/>
+<endpoint id="EC_TOXICITY_BIRDS" group="ECOTOX" protocol="OECD TG 223" name="10.65. Toxicity to birds" ontology_term="http://purl.enanomapper.org/onto/ENM_0000002" protocol_uri=""/>
+<endpoint id="EC_ENDOCRINE" group="ECOTOX" protocol="" name="10.66. Endocrine disrupter testing in aquatic vertebrates - in vivo" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="EC_ENDOCRINE" group="ECOTOX" protocol="OECD TG 229" name="10.66. Endocrine disrupter testing in aquatic vertebrates - in vivo" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="EC_ENDOCRINE" group="ECOTOX" protocol="OECD TG 230" name="10.66. Endocrine disrupter testing in aquatic vertebrates - in vivo" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="EC_ENDOCRINE" group="ECOTOX" protocol="OECD TG 231" name="10.66. Endocrine disrupter testing in aquatic vertebrates - in vivo" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="EC_ENDOCRINE" group="ECOTOX" protocol="OECD TG 234" name="10.66. Endocrine disrupter testing in aquatic vertebrates - in vivo" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="EC_ENDOCRINE" group="ECOTOX" protocol="OECD TG 240" name="10.66. Endocrine disrupter testing in aquatic vertebrates - in vivo" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="EC_ENDOCRINE" group="ECOTOX" protocol="OECD TG 241" name="10.66. Endocrine disrupter testing in aquatic vertebrates - in vivo" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="TO_BASICTOXICOKINETICS" group="TOX" protocol="" name="10.67. Basic toxicokinetics" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_BASICTOXICOKINETICS" group="TOX" protocol="OECD TG 417" name="10.67. Basic toxicokinetics" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_DERMAL_ABSORPTION" group="TOX" protocol="" name="10.68. Dermal absorption" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_DERMAL_ABSORPTION" group="TOX" protocol="OECD TG 427" name="10.68. Dermal absorption" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_DERMAL_ABSORPTION" group="TOX" protocol="OECD TG 428" name="10.68. Dermal absorption" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_ACUTE_ORAL" group="TOX" protocol="" name="7.2.1. Acute toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000020" protocol_uri=""/>
+<endpoint id="TO_ACUTE_ORAL" group="TOX" protocol="OECD TG 401" name="7.2.1. Acute toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000020" protocol_uri=""/>
+<endpoint id="TO_ACUTE_ORAL" group="TOX" protocol="OECD TG 420" name="7.2.1. Acute toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000020" protocol_uri=""/>
+<endpoint id="TO_ACUTE_ORAL" group="TOX" protocol="OECD TG 423" name="7.2.1. Acute toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000020" protocol_uri=""/>
+<endpoint id="TO_ACUTE_ORAL" group="TOX" protocol="OECD TG 425" name="7.2.1. Acute toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000020" protocol_uri=""/>
+<endpoint id="TO_ACUTE_INHAL" group="TOX" protocol="" name="7.2.2. Acute toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000023" protocol_uri=""/>
+<endpoint id="TO_ACUTE_INHAL" group="TOX" protocol="OECD TG 403" name="7.2.2. Acute toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000023" protocol_uri=""/>
+<endpoint id="TO_ACUTE_INHAL" group="TOX" protocol="draft OECD TG 433" name="7.2.2. Acute toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000023" protocol_uri=""/>
+<endpoint id="TO_ACUTE_INHAL" group="TOX" protocol="OECD TG 436" name="7.2.2. Acute toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000023" protocol_uri=""/>
+<endpoint id="TO_ACUTE_DERMAL" group="TOX" protocol="" name="7.2.3. Acute toxicity - dermal" ontology_term="http://purl.enanomapper.org/onto/ENM_0000026" protocol_uri=""/>
+<endpoint id="TO_ACUTE_DERMAL" group="TOX" protocol="OECD TG 402" name="7.2.3. Acute toxicity - dermal" ontology_term="http://purl.enanomapper.org/onto/ENM_0000026" protocol_uri=""/>
+<endpoint id="TO_ACUTE_DERMAL" group="TOX" protocol="OECD TG 434" name="7.2.3. Acute toxicity - dermal" ontology_term="http://purl.enanomapper.org/onto/ENM_0000026" protocol_uri=""/>
+<endpoint id="TO_SKIN_IRRITATION" group="TOX" protocol="" name="7.3.1. Skin irritation / Corrosion" ontology_term="http://purl.enanomapper.org/onto/ENM_0000032" protocol_uri=""/>
+<endpoint id="TO_SKIN_IRRITATION" group="TOX" protocol="OECD TG 404" name="7.3.1. Skin irritation / Corrosion" ontology_term="http://purl.enanomapper.org/onto/ENM_0000032" protocol_uri=""/>
+<endpoint id="TO_SKIN_IRRITATION" group="TOX" protocol="OECD TG 430" name="7.3.1. Skin irritation / Corrosion" ontology_term="http://purl.enanomapper.org/onto/ENM_0000032" protocol_uri=""/>
+<endpoint id="TO_SKIN_IRRITATION" group="TOX" protocol="OECD TG 431" name="7.3.1. Skin irritation / Corrosion" ontology_term="http://purl.enanomapper.org/onto/ENM_0000032" protocol_uri=""/>
+<endpoint id="TO_SKIN_IRRITATION" group="TOX" protocol="OECD TG 435" name="7.3.1. Skin irritation / Corrosion" ontology_term="http://purl.enanomapper.org/onto/ENM_0000032" protocol_uri=""/>
+<endpoint id="TO_SKIN_IRRITATION" group="TOX" protocol="OECD TG 439" name="7.3.1. Skin irritation / Corrosion" ontology_term="http://purl.enanomapper.org/onto/ENM_0000032" protocol_uri=""/>
+<endpoint id="TO_EYE_IRRITATION" group="TOX" protocol="" name="7.3.2. Eye irritation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000033" protocol_uri=""/>
+<endpoint id="TO_EYE_IRRITATION" group="TOX" protocol="OECD TG 405" name="7.3.2. Eye irritation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000033" protocol_uri=""/>
+<endpoint id="TO_EYE_IRRITATION" group="TOX" protocol="OECD TG 437" name="7.3.2. Eye irritation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000033" protocol_uri=""/>
+<endpoint id="TO_EYE_IRRITATION" group="TOX" protocol="OECD TG 438" name="7.3.2. Eye irritation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000033" protocol_uri=""/>
+<endpoint id="TO_EYE_IRRITATION" group="TOX" protocol="OECD TG 460" name="7.3.2. Eye irritation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000033" protocol_uri=""/>
+<endpoint id="TO_EYE_IRRITATION" group="TOX" protocol="OECD TG 491" name="7.3.2. Eye irritation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000033" protocol_uri=""/>
+<endpoint id="TO_EYE_IRRITATION" group="TOX" protocol="OECD TG 492" name="7.3.2. Eye irritation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000033" protocol_uri=""/>
+<endpoint id="TO_SENSITIZATION" group="TOX" protocol="" name="7.4.1. Skin sensitisation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000034" protocol_uri=""/>
+<endpoint id="TO_SENSITIZATION" group="TOX" protocol="OECD TG 406" name="7.4.1. Skin sensitisation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000034" protocol_uri=""/>
+<endpoint id="TO_SENSITIZATION" group="TOX" protocol="OECD TG 429" name="7.4.1. Skin sensitisation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000034" protocol_uri=""/>
+<endpoint id="TO_SENSITIZATION" group="TOX" protocol="OECD TG 442A" name="7.4.1. Skin sensitisation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000034" protocol_uri=""/>
+<endpoint id="TO_SENSITIZATION" group="TOX" protocol="OECD TG 442B" name="7.4.1. Skin sensitisation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000034" protocol_uri=""/>
+<endpoint id="TO_RESPIRATORY_SENSITISATION" group="TOX" protocol="" name="10.75. Respiratory sensitisation" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_REPEATED_ORAL" group="TOX" protocol="" name="7.5.1. Repeated dose toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000021" protocol_uri=""/>
+<endpoint id="TO_REPEATED_ORAL" group="TOX" protocol="OECD TG 407" name="7.5.1. Repeated dose toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000021" protocol_uri=""/>
+<endpoint id="TO_REPEATED_ORAL" group="TOX" protocol="OECD TG 408" name="7.5.1. Repeated dose toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000021" protocol_uri=""/>
+<endpoint id="TO_REPEATED_ORAL" group="TOX" protocol="OECD TG 409" name="7.5.1. Repeated dose toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000021" protocol_uri=""/>
+<endpoint id="TO_REPEATED_ORAL" group="TOX" protocol="OECD TG 419" name="7.5.1. Repeated dose toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000021" protocol_uri=""/>
+<endpoint id="TO_REPEATED_ORAL" group="TOX" protocol="OECD TG 422" name="7.5.1. Repeated dose toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000021" protocol_uri=""/>
+<endpoint id="TO_REPEATED_ORAL" group="TOX" protocol="OECD TG 424" name="7.5.1. Repeated dose toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000021" protocol_uri=""/>
+<endpoint id="TO_REPEATED_ORAL" group="TOX" protocol="OECD TG 452" name="7.5.1. Repeated dose toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000021" protocol_uri=""/>
+<endpoint id="TO_REPEATED_ORAL" group="TOX" protocol="OECD TG 453" name="7.5.1. Repeated dose toxicity - oral" ontology_term="http://purl.enanomapper.org/onto/ENM_0000021" protocol_uri=""/>
+<endpoint id="TO_REPEATED_INHAL" group="TOX" protocol="" name="7.5.2. Repeated dose toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000024" protocol_uri=""/>
+<endpoint id="TO_REPEATED_INHAL" group="TOX" protocol="OECD TG 412" name="7.5.2. Repeated dose toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000024" protocol_uri=""/>
+<endpoint id="TO_REPEATED_INHAL" group="TOX" protocol="OECD TG 413" name="7.5.2. Repeated dose toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000024" protocol_uri=""/>
+<endpoint id="TO_REPEATED_INHAL" group="TOX" protocol="OECD TG 422" name="7.5.2. Repeated dose toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000024" protocol_uri=""/>
+<endpoint id="TO_REPEATED_INHAL" group="TOX" protocol="OECD TG 452" name="7.5.2. Repeated dose toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000024" protocol_uri=""/>
+<endpoint id="TO_REPEATED_INHAL" group="TOX" protocol="OECD TG 453" name="7.5.2. Repeated dose toxicity - inhalation" ontology_term="http://purl.enanomapper.org/onto/ENM_0000024" protocol_uri=""/>
+<endpoint id="TO_REPEATED_DERMAL" group="TOX" protocol="" name="7.5.3. Repeated dose toxicity - dermal" ontology_term="http://purl.enanomapper.org/onto/ENM_0000027" protocol_uri=""/>
+<endpoint id="TO_REPEATED_DERMAL" group="TOX" protocol="OECD TG 410" name="7.5.3. Repeated dose toxicity - dermal" ontology_term="http://purl.enanomapper.org/onto/ENM_0000027" protocol_uri=""/>
+<endpoint id="TO_REPEATED_DERMAL" group="TOX" protocol="OECD TG 411" name="7.5.3. Repeated dose toxicity - dermal" ontology_term="http://purl.enanomapper.org/onto/ENM_0000027" protocol_uri=""/>
+<endpoint id="TO_REPEATED_DERMAL" group="TOX" protocol="OECD TG 422" name="7.5.3. Repeated dose toxicity - dermal" ontology_term="http://purl.enanomapper.org/onto/ENM_0000027" protocol_uri=""/>
+<endpoint id="TO_REPEATED_DERMAL" group="TOX" protocol="OECD TG 452" name="7.5.3. Repeated dose toxicity - dermal" ontology_term="http://purl.enanomapper.org/onto/ENM_0000027" protocol_uri=""/>
+<endpoint id="TO_REPEATED_DERMAL" group="TOX" protocol="OECD TG 453" name="7.5.3. Repeated dose toxicity - dermal" ontology_term="http://purl.enanomapper.org/onto/ENM_0000027" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="OECD TG 471" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="OECD TG 472" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="OECD TG 473" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="OECD TG 476" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="OECD TG 479" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="OECD TG 480" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="OECD TG 481" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="OECD TG 482" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VITRO" group="TOX" protocol="OECD TG 487" name="7.6.1. Genetic toxicity in vitro" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 474" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 475" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 477" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 478" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 483" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 484" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 485" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 486" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 488" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_GENETIC_IN_VIVO" group="TOX" protocol="OECD TG 489" name="7.6.2. Genetic toxicity in vivo" ontology_term="http://purl.enanomapper.org/onto/ENM_0000028" protocol_uri=""/>
+<endpoint id="TO_CARCINOGENICITY" group="TOX" protocol="" name="7.7. Carcinogenicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000029" protocol_uri=""/>
+<endpoint id="TO_CARCINOGENICITY" group="TOX" protocol="OECD TG 451" name="7.7. Carcinogenicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000029" protocol_uri=""/>
+<endpoint id="TO_CARCINOGENICITY" group="TOX" protocol="OECD TG 453" name="7.7. Carcinogenicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000029" protocol_uri=""/>
+<endpoint id="TO_REPRODUCTION" group="TOX" protocol="" name="7.8.1. Toxicity to reproduction" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_REPRODUCTION" group="TOX" protocol="OECD TG 415" name="7.8.1. Toxicity to reproduction" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_REPRODUCTION" group="TOX" protocol="OECD TG 416" name="7.8.1. Toxicity to reproduction" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_REPRODUCTION" group="TOX" protocol="OECD TG 421" name="7.8.1. Toxicity to reproduction" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_REPRODUCTION" group="TOX" protocol="OECD TG 422" name="7.8.1. Toxicity to reproduction" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_REPRODUCTION" group="TOX" protocol="OECD TG 426" name="7.8.1. Toxicity to reproduction" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_REPRODUCTION" group="TOX" protocol="OECD TG 443" name="7.8.1. Toxicity to reproduction" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_DEVELOPMENTAL" group="TOX" protocol="" name="7.8.2. Developmental toxicity / teratogenicity" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_DEVELOPMENTAL" group="TOX" protocol="OECD TG 414" name="7.8.2. Developmental toxicity / teratogenicity" ontology_term="" protocol_uri=""/>
+<endpoint id="TO_ENDOCRINEDISRUPPTOR_MAMMALIAN" group="TOX" protocol="" name="10.84. Endocrine disruptor mammalian screening - In vivo (level 3)" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="TO_ENDOCRINEDISRUPPTOR_MAMMALIAN" group="TOX" protocol="OECD TG 440" name="10.84. Endocrine disruptor mammalian screening - In vivo (level 3)" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="TO_ENDOCRINEDISRUPPTOR_MAMMALIAN" group="TOX" protocol="OECD TG 441" name="10.84. Endocrine disruptor mammalian screening - In vivo (level 3)" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 407" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 408" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 412" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 413" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 418" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 419" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 422" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 424" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 426" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_IMMUNOTOXICITY" group="TOX" protocol="" name="10.86. Immunotoxicity" ontology_term="http://purl.bioontology.org/ontology/npo#NPO_1339" protocol_uri=""/>
+<endpoint id="CELL_VIABILITY_ASSAY" group="TOX" protocol="" name="7.999.1. Cell viability assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0003009" protocol_uri=""/>
+<endpoint id="BINDING_ASSAY" group="TOX" protocol="" name="7.999.2. Binding assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0000041" protocol_uri=""/>
+<endpoint id="PROTEIN_SMALLMOLECULE_INTERACTION" group="TOX" protocol="" name="7.999.2. Protein-small molecule interaction assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0000110" protocol_uri=""/>
+<endpoint id="BAO_0003009" group="TOX" protocol="" name="BAO_0003009. Cell Viability Assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0003009" protocol_uri=""/>
+<endpoint id="BAO_0002993" group="TOX" protocol="" name="BAO_0002993. Cytotoxicity Assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0002993" protocol_uri=""/>
+<endpoint id="BAO_0002100" group="TOX" protocol="" name="BAO_0002100. Cell Growth Assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0002100" protocol_uri=""/>
+<endpoint id="BAO_0002167" group="TOX" protocol="" name="BAO_0002167. Genotoxicity Assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0002167" protocol_uri=""/>
+<endpoint id="BAO_0002168" group="TOX" protocol="" name="BAO_0002168. Oxidative Stress Assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0002168" protocol_uri=""/>
+<endpoint id="BAO_0002189" group="TOX" protocol="" name="BAO_0002189. Toxicity Assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0002189" protocol_uri=""/>
+
+
     <endpoint id="endpoint1_340" group="QMRF 1. Physical Chemical Properties" subgroup="" name="QMRF 1. 1. Melting point" />
     <endpoint id="endpoint1_270" group="QMRF 1. Physical Chemical Properties" subgroup="" name="QMRF 1. 2. Boiling point" />
     <endpoint id="endpoint1_271" group="QMRF 1. Physical Chemical Properties" subgroup="" name="QMRF 1. 3. Water solubility" />

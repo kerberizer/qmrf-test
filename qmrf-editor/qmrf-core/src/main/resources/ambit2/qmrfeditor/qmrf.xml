@@ -68,7 +68,7 @@
     </QSAR_Applicability_domain>
     <QSAR_Robustness chapter="6" help="" name="Internal validation - OECD Principle 4">
       <training_set_availability answer="Yes" chapter="6.1" help="" name="Availability of the training set"></training_set_availability>
-      <training_set_data cas="Yes" chapter="6.2" chemname="Yes" formula="Yes" help="" inchi="Yes" mol="Yes" name="Available information for the training set" smiles="Yes"></training_set_data>
+      <training_set_data cas="Yes" chapter="6.2" chemname="Yes" formula="Yes" help="" inchi="Yes" mol="Yes" name="Available information for the training set" smiles="Yes" nanomaterial="No"></training_set_data>
       <training_set_descriptors answer="All" chapter="6.3" help="" name="Data for each descriptor variable for the training set"></training_set_descriptors>
       <dependent_var_availability answer="All" chapter="6.4" help="" name="Data for the dependent variable for the training set"></dependent_var_availability>
       <other_info chapter="6.5" help="" name="Other information about the training set"></other_info>
@@ -82,7 +82,7 @@
     </QSAR_Robustness>
     <QSAR_Predictivity chapter="7" help="" name="External validation - OECD Principle 4">
       <validation_set_availability answer="Yes" chapter="7.1" help="" name="Availability of the external validation set"></validation_set_availability>
-      <validation_set_data cas="Yes" chapter="7.2" chemname="Yes" formula="Yes" help="" inchi="Yes" mol="Yes" name="Available information for the external validation set" smiles="Yes"></validation_set_data>
+      <validation_set_data cas="Yes" chapter="7.2" chemname="Yes" formula="Yes" help="" inchi="Yes" mol="Yes" name="Available information for the external validation set" smiles="Yes" nanomaterial="No"></validation_set_data>
       <validation_set_descriptors answer="All" chapter="7.3" help="" name="Data for each descriptor variable for the external validation set"></validation_set_descriptors>
       <validation_dependent_var_availability answer="All" chapter="7.4" help="" name="Data for the dependent variable for the external validation set"></validation_dependent_var_availability>
       <validation_other_info chapter="7.5" help="" name="Other information about the external validation set"></validation_other_info>

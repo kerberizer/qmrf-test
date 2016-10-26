@@ -70,11 +70,11 @@ public class Catalog extends AmbitList<CatalogEntry> implements InterfaceQMRF, I
 		{"authors_catalog","Authors","author","author_ref"}
 	};    
 	public static final String[][] attribute_names = {
-		{"name","url","description","contact","number","id","ontology_term"},
-		{"definition","description","publication_ref","id","ontology_term"},
-		{"name","units","description","publication_ref","id","ontology_term"},
+		{"name","url","description","contact","number","ontology_term","id"},
+		{"definition","description","publication_ref","ontology_term","id"},
+		{"name","units","description","publication_ref","ontology_term","id"},
 		//{"group","subgroup","name","id"},
-		{"group","name","id","ontology_term","protocol_uri"},
+		{"group","name","protocol","ontology_term","protocol_uri","id"},
 		{"title","url","doi","id"},
 		{"name","affiliation","contact","url","email","number","id"}
 	};    	

@@ -155,6 +155,7 @@ preprocessing,goodness_of_fit,loo,lmo,yscrambling,bootstrap,other_statistics)>
 			inchi (Yes|No) #REQUIRED
 			mol (Yes|No) #REQUIRED
 			formula (Yes|No) #REQUIRED
+			nanomaterial (Yes|No) #REQUIRED
 			>
 <!-- 6.3	Data for each descriptor variable for the training set -->
 <!ELEMENT training_set_descriptors (#PCDATA)>
@@ -209,6 +210,7 @@ preprocessing,goodness_of_fit,loo,lmo,yscrambling,bootstrap,other_statistics)>
 			inchi (Yes|No) #REQUIRED
 			mol (Yes|No) #REQUIRED
 			formula (Yes|No) #REQUIRED
+			nanomaterial (Yes|No) #REQUIRED
 			>
 
 <!-- 7.3	Data for each descriptor variable for the external validation set -->
@@ -346,8 +348,9 @@ preprocessing,goodness_of_fit,loo,lmo,yscrambling,bootstrap,other_statistics)>
 			name CDATA #REQUIRED
 			subgroup CDATA #IMPLIED
 			group CDATA #IMPLIED
-			ontology_term CDATA #IMPLIED
+			protocol CDATA #IMPLIED
 			protocol_uri CDATA #IMPLIED
+			ontology_term CDATA #IMPLIED
 			 >
 
 <!ELEMENT endpoint_ref EMPTY>
