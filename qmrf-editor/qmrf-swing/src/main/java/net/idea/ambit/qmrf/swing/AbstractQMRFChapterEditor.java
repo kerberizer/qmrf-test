@@ -175,14 +175,14 @@ public abstract class AbstractQMRFChapterEditor<T extends AbstractQMRFChapter> e
         	}
         };
         
-        help.setMaximumSize(new Dimension(300,100));
+        help.setMaximumSize(new Dimension(400,300));
         help.setEditable(false);
         help.setText(chapter.getHelp());
         help.setToolTipText(chapter.getWrappedHelp(150));
         //help.setText("");
         help.setForeground(hintColor);
         help.setBackground(lightColor);
-        help.setPreferredSize(new Dimension(300,200));
+        help.setPreferredSize(new Dimension(400,300));
         return new JScrollPane(help);
 
     }   

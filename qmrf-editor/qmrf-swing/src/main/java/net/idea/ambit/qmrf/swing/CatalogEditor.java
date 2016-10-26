@@ -49,7 +49,7 @@ public class CatalogEditor extends AmbitListEditor {
 	public CatalogEditor(Catalog list,
             boolean searchPanel,Dimension dimension) {
         super(list,searchPanel,"",dimension);
-        setPreferredSize(new Dimension(450,450));
+        setPreferredSize(new Dimension(680,500));
     }
     @Override
     protected JComponent createListPanel(AmbitList list, boolean searchPanel,Dimension dimension) {

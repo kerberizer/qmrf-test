@@ -66,7 +66,7 @@ usage: QMRFEditor
 public class QMRFEditor extends CoreApp implements Observer {
 	protected QMRFData qmrfData;
 
-	protected final String QmrfEditorVersion = "2.0.0";
+	protected final String QmrfEditorVersion = "3.0.0";
 
 	public QMRFEditor(String title, int w, int h, String[] args) {
 		super(title, w, h, args);
