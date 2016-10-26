@@ -42,6 +42,10 @@ public class JTermPanel extends JPanel {
 	protected static String query;
 	protected TermSearchAction searchAction;
 	protected final JEditorPane ft = new JEditorPane();
+	public JEditorPane getFt() {
+		return ft;
+	}
+
 	protected final JFormattedTextField term = new JFormattedTextField("");
 
 	public JTermPanel(TermSearchAction searchAction) {

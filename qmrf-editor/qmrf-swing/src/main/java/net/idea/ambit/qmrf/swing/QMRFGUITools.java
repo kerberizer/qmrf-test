@@ -59,7 +59,9 @@ public class QMRFGUITools {
 		menuBar.add(fileMenu);
 		menuBar.add(UITools.createEditMenu(mainFrame));
 		menuBar.add(UITools.createStyleMenu());
-		menuBar.add(UITools.createOntologyMenu(mainFrame, new TermPanelAction("Ontology (show/hide)", qmrfData),
+		menuBar.add(UITools.createOntologyMenu(mainFrame,
+				new TermPanelAction("Ontology (show/hide)", qmrfData,false),
+				new TermPanelAction("Search ontology (selected text)", qmrfData,true),
 				new TermInsertAction("Insert ontology term URI", qmrfData)));
 		return menuBar;
 	}

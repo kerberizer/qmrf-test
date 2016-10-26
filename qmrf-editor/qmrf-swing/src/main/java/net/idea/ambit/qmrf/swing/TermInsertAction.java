@@ -8,7 +8,7 @@ import javax.swing.text.TextAction;
 
 import net.idea.ambit.qmrf.QMRFData;
 
-public class TermInsertAction  extends TextAction {
+public class TermInsertAction extends TextAction {
 
 	/**
 	 * 
@@ -23,17 +23,19 @@ public class TermInsertAction  extends TextAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (qmrfData.getTerm_uri()==null) return;
+		if (qmrfData.getTerm_uri() == null)
+			return;
 		try {
 			JTextComponent target = getTextComponent(e);
 			if (target != null) {
 				Document doc = target.getDocument();
 				try {
-					doc.insertString(target.getCaretPosition(), qmrfData.getTerm_uri(),null);
+					doc.insertString(target.getCaretPosition(),
+							String.format("[%s](%s)", qmrfData.getTerm()==null?"":qmrfData.getTerm(), qmrfData.getTerm_uri()), null);
 				} catch (Exception x) {
 				}
 
-			}	
+			}
 		} catch (Exception x) {
 			// x.printStackTrace();
 		}

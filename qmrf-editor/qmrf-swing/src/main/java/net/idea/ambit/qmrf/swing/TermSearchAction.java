@@ -30,15 +30,9 @@ public class TermSearchAction extends TextAction {
 			p.setText(String.format("<html><body><h1><a name='term'>%s</a></h1><pre>%s</pre></body></html>",
 					e.getActionCommand(), result.toString()));
 			p.scrollToReference("term");
-			/*
-			 * JScrollPane sp = (JScrollPane) ((JComponent)
-			 * e.getSource()).getParent(); JViewport viewport =
-			 * sp.getViewport(); viewport.setViewPosition(new Point(0, 0));
-			 */
 
-			// scrollToReference("term");
 		} catch (Exception x) {
-			// x.printStackTrace();
+			x.printStackTrace();
 		}
 	}
 

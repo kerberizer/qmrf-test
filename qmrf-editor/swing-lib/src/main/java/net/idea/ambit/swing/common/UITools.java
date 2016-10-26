@@ -45,6 +45,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu.Separator;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.MutableAttributeSet;
 import javax.swing.text.SimpleAttributeSet;
@@ -133,26 +134,31 @@ public class UITools {
 		menuItem = new JMenuItem(new InsertSymbolAction(mainFrame, "Insert symbol"));
 		menuItem.setIcon(UITools.createImageIcon("ambit/ui/images/text_letter_omega.png"));
 		menuItem.setText("Insert symbol");
-		menuItem.setMnemonic(KeyEvent.VK_P);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, ActionEvent.SHIFT_MASK));
 		mainMenu.add(menuItem);
 
 		return mainMenu;
 	}
 
-	public static JMenu createOntologyMenu(Container mainFrame, Action actionSearch, Action actionInsert) {
+	public static JMenu createOntologyMenu(Container mainFrame,Action actionPanel, Action actionSearch, Action actionInsert) {
 		JMenu menu = new JMenu("Help");
 		JMenuItem menuItem;
+		menuItem = new JMenuItem(actionPanel);
+		menuItem.setIcon(UITools.createImageIcon("ambit/ui/images/report.png"));
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_H, ActionEvent.SHIFT_MASK));
+		menu.add(menuItem);
+
 		menuItem = new JMenuItem(actionSearch);
 		menuItem.setIcon(UITools.createImageIcon("ambit/ui/images/search.png"));
-		menuItem.setMnemonic(KeyEvent.VK_S);
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F7, ActionEvent.SHIFT_MASK));
 		menu.add(menuItem);
 		
 		menuItem = new JMenuItem(actionInsert);
-		menuItem.setIcon(UITools.createImageIcon("ambit/ui/images/search.png"));
-		menuItem.setText("Insert ontology term URI");
-		menuItem.setMnemonic(KeyEvent.VK_F7);
+		menuItem.setIcon(UITools.createImageIcon("ambit/ui/images/tag_blue.png"));
+		menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F8, ActionEvent.SHIFT_MASK));
 		menu.add(menuItem);
 		
+				
 		return menu;
 	}
 

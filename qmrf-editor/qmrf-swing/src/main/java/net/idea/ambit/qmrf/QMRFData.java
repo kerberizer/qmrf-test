@@ -45,6 +45,15 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 	protected QMRFObject qmrf;
 	protected JTermPanel termsPanel;
 	protected AnnotationTools tools = new AnnotationTools();
+	protected String term = null;
+	public String getTerm() {
+		return term;
+	}
+
+	public void setTerm(String term) {
+		this.term = term;
+	}
+
 	protected String term_uri = null;
 	
 	public String getTerm_uri() {
@@ -156,7 +165,10 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 			String label = d.get("label");
 			String subject = d.get("subject");
 			String subject_uri = d.get("subject_uri");
-			if(i==0) term_uri=subject_uri;
+			if(i==0) {
+				term=label;
+				term_uri=subject_uri;
+			}
 			
 			b.append(String.format("<h3><a name='result%s'>%s.</a> <a href='#%s'>%s</a> (%s)", (i + 1),  (i + 1),label,label,subject));
 			b.append("</h3>");
