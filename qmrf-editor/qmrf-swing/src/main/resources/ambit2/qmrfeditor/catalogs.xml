@@ -7,8 +7,9 @@ Catalogs available in QMRF Database in XML format as defined in QMRF DTD schema
 -->
 <Catalogs>
   <software_catalog>
-    <software id="SW1" name="DRAGON" description="Calculation of several sets of molecular descriptors from molecular geometries (topological, geometrical, WHIM, 3D-MoRSE, molecular profiles, etc.)" number="1" url="http://www.disat.unimib.it/chm" contact="Prof. R.Todeschini - distributed by Talete srl, via Pisani 13, 20124 Milano, Italy" catalog="software_catalog" />
-    <software id="SW2" name="TSAR" description="Statistical and database functions with molecular and substituent property calculations. Within TSAR 3D package." number="2" url="http://www.oxmol.com" contact="Oxford Molecular Ltd., Oxford Science Park, Oxford OX4 4GA, UK" catalog="software_catalog" />
+  	<software id="SW1" name="CDK" description="The Chemistry Development Kit" number="1" url="https://github.com/cdk" contact="The CDK developers" catalog="software_catalog" />
+    <software id="SW2" name="DRAGON" description="Calculation of several sets of molecular descriptors from molecular geometries (topological, geometrical, WHIM, 3D-MoRSE, molecular profiles, etc.)" number="2" url="http://www.disat.unimib.it/chm" contact="Prof. R.Todeschini - distributed by Talete srl, via Pisani 13, 20124 Milano, Italy" catalog="software_catalog" />
+    <software id="SW3" name="TSAR" description="Statistical and database functions with molecular and substituent property calculations. Within TSAR 3D package." number="3" url="http://www.oxmol.com" contact="Oxford Molecular Ltd., Oxford Science Park, Oxford OX4 4GA, UK" catalog="software_catalog" />
   </software_catalog>
   <algorithms_catalog></algorithms_catalog>
   <descriptors_catalog></descriptors_catalog>

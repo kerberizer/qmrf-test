@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE QMRF PUBLIC "http://ambit.sf.net/qmrf/qmrf.dtd" "qmrf.dtd" >
-<QMRF author="Joint Research Centre, European Commission" contact="Joint Research Centre, European Commission"
-	date="May 2012" email="JRC-IHCP-COMPUTOX@ec.europa.eu" name="(Q)SAR Model Reporting Format" schema_version="1.0" url="http://ihcp.jrc.ec.europa.eu/" version="1.3">
+<!DOCTYPE QMRF PUBLIC "http://ambit.sf.net/qmrf/qmrf3.0.dtd" "qmrf.dtd" >
+<QMRF author="Joint Research Centre, European Commission; eNanoMapper" contact="Joint Research Centre, European Commission; eNanoMapper"
+	date="Oct 2016" email="JRC-IHCP-COMPUTOX@ec.europa.eu" name="(Q)SAR Model Reporting Format" schema_version="1.0" url="http://qmrf.sf.net" version="3.0">
   <QMRF_chapters>
     <QSAR_identifier chapter="1" help="" name="QSAR identifier">
       <QSAR_title chapter="1.1" help="" name="QSAR identifier (title)"></QSAR_title>
@@ -126,6 +126,7 @@
     		description=""
     		version=""
     		contact=""
+    		ontology_term=""
     	/>
     	<software id="software_catalog_2"
     		name=""
@@ -142,13 +143,14 @@
     		description=""
     		version=""
     		contact=""
+    		ontology_term=""
     		/>
     </software_catalog>
     <algorithms_catalog>
-	    <algorithm definition="" description="" id="algorithms_catalog_1"/>
+	    <algorithm definition="" description="" id="algorithms_catalog_1" ontology_term=""/>
     </algorithms_catalog>
     <descriptors_catalog>
-    <descriptor id="descriptors_catalog_1" name="" units="" description=""/>
+    <descriptor id="descriptors_catalog_1" name="" units="" description="" ontology_term=""/>
     </descriptors_catalog>
    <endpoints_catalog>
    <endpoint id="endpoint1_340" group="QMRF 1. Physical Chemical Properties" subgroup="" name="QMRF 1. 1. Melting point" />
@@ -500,7 +502,7 @@
     <endpoint id="endpoint339_158" group="QMRF 6. 6. Other" subgroup="" name="OECD 5XX Crop Field Trial Test Guideline" />
 	  </endpoints_catalog>
     <publications_catalog>
-    <publication id="publications_catalog_1" title="" url=""/>
+    <publication id="publications_catalog_1" title="" url="" doi=""/>
     </publications_catalog>
     <authors_catalog>
     	<author id="firstauthor"

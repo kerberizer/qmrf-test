@@ -46,6 +46,7 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 	protected JTermPanel termsPanel;
 	protected AnnotationTools tools = new AnnotationTools();
 	protected String term = null;
+
 	public String getTerm() {
 		return term;
 	}
@@ -55,7 +56,7 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 	}
 
 	protected String term_uri = null;
-	
+
 	public String getTerm_uri() {
 		return term_uri;
 	}
@@ -154,41 +155,59 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 
 	public StringBuilder searchTerm(String query, int maxhits) throws Exception {
 		StringBuilder b = new StringBuilder();
+		if (query == null || "".equals(query.trim()) || "help".equals(query.toLowerCase())) {
+			b.append("<h1>Help</h1>");
+			b.append(
+					"<table><tr><td><h3>Enter text in the box above to search in a local copy of the eNanoMapper <a href='https://github.com/enanomapper/ontologies'>ontology</a></h3></td></tr><tr><td><i>Example:</i> <a href='#toxicity'>toxicity</a></td></tr><tr><td>Alternatively, select text in any of the editable boxes and click <i>Shift-F7</i>. This will initiate search with the selected text.</td></tr><tr><td>Clicking <i>Shift-F8</i> will copy the first ontology term in the text box.</td></tr><tr><td><a href='https://github.com/enanomapper/ontologies/issues'><br/>Report ontology issues</a></td></tr></table>");
+			return b;
+		}
+
 		TopScoreDocCollector collector = tools.search(query, maxhits);
 		ScoreDoc[] hits = collector.topDocs().scoreDocs;
-		b.append("<table>");
-		for (int i = 0; i < hits.length; ++i) {
-			b.append("<tr>");
-			int docId = hits[i].doc;
-			Document d = tools.getSearcher().doc(docId);
-			b.append("<td>");
-			String label = d.get("label");
-			String subject = d.get("subject");
-			String subject_uri = d.get("subject_uri");
-			if(i==0) {
-				term=label;
-				term_uri=subject_uri;
-			}
-			
-			b.append(String.format("<h3><a name='result%s'>%s.</a> <a href='#%s'>%s</a> (%s)", (i + 1),  (i + 1),label,label,subject));
-			b.append("</h3>");
-			b.append(String.format("<p><a class='help' href='%s'>%s</a></p>",subject_uri,subject_uri));
 
-			List<String> sorted = new ArrayList<String>();
-			
-			for (IndexableField f : d.getFields()) 
-				if (!"subject".equals(f.name()) && !"label".equals(f.name()) && !"subject_uri".equals(f.name())) { 
-					String s = (String.format("<b>%s</b> <span>%s</span><br>", f.name().replaceAll("_", " "),
-							d.get(f.name())));
-					if (sorted.contains(s)) continue; else sorted.add(s);
+		if (hits.length == 0) {
+			b.append("Not found.");
+
+		} else {
+			b.append("<table>");
+			for (int i = 0; i < hits.length; ++i) {
+				b.append("<tr>");
+				int docId = hits[i].doc;
+				Document d = tools.getSearcher().doc(docId);
+				b.append("<td>");
+				String label = d.get("label");
+				String subject = d.get("subject");
+				String subject_uri = d.get("subject_uri");
+				if (i == 0) {
+					term = label;
+					term_uri = subject_uri;
+				}
+
+				b.append(String.format("<h3><a name='result%s'>%s.</a> <a href='#%s'>%s</a> (%s)", (i + 1), (i + 1),
+						label, label, subject));
+				b.append("</h3>");
+				b.append(String.format("<p><a class='help' href='%s'>%s</a></p>", subject_uri, subject_uri));
+
+				List<String> sorted = new ArrayList<String>();
+
+				for (IndexableField f : d.getFields())
+					if (!"subject".equals(f.name()) && !"label".equals(f.name()) && !"subject_uri".equals(f.name())) {
+						String s = (String.format("<b>%s</b> <span>%s</span><br>", f.name().replaceAll("_", " "),
+								d.get(f.name())));
+						if (sorted.contains(s))
+							continue;
+						else
+							sorted.add(s);
+					}
+				Collections.sort(sorted);
+				for (String s : sorted)
+					b.append(s);
+				b.append("</p></td>");
+				b.append("</tr>");
 			}
-			Collections.sort(sorted);
-			for (String s : sorted) 
-				b.append(s);
-			b.append("</p></td>");
-			b.append("</tr>");
+			b.append("</table>");
 		}
-		b.append("</table>");
+		b.append("<h3><a href='#'>Help</a></h3>");
 		return b;
 	}
 }

@@ -52,6 +52,9 @@ public class JTermPanel extends JPanel {
 		super(new BorderLayout());
 		this.searchAction = searchAction;
 		addWidgets();
+		if (searchAction!=null)  {
+			doSearch("", ft);
+		}
 	}
 
 	protected void hidePanel() {
@@ -87,7 +90,7 @@ public class JTermPanel extends JPanel {
 		ft.addHyperlinkListener(new HTMLListener());
 		HTMLEditorKit kit = new HTMLEditorKit();
 		StyleSheet styleSheet = kit.getStyleSheet();
-		styleSheet.addRule("body {color:#F5F2EB; font-family:verdana; margin: 4px; }");
+		styleSheet.addRule("body {color:#000000; font-family:verdana; margin: 4px; }");
 		styleSheet.addRule("h1 {color: #8C0305;}");
 		styleSheet.addRule("h2 {color: #8C0305;}");
 		styleSheet.addRule("h3 {color: #8C0305; font: 11px; font-weight:bold;}");
