@@ -22,7 +22,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 */
 
-
 package net.idea.ambit.qmrf.swing;
 
 import java.awt.Container;
@@ -45,40 +44,41 @@ import net.idea.ambit.swing.common.UITools;
 public class QMRFGUITools {
 
 	protected QMRFGUITools() {
-		
+
 	}
-	public static JMenuBar createMenuBar(JComponent toolBar, QMRFData qmrfData, Container mainFrame ) {
-		JMenuBar menuBar =  new JMenuBar();
+
+	public static JMenuBar createMenuBar(JComponent toolBar, QMRFData qmrfData, Container mainFrame) {
+		JMenuBar menuBar = new JMenuBar();
 		JMenu fileMenu = new JMenu("File");
-		fileMenu.add(createMenuItem(toolBar,new QMRFNewAction(qmrfData,mainFrame)));
-		fileMenu.add(createMenuItem(toolBar,new QMRFFileOpenAction(qmrfData,mainFrame)));
-		fileMenu.add(createMenuItem(toolBar,new QMRFURIOpenAction(qmrfData,mainFrame)));
-        fileMenu.add(createMenuItem(toolBar,new QMRFFileSaveAction(qmrfData,mainFrame)));
-		fileMenu.add(createMenuItem(toolBar,new QMRFFileSaveAsAction(qmrfData,mainFrame)));
-		fileMenu.add(createMenuItem(toolBar,new QMRFBatchAction(qmrfData,mainFrame)));
+		fileMenu.add(createMenuItem(toolBar, new QMRFNewAction(qmrfData, mainFrame)));
+		fileMenu.add(createMenuItem(toolBar, new QMRFFileOpenAction(qmrfData, mainFrame)));
+		fileMenu.add(createMenuItem(toolBar, new QMRFURIOpenAction(qmrfData, mainFrame)));
+		fileMenu.add(createMenuItem(toolBar, new QMRFFileSaveAction(qmrfData, mainFrame)));
+		fileMenu.add(createMenuItem(toolBar, new QMRFFileSaveAsAction(qmrfData, mainFrame)));
+		fileMenu.add(createMenuItem(toolBar, new QMRFBatchAction(qmrfData, mainFrame)));
 		menuBar.add(fileMenu);
 		menuBar.add(UITools.createEditMenu(mainFrame));
 		menuBar.add(UITools.createStyleMenu());
-		menuBar.add(UITools.createOntologyMenu(mainFrame, new TermPanelAction("Ontology (show/hide)",qmrfData)));
+		menuBar.add(UITools.createOntologyMenu(mainFrame, new TermPanelAction("Ontology (show/hide)", qmrfData),
+				new TermInsertAction("Insert ontology term URI", qmrfData)));
 		return menuBar;
 	}
-	
-	protected static JMenuItem createMenuItem(JComponent toolBar,Action action) {
+
+	protected static JMenuItem createMenuItem(JComponent toolBar, Action action) {
 		if (toolBar != null)
 			toolBar.add(new JButton(action));
 		return new JMenuItem(action);
-	}	
-    public static JPanel createStatusBar(QMRFData qmrfData, int width, int height) {
-    	AmbitStatusBar statusBar = new AmbitStatusBar(new Dimension(width,height));
-        statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        qmrfData.getJobStatus().addObserver((AmbitStatusBar)statusBar);
+	}
+
+	public static JPanel createStatusBar(QMRFData qmrfData, int width, int height) {
+		AmbitStatusBar statusBar = new AmbitStatusBar(new Dimension(width, height));
+		statusBar.setBorder(new BevelBorder(BevelBorder.LOWERED));
+		qmrfData.getJobStatus().addObserver((AmbitStatusBar) statusBar);
 		if (qmrfData.getBatchStatistics() instanceof Observable)
-			((Observable)qmrfData.getBatchStatistics()).addObserver((AmbitStatusBar)statusBar);
-        
-        return statusBar;   
+			((Observable) qmrfData.getBatchStatistics()).addObserver((AmbitStatusBar) statusBar);
 
-    }  
-    
+		return statusBar;
+
+	}
+
 }
-
-

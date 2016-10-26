@@ -45,6 +45,11 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 	protected QMRFObject qmrf;
 	protected JTermPanel termsPanel;
 	protected AnnotationTools tools = new AnnotationTools();
+	protected String term_uri = null;
+	
+	public String getTerm_uri() {
+		return term_uri;
+	}
 
 	public JTermPanel getTermsPanel() {
 		return termsPanel;
@@ -151,15 +156,16 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 			String label = d.get("label");
 			String subject = d.get("subject");
 			String subject_uri = d.get("subject_uri");
+			if(i==0) term_uri=subject_uri;
 			
-			b.append(String.format("<h3><a name='result%s'>%s.</a> <a href='#%s'>%s</a> (<a href='%s'>%s</a>)", (i + 1),  (i + 1),label,label, subject_uri,subject));
+			b.append(String.format("<h3><a name='result%s'>%s.</a> <a href='#%s'>%s</a> (%s)", (i + 1),  (i + 1),label,label,subject));
 			b.append("</h3>");
+			b.append(String.format("<p><a class='help' href='%s'>%s</a></p>",subject_uri,subject_uri));
 
-			b.append("<p>");
 			List<String> sorted = new ArrayList<String>();
 			
 			for (IndexableField f : d.getFields()) 
-				if (!"subject".equals(f.name()) && !"label".equals(f.name())) { 
+				if (!"subject".equals(f.name()) && !"label".equals(f.name()) && !"subject_uri".equals(f.name())) { 
 					String s = (String.format("<b>%s</b> <span>%s</span><br>", f.name().replaceAll("_", " "),
 							d.get(f.name())));
 					if (sorted.contains(s)) continue; else sorted.add(s);

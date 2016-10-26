@@ -42,8 +42,8 @@ public class TermSearchAction extends TextAction {
 		}
 	}
 
-	public void copyTerm(String term) {
-		JTextComponent target = getTextComponent(null);
+	public void copyTerm(String term, ActionEvent e) {
+		JTextComponent target = getTextComponent(e);
 		if (target != null) {
 			Document doc = target.getDocument();
 			try {

@@ -45,6 +45,7 @@ import com.hp.hpl.jena.rdf.model.RDFReader;
 import ambit2.base.io.DownloadTool;
 
 public class AnnotationTools {
+	
 	protected Path pathIndex = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir") + "/enmindez");
 	public Path getPathIndex() {
 		return pathIndex;

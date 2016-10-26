@@ -84,10 +84,11 @@ public class JTermPanel extends JPanel {
 		HTMLEditorKit kit = new HTMLEditorKit();
 		StyleSheet styleSheet = kit.getStyleSheet();
 		styleSheet.addRule("body {color:#F5F2EB; font-family:verdana; margin: 4px; }");
-		styleSheet.addRule("h1 {color: ##8C0305;}");
-		styleSheet.addRule("h2 {color: ##8C0305;}");
-		styleSheet.addRule("h3 {color: ##8C0305; font: 11px; font-weight:bold;}");
-		styleSheet.addRule("p {font : 10px verdana; color : black; background-color : #FFFFFF; }");
+		styleSheet.addRule("h1 {color: #8C0305;}");
+		styleSheet.addRule("h2 {color: #8C0305;}");
+		styleSheet.addRule("h3 {color: #8C0305; font: 11px; font-weight:bold;}");
+		styleSheet.addRule("help {color: #000000; font: 8px;}");
+		styleSheet.addRule("p {font : 8px verdana; color : black; background-color : #FFFFFF; }");
 		styleSheet.addRule("td {font : 10px verdana; color : black; background-color : #FFFFFF; }");
 
 		ft.setEditorKit(kit);
@@ -139,7 +140,6 @@ public class JTermPanel extends JPanel {
 					} else {
 						String url = e.getURL() == null ? String.format("http://aber-owl.net/#!%s", e.getDescription())
 								: e.getURL().toString();
-						searchAction.copyTerm(url);
 						try {
 							if (Desktop.isDesktopSupported()) {
 								Desktop.getDesktop().browse(new URI(url));

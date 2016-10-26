@@ -139,12 +139,20 @@ public class UITools {
 		return mainMenu;
 	}
 
-	public static JMenu createOntologyMenu(Container mainFrame, Action action) {
+	public static JMenu createOntologyMenu(Container mainFrame, Action actionSearch, Action actionInsert) {
 		JMenu menu = new JMenu("Help");
 		JMenuItem menuItem;
-		menuItem = new JMenuItem(action);
+		menuItem = new JMenuItem(actionSearch);
+		menuItem.setIcon(UITools.createImageIcon("ambit/ui/images/search.png"));
+		menuItem.setMnemonic(KeyEvent.VK_S);
+		menu.add(menuItem);
+		
+		menuItem = new JMenuItem(actionInsert);
+		menuItem.setIcon(UITools.createImageIcon("ambit/ui/images/search.png"));
+		menuItem.setText("Insert ontology term URI");
 		menuItem.setMnemonic(KeyEvent.VK_F7);
 		menu.add(menuItem);
+		
 		return menu;
 	}
 
