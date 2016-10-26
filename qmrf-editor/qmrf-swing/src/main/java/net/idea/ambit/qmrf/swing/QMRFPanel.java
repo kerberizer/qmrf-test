@@ -66,8 +66,8 @@ public class QMRFPanel extends JPanel implements IAmbitObjectListener {
 		chapterIcons.put("3","ambit/ui/images/experiment_16.png");
 		chapterIcons.put("4","ambit/ui/images/chart_curve.png");
 		chapterIcons.put("5","ambit/ui/images/chart_pie.png");
-		chapterIcons.put("6","ambit/ui/images/benzene_16.jpg");
-		chapterIcons.put("7","ambit/ui/images/benzene_16.jpg");
+		chapterIcons.put("6","ambit/ui/images/fullerene.png");
+		chapterIcons.put("7","ambit/ui/images/fullerene.png");
 		chapterIcons.put("8","ambit/ui/images/book_open.png");
 		chapterIcons.put("9","ambit/ui/images/attachment.png");
 		actions = new ArrayList<ShowChapterAction>();
