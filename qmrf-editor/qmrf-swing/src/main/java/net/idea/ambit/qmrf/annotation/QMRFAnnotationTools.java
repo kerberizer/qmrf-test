@@ -32,12 +32,16 @@ public class QMRFAnnotationTools extends AnnotationTools {
 	protected IndexWriter process(IndexWriter writer, File tmpfile) throws Exception {
 		try {
 			super.process(writer, tmpfile);
+		} catch (Exception x) {
+			x.printStackTrace();
 		} finally {
 		}
 		try {
 			processCatalogs(writer);
 			writer.flush();
 			writer.commit();
+		} catch (Exception x) {
+				x.printStackTrace();
 		} finally {
 			writer.close();
 		}

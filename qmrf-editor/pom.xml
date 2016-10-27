@@ -66,6 +66,7 @@
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
 				<excludes>
+					<exclude>**.rdf</exclude>
 					<exclude>**.gz</exclude>
 				</excludes>
 			</resource>

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -167,9 +168,9 @@ public class AnnotationTools {
 
 			if (file.getName().endsWith(".gz")) {
 
-				in = new InputStreamReader(new GZIPInputStream(new FileInputStream(file)));
+				in = new InputStreamReader(new GZIPInputStream(new FileInputStream(file)),"UTF-8");
 			} else
-				in = new InputStreamReader(new FileInputStream(file));
+				in = new InputStreamReader(new FileInputStream(file),"UTF-8");
 
 			reader.read(jmodel, in, "RDF/XML");
 			System.out.println("Reading completed " + file.getAbsolutePath());
@@ -258,7 +259,8 @@ public class AnnotationTools {
 				} catch (Exception x) {
 				}
 			}
-
+		} catch (Exception x) {
+			x.printStackTrace();
 		} finally {
 			jmodel.close();
 			try {
