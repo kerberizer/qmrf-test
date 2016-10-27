@@ -11,7 +11,7 @@ Catalogs available in QMRF Database in XML format as defined in QMRF DTD schema
   <algorithms_catalog></algorithms_catalog>
   <descriptors_catalog></descriptors_catalog>
   <endpoints_catalog>
-<!--
+
 <endpoint id='e4ba41ad-fa95-3cb1-9422-4479bd7daefe' group='P-CHEM' protocol='EC A. 1. Melting/Freezing Temperature' name='1. Melting point' ontology_term='http://semanticscience.org/resource/CHEMINF_000256' protocol_uri='' />
 <endpoint id='c700633f-3e59-3599-8cc6-10d8084e6610' group='P-CHEM' protocol='OECD 102 Melting Point/Melting Range' name='1. Melting point' ontology_term='http://semanticscience.org/resource/CHEMINF_000256' protocol_uri='' />
 <endpoint id='9f23d62f-476a-3675-82a6-f662a08df156' group='P-CHEM' protocol='EC A. 2. Boiling Temperature' name='2. Boiling point' ontology_term='http://semanticscience.org/resource/CHEMINF_000257' protocol_uri='' />
@@ -269,7 +269,7 @@ Catalogs available in QMRF Database in XML format as defined in QMRF DTD schema
 <endpoint id='30e98720-7c07-35a5-9269-67aca61e8298' group='TOX' protocol='OECD 506 Stability of Pesticide Residues in Stored Commodities' name='6. Other' ontology_term='http://www.ebi.ac.uk/efo/EFO_0005386' protocol_uri='' />
 <endpoint id='7e8a48fe-293d-33c4-b73c-df8a7e0a6340' group='TOX' protocol='OECD 508 Magnitude of Pesticide Residues in Processed Commodities' name='6. Other' ontology_term='http://www.ebi.ac.uk/efo/EFO_0005386' protocol_uri='' />
 <endpoint id='7ad8433d-a1fd-3bfb-8b31-aca956b5bc4e' group='TOX' protocol='OECD 5XX Crop Field Trial Test Guideline' name='6. Other' ontology_term='http://www.ebi.ac.uk/efo/EFO_0005386' protocol_uri='' />
--->
+
 <endpoint protocol="SOP Nanommune 2.04v2 - TEM Characterization Techniques for Magnetite (Fe3O4) and Surface Coated Magnetite (Fe3O4) Nanoparticles" group='P-CHEM'/>
 <endpoint protocol="SOP Nanommune 2.05v2 - XRD Characterization Techniques for Magnetite (Fe3O4) and Surface Coated Magnetite (Fe3O4) Nanoparticles" group='P-CHEM'/>
 <endpoint protocol="SOP Nanommune 2.6v3 - DLS (Hydrodynamic Particle Sizer) Characterization Techniques for Magnetite (Fe3O4) and Surface Coated Magnetite (Fe3O4) Nanoparticles" group='P-CHEM'/>
