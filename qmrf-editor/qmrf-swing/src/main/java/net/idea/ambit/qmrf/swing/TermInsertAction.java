@@ -23,16 +23,22 @@ public class TermInsertAction extends TextAction {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (qmrfData.getTerm_uri() == null)
+		if (qmrfData.getTerm_uri() == null && qmrfData.getTerm() == null)
 			return;
 		try {
 			JTextComponent target = getTextComponent(e);
 			if (target != null) {
 				Document doc = target.getDocument();
 				try {
-					doc.insertString(target.getCaretPosition(),
-							String.format("[%s](%s)", qmrfData.getTerm()==null?"":qmrfData.getTerm(), qmrfData.getTerm_uri()), null);
+					if (qmrfData.getTerm_uri() == null)
+						doc.insertString(target.getCaretPosition(), qmrfData.getTerm(), null);
+					else
+						doc.insertString(target.getCaretPosition(),
+								String.format("[%s](%s)", qmrfData.getTerm() == null ? "" : qmrfData.getTerm(),
+										qmrfData.getTerm_uri() == null ? "" : qmrfData.getTerm_uri()),
+								null);
 				} catch (Exception x) {
+					x.printStackTrace();
 				}
 
 			}
