@@ -1,111 +1,169 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>qmrf-editor</artifactId>
-    <groupId>ambit</groupId>
-    <version>3.0.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>qmrf-swing</artifactId>
- <name>QMRF Editor </name>
-  <dependencies>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>qmrf-editor</artifactId>
+		<groupId>ambit</groupId>
+		<version>3.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>qmrf-swing</artifactId>
+	<name>QMRF Editor </name>
+	<dependencies>
 
-   <dependency> 	<!--  for the command line only  --> 
-  		<groupId>commons-cli</groupId>
-  		<artifactId>commons-cli</artifactId>
-  		<version>1.2</version>
-  	</dependency>  
-  <dependency> <!-- Base64 encoding of attachments -->
-	<groupId>commons-codec</groupId>
-	<artifactId>commons-codec</artifactId>
-	<version>1.6</version>
- </dependency>
-	<dependency>
-		<groupId>org.apache.httpcomponents</groupId>
-		<artifactId>httpclient</artifactId>
-		<version>4.1.3</version>
-	</dependency>
-	<dependency>
-    	<groupId>org.apache.httpcomponents</groupId>
-    	<artifactId>httpmime</artifactId>
-    	<version>4.1.3</version>
-	</dependency>
-<!--  UI -->
-<dependency>
-	<groupId>com.l2fprod.common</groupId>
-	<artifactId>l2fprod-common-shared</artifactId>
-	<version>6.9.1</version>
-</dependency>
-<dependency>
-	<groupId>com.l2fprod.common</groupId>
-	<artifactId>l2fprod-common-buttonbar</artifactId>
-	<version>6.9.1</version>
-</dependency>
-<dependency>
-	<groupId>ambit</groupId>
-	<artifactId>swing-lib</artifactId>
-	<version>${project.version}</version>
-	<type>jar</type>
-	<scope>compile</scope>
-</dependency>
-<dependency>
-	<groupId>ambit</groupId>
-	<artifactId>qmrf-core</artifactId>
-	<version>${project.version}</version>
-	<type>jar</type>
-	<scope>compile</scope>
-</dependency>
-  	<dependency>
-  		<groupId>ambit</groupId>
-  		<artifactId>qmrf-annotation</artifactId>
-  		<version>${project.version}</version>
-  	</dependency>
-  </dependencies>
-<build>
-	<finalName>QMRFEditor</finalName>
-    <resources>
-	<resource>
-		<directory>src/main/resources</directory>
-		<filtering>true</filtering>
-		<excludes>
-		<exclude>**/fonts/*</exclude>
-		</excludes>
-	</resource>
-	<resource>
-		<directory>src/main/resources/META-INF</directory>
-		<filtering>true</filtering>
-	</resource>	
-	<resource>
-		<directory>src/main/resources/images</directory>
-		<filtering>false</filtering>
-	</resource>
-  </resources>
-  	<plugins>
+		<dependency> 	<!-- for the command line only -->
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency> <!-- Base64 encoding of attachments -->
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+			<version>1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.1.3</version>
+		</dependency>
+		<!-- UI -->
+		<dependency>
+			<groupId>com.l2fprod.common</groupId>
+			<artifactId>l2fprod-common-shared</artifactId>
+			<version>6.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.l2fprod.common</groupId>
+			<artifactId>l2fprod-common-buttonbar</artifactId>
+			<version>6.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>ambit</groupId>
+			<artifactId>swing-lib</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>ambit</groupId>
+			<artifactId>qmrf-core</artifactId>
+			<version>${project.version}</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>ambit</groupId>
+			<artifactId>qmrf-annotation</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>QMRFEditor</finalName>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/fonts/*</exclude>
+				</excludes>
+			</resource>
+			<resource>
+				<directory>src/main/resources/META-INF</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/resources/images</directory>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
+		<plugins>
+
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2-beta-2</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.2</version>
 				<executions>
 					<execution>
-						<id>create-executable-jar</id>
 						<phase>package</phase>
 						<goals>
-							<goal>single</goal>
+							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<descriptorRefs>
-								<descriptorRef>
-								jar-with-dependencies
-								</descriptorRef>
-							</descriptorRefs>
-							<archive>
-								<manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
-							</archive>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>net.idea.ambit.qmrf.swing.QMRFEditor</Main-Class>
+										<Build-Number>${buildNumber}</Build-Number>
+										<Package-Vendor>Ideaconsult Ltd.</Package-Vendor>
+										<Package-Version>${project.version}</Package-Version>
+										<Package>net.idea.ambit.qmrf</Package>
+										<Implementation-Build>${buildNumber}</Implementation-Build>
+										<url>http://qmrf.sf.net</url>
+
+
+									</manifestEntries>
+								</transformer>
+							</transformers>
+							<doCheck>true</doCheck>
+							<doUpdate>true</doUpdate>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-  	</plugins>
-  </build>
-<properties>
-	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>  
+			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.2-beta-2</version> 
+				<executions> <execution> <id>create-executable-jar</id> <phase>package</phase> 
+				<goals> <goal>single</goal> </goals> <configuration> <descriptorRefs> <descriptorRef> 
+				jar-with-dependencies </descriptorRef> </descriptorRefs> <archive> <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile> 
+				</archive> </configuration> </execution> </executions> </plugin> -->
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>buildnumber-maven-plugin</artifactId>
+					<version>1.4</version>
+					<executions>
+						<execution>
+							<phase>validate</phase>
+							<goals>
+								<goal>create</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<revisionOnScmFailure>-${maven.build.timestamp}</revisionOnScmFailure>
+						<doCheck>false</doCheck>
+						<doUpdate>false</doUpdate>
+						<getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+						<locale>US</locale>
+						<providerImplementations>
+							<svn>javasvn</svn>
+						</providerImplementations>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>com.google.code.maven-scm-provider-svnjava</groupId>
+							<artifactId>maven-scm-provider-svnjava</artifactId>
+							<version>2.0.2</version>
+						</dependency>
+						<dependency>
+							<groupId>org.tmatesoft.svnkit</groupId>
+							<artifactId>svnkit</artifactId>
+							<version>1.8.3-1</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+	<description>http://ambit.sourceforge.net/download_ambitcli.html</description>
+	<url>http://ambit.sourceforge.net/download_ambitcli.html</url>
 </project>
