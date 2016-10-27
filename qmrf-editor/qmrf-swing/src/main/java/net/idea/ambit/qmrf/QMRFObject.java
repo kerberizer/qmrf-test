@@ -97,21 +97,7 @@ import net.idea.ambit.swing.interfaces.IAmbitObjectListener;
 
 /**
  * QMRF document.
- * 
- * <pre>
-<!ELEMENT QMRF (QSAR_identifier,QSAR_General_information,QSAR_Endpoint,
-QSAR_Algorithm,QSAR_Applicability_domain+,QSAR_Robustness,QSAR_Predictivity+,
-QSAR_Interpretation,QSAR_Miscelaneous,Catalogs)>   
-<!ATTLIST QMRF 
-          version CDATA  #FIXED "1.2"
-          name CDATA #FIXED "(Q)SAR Model Reporting Format" 
-          author CDATA #FIXED "European Chemicals Bureau" 
-          date CDATA #FIXED "July 2007" 
-          contact CDATA #FIXED "European Chemicals Bureau, IHCP, Joint Research Centre, European Commission" 
-          email CDATA #FIXED "JRC-IHCP-COMPUTOX@ec.europa.eu" 
-          www CDATA #FIXED "http://ihcp.jrc.ec.europa.eu/our_labs/computational_toxicology" 
-          >
- * </pre>
+ 
  * 
  * @author Nina Jeliazkova
  *

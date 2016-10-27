@@ -72,13 +72,6 @@
 			</resource>
 		</resources>
 		<plugins>
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-source-plugin</artifactId> 
-				<executions> <execution> <id>attach-sources</id> <goals> <goal>jar</goal> 
-				</goals> </execution> </executions> </plugin> -->
-			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-javadoc-plugin</artifactId> 
-				<version>2.9</version> <executions> <execution> <id>attach-javadocs</id> 
-				<goals> <goal>jar</goal> </goals> </execution> </executions> </plugin> -->
-			<!-- http://mojo.codehaus.org/buildnumber-maven-plugin/plugin-info.html -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>buildnumber-maven-plugin</artifactId>
@@ -174,4 +167,16 @@
 		<ambit.version>3.0.3-SNAPSHOT</ambit.version>
 		<apache.jena.version>2.13.0</apache.jena.version>
 	</properties>
+	<profiles>
+		<profile>
+			<!-- http://stackoverflow.com/questions/15886209/maven-is-not-working-in-java-8-when-javadoc-tags-are-incomplete -->
+			<id>disable-java8-doclint</id>
+			<activation>
+				<jdk>[1.8,)</jdk>
+			</activation>
+			<properties>
+				<additionalparam>-Xdoclint:none</additionalparam>
+			</properties>
+		</profile>	
+	</profiles>
 </project>

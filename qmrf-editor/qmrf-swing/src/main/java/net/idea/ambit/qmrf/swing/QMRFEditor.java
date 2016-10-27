@@ -42,24 +42,7 @@ import net.idea.ambit.swing.common.CoreApp;
 
 /**
  * QSAR Model Report Format Editor.
- *
- * 
- * <pre>
-usage: QMRFEditor
- -d,--dtd <url>          			DTD schema location - URL where DTD schema
-                         			resides (e.g. -dfile:///D:/myfolder/qmrf.dtd or
-                         			-dhttp://qmrf.sourceforge.net/qmrf.dtd)
- -u,--user <username>    			User (if -u admin then Chapter 10 will be
-                         			editable, otherwise readonly
- -c,--cleancatalogs true|false      When saving as XML, include only catalog entries
-                         			which have an idref reference
- -e,--external <URL>     			URL to retrieve external catalogs in XML format
-                         			as defined by <!ELEMENT Catalogs > in QMRF DTD schema
- -h,--help              			 This screen
- -t,--ttf <URL>         			 URL to retrieve TrueType font
- -x,--xmlcontent <URL>  			 URL to retrieve XML content
- * </pre>
- * 
+
  * @author Nina Jeliazkova
  *
  */
