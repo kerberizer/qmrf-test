@@ -32,88 +32,82 @@ import java.net.URL;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import junit.framework.Assert;
-import net.idea.ambit.qmrf.catalogs.Catalog;
-import net.idea.ambit.qmrf.catalogs.CatalogEntry;
-
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
+import junit.framework.Assert;
+import net.idea.ambit.qmrf.catalogs.Catalog;
+import net.idea.ambit.qmrf.catalogs.CatalogEntry;
+import net.idea.ambit.qmrf.catalogs.Catalogs;
 
 public class CatalogTest {
+	@Test
+	public void testReadURL() throws Exception {
 
-		public void testReadURL() {
-			try {
-				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-	            factory.setNamespaceAware(true);      
-	            factory.setValidating(false);
-	    		DocumentBuilder builder = factory.newDocumentBuilder();
-	
-	    		
-	    		URL e_url = new URL("http://nina.acad.bg/qmrf/endpoints_xml.jsp");
-				BufferedReader r = new BufferedReader(new InputStreamReader(e_url.openStream()));
-				StringBuffer b = new StringBuffer();
-				String l;
-				while ((l = r.readLine()) != null) {
-			         b.append(l);
-			       } // end while 
-				r.close();
-	    		
-				//System.out.println(b.toString());
-		        Document doc = builder.parse(new InputSource(new StringReader( b.toString().trim())));
-		        Catalog c = new Catalog(Catalog.catalog_names[3][0]);
-		        c.fromXML(doc.getDocumentElement());
-		        for (int i=0; i < c.size(); i++) {
-	    			System.out.println(c.getItem(i));
-	    		//	assertFalse(((CatalogEntry) c.getItem(i)).getProperty("name").equals("")); 
-	    		}
-		        
-		        
-		        Catalog e = new Catalog(Catalog.catalog_names[3][0]);
-		        e.fromXML(doc.getDocumentElement());
-		        e.addCatalog(c);
-		        //e.editor(true).view(null,true,"catalogs");
-			} catch (Exception x) {
-				x.printStackTrace();
-			}
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		factory.setValidating(false);
+		DocumentBuilder builder = factory.newDocumentBuilder();
+
+		// URL e_url = new
+		// URL("http://qmrf.sourceforge.net/endpoints/endpoints-EC-OECD-QMRF.xml");
+		URL e_url = new URL("http://qmrf.sourceforge.net/endpoints/qmrf_catalogs.xml");
+		BufferedReader r = new BufferedReader(new InputStreamReader(e_url.openStream()));
+		StringBuffer b = new StringBuffer();
+		String l;
+		while ((l = r.readLine()) != null) {
+			b.append(l);
+		} // end while
+		r.close();
+
+		// System.out.println(b.toString());
+		Document doc = builder.parse(new InputSource(new StringReader(b.toString().trim())));
+		Catalogs c = new Catalogs();
+		c.fromXML(doc.getDocumentElement());
+		Catalog catalog = c.get("endpoints_catalog");
+		Assert.assertNotNull(catalog);
+		for (int i = 0; i < catalog.size(); i++) {
+			CatalogEntry e = catalog.getItem(i);
+			String name = e.getProperty("name");
+			if (name.indexOf("EC") == 0)
+				System.out.println(catalog.getItem(i));
 		}
-		
-		@Test
-	  public void testExternalCatalogs() throws Exception  {
-	    	Catalog c = new Catalog(Catalog.catalog_names[3][0]);
-	    	Catalog e = new Catalog(Catalog.catalog_names[3][0]);
-	    	
-	    	String src = "<endpoints_catalog>" +
-	  "<endpoint id=\"endpoint1\" group=\"1.Physicochemical effects\" name=\"1.1.Melting point\" />"+ 
-	  "<endpoint id=\"endpoint2\" group=\"1.Physicochemical effects\" name=\"1.2.Boiling point\" />"+ 
-	  "<endpoint id=\"endpoint3\" group=\"1.Physicochemical effects\" name=\"1.3.Water solubility\" />"+ 
-	  "<endpoint id=\"endpoint4\" group=\"1.Physicochemical effects\" name=\"1.4.Vapour pressure\" />"+
-	  "</endpoints_catalog>";
 
-	    	
-	    	String src1 = "<endpoints_catalog>" +
-	  	   
-	  	 "<endpoint id=\"endpoint5\" group=\"1.Physicochemical effects\" name=\"1.5.Surface tension\" />"+ 
-	  	  "<endpoint id=\"endpoint6\" group=\"1.Physicochemical effects\" name=\"1.6.1.Partition coefficients: Octanol-water (Kow)\" />"+ 
-	  	  "<endpoint id=\"endpoint7\" group=\"1.Physicochemical effects\" name=\"1.6.2.Partition coefficients: Octanol-water (D)\" />"+ 
-	  	"<endpoint id=\"endpoint1\" group=\"1.Physicochemical effects\" name=\"1.1.Melting point\" />"+ 
-	  	  "<endpoint id=\"endpoint2\" group=\"1.Physicochemical effects\" name=\"1.2.Boiling point\" />"+
-	  	  "</endpoints_catalog>";	    	
-	    		c.from(src);
-	    		Assert.assertEquals(4,c.size());
-	    		e.from(src1);
-	    		Assert.assertEquals(5,e.size());
-	    		
-	    		c.addCatalog(e);
-	    		Assert.assertEquals(9,c.size());
-	    		for (int i=0; i < c.size(); i++) {
-	    			//System.out.println(c.getItem(i));
-	    			Assert.assertFalse(((CatalogEntry) c.getItem(i)).getProperty("name").equals("")); 
-	    		}
+	}
 
-	    }    	
+	@Test
+	public void testExternalCatalogs() throws Exception {
+		Catalog c = new Catalog(Catalog.catalog_names[3][0]);
+		Catalog e = new Catalog(Catalog.catalog_names[3][0]);
+
+		String src = "<endpoints_catalog>"
+				+ "<endpoint id=\"endpoint1\" group=\"1.Physicochemical effects\" name=\"1.1.Melting point\" />"
+				+ "<endpoint id=\"endpoint2\" group=\"1.Physicochemical effects\" name=\"1.2.Boiling point\" />"
+				+ "<endpoint id=\"endpoint3\" group=\"1.Physicochemical effects\" name=\"1.3.Water solubility\" />"
+				+ "<endpoint id=\"endpoint4\" group=\"1.Physicochemical effects\" name=\"1.4.Vapour pressure\" />"
+				+ "</endpoints_catalog>";
+
+		String src1 = "<endpoints_catalog>" +
+
+				"<endpoint id=\"endpoint5\" group=\"1.Physicochemical effects\" name=\"1.5.Surface tension\" />"
+				+ "<endpoint id=\"endpoint6\" group=\"1.Physicochemical effects\" name=\"1.6.1.Partition coefficients: Octanol-water (Kow)\" />"
+				+ "<endpoint id=\"endpoint7\" group=\"1.Physicochemical effects\" name=\"1.6.2.Partition coefficients: Octanol-water (D)\" />"
+				+ "<endpoint id=\"endpoint1\" group=\"1.Physicochemical effects\" name=\"1.1.Melting point\" />"
+				+ "<endpoint id=\"endpoint2\" group=\"1.Physicochemical effects\" name=\"1.2.Boiling point\" />"
+				+ "</endpoints_catalog>";
+		c.from(src);
+		Assert.assertEquals(4, c.size());
+		e.from(src1);
+		Assert.assertEquals(5, e.size());
+
+		c.addCatalog(e);
+		Assert.assertEquals(9, c.size());
+		for (int i = 0; i < c.size(); i++) {
+			// System.out.println(c.getItem(i));
+			Assert.assertFalse(((CatalogEntry) c.getItem(i)).getProperty("name").equals(""));
+		}
+
+	}
 
 }
-
-

@@ -11,7 +11,7 @@ Catalogs available in QMRF Database in XML format as defined in QMRF DTD schema
   <algorithms_catalog></algorithms_catalog>
   <descriptors_catalog></descriptors_catalog>
   <endpoints_catalog>
-
+<!--
 <endpoint id='e4ba41ad-fa95-3cb1-9422-4479bd7daefe' group='P-CHEM' protocol='EC A. 1. Melting/Freezing Temperature' name='1. Melting point' ontology_term='http://semanticscience.org/resource/CHEMINF_000256' protocol_uri='' />
 <endpoint id='c700633f-3e59-3599-8cc6-10d8084e6610' group='P-CHEM' protocol='OECD 102 Melting Point/Melting Range' name='1. Melting point' ontology_term='http://semanticscience.org/resource/CHEMINF_000256' protocol_uri='' />
 <endpoint id='9f23d62f-476a-3675-82a6-f662a08df156' group='P-CHEM' protocol='EC A. 2. Boiling Temperature' name='2. Boiling point' ontology_term='http://semanticscience.org/resource/CHEMINF_000257' protocol_uri='' />
@@ -269,6 +269,51 @@ Catalogs available in QMRF Database in XML format as defined in QMRF DTD schema
 <endpoint id='30e98720-7c07-35a5-9269-67aca61e8298' group='TOX' protocol='OECD 506 Stability of Pesticide Residues in Stored Commodities' name='6. Other' ontology_term='http://www.ebi.ac.uk/efo/EFO_0005386' protocol_uri='' />
 <endpoint id='7e8a48fe-293d-33c4-b73c-df8a7e0a6340' group='TOX' protocol='OECD 508 Magnitude of Pesticide Residues in Processed Commodities' name='6. Other' ontology_term='http://www.ebi.ac.uk/efo/EFO_0005386' protocol_uri='' />
 <endpoint id='7ad8433d-a1fd-3bfb-8b31-aca956b5bc4e' group='TOX' protocol='OECD 5XX Crop Field Trial Test Guideline' name='6. Other' ontology_term='http://www.ebi.ac.uk/efo/EFO_0005386' protocol_uri='' />
+-->
+<endpoint protocol="SOP Nanommune 2.04v2 - TEM Characterization Techniques for Magnetite (Fe3O4) and Surface Coated Magnetite (Fe3O4) Nanoparticles" group='P-CHEM'/>
+<endpoint protocol="SOP Nanommune 2.05v2 - XRD Characterization Techniques for Magnetite (Fe3O4) and Surface Coated Magnetite (Fe3O4) Nanoparticles" group='P-CHEM'/>
+<endpoint protocol="SOP Nanommune 2.6v3 - DLS (Hydrodynamic Particle Sizer) Characterization Techniques for Magnetite (Fe3O4) and Surface Coated Magnetite (Fe3O4) Nanoparticles" group='P-CHEM'/>
+<endpoint protocol="SOP Nanommune 2.07v3 - TGA (Thermogravimetric Analysis) Characterization Techniques for Magnetite (Fe3O4) and Surface Coated Magnetite (Fe3O4) Nanoparticles" group='P-CHEM'/> 
+<endpoint protocol="SOP Nanommune 2.8v2 - FTIR (Fourier Transform Infrared Spectroscopy) Characterization Techniques for Magnetite (Fe3O4) and Surface Coated Magnetite (Fe3O4) Nanoparticles" group='P-CHEM'/>
+<endpoint protocol="SOP Nanommune 2.09v2 - Zeta Potential Characterization Techniques for Magnetite (Fe3O4) and Surface Coated Magnetite (Fe3O4) Nanoparticles" group='P-CHEM'/> 
+<endpoint protocol="SOP Nanommune 2.29_ions leaching_v1 - Mx+ ions leaching from the MOx nanoparticle solution" group='P-CHEM'/> 
+<endpoint protocol="SOP NANOMMUNE 3.07v2 Dispersion of nanomaterials for in vitro experiments" group='P-CHEM' module='dispersion'/> 
+<endpoint protocol="SOP NANOMMUNE 3.01v2 Preparation of human monocyte derived macrophages" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.5v1 Generation of human monocyte derived dendritic cells" group='TOX' module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.18 v2 Preparation of human monocyte derived macrophages using CD14 beads" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.3v1 Preparation of exosome free fetal calf serum (FCS)" group='TOX' module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.4v1 Protocol for isolating exosomes" group='TOX' module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.14v2 MTT cell viability assay" group='TOX' name="ENM_0000035. Cytotoxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000035" module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.29 MTT cell viability assay" group='TOX' name="ENM_0000035. Cytotoxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000035" module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.6v1 Detection of apoptosis by FACS: Annexin V/PI staining" group='TOX' name="ENM_0000035. Cytotoxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000035" module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.12v2 CytoTox 96 Non-Radioactive Cytotoxicity Assay" group='TOX' name="ENM_0000035. Cytotoxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000035" module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.26 alamarBlue® viability assay" group='TOX' name="ENM_0000035. Cytotoxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000035" module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.27 CellTiter 96® Aqueous One viability assay" group='TOX' name="ENM_0000035. Cytotoxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000035" module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.15v2 Phenotyping of human monocyte derived dendritic cells after exposure to nanoparticles" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.02v1 Phagocytosis assay with M-CSF activated HMDM and TAMRA-labelled target cells" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.11v1 Detection of caspase-3/7-like activity" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.24 CaspAce™ assay" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.17v1 Detection of ROS using 2’,7’-dichlorofluorescein (H2DCF)" group='TOX' name="ENM_0000037. Oxidative stress" ontology_term="http://purl.enanomapper.org/onto/ENM_0000037" module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.19v2 Detection of cytosolic superoxide using dihydroethdium (DHE)" group='TOX' module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.20v1 Detection of mitochondrial superoxide using Mitosox" group='TOX' module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.13v2 Lipid oxidation analysis by FACS with BODIPY dye" group='TOX' module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.21v1 Mitochondrial membrane potential (MMP) measured by TMRE" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.09v1 Fpg-comet assay to analyze DNA damage" group='TOX' module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.23 TUNEL assay" group='TOX' module='in-vitro'/>
+<endpoint protocol="SOP NANOMMUNE 3.16v3 Cytokine measurement by ELISA" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.25 Cytokine measurement by ELISpot assay" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.28 Cytokine measurement using xMAP™ Technology (Luminex)" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.22 v1 Detection of intracellular free Zinc (II) by Zinquin" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.10v1 TEM analysis of cells after exposure to nanoparticles" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 3.30 Transmission electron microscopy (TEM) analysis of cells following exposure to nanoparticles" group='TOX' module='in-vitro'/> 
+<endpoint protocol="SOP NANOMMUNE 4.01v1 Preparation of lung homogenates" group='TOX' module='in-vivo' organ='lung'/>
+<endpoint protocol="SOP NANOMMUNE 4.02v1 Total protein level in lung homogenates" group='TOX' module='in-vivo' organ='lung'/>
+<endpoint protocol="SOP NANOMMUNE 4.03v1 Total protein and lactate dehydrogenase (LDH) activity in BAL fluid" group='TOX' module='in-vivo' organ='lung'/> 
+<endpoint protocol="SOP NANOMMUNE 4.04v1 Lung Collagen Measurements" group='TOX' module='in-vivo' organ='lung'/>
+<endpoint protocol="SOP NANOMMUNE 4.05v1 Quantitative measurement of total antioxidant status in lung homogenates" group='TOX' module='in-vivo' organ='lung'/> 
+<endpoint protocol="SOP NANOMMUNE 4.06v1 Myeloperoxidase levels in the lung of SWCNTexposed mice" group='TOX' module='in-vivo' organ='lung'/> 
+<endpoint protocol="SOP NANOMMUNE 4.07v1 Measurement of protein carbonyls in lung homogenates" group='TOX' module='in-vivo' organ='lung'/> 
+<endpoint protocol="SOP NANOMMUNE 4.03v1 TGF-ß1 analysis in BAL fluid" group='TOX' module='in-vivo' organ='lung'/> 
 
   </endpoints_catalog>
   <publications_catalog></publications_catalog>

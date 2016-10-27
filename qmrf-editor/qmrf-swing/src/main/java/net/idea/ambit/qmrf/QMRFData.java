@@ -33,7 +33,7 @@ import org.apache.lucene.index.IndexableField;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopScoreDocCollector;
 
-import net.idea.ambit.annotation.AnnotationTools;
+import net.idea.ambit.qmrf.annotation.QMRFAnnotationTools;
 import net.idea.ambit.qmrf.swing.JTermPanel;
 import net.idea.ambit.swing.events.AmbitObjectChanged;
 import net.idea.ambit.swing.interfaces.DefaultSharedData;
@@ -44,7 +44,7 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 		implements IAmbitObjectListener<QMRFObject> {
 	protected QMRFObject qmrf;
 	protected JTermPanel termsPanel;
-	protected AnnotationTools tools = new AnnotationTools();
+	protected QMRFAnnotationTools tools = new QMRFAnnotationTools();
 	protected String term = null;
 
 	public String getTerm() {
@@ -186,14 +186,19 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 				b.append(String.format("<h3><a name='result%s'>%s.</a> <a href='#%s'>%s</a> (%s)", (i + 1), (i + 1),
 						label, label, subject));
 				b.append("</h3>");
-				b.append(String.format("<p><a class='help' href='%s'>%s</a></p>", subject_uri, subject_uri));
+				if (subject_uri != null)
+					b.append(String.format("<p><a class='help' href='%s'>%s</a></p>", subject_uri, subject_uri));
 
 				List<String> sorted = new ArrayList<String>();
 
 				for (IndexableField f : d.getFields())
 					if (!"subject".equals(f.name()) && !"label".equals(f.name()) && !"subject_uri".equals(f.name())) {
-						String s = (String.format("<b>%s</b> <span>%s</span><br>", f.name().replaceAll("_", " "),
-								d.get(f.name())));
+
+						String v = d.get(f.name());
+						if (v.startsWith("http")) {
+							v = String.format("<a href='%s'>%s</a>",v,v);
+						}
+						String s = (String.format("<b>%s</b> <span>%s</span><br>", f.name().replaceAll("_", " "), v));
 						if (sorted.contains(s))
 							continue;
 						else

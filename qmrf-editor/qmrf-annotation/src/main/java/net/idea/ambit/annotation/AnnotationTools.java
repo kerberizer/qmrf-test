@@ -5,9 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -45,8 +43,13 @@ import com.hp.hpl.jena.rdf.model.RDFReader;
 import ambit2.base.io.DownloadTool;
 
 public class AnnotationTools {
-	
-	protected Path pathIndex = FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir") + "/enmindez");
+
+	protected Path pathIndex = createPath();
+
+	protected Path createPath() {
+		return FileSystems.getDefault().getPath(System.getProperty("java.io.tmpdir") + "/enmindez");
+	}
+
 	public Path getPathIndex() {
 		return pathIndex;
 	}
@@ -57,6 +60,7 @@ public class AnnotationTools {
 
 	protected IndexReader reader = null;
 	protected IndexSearcher searcher = null;
+
 	public IndexSearcher getSearcher() {
 		return searcher;
 	}
@@ -66,38 +70,68 @@ public class AnnotationTools {
 
 	public void open() throws Exception {
 		if (!pathIndex.toFile().exists()) {
-			//URL url = getClass().getClassLoader().getResource("net/idea/ambit/annotation/merged_enm.rdf.gz");
-			File tmpfile = new File(System.getProperty("java.io.tmpdir"),"merged_enm.rdf.gz");
-
+			// URL url =
+			// getClass().getClassLoader().getResource("net/idea/ambit/annotation/merged_enm.rdf.gz");
+			File tmpfile = new File(System.getProperty("java.io.tmpdir"), "merged_enm.rdf.gz");
 			DownloadTool.download("net/idea/ambit/annotation/merged_enm.rdf.gz", tmpfile);
-
-			smash(tmpfile, true, pathIndex);
-		} 
-		if (index==null || reader==null || searcher==null) {
-			try {close();} catch (Exception x) {}
+			index(tmpfile);
+		}
+		if (index == null || reader == null || searcher == null) {
+			try {
+				close();
+			} catch (Exception x) {
+			}
 			index = FSDirectory.open(pathIndex);
 			reader = DirectoryReader.open(index);
 			searcher = new IndexSearcher(reader);
 		}
 	}
 
+	protected IndexWriter getIndexedWriter() throws Exception {
+		Directory index = FSDirectory.open(pathIndex);
+		IndexWriterConfig config = new IndexWriterConfig(analyzer);
+		config.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
+		
+		return new IndexWriter(index, config);
+
+	}
+
+	protected void index(File tmpfile) throws Exception {
+		IndexWriter writer = getIndexedWriter();
+		try {
+			writer = process(writer, tmpfile);
+		} catch (Exception x) {
+			if (writer!=null) writer.close();
+		}
+	}
+
+	protected IndexWriter process(IndexWriter writer, File tmpfile) throws Exception {
+		smash(writer, tmpfile, true, pathIndex);
+		writer.flush();
+		writer.commit();
+		return writer;
+	}
+
 	public void close() throws Exception {
 		if (reader != null) {
 			reader.close();
-			reader=null;
-		}	
+			reader = null;
+		}
 		if (index != null) {
 			index.close();
-			index =null;
-		}	
-		searcher=null;
-		
+			index = null;
+		}
+		searcher = null;
+
 	}
+
 	protected boolean isClosed() {
-		return (index==null || reader==null || searcher==null);
+		return (index == null || reader == null || searcher == null);
 	}
+
 	public TopScoreDocCollector search(String query, int maxhits) throws Exception {
-		if (isClosed()) open();
+		if (isClosed())
+			open();
 		org.apache.lucene.search.Query q = new QueryParser("_text", analyzer).parse(query.replace(":", " "));
 		TopScoreDocCollector collector1 = TopScoreDocCollector.create(maxhits);
 		searcher.search(q, collector1);
@@ -105,8 +139,7 @@ public class AnnotationTools {
 		// "http://www.w3.org/2002/07/owl#Thing");
 	}
 
-
-	protected void printHits(String prefix, ScoreDoc[] hits) throws IOException {
+	public void printHits(String prefix, ScoreDoc[] hits) throws IOException {
 		for (int i = 0; i < hits.length; ++i) {
 			int docId = hits[i].doc;
 			Document d = searcher.doc(docId);
@@ -117,13 +150,14 @@ public class AnnotationTools {
 			System.out.println();
 		}
 	}
+
 	protected String printNode(RDFNode node) {
 		return node == null ? null
 				: node.isLiteral() ? (node.asLiteral().getString())
 						: (node.isResource() ? (node.asResource().getLocalName()) : node.getClass().getName());
 	}
 
-	public void smash(File file, boolean zipped, Path indexed) throws Exception {
+	public void smash(IndexWriter writer, File file, boolean zipped, Path indexed) throws Exception {
 
 		Model jmodel = ModelFactory.createDefaultModel();
 
@@ -132,11 +166,11 @@ public class AnnotationTools {
 			RDFReader reader = jmodel.getReader("RDF/XML");
 
 			if (file.getName().endsWith(".gz")) {
-				
+
 				in = new InputStreamReader(new GZIPInputStream(new FileInputStream(file)));
 			} else
 				in = new InputStreamReader(new FileInputStream(file));
-			
+
 			reader.read(jmodel, in, "RDF/XML");
 			System.out.println("Reading completed " + file.getAbsolutePath());
 
@@ -145,10 +179,6 @@ public class AnnotationTools {
 			Query qry = QueryFactory.create(sparql);
 			QueryExecution qe = QueryExecutionFactory.create(qry, jmodel);
 			ResultSet rs = qe.execSelect();
-
-			Directory index = FSDirectory.open(indexed);
-			IndexWriterConfig config = new IndexWriterConfig(analyzer);
-			IndexWriter writer = new IndexWriter(index, config);
 
 			String s_prev = null;
 			Document doc = null;
@@ -183,7 +213,7 @@ public class AnnotationTools {
 					pb = null;
 				}
 				String pl = pb == null ? null : pb.toString();
-				w.write(String.format("%s\t%s\t%s\t'%s'\t%s\n", s,s_uri, p, pl, o));
+				w.write(String.format("%s\t%s\t%s\t'%s'\t%s\n", s, s_uri, p, pl, o));
 				if (!s.equals(s_prev)) {
 					if (doc != null) {
 						TextField tf = new TextField("_text", _catchall.toString(), Store.NO);
@@ -212,8 +242,6 @@ public class AnnotationTools {
 			TextField tf = new TextField("_text", _catchall.toString(), Store.NO);
 			doc.add(tf);
 			writer.addDocument(doc);
-
-			writer.close();
 
 			qe.close();
 
@@ -245,7 +273,7 @@ public class AnnotationTools {
 	public static void main(String[] args) {
 		AnnotationTools tools = new AnnotationTools();
 		try {
-			//tools.open();
+			// tools.open();
 			TopScoreDocCollector collector = tools.search(args[0], 100);
 			ScoreDoc[] hits1 = collector.topDocs().scoreDocs;
 			tools.printHits("", hits1);
