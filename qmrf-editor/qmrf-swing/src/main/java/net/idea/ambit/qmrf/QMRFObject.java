@@ -69,6 +69,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.dmg.pmml.PMML;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -86,6 +87,7 @@ import net.idea.ambit.qmrf.chapters.AbstractQMRFChapter;
 import net.idea.ambit.qmrf.chapters.QMRFChapter;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterReference;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
+import net.idea.ambit.qmrf.pmml.PMML2QMRF;
 import net.idea.ambit.qmrf.swing.QMRFWelcomePanel;
 import net.idea.ambit.qmrf.xml.InterfaceQMRF;
 import net.idea.ambit.qmrf.xml.QMRFSchemaResolver;
@@ -704,6 +706,21 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 		fireAmbitObjectEvent();
 	}
 
+	public void fromPMML(InputStream in) throws Exception {
+
+		clear();
+		setSource("New");
+		init();
+
+		try (InputStream is = in) {
+			PMML pmml = org.jpmml.model.PMMLUtil.unmarshal(is);
+			PMML2QMRF p2q = new PMML2QMRF();
+			p2q.insert(pmml, this);
+		}
+		setNotModified();
+		fireAmbitObjectEvent();
+	}
+
 	/**
 	 * Example:
 	 * 
@@ -874,7 +891,8 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	}
 
 	protected void readExternalCatalogs(String url) {
-		if (url==null || "".equals(url.trim())) return;
+		if (url == null || "".equals(url.trim()))
+			return;
 		try {
 			logger.info("Reading external catalogs from URL " + url);
 			external_catalogs.read(new InputSource(new InputStreamReader(new URL(url).openStream(), "UTF-8")));

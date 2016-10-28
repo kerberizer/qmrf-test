@@ -60,6 +60,11 @@
 			<artifactId>qmrf-annotation</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>ambit</groupId>
+			<artifactId>qmrf-pmml</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>QMRFEditor</finalName>

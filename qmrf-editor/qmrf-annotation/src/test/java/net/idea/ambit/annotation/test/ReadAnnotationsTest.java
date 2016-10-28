@@ -25,7 +25,8 @@ public class ReadAnnotationsTest {
 	public void test() throws Exception {
 		File baseDir = new File(System.getProperty("java.io.tmpdir"));
 		final IRI enmiri = IRI
-				.create("https://raw.githubusercontent.com/enanomapper/ontologies/master/enanomapper.owl");
+				//dev version
+				.create("https://raw.githubusercontent.com/enanomapper/ontologies/master/enanomapper-dev.owl");
 		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 
 		OWLOntology o = m.loadOntologyFromOntologyDocument(enmiri);

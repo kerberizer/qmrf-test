@@ -19,6 +19,7 @@
 		<module>qmrf-core</module>
 		<module>freemarker_rtf</module>
 		<module>qmrf-annotation</module>
+		<module>qmrf-pmml</module>
 	</modules>
 	<repositories>
 		<repository>

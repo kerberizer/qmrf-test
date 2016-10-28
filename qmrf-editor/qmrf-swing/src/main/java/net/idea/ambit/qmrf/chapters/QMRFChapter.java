@@ -44,6 +44,10 @@ import org.w3c.dom.NodeList;
 import ambit2.base.interfaces.IAmbitEditor;
 
 public class QMRFChapter extends AbstractQMRFChapter implements InterfaceQMRF, IAmbitObjectListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6750265336367621123L;
 	protected AmbitList<AbstractQMRFChapter> subchapters;
     protected Hashtable<String, Catalog> catalogs;
 
@@ -63,7 +67,7 @@ public class QMRFChapter extends AbstractQMRFChapter implements InterfaceQMRF, I
 	public QMRFChapter(String elementID, String chapter,String title,String help) {
 		super(elementID,chapter,title,help);
 		//subchapters = new ArrayList<AbstractQMRFChapter>();
-        subchapters = new AmbitList();
+        subchapters = new AmbitList<AbstractQMRFChapter>();
 
 	}
     public void addSubchapter(AbstractQMRFChapter subchapter ) {
@@ -149,10 +153,10 @@ public class QMRFChapter extends AbstractQMRFChapter implements InterfaceQMRF, I
             element.appendChild(((AbstractQMRFChapter)subchapters.getItem(i)).toXML(document));
         return element;
     }
-    public synchronized AmbitList getSubchapters() {
+    public synchronized AmbitList<AbstractQMRFChapter> getSubchapters() {
         return subchapters;
     }
-    public synchronized void setSubchapters(AmbitList subchapters) {
+    public synchronized void setSubchapters(AmbitList<AbstractQMRFChapter> subchapters) {
         this.subchapters = subchapters;
     }
     @Override
