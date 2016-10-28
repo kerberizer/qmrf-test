@@ -1,8 +1,9 @@
 package net.idea.ambit.qmrf.pmml;
 
 import org.dmg.pmml.DataField;
-import org.dmg.pmml.Model;
 import org.dmg.pmml.PMML;
+
+import com.hp.hpl.jena.rdf.model.Model;
 
 import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.catalogs.Catalog;
@@ -14,9 +15,12 @@ import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
 public class PMML2QMRF {
 	public void insert(PMML pmml, QMRFObject qmrf) throws Exception {
 
+		try {
 		setText(getSubchapter(qmrf, 3, 0), String.format("%s %s", pmml.getHeader().getApplication().getName(),
 				pmml.getHeader().getApplication().getVersion()));
-
+		} catch (Exception x) {
+			
+		}
 		if (pmml.getDataDictionary().hasDataFields()) {
 			AbstractQMRFChapter descr = getSubchapter(qmrf, 3, 2);
 			descr.clear();
@@ -36,7 +40,7 @@ public class PMML2QMRF {
 			AbstractQMRFChapter model = getSubchapter(qmrf, 0, 2);
 			AbstractQMRFChapter algorithm = getSubchapter(qmrf, 3, 1);
 			model.clear();
-			for (Model m : pmml.getModels()) {
+			for (org.dmg.pmml.Model m : pmml.getModels()) {
 				CatalogEntry entry = new CatalogEntry(Catalog.catalog_names[0][0], Catalog.attribute_names[0]);
 				entry.setproperty("id", String.format("m%d", id));
 				entry.setproperty("name", m.getModelName());
