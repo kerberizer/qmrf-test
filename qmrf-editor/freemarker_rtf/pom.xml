@@ -15,7 +15,7 @@
 			<distribution>repo</distribution>
 			<comments />
 		</license>
-	</licenses
+	</licenses>
 
 	<dependencies>
 		<dependency>
