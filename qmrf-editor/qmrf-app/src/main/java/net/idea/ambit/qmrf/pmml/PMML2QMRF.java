@@ -3,14 +3,13 @@ package net.idea.ambit.qmrf.pmml;
 import org.dmg.pmml.DataField;
 import org.dmg.pmml.PMML;
 
-import com.hp.hpl.jena.rdf.model.Model;
-
 import net.idea.ambit.qmrf.QMRFObject;
 import net.idea.ambit.qmrf.catalogs.Catalog;
 import net.idea.ambit.qmrf.catalogs.CatalogEntry;
 import net.idea.ambit.qmrf.chapters.AbstractQMRFChapter;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterReference;
 import net.idea.ambit.qmrf.chapters.QMRFSubChapterText;
+
 
 public class PMML2QMRF {
 	public void insert(PMML pmml, QMRFObject qmrf) throws Exception {

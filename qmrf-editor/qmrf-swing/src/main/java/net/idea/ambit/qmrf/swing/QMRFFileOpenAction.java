@@ -41,6 +41,11 @@ import net.idea.ambit.swing.interfaces.ISharedData;
 
 public class QMRFFileOpenAction extends QMRFAction {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 599926966307549775L;
+
 	public QMRFFileOpenAction(QMRFData userData, Container mainFrame) {
 		this(userData, mainFrame, "Open");
 	}
@@ -105,7 +110,7 @@ public class QMRFFileOpenAction extends QMRFAction {
         		if (userData instanceof ISharedData)  
         			((ISharedData) userData).setDefaultDir(defaultDir);
         			try(FileInputStream in = new FileInputStream(file)) {
-	        			getQMRFData().getQmrf().fromPMML(in);
+	        			getQMRFData().getQmrf().fromStream(in,"pmml");
         			} catch (Exception x) {
         				logger.log(Level.WARNING,x.getMessage(),x);
                         logger.info("PMML import failed");

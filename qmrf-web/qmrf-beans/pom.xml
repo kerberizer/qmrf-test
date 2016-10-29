@@ -1,21 +1,30 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <artifactId>qmrf-rest</artifactId>
-    <groupId>net.idea</groupId>
-    <version>3.0.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>qmrf-beans</artifactId>
-  <name>QMRF beans</name>
-  <dependencies>
-  	<dependency>
-  		<groupId>net.toxbank</groupId>
-  		<artifactId>toxbank-api-beans</artifactId>
-  		<version>0.0.1</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  	</dependency>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>qmrf-rest</artifactId>
+		<groupId>net.idea</groupId>
+		<version>3.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>qmrf-beans</artifactId>
+	<name>QMRF beans</name>
+	<licenses>
+		<license>
+			<name>LGPL3</name>
+			<url>http://www.gnu.org/licenses/lgpl.txt</url>
+			<distribution>repo</distribution>
+			<comments />
+		</license>
+	</licenses>
+	<dependencies>
+		<dependency>
+			<groupId>net.toxbank</groupId>
+			<artifactId>toxbank-api-beans</artifactId>
+			<version>0.0.1</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 
-  	 
-  </dependencies>
+
+	</dependencies>
 </project>

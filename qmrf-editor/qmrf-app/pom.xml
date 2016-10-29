@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>ambit</groupId>
+		<artifactId>qmrf-editor</artifactId>
+		<version>3.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>qmrf-app</artifactId>
+	<name>QMRF Editor </name>
+
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License (AGPL) version 3.0</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<dependencies>
+		<dependency>
+			<groupId>ambit</groupId>
+			<artifactId>qmrf-pmml</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ambit</groupId>
+			<artifactId>qmrf-swing</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>QMRFEditor</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.2</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>net.idea.ambit.qmrf.app.QMRFEditorApp</Main-Class>
+										<Build-Number>${buildNumber}</Build-Number>
+										<Package-Vendor>Ideaconsult Ltd.</Package-Vendor>
+										<Package-Version>${project.version}</Package-Version>
+										<Package>net.idea.ambit.qmrf.app</Package>
+										<Implementation-Build>${buildNumber}</Implementation-Build>
+										<url>http://qmrf.sf.net</url>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+							<doCheck>true</doCheck>
+							<doUpdate>true</doUpdate>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<url>http://qmrf.sf.net</url>
+	<organization>
+		<name>Ideaconsult Ltd.</name>
+		<url>https://www.ideaconsult.net</url>
+	</organization>
+	<description>QMRF Editor</description>
+</project>

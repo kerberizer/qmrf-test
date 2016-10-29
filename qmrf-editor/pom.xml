@@ -20,6 +20,7 @@
 		<module>freemarker_rtf</module>
 		<module>qmrf-annotation</module>
 		<module>qmrf-pmml</module>
+		<module>qmrf-app</module>
 	</modules>
 	<repositories>
 		<repository>

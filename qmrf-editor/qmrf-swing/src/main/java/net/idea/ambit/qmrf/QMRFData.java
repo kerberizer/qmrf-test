@@ -72,10 +72,21 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 	public QMRFData(String[] args, String configFile, boolean adminUser) {
 		super(configFile);
 
-		qmrf = new QMRFObject(args, adminUser);
+		qmrf = createQMRFObject(args, adminUser);
 		if (qmrf.getChapters().size() == 0)
 			qmrf.init();
 		qmrf.addAmbitObjectListener(this);
+	}
+	public QMRFData(QMRFObject qmrfobject, String configFile) {
+		super(configFile);
+
+		qmrf = qmrfobject;
+		if (qmrf.getChapters().size() == 0)
+			qmrf.init();
+		qmrf.addAmbitObjectListener(this);		
+	}
+	protected QMRFObject createQMRFObject(String[] args, boolean adminUser) {
+		return new QMRFObject(args, adminUser);
 	}
 
 	protected void init() {
