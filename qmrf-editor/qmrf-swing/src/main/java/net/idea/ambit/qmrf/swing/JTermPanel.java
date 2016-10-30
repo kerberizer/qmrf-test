@@ -168,7 +168,7 @@ public class JTermPanel extends JPanel {
 			setEnabled(false);
 			term.setEnabled(false);
 			ft.setEnabled(false);
-			setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			term.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 			searchAction.actionPerformed(new ActionEvent(f, ActionEvent.ACTION_FIRST, query));
 		} catch (Exception x) {
 
@@ -176,7 +176,7 @@ public class JTermPanel extends JPanel {
 			term.setEnabled(true);
 			ft.setEnabled(true);
 			setEnabled(true);
-			setCursor(Cursor.getDefaultCursor());
+			term.setCursor(Cursor.getDefaultCursor());
 		}
 	}
 

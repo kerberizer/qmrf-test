@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 
 package net.idea.ambit.qmrf;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +48,9 @@ public class QMRFData<OBJECT, LIST> extends DefaultSharedData<OBJECT, LIST>
 	protected QMRFAnnotationTools tools = new QMRFAnnotationTools();
 	protected String term = null;
 
+	public Path getPath() {
+		return tools.getPathIndex();
+	}
 	public String getTerm() {
 		return term;
 	}
