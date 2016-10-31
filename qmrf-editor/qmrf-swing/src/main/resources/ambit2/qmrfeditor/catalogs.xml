@@ -8,9 +8,11 @@ Catalogs available in QMRF Database in XML format as defined in QMRF DTD schema
 <Catalogs>
   <software_catalog>
   	<software id="SW1" name="CDK" description="The Chemistry Development Kit" number="1" url="https://github.com/cdk" contact="The CDK developers" catalog="software_catalog" />
+  	<software id="R" name="R Development Core Team, R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria., R Foundation for Statistical Computing, Vienna, Austria. 2014." 
+  		 number="3" contact="https://www.r-project.org/" url="https://www.r-project.org" catalog="software-catalog" description="The R Project for Statistical Computing"/>
     <software id="SW2" name="DRAGON" description="Calculation of several sets of molecular descriptors from molecular geometries (topological, geometrical, WHIM, 3D-MoRSE, molecular profiles, etc.)" number="2" url="http://www.disat.unimib.it/chm" contact="Prof. R.Todeschini - distributed by Talete srl, via Pisani 13, 20124 Milano, Italy" catalog="software_catalog" />
-    <software id="SW3" name="TSAR" description="Statistical and database functions with molecular and substituent property calculations. Within TSAR 3D package." number="3" url="http://www.oxmol.com" contact="Oxford Molecular Ltd., Oxford Science Park, Oxford OX4 4GA, UK" catalog="software_catalog" />
   </software_catalog>
+  
   <algorithms_catalog></algorithms_catalog>
   <descriptors_catalog></descriptors_catalog>
   <endpoints_catalog>
@@ -246,19 +248,19 @@ Catalogs available in QMRF Database in XML format as defined in QMRF DTD schema
 <endpoint id="TO_REPRODUCTION" group="TOX" protocol="OECD TG 443" name="7.8.1. Toxicity to reproduction" ontology_term="" protocol_uri=""/>
 <endpoint id="TO_DEVELOPMENTAL" group="TOX" protocol="" name="7.8.2. Developmental toxicity / teratogenicity" ontology_term="" protocol_uri=""/>
 <endpoint id="TO_DEVELOPMENTAL" group="TOX" protocol="OECD TG 414" name="7.8.2. Developmental toxicity / teratogenicity" ontology_term="" protocol_uri=""/>
-<endpoint id="TO_ENDOCRINEDISRUPPTOR_MAMMALIAN" group="TOX" protocol="" name="10.84. Endocrine disruptor mammalian screening - In vivo (level 3)" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
-<endpoint id="TO_ENDOCRINEDISRUPPTOR_MAMMALIAN" group="TOX" protocol="OECD TG 440" name="10.84. Endocrine disruptor mammalian screening - In vivo (level 3)" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
-<endpoint id="TO_ENDOCRINEDISRUPPTOR_MAMMALIAN" group="TOX" protocol="OECD TG 441" name="10.84. Endocrine disruptor mammalian screening - In vivo (level 3)" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 407" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 408" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 412" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 413" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 418" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 419" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 422" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 424" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
-<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 426" name="10.85. Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_ENDOCRINEDISRUPPTOR_MAMMALIAN" group="TOX" protocol="" name="Endocrine disruptor mammalian screening - In vivo (level 3)" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="TO_ENDOCRINEDISRUPPTOR_MAMMALIAN" group="TOX" protocol="OECD TG 440" name="Endocrine disruptor mammalian screening - In vivo (level 3)" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="TO_ENDOCRINEDISRUPPTOR_MAMMALIAN" group="TOX" protocol="OECD TG 441" name="Endocrine disruptor mammalian screening - In vivo (level 3)" ontology_term="http://purl.obolibrary.org/obo/OAE_0000202" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 407" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 408" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 412" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 413" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 418" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 419" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 422" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 424" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
+<endpoint id="TO_NEUROTOXICITY" group="TOX" protocol="OECD TG 426" name="Neurotoxicity" ontology_term="http://purl.obolibrary.org/obo/OAE_0001215" protocol_uri=""/>
 <endpoint id="TO_IMMUNOTOXICITY" group="TOX" protocol="" name="10.86. Immunotoxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000046" protocol_uri=""/>
 <endpoint id="ENM_0000035" group="TOX" protocol="" name="ENM_0000035. Cytotoxicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000035" protocol_uri=""/>
 <endpoint id="ENM_0000036" group="TOX" protocol="" name="ENM_0000036. Pro-inflammatory response" ontology_term="http://purl.enanomapper.org/onto/ENM_0000036" protocol_uri=""/>
@@ -270,7 +272,7 @@ Catalogs available in QMRF Database in XML format as defined in QMRF DTD schema
 <endpoint id="ENM_0000042" group="TOX" protocol="" name="ENM_0000042. Mutagenicity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000042" protocol_uri=""/>
 <endpoint id="ENM_0000044" group="TOX" protocol="" name="ENM_0000044. Barrier integrity" ontology_term="http://purl.enanomapper.org/onto/ENM_0000044" protocol_uri=""/>
 <endpoint id="ENM_0000045" group="TOX" protocol="" name="ENM_0000045. Transport of NPs across barrier" ontology_term="http://purl.enanomapper.org/onto/ENM_0000045" protocol_uri=""/>
-<endpoint id="PROTEOMICS" group="TOX" protocol="" name="8.100. Proteomics" ontology_term="" protocol_uri=""/>
+<endpoint id="PROTEOMICS" group="TOX" protocol="" name="OBI_0000615. Proteomics" ontology_term="http://purl.obolibrary.org/obo/OBI_0000615" protocol_uri=""/>
 <endpoint id="BAO_0003009" group="TOX" protocol="" name="BAO_0003009. Cell Viability Assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0003009" protocol_uri=""/>
 <endpoint id="BAO_0002993" group="TOX" protocol="" name="BAO_0002993. Cytotoxicity Assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0002993" protocol_uri=""/>
 <endpoint id="BAO_0002100" group="TOX" protocol="" name="BAO_0002100. Cell Growth Assay" ontology_term="http://www.bioassayontology.org/bao#BAO_0002100" protocol_uri=""/>
