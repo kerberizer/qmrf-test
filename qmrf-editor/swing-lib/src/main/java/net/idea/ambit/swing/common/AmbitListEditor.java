@@ -139,8 +139,9 @@ public class AmbitListEditor extends AmbitListOneItemEditor {
 		model = createTableModel(list);
 		table = new JTable(model, createColumnsModel(model));
 	    //sort is new in Java 6
-		final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
-        table.setRowSorter(sorter);
+		//final TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(model);
+        //table.setRowSorter(sorter);
+        table.setAutoCreateRowSorter(true);
           
 		table.getTableHeader().setReorderingAllowed(false);
 		table.setToolTipText("Click to see item details");
@@ -177,7 +178,9 @@ public class AmbitListEditor extends AmbitListOneItemEditor {
 
 		
         JComponent c = null;
-        if (searchPanel) c = createSearchPanel(sorter);
+        if (searchPanel) 
+        	//c = createSearchPanel(sorter);
+        	c = createSearchPanel(null);
 		if (c == null)
 			return sp;
 		else {
@@ -192,6 +195,7 @@ public class AmbitListEditor extends AmbitListOneItemEditor {
 	}
 	
 	public JComponent createSearchPanel(final TableRowSorter<TableModel> sorter) {
+		if (sorter==null) return null;
 		if (list instanceof IAmbitSearchable) {
 			JToolBar b = new JToolBar();
 			b.setFloatable(false);
