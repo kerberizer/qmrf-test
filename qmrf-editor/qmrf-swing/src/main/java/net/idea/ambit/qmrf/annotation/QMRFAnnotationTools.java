@@ -41,7 +41,7 @@ public class QMRFAnnotationTools extends AnnotationTools {
 			writer.flush();
 			writer.commit();
 		} catch (Exception x) {
-				x.printStackTrace();
+			x.printStackTrace();
 		} finally {
 			writer.close();
 		}
@@ -68,36 +68,36 @@ public class QMRFAnnotationTools extends AnnotationTools {
 				CatalogEntry e = catalog.getItem(i);
 				String name = e.getProperty("protocol");
 				String[] names = name.split(" ");
-				org.apache.lucene.document.Document ldoc = null; 
+				org.apache.lucene.document.Document ldoc = null;
 				if (name.indexOf("EC") == 0) {
 					StringBuilder b = new StringBuilder();
 					for (int j = 3; j < names.length; j++) {
 						b.append(names[j]);
 						b.append(" ");
 					}
-					ldoc = createDocument(String.format("%s %s %s", names[0], names[1], names[2]),
-							b.toString().trim(), e);
-				} else if (name.indexOf("OECD") >= 0) {
-					StringBuilder b = new StringBuilder();
-					for (int j = 2; j < names.length; j++) {
-						b.append(names[j]);
-						b.append(" ");
-					}
-					ldoc = 
-							createDocument(String.format("%s %s", names[0].replaceAll("OECD ", "OECD TG "), names[1]),
-									b.toString().trim(), e);
-				} else if (name.indexOf("SOP N")>=0) {
+					ldoc = createDocument(String.format("%s %s %s", names[0], names[1], names[2]), b.toString().trim(),
+							e);
+				} else if (name.indexOf("OECD TG") >= 0) {
 					StringBuilder b = new StringBuilder();
 					for (int j = 3; j < names.length; j++) {
 						b.append(names[j]);
 						b.append(" ");
 					}
-					e.getAttributes().put("protocol_uri", "http://www.nanopartikel.info/files/methodik/NANOMMUNE-Quality-Handbook-SOPs.pdf");
-					ldoc = 
-							createDocument(String.format("%s %s %s", names[0], names[1].toUpperCase(),names[2].toLowerCase()),
-									b.toString().trim(), e);
+					ldoc = createDocument(String.format("%s %s %s", names[0], names[1], names[2]), b.toString().trim(),
+							e);
+				} else if (name.indexOf("SOP N") >= 0) {
+					StringBuilder b = new StringBuilder();
+					for (int j = 3; j < names.length; j++) {
+						b.append(names[j]);
+						b.append(" ");
+					}
+					e.getAttributes().put("protocol_uri",
+							"http://www.nanopartikel.info/files/methodik/NANOMMUNE-Quality-Handbook-SOPs.pdf");
+					ldoc = createDocument(
+							String.format("%s %s %s", names[0], names[1].toUpperCase(), names[2].toLowerCase()),
+							b.toString().trim(), e);
 				}
-				if (ldoc!=null && writer!=null)
+				if (ldoc != null && writer != null)
 					writer.addDocument(ldoc);
 
 			}
@@ -112,27 +112,20 @@ public class QMRFAnnotationTools extends AnnotationTools {
 
 	protected org.apache.lucene.document.Document createDocument(String tag, String name, CatalogEntry e)
 			throws Exception {
-		
+
 		String topcategory = e.getProperty("group");
 		String endpoint = e.getProperty("name");
 
 		String term = e.getProperty("ontology_term");
 		String protocoluri = e.getProperty("protocol_uri");
 		/*
-		try {
-			term = null;
-			TopScoreDocCollector collector = search(endpoint.toString().replaceAll(":", " "), 1);
-			ScoreDoc[] hits1 = collector.topDocs().scoreDocs;
-			if (hits1 != null && hits1.length > 0) {
-				org.apache.lucene.document.Document d = searcher.doc(hits1[0].doc);
-				term = d.get("subject_uri");
-				term_label = d.get("label");
-				//printHits("", hits1);
-			}
-		} catch (Exception x) {
-			term = null;
-			term_label = null;
-		}
+		 * try { term = null; TopScoreDocCollector collector =
+		 * search(endpoint.toString().replaceAll(":", " "), 1); ScoreDoc[] hits1
+		 * = collector.topDocs().scoreDocs; if (hits1 != null && hits1.length >
+		 * 0) { org.apache.lucene.document.Document d =
+		 * searcher.doc(hits1[0].doc); term = d.get("subject_uri"); term_label =
+		 * d.get("label"); //printHits("", hits1); } } catch (Exception x) {
+		 * term = null; term_label = null; }
 		 */
 		org.apache.lucene.document.Document doc = new org.apache.lucene.document.Document();
 
@@ -140,7 +133,7 @@ public class QMRFAnnotationTools extends AnnotationTools {
 		doc.add(tf);
 		tf = new TextField("label", name, Store.YES);
 		doc.add(tf);
-		if (endpoint!=null && !"".equals(endpoint))
+		if (endpoint != null && !"".equals(endpoint))
 			tf = new TextField("endpoint", endpoint.toString(), Store.YES);
 		doc.add(tf);
 		if (term != null && !"".equals(term)) {
@@ -159,8 +152,11 @@ public class QMRFAnnotationTools extends AnnotationTools {
 		tf = new TextField("_text", _catchall.toString(), Store.NO);
 		doc.add(tf);
 
-		//String catalog = String.format("<endpoint id='%s' group='%s' protocol='%s %s' name='%s' ontology_term='%s' protocol_uri='' />",	UUID.nameUUIDFromBytes((tag+name).getBytes()),topcategory,tag,name.trim(),endpoint.toString().trim(),term==null?"":term	);
-		//System.out.println(catalog);
+		// String catalog = String.format("<endpoint id='%s' group='%s'
+		// protocol='%s %s' name='%s' ontology_term='%s' protocol_uri='' />",
+		// UUID.nameUUIDFromBytes((tag+name).getBytes()),topcategory,tag,name.trim(),endpoint.toString().trim(),term==null?"":term
+		// );
+		// System.out.println(catalog);
 		return doc;
 	}
 
