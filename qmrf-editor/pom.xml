@@ -14,7 +14,6 @@
 		<tag>scm:svn:https://svn.code.sf.net/p/qmrf/code/tags</tag>
 		<url>https://svn.code.sf.net/p/ambit/code/trunk/qmrf/code/trunk/qmrf-editor</url>
 	</scm>
-
 	<licenses>
 		<license>
 			<name>GNU Affero General Public License (AGPL) version 3.0</name>
@@ -200,7 +199,7 @@
 				</reportSets>
 			</plugin>
 		</plugins>
-	</reporting>	
+	</reporting>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -210,6 +209,10 @@
 		</dependency>
 	</dependencies>
 	<distributionManagement>
+		<site>
+			<id>website_qmrf</id>
+			<url>scp://shell.sourceforge.net/home/project-web/qmrf/htdocs</url>
+		</site>
 		<snapshotRepository>
 			<id>nexus-idea-snapshots</id>
 			<url>https://nexus.ideaconsult.net/content/repositories/snapshots</url>
