@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project name="QMRF">
+
+	<bannerLeft>
+		<name></name>
+	</bannerLeft>
+	<bannerRight>
+		<name>QMRF</name>
+		<href>index.html</href>
+	</bannerRight>
+	<googleAnalyticsAccountId>UA-24983132-1</googleAnalyticsAccountId>
+	<publishDate position="bottom" format="yyyy-MM-dd" />
+	<version position="bottom" />
+	<poweredBy>
+		<logo name="SourceForge" href="http://sourceforge.net/projects/qmrf"
+			img="http://sflogo.sourceforge.net/sflogo.php?group_id=152702&amp;type=12" />
+	</poweredBy>
+	<skin>
+		<groupId>lt.velykis.maven.skins</groupId>
+		<artifactId>reflow-maven-skin</artifactId>
+		<version>1.1.1</version>
+	</skin>
+	<custom>
+		<reflowSkin>
+			<theme>bootswatch-cerulean</theme>
+			<highlightJs>true</highlightJs>
+			<smoothScroll>true</smoothScroll>
+			<highlightJsTheme>github</highlightJsTheme>
+
+			<brand>
+				<name><![CDATA[   
+      <img src='images/logo.png'>
+      ]]></name>
+				<href>http://qmrf.sf.net</href>
+			</brand>
+			<slogan></slogan>
+			<titleTemplate>%2$s | %1$s</titleTemplate>
+			<toc></toc>
+			<topNav></topNav>
+			<bottomNav>
+				<column>reports</column>
+			</bottomNav>
+			<bottomDescription>
+				QMRF
+			</bottomDescription>
+			<pages>
+				<index>
+					<shortTitle></shortTitle>
+					<bannerRight>
+						<name></name>
+						<href></href>
+					</bannerRight>
+
+					<shortTitle></shortTitle>
+					<breadcrumbs>false</breadcrumbs>
+					<toc>false</toc>
+					<markPageHeader>false</markPageHeader>
+					<sections>
+						<carousel />
+						<columns>2</columns>
+						<body />
+						<sidebar />
+						<columns>1</columns>
+					</sections>
+				</index>
+				<home>
+					<shortTitle>QMRF | Home</shortTitle>
+					<sections>
+						<columns>2</columns>
+					</sections>
+				</home>
+		
+			</pages>
+		</reflowSkin>
+	</custom>
+
+  <body>
+		<head>
+			<link rel="author" href="https://plus.google.com/+NinaJeliazkova" />
+			<meta name="description" content="Toxtree" />
+			<meta name="keywords"
+				content="QMRF" />
+			<meta name="author" content="Ideaconsult Ltd." />
+			<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+		</head>
+    <menu name="Home">
+      <item name="QMRF" href="/index.html" />
+    </menu>
+
+
+     <menu name="Maven documentation" ref="reports" inherit="bottom" />
+         
+  </body>
+  
+	  
+</project>

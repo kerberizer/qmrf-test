@@ -9,10 +9,19 @@
 	<name>QMRF editor</name>
 	<description>QMRF editor</description>
 	<scm>
-		<connection>svn://svn.code.sf.net/p/qmrf/code/trunk/qmrf-editor</connection>
-		<developerConnection>scm:svn:http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-editor</developerConnection>
-		<url>http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-editor</url>
+		<connection>scm:svn:https://svn.code.sf.net/p/ambit/code/trunk/qmrf/code/trunk/qmrf-editor</connection>
+		<developerConnection>scm:svn+ssh://USER@svn.code.sf.net/p/qmrf/code/trunk/qmrf-editor</developerConnection>
+		<tag>scm:svn:https://svn.code.sf.net/p/qmrf/code/tags</tag>
+		<url>https://svn.code.sf.net/p/ambit/code/trunk/qmrf/code/trunk/qmrf-editor</url>
 	</scm>
+
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License (AGPL) version 3.0</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<modules>
 		<module>swing-lib</module>
 		<module>qmrf-swing</module>
@@ -140,9 +149,58 @@
 						</nonFilteredFileExtensions>
 					</configuration>
 				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-site-plugin</artifactId>
+					<version>3.3</version>
+					<configuration>
+						<locales>en</locales>
+						<encoding>UTF-8</encoding>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>lt.velykis.maven.skins</groupId>
+							<artifactId>reflow-velocity-tools</artifactId>
+							<version>1.1.1</version>
+						</dependency>
+
+						<dependency>
+							<groupId>org.apache.velocity</groupId>
+							<artifactId>velocity</artifactId>
+							<version>1.7</version>
+						</dependency>
+
+						<dependency>
+							<groupId>org.apache.maven.wagon</groupId>
+							<artifactId>wagon-ssh</artifactId>
+							<version>2.0</version>
+						</dependency>
+						<!-- <dependency> <groupId>org.apache.maven.doxia</groupId> <artifactId>doxia-module-markdown</artifactId> 
+							<version>1.7</version> </dependency> -->
+					</dependencies>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>license</report>
+							<report>issue-tracking</report>
+							<report>scm</report>
+							<!-- <report>dependencies</report> -->
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+		</plugins>
+	</reporting>	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -179,6 +237,18 @@
 			<properties>
 				<additionalparam>-Xdoclint:none</additionalparam>
 			</properties>
-		</profile>	
+		</profile>
 	</profiles>
+	<url>http://qmrf.sf.net</url>
+	<organization>
+		<name>Ideaconsult Ltd.</name>
+		<url>http://www.ideaconsult.net</url>
+	</organization>
+	<issueManagement>
+		<url>https://sourceforge.net/p/qmrf/tickets/?source=navbar</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Jenkins</system>
+		<url>https://jenkins.uni-plovdiv.net</url>
+	</ciManagement>
 </project>
