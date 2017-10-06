@@ -29,7 +29,7 @@ import org.restlet.security.User;
 public class QMRF_HTMLBeauty extends HTMLBeauty {
 	
 	public static String qmrfEditorDownloadLink = "http://qmrf.sf.net/editor";
-	private final static String qmrfEditorEmail = "JRC-IHCP-COMPUTOX@ec.europa.eu";
+	private final static String qmrfEditorEmail = "JRC-COMPUTOX@ec.europa.eu";
 	private final static String qmrfHelpURL = "http://qmrf.sf.net/";
 	private final static String QMRF_title = "(Q)SAR Model Reporting Format Database";
 	private final static String[] css = new String[] {
@@ -108,7 +108,7 @@ public class QMRF_HTMLBeauty extends HTMLBeauty {
 	
 	// the JRC IHCP logo
 	private final static String logoTopLeft =
-			"<a href='http://ihcp.jrc.ec.europa.eu/'>\n" +
+			"<a href='https://eurl-ecvam.jrc.ec.europa.eu/databases/jrc-qsar-model-database'>\n" +
 			"<img class='logo_top-left' src='%s/images/logo_jrc_ihcp.png' alt='JRC IHCP logo'>\n" +
 			"</a>\n";
 	

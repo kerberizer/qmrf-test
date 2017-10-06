@@ -36,7 +36,7 @@ public class QMRFCallableUserCreator extends CallableUserCreator {
 
     @Override
     protected String getSender() {
-	return "JRC-IHCP-COMPUTOX@ec.europa.eu";
+	return "JRC-COMPUTOX@ec.europa.eu";
     }
 
     @Override

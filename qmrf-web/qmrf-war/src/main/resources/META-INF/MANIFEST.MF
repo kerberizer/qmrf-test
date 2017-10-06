@@ -3,8 +3,8 @@ Name: net/idea/qmrf/rest
 Package: net.idea.qmrf.rest
 Main-Class: net.idea.qmrf.rest.QMRFApplication
 Specification-Title: QMRF Database
-Specification-Vendor: JRC IHCP
-Specification-Version: 2012
+Specification-Vendor: JRC IHCP,JRC
+Specification-Version: 2012,2017
 Package-Version: ${project.version}
 Package-Vendor: Ideaconsult Ltd.
 Implementation-Title: QMRF Database
