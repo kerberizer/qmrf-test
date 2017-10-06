@@ -3,7 +3,7 @@
 <!ELEMENT QMRF (QMRF_chapters,Catalogs)>
 <!ATTLIST QMRF
           schema_version CDATA  #FIXED "1.0"
-          version CDATA  #FIXED "3.1"
+          version CDATA  #FIXED "3.0.1"
           name CDATA #FIXED "(Q)SAR Model Reporting Format"
           author CDATA #FIXED "Joint Research Centre, European Commission; eNanoMapper"
           date CDATA #FIXED "Oct 2017"
