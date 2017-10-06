@@ -1720,7 +1720,7 @@ public class QMRF_xml2excel extends QMRFConverter {
 		 row = sheet_readme.createRow(row_number); row_number++;
 		 cell = row.createCell(column);
 		 cell.setCellStyle(textCellLast);
-		 cell.setCellValue("The set of information that you provide will be used to facilitate regulatory considerations of (Q)SARs. For this purpose, the structure of the QMRF is devised to reflect as much as possible the OECD principles for the validation, for regulatory purposes, of (Q)SAR models. \nYou are invited to consult the OECD \"Guidance Document on the Validation of (Quantitative) Structure-Activity Relationship Models\" that can aid you in filling in a number of fields of the QMRF (visit the following JRC webpage for downloading the proper documentation: http://ihcp.jrc.ec.europa.eu/our_labs/computational_toxicology");
+		 cell.setCellValue("The set of information that you provide will be used to facilitate regulatory considerations of (Q)SARs. For this purpose, the structure of the QMRF is devised to reflect as much as possible the OECD principles for the validation, for regulatory purposes, of (Q)SAR models. \nYou are invited to consult the OECD \"Guidance Document on the Validation of (Quantitative) Structure-Activity Relationship Models\" that can aid you in filling in a number of fields of the QMRF (visit the following JRC webpage for downloading the proper documentation:  https://eurl-ecvam.jrc.ec.europa.eu/databases/jrc-qsar-model-database");
 		 
 		 sheet_readme.setColumnWidth(column,(short)10000);
 		 sheet_readme.setDefaultRowHeight((short)50);

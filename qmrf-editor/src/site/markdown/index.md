@@ -87,7 +87,7 @@ In the regulatory assessment of chemicals (e.g. under [REACH](http://tinyurl.com
 
 The QSAR Model Reporting Format (QMRF) is a harmonised template for summarising and reporting key information on QSAR models, including the results of any validation studies. The information is structured according to the OECD validation principles.
 
-Download the [QMRF Editor](https://sourceforge.net/projects/qmrf/files/QMRF%20Editor/) in order to describe your models in QMRF format and send the descriptions to JRC-IHCP-COMPUTOX@ec.europa.eu  to have them included in the database. 
+Download the [QMRF Editor](https://sourceforge.net/projects/qmrf/files/QMRF%20Editor/) in order to describe your models in QMRF format and send the descriptions to JRC-COMPUTOX@ec.europa.eu to have them included in the database. 
 
 The QMRF schema 3.0 is updated Oct 2016 to include ontology annotation and enhancements applicable for reporting models, using nanomaterials.
 

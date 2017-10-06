@@ -149,7 +149,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	protected String[] attrValues = { "(Q)SAR Model Reporting Format", "1.3",
 			"Joint Research Centre, European Commission", "May 2012",
 			"EUROPEAN COMMISSION, DIRECTORATE GENERAL, JOINT RESEARCH CENTRE, Institute for Health and Consumer Protection, Toxicology and Chemical Substances Unit",
-			"JRC-IHCP-COMPUTOX@ec.europa.eu", "http://ihcp.jrc.ec.europa.eu/our_labs/computational_toxicology" };
+			"JRC-COMPUTOX@ec.europa.eu", " https://eurl-ecvam.jrc.ec.europa.eu/databases/jrc-qsar-model-database" };
 
 	protected String[][] chaptersID = { { "QSAR_identifier", "QSAR identifier" },
 			{ "QSAR_General_information", "General information" },
@@ -302,7 +302,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	}
 
 	public static String getBackground() {
-		return "The set of information that you provide will be used to facilitate regulatory considerations of (Q)SARs. For this purpose, the structure of the QMRF is devised to reflect as much as possible the OECD principles for the validation, for regulatory purposes, of (Q)SAR models. <br>You are invited to consult the OECD <i>\"Guidance Document on the Validation of (Quantitative) Structure-Activity Relationship Models\"</i> that can aid you in filling in a number of fields of the QMRF (visit the following webpage for downloading the proper documentation: <a href=\"http://ihcp.jrc.ec.europa.eu/our_labs/computational_toxicology/background/oecd-principles\">OECD principles</a>)<br/><br/>The QMRF schema 3.0 is updated Oct 2016 to include ontology annotation and enhancements applicable for reporting models, including nanomaterials.</html>";
+		return "The set of information that you provide will be used to facilitate regulatory considerations of (Q)SARs. For this purpose, the structure of the QMRF is devised to reflect as much as possible the OECD principles for the validation, for regulatory purposes, of (Q)SAR models. <br>You are invited to consult the OECD <i>\"Guidance Document on the Validation of (Quantitative) Structure-Activity Relationship Models\"</i> that can aid you in filling in a number of fields of the QMRF (visit the following webpage for downloading the proper documentation: <a href=\" https://eurl-ecvam.jrc.ec.europa.eu/databases/jrc-qsar-model-database\">OECD principles</a>)<br/><br/>The QMRF schema 3.0 is updated Oct 2016 to include ontology annotation and enhancements applicable for reporting models, including nanomaterials.</html>";
 	}
 
 	protected String getProperty(String property) {

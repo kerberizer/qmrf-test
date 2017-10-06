@@ -3,12 +3,12 @@
 <!ELEMENT QMRF (QMRF_chapters,Catalogs)>
 <!ATTLIST QMRF
           schema_version CDATA  #FIXED "1.0"
-          version CDATA  #FIXED "3.0"
+          version CDATA  #FIXED "3.1"
           name CDATA #FIXED "(Q)SAR Model Reporting Format"
           author CDATA #FIXED "Joint Research Centre, European Commission; eNanoMapper"
-          date CDATA #FIXED "Oct 2016"
+          date CDATA #FIXED "Oct 2017"
           contact CDATA #FIXED "Joint Research Centre, European Commission; eNanoMapper"
-          email CDATA #FIXED "JRC-IHCP-COMPUTOX@ec.europa.eu"
+          email CDATA #FIXED "JRC-COMPUTOX@ec.europa.eu"
           url CDATA #FIXED "http://qmrf.sf.net"
           >
 
