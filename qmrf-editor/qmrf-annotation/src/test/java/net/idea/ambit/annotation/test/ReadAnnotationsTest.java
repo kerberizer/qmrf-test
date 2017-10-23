@@ -26,7 +26,9 @@ public class ReadAnnotationsTest {
 		File baseDir = new File(System.getProperty("java.io.tmpdir"));
 		final IRI enmiri = IRI
 				//dev version
-				.create("https://raw.githubusercontent.com/enanomapper/ontologies/master/enanomapper-dev.owl");
+				//.create("https://raw.githubusercontent.com/enanomapper/ontologies/master/enanomapper-dev.owl");
+				.create("http://data.bioontology.org/ontologies/ENM/submissions/14/download?apikey=8b5b7825-538d-40e0-9e9e-5ab9274a9aeb");
+				
 		OWLOntologyManager m = OWLManager.createOWLOntologyManager();
 
 		OWLOntology o = m.loadOntologyFromOntologyDocument(enmiri);
