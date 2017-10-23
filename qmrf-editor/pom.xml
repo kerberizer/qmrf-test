@@ -276,7 +276,7 @@
 	</issueManagement>
 	<ciManagement>
 		<system>Jenkins</system>
-		<url>https://jenkins.uni-plovdiv.net</url>
+		<url>https://jenkins.ideaconsult.net</url>
 	</ciManagement>
 	<inceptionYear>2007</inceptionYear>
 </project>
