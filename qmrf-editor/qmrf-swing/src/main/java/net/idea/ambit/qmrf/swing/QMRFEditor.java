@@ -49,7 +49,7 @@ import net.idea.ambit.swing.common.CoreApp;
 public class QMRFEditor extends CoreApp implements Observer {
 	protected QMRFData qmrfData;
 
-	protected final String QmrfEditorVersion = "3.0.0";
+	protected final String QmrfEditorVersion = "3.0.1";
 
 	public QMRFEditor(String title, int w, int h, String[] args) {
 		super(title, w, h, args);
