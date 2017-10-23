@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.idea</groupId>
 	<artifactId>qmrf-rest</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>QMRF</name>
 	<description>QMRF</description>
@@ -20,7 +20,7 @@
 		<restlet.version>2.0-M6</restlet.version>
 		<restnet.version>0.0.10</restnet.version>
 		<opentoxcli.version>2.0.1-SNAPSHOT</opentoxcli.version>
-		<qmrfeditor.version>3.0.0-SNAPSHOT</qmrfeditor.version>
+		<qmrfeditor.version>3.0.1-SNAPSHOT</qmrfeditor.version>
 	</properties>
 	<issueManagement>
 		<system></system>
