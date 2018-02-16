@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
 
 package net.idea.ambit.qmrf;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -77,6 +78,7 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 
 import ambit2.base.interfaces.IAmbitEditor;
+import ambit2.base.io.DownloadTool;
 import ambit2.base.io.SimpleErrorHandler;
 import net.idea.ambit.qmrf.attachments.QMRFAttachments;
 import net.idea.ambit.qmrf.catalogs.Catalog;
@@ -97,7 +99,7 @@ import net.idea.ambit.swing.interfaces.IAmbitObjectListener;
 
 /**
  * QMRF document.
- 
+ * 
  * 
  * @author Nina Jeliazkova
  *
@@ -228,17 +230,18 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 
 		try {
 			String filename = "ambit2/qmrfeditor/qmrf.xml";
-			try {
-				InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename);
-				transform_and_read(new InputStreamReader(in, "UTF-8"), true);
-				in.close();
+
+			try (InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename)) {
+				if (in != null)
+					transform_and_read(new InputStreamReader(in, "UTF-8"), true);
 			} catch (Exception x) {
 				x.printStackTrace();
 
-				InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename);
-				read(in);
-				in.close();
-				setNotModified();
+				try (InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename)) {
+					read(in);
+				} finally {
+					setNotModified();
+				}
 			}
 
 		} catch (Exception x) {
@@ -252,16 +255,15 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 			logger.info("Reading default catalogs ");
 			external.clear();
 			String filename = "ambit2/qmrfeditor/catalogs.xml";
-			try {
-				InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename);
-
+			try (InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename)) {
 				external.read(new InputSource(in));
 			} catch (Exception x) {
 				logger.log(Level.WARNING, x.getMessage(), x);
 				logger.info("Reading default catalogs");
-				InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename);
-				read(in);
-				in.close();
+
+				try (InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename)) {
+					read(in);
+				}
 			}
 			setModified(true);
 		} catch (Exception x) {
@@ -655,9 +657,9 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	public Document readDocument(InputSource source, boolean validating, EntityResolver resolver) throws Exception {
 
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		/*
-		 * factory.setNamespaceAware(true); factory.setValidating(validating);
-		 */
+		factory.setNamespaceAware(true);
+		factory.setValidating(false);
+
 		DocumentBuilder builder = factory.newDocumentBuilder();
 
 		builder.setErrorHandler(new SimpleErrorHandler(getClass().getName()));
@@ -705,7 +707,7 @@ public class QMRFObject extends AmbitObject implements InterfaceQMRF, IAmbitObje
 	}
 
 	public void fromStream(InputStream in, String type) throws Exception {
-		throw new Exception("Unsupported "+type);
+		throw new Exception("Unsupported " + type);
 	}
 
 	/**
