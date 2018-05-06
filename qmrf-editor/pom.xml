@@ -12,7 +12,7 @@
 		<connection>scm:svn:https://svn.code.sf.net/p/ambit/code/trunk/qmrf/code/trunk/qmrf-editor</connection>
 		<developerConnection>scm:svn+ssh://USER@svn.code.sf.net/p/qmrf/code/trunk/qmrf-editor</developerConnection>
 		<tag>scm:svn:https://svn.code.sf.net/p/qmrf/code/tags</tag>
-		<url>https://svn.code.sf.net/p/ambit/code/trunk/qmrf/code/trunk/qmrf-editor</url>
+		<url>http://svn.code.sf.net/p/qmrf/code/trunk/qmrf-editor/</url>
 	</scm>
 	<licenses>
 		<license>
